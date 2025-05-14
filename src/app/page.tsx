@@ -7,8 +7,8 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the login page by default
-    router.replace('/login');
+    // Redirect to the landing page by default
+    router.replace('/landing');
   }, [router]);
 
   return null; // Or a loading spinner
