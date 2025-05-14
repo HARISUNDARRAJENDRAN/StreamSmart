@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useId } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 
 interface VideoPlayerProps {
@@ -76,7 +76,7 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
   const currentVideoIdRef = useRef<string | null>(null);
   
   // Generate a unique ID for the player div to avoid conflicts
-  const uniquePlayerDivId = `youtube-player-${React.useId().replace(/:/g, "")}`;
+  const uniquePlayerDivId = `youtube-player-${useId().replace(/:/g, "")}`;
 
   useEffect(() => {
     const extractVideoId = (url: string): string | null => {
