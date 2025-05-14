@@ -17,9 +17,12 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
   try {
     const url = new URL(videoUrl);
     if (url.hostname === 'youtu.be') {
-      videoId = url.pathname.substring(1);
+      videoId = url.pathname.substring(1).trim();
     } else if (url.hostname === 'www.youtube.com' || url.hostname === 'youtube.com') {
-      videoId = url.searchParams.get('v') || '';
+      const vParam = url.searchParams.get('v');
+      if (vParam) {
+        videoId = vParam.trim();
+      }
     }
   } catch (error) {
     console.warn("Invalid video URL for placeholder:", videoUrl);
