@@ -1,7 +1,7 @@
 
 'use client'; 
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { useParams } from 'next/navigation';
 import { VideoPlayer } from '@/components/playlists/video-player';
 import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
@@ -17,23 +17,24 @@ import { useToast } from "@/hooks/use-toast";
 
 // Placeholder data fetching function for fallback
 async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
-  // Simulate API call for original mock data
   await new Promise(resolve => setTimeout(resolve, 100)); 
   
   const mockVideos: Video[] = [
-    { id: 'vid1', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://i.ytimg.com/vi/Tn6-PIqc4UM/hqdefault.jpg', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
-    { id: 'vid2', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://i.ytimg.com/vi/Sklc_fQBmcs/hqdefault.jpg', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
-    { id: 'vid3', title: 'HTML Full Course by Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://i.ytimg.com/vi/qz0aGYrrlhU/hqdefault.jpg', duration: '1:00:00', addedBy: 'user1', completionStatus: 20, summary: 'Learn HTML in one hour.' },
-    { id: 'vid4', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://i.ytimg.com/vi/OEV8gMkCHXQ/hqdefault.jpg', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
+    { id: 'Tn6-PIqc4UM', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://i.ytimg.com/vi/Tn6-PIqc4UM/hqdefault.jpg', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
+    { id: 'Sklc_fQBmcs', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://i.ytimg.com/vi/Sklc_fQBmcs/hqdefault.jpg', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
+    { id: 'qz0aGYrrlhU', title: 'HTML Full Course by Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://i.ytimg.com/vi/qz0aGYrrlhU/hqdefault.jpg', duration: '1:00:00', addedBy: 'user1', completionStatus: 20, summary: 'Learn HTML in one hour.' },
+    { id: 'OEV8gMkCHXQ', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://i.ytimg.com/vi/OEV8gMkCHXQ/hqdefault.jpg', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
   ];
   
+  const baseDate = new Date('2023-01-01T00:00:00Z');
   if (playlistId === "1" || playlistId === "2" || playlistId === "3") {
      return {
       id: playlistId,
       title: playlistId === "1" ? 'Web Development Fundamentals (Mock)' : playlistId === "2" ? 'Python for Data Science (Mock)' : 'React Native Development (Mock)',
       description: 'This is a detailed description of the MOCK playlist focusing on its core concepts and learning objectives. It covers various topics including X, Y, and Z.',
       userId: 'user1',
-      createdAt: new Date(playlistId === "1" ? '2023-01-10T10:00:00Z' : playlistId === "2" ? '2023-02-15T11:00:00Z' : '2023-03-20T12:00:00Z'),
+      createdAt: new Date(baseDate.setDate(baseDate.getDate() + parseInt(playlistId) * 10)),
+      lastModified: new Date(baseDate.setDate(baseDate.getDate() + parseInt(playlistId) * 10)),
       videos: mockVideos,
       aiRecommended: playlistId === "2",
       tags: ['sample', 'learning', 'tech', 'mock'],
@@ -50,6 +51,7 @@ export default function PlaylistDetailPage() {
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const videoPlayerKey = useId(); // Unique key for VideoPlayer
 
   useEffect(() => {
     if (playlistId) {
@@ -61,7 +63,9 @@ export default function PlaylistDetailPage() {
           const storedPlaylists = JSON.parse(storedPlaylistsRaw) as Playlist[];
           foundPlaylist = storedPlaylists.find(p => p.id === playlistId) || null;
           if (foundPlaylist) {
+            // Ensure dates are Date objects
             foundPlaylist.createdAt = new Date(foundPlaylist.createdAt);
+            foundPlaylist.lastModified = new Date(foundPlaylist.lastModified); 
             foundPlaylist.videos = foundPlaylist.videos.map(v => ({
                 ...v, 
             }));
@@ -78,6 +82,7 @@ export default function PlaylistDetailPage() {
         }
         setIsLoading(false);
       } else {
+        // Fallback to original mock data if not in localStorage
         getOriginalMockPlaylistDetails(playlistId).then(data => {
           setPlaylist(data);
           if (data && data.videos.length > 0) {
@@ -107,10 +112,9 @@ export default function PlaylistDetailPage() {
       return video;
     });
 
-    const updatedPlaylist = { ...playlist, videos: updatedVideos };
+    const updatedPlaylist = { ...playlist, videos: updatedVideos, lastModified: new Date() }; // Update lastModified
     setPlaylist(updatedPlaylist);
 
-    // Update currentVideo state if it's the one being toggled
     if (currentVideo && currentVideo.id === videoId) {
       setCurrentVideo(prevCurrentVideo => {
         if (!prevCurrentVideo) return null;
@@ -132,6 +136,11 @@ export default function PlaylistDetailPage() {
           title: "Progress Updated",
           description: `Video completion status changed.`,
         });
+      } else {
+        // If playlist wasn't in localStorage (e.g. a mock one), don't try to save.
+        // Or, you could decide to add it to localStorage here if it's a mock one being interacted with.
+        // For now, only update if it was already a stored playlist.
+        console.warn("Tried to update progress for a playlist not found in localStorage (likely a mock).");
       }
     } catch (error) {
       console.error("Error updating playlist in localStorage:", error);
@@ -158,15 +167,14 @@ export default function PlaylistDetailPage() {
   }
   
   const overallProgress = playlist.videos.length > 0 
-    ? playlist.videos.reduce((acc, vid) => acc + vid.completionStatus, 0) / playlist.videos.length
+    ? playlist.videos.reduce((acc, vid) => acc + (vid.completionStatus || 0), 0) / playlist.videos.length
     : 0;
 
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6"> {/* Removed max-h constraint here */}
-      {/* Main Content Area (Video Player + Tabs) */}
+    <div className="flex flex-col lg:flex-row gap-6">
       <div className="lg:w-2/3 flex flex-col gap-6">
-        {currentVideo && <VideoPlayer videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />}
+        {currentVideo && <VideoPlayer key={videoPlayerKey + currentVideo.id} videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />}
         
         <Tabs defaultValue="info" className="w-full">
           <TabsList className="grid w-full grid-cols-3 md:grid-cols-4 bg-card border">
@@ -216,11 +224,10 @@ export default function PlaylistDetailPage() {
              <PlaylistChatbot playlistId={playlist.id} playlistContent={compiledPlaylistContentForRAG} />
           </TabsContent>
           <TabsContent value="mindmap" className="mt-4">
-            <MindMapDisplay playlistTitle={playlist.title} />
+            <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id}/>
           </TabsContent>
           <TabsContent value="progress" className="mt-4 p-4 border rounded-lg bg-card">
              <h3 className="text-xl font-semibold mb-2">Overall Progress: {overallProgress.toFixed(0)}%</h3>
-             {/* More detailed progress visualization can go here */}
              <div className="w-full bg-muted rounded-full h-4 mb-1 shadow-inner">
                 <div 
                     className="bg-primary h-4 rounded-full transition-all duration-500 ease-out" 
@@ -237,7 +244,6 @@ export default function PlaylistDetailPage() {
         </Tabs>
       </div>
 
-      {/* Sidebar Area (Video List) */}
       <div className="lg:w-1/3 lg:max-h-full flex flex-col">
         <Card className="flex-grow flex flex-col shadow-lg overflow-hidden">
           <CardHeader className="border-b">
@@ -248,11 +254,7 @@ export default function PlaylistDetailPage() {
             <CardDescription>Select a video to play. ({playlist.videos.length} total)</CardDescription>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-hidden">
-            {/* Adjusted max-h calculation slightly for ScrollArea; you may need to fine-tune this 
-                based on actual header/footer heights within this card if overflow issues persist. 
-                The primary goal is to ensure this ScrollArea doesn't try to be infinitely tall.
-            */}
-            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]"> {/* Heuristic adjustment */}
+            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]">
               <div className="p-2 space-y-1">
                 {playlist.videos.map((video) => (
                   <VideoProgressItem

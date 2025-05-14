@@ -15,6 +15,7 @@ export type Playlist = {
   description: string;
   userId: string;
   createdAt: Date;
+  lastModified: Date; // Added for sorting recent activity
   videos: Video[];
   aiRecommended: boolean;
   tags: string[];
@@ -61,6 +62,7 @@ export type MindMapEdge = {
   source: string;
   target: string;
   animated?: boolean;
+  label?: string; // Added optional label
 };
 
 export type MindMapData = {
