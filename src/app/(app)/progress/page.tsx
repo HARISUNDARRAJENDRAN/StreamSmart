@@ -8,6 +8,15 @@ import { BarChart3Icon, CheckCircle, TrendingUpIcon, ClockIcon, ListChecksIcon }
 import type { Playlist, Video } from '@/types';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
+} from '@/components/ui/chart';
 
 interface OverallStats {
   playlistsCompleted: number;
@@ -65,6 +74,23 @@ function formatSecondsToHoursMinutes(totalSeconds: number): string {
   return timeString || "0 minutes";
 }
 
+const learningTrendsData = [
+  { day: "Mon", videosWatched: 2 },
+  { day: "Tue", videosWatched: 3 },
+  { day: "Wed", videosWatched: 1 },
+  { day: "Thu", videosWatched: 4 },
+  { day: "Fri", videosWatched: 2 },
+  { day: "Sat", videosWatched: 5 },
+  { day: "Sun", videosWatched: 3 },
+];
+
+const chartConfig = {
+  videosWatched: {
+    label: "Videos Watched",
+    color: "hsl(var(--chart-1))",
+  },
+} satisfies ChartConfig;
+
 
 export default function ProgressPage() {
   const [overallStats, setOverallStats] = useState<OverallStats>({
@@ -83,6 +109,14 @@ export default function ProgressPage() {
       const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
       
       if (storedPlaylists.length === 0) {
+        // Set default zeroed stats if no playlists exist
+        setOverallStats({
+          playlistsCompleted: 0,
+          videosWatched: 0,
+          totalLearningTime: "0 minutes",
+          averageCompletion: 0,
+        });
+        setRecentPlaylistsProgress([]);
         setIsLoading(false);
         return;
       }
@@ -130,7 +164,6 @@ export default function ProgressPage() {
       
       // Sort by last activity, newest first
       processedPlaylistsActivity.sort((a, b) => {
-          // Assuming lastActivity is a parsable date string for accurate sorting
           return new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime();
       });
 
@@ -146,6 +179,13 @@ export default function ProgressPage() {
     } catch (error) {
       console.error("Error processing progress data:", error);
       // Keep default zeroed stats in case of error
+       setOverallStats({
+          playlistsCompleted: 0,
+          videosWatched: 0,
+          totalLearningTime: "0 minutes",
+          averageCompletion: 0,
+        });
+        setRecentPlaylistsProgress([]);
     }
     setIsLoading(false);
   }, []);
@@ -247,10 +287,29 @@ export default function ProgressPage() {
       
       <Card className="shadow-md">
         <CardHeader>
-          <CardTitle>Learning Trends (Placeholder)</CardTitle>
+          <CardTitle>Learning Trends</CardTitle>
+           <CardDescription>Videos watched over the last 7 days (sample data).</CardDescription>
         </CardHeader>
-        <CardContent className="h-64 flex items-center justify-center bg-muted rounded-md">
-          <p className="text-muted-foreground">Detailed charts and visualizations coming soon!</p>
+        <CardContent className="h-80">
+          <ChartContainer config={chartConfig} className="w-full h-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={learningTrendsData} margin={{ top: 5, right: 20, left: -20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis dataKey="day" tickLine={false} axisLine={false} tickMargin={8} />
+                <YAxis 
+                    tickLine={false} 
+                    axisLine={false} 
+                    tickMargin={8} 
+                    allowDecimals={false}
+                 />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent hideLabel />}
+                />
+                <Bar dataKey="videosWatched" fill="var(--color-videosWatched)" radius={4} />
+              </BarChart>
+            </ResponsiveContainer>
+          </ChartContainer>
         </CardContent>
       </Card>
     </div>
