@@ -14,21 +14,28 @@ interface RecommendedVideoCardProps {
 }
 
 export function RecommendedVideoCard({ video, onAdd, isLoading }: RecommendedVideoCardProps) {
-  const thumbnailUrl = video.thumbnail && video.thumbnail.startsWith('https://') 
-    ? video.thumbnail 
-    : `https://placehold.co/300x180.png?text=${encodeURIComponent(video.title.substring(0,10) || 'Video')}`;
+  // video.thumbnail should be a valid URL string (either from YouTube or the AI tool's fallback like placehold.co)
+  const primarySrc = video.thumbnail;
+  
+  // A distinct fallback for the onError event
+  const errorFallbackSrc = `https://placehold.co/300x180.png?text=ThumbErr`;
 
   return (
     <Card className="flex flex-col overflow-hidden shadow-md transition-all hover:shadow-lg hover:border-primary">
       <CardHeader className="p-0 relative">
         <Image
-          src={thumbnailUrl}
+          src={primarySrc} // Use video.thumbnail directly
           alt={video.title || 'Recommended video'}
-          width={300}
-          height={180}
-          className="w-full h-40 object-cover"
+          width={300} // Intrinsic width for next/image
+          height={180} // Intrinsic height for next/image
+          className="w-full h-40 object-cover" // CSS to style the rendered image
           data-ai-hint="video thumbnail"
-          onError={(e) => { e.currentTarget.src = `https://placehold.co/300x180.png?text=Error`; }}
+          onError={(e) => {
+            // Prevent an infinite loop if the errorFallbackSrc itself fails
+            if (e.currentTarget.src !== errorFallbackSrc) {
+              e.currentTarget.src = errorFallbackSrc;
+            }
+          }}
         />
       </CardHeader>
       <CardContent className="p-3 flex-grow">
@@ -55,4 +62,3 @@ export function RecommendedVideoCard({ video, onAdd, isLoading }: RecommendedVid
     </Card>
   );
 }
-
