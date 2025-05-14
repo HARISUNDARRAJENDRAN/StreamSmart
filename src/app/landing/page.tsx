@@ -110,28 +110,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Visual Placeholder Section */}
-       <section className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-8">
-            Visualize Your Learning Journey
-          </h2>
-          <div className="aspect-video bg-card rounded-xl shadow-2xl overflow-hidden">
-            <Image
-              src="https://placehold.co/1200x675.png"
-              alt="StreamSmart App Interface Placeholder"
-              width={1200}
-              height={675}
-              className="w-full h-full object-cover"
-              data-ai-hint="app interface dashboard"
-            />
-          </div>
-           <p className="text-center text-muted-foreground mt-6 max-w-xl mx-auto">
-            Our intuitive interface helps you stay organized and focused on what matters most – your learning.
-          </p>
-        </div>
-      </section>
-
       {/* Final CTA Section */}
       <section className="w-full py-20 md:py-32 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 md:px-6 text-center">
