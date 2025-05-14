@@ -11,9 +11,10 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CheckCircle2Icon, CircleIcon } from 'lucide-react';
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CheckCircle2Icon, CircleIcon, LightbulbIcon } from 'lucide-react';
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
+import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
 
 // Placeholder data fetching function for fallback
 async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
@@ -99,7 +100,7 @@ export default function PlaylistDetailPage() {
   };
   
   const compiledPlaylistContentForRAG = playlist ? 
-    `${playlist.title}\n${playlist.description}\n\n${playlist.videos.map(v => `${v.title}\n${v.summary || ''}\n${v.transcript || ''}`).join('\n\n')}`
+    `Playlist Title: ${playlist.title}\nPlaylist Description: ${playlist.description}\n\nVideo Content:\n${playlist.videos.map(v => `Video Title: ${v.title}\nVideo Summary: ${v.summary || 'No summary available.'}\nVideo Transcript (if available): ${v.transcript || 'No transcript available.'}`).join('\n\n---\n\n')}`
     : "No playlist content available.";
 
   const handleToggleCompletion = (videoId: string) => {
@@ -112,7 +113,7 @@ export default function PlaylistDetailPage() {
       return video;
     });
 
-    const updatedPlaylist = { ...playlist, videos: updatedVideos, lastModified: new Date() }; // Update lastModified
+    const updatedPlaylist = { ...playlist, videos: updatedVideos, lastModified: new Date() }; 
     setPlaylist(updatedPlaylist);
 
     if (currentVideo && currentVideo.id === videoId) {
@@ -137,9 +138,6 @@ export default function PlaylistDetailPage() {
           description: `Video completion status changed.`,
         });
       } else {
-        // If playlist wasn't in localStorage (e.g. a mock one), don't try to save.
-        // Or, you could decide to add it to localStorage here if it's a mock one being interacted with.
-        // For now, only update if it was already a stored playlist.
         console.warn("Tried to update progress for a playlist not found in localStorage (likely a mock).");
       }
     } catch (error) {
@@ -177,10 +175,11 @@ export default function PlaylistDetailPage() {
         {currentVideo && <VideoPlayer key={videoPlayerKey + currentVideo.id} videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />}
         
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-4 bg-card border">
+          <TabsList className="grid w-full grid-cols-4 md:grid-cols-5 bg-card border">
             <TabsTrigger value="info"><InfoIcon className="w-4 h-4 mr-1 md:mr-2" />Info</TabsTrigger>
             <TabsTrigger value="chatbot"><MessageCircleIcon className="w-4 h-4 mr-1 md:mr-2" />Chatbot</TabsTrigger>
             <TabsTrigger value="mindmap"><BrainIcon className="w-4 h-4 mr-1 md:mr-2" />Mind Map</TabsTrigger>
+            <TabsTrigger value="quiz"><LightbulbIcon className="w-4 h-4 mr-1 md:mr-2" />Quiz</TabsTrigger>
             <TabsTrigger value="progress" className="hidden md:flex"><PercentIcon className="w-4 h-4 mr-1 md:mr-2" />Progress</TabsTrigger>
           </TabsList>
           <TabsContent value="info" className="mt-4 p-4 border rounded-lg bg-card">
@@ -226,6 +225,13 @@ export default function PlaylistDetailPage() {
           <TabsContent value="mindmap" className="mt-4">
             <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id}/>
           </TabsContent>
+           <TabsContent value="quiz" className="mt-4">
+            <PlaylistQuiz 
+              playlistId={playlist.id} 
+              playlistTitle={playlist.title} 
+              playlistContent={compiledPlaylistContentForRAG} 
+            />
+          </TabsContent>
           <TabsContent value="progress" className="mt-4 p-4 border rounded-lg bg-card">
              <h3 className="text-xl font-semibold mb-2">Overall Progress: {overallProgress.toFixed(0)}%</h3>
              <div className="w-full bg-muted rounded-full h-4 mb-1 shadow-inner">
@@ -254,7 +260,7 @@ export default function PlaylistDetailPage() {
             <CardDescription>Select a video to play. ({playlist.videos.length} total)</CardDescription>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-hidden">
-            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]">
+            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]"> {/* Adjusted max-h */}
               <div className="p-2 space-y-1">
                 {playlist.videos.map((video) => (
                   <VideoProgressItem

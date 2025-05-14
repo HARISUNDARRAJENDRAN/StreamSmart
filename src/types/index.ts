@@ -69,3 +69,17 @@ export type MindMapData = {
   nodes: MindMapNode[];
   edges: MindMapEdge[];
 };
+
+// Types for AI-Generated Quiz
+export interface QuizQuestion {
+  id: string; // Unique ID for the question
+  questionText: string;
+  options: string[]; // Array of 4 answer options
+  correctAnswerIndex: number; // Index of the correct option (0-3)
+  explanation?: string; // Optional explanation for the correct answer
+}
+
+export interface Quiz {
+  title: string; // Title of the quiz, could be derived from playlist title
+  questions: QuizQuestion[];
+}
