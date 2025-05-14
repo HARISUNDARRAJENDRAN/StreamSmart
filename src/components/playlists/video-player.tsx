@@ -121,18 +121,35 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
     
     // Clear any previous error message if videoId is now valid
     if (playerDivRef.current && playerDivRef.current.firstChild && playerDivRef.current.firstChild.textContent?.includes("Invalid video URL")) {
-        playerDivRef.current.innerHTML = '';
+        playerDivRef.current.innerHTML = ''; // Clear out the placeholder div content
+        // The player will be re-created in the div with id uniquePlayerDivId
     }
 
-    loadYouTubeApi().then(() => {
-      if (!playerDivRef.current) return; // Component might have unmounted
 
-      if (playerRef.current && currentVideoIdRef.current !== videoId) {
-        // Player exists, video changed: load new video
-        playerRef.current.loadVideoById(videoId);
-        currentVideoIdRef.current = videoId;
-      } else if (!playerRef.current) {
-        // Player doesn't exist yet, create it
+    loadYouTubeApi().then(() => {
+      // Ensure the target div for the player is clean before creating a new player instance
+      // This is important if the URL changes and we need to effectively replace the player.
+      if (playerDivRef.current) {
+         // If a player instance exists, destroy it cleanly before creating a new one
+        if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+          try {
+            playerRef.current.destroy();
+          } catch (e) {
+            console.error("Error destroying previous player instance:", e);
+          }
+          playerRef.current = null; // Nullify the ref
+        }
+        // Ensure the div is empty for the new player
+        // playerDivRef.current.innerHTML = ''; // This might be too aggressive if not managed carefully
+      } else {
+        // if playerDivRef.current is null, component might have unmounted or an error occurred.
+        console.error("Player div ref not available for player initialization.");
+        return;
+      }
+
+
+      if (playerDivRef.current && (!playerRef.current || currentVideoIdRef.current !== videoId)) {
+        // Player doesn't exist OR video changed: create/recreate the player
         // @ts-ignore
         playerRef.current = new YT.Player(uniquePlayerDivId, { // Use the unique ID of the div
           height: '100%',
@@ -141,8 +158,7 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
           playerVars: {
             autoplay: 1,
             playsinline: 1, 
-            // modestbranding: 1, // Shows fewer YouTube logos
-            // controls: 1, // Show default controls
+            modestbranding: 1, // Slightly reduce YouTube branding
           },
           events: {
             // 'onReady': (event) => { event.target.playVideo(); }, // Alternative to autoplay playerVar
@@ -161,7 +177,7 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
       }
     });
 
-  }, [videoUrl, uniquePlayerDivId]); // Re-run effect if videoUrl or the unique ID changes (ID shouldn't change unless component is remounted)
+  }, [videoUrl, uniquePlayerDivId]); // Re-run effect if videoUrl or the unique ID changes
 
    // Effect for unmounting the player
    useEffect(() => {
