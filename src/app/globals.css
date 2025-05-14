@@ -1,92 +1,105 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Black */
-    --foreground: 0 0% 98%; /* Off-white */
+    /* YouTube Light Theme */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 3.9%; /* Almost Black */
 
-    --card: 0 0% 7%; /* Darker gray */
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 98%; /* Very Light Gray */
+    --card-foreground: 0 0% 3.9%;
 
-    --popover: 0 0% 7%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 0 0% 3.9%;
 
-    --primary: 46 100% 70%; /* Yellow #FFDA63 */
-    --primary-foreground: 0 0% 0%; /* Black for contrast on Yellow */
+    --primary: 0 100% 50%; /* YouTube Red (#FF0000) */
+    --primary-foreground: 0 0% 100%; /* White */
 
-    --secondary: 0 0% 15%; /* Dark gray for secondary elements */
-    --secondary-foreground: 46 100% 70%; /* Yellow text on dark gray */
+    --secondary: 0 0% 94%; /* Light Gray */
+    --secondary-foreground: 0 0% 3.9%; /* Almost Black */
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 63.9%; /* Lighter gray for muted text */
+    --muted: 0 0% 96.1%; /* Lighter Gray */
+    --muted-foreground: 0 0% 45.1%; /* Mid Gray for muted text */
 
-    --accent: 183 100% 74%; /* Electric Blue #7DF9FF */
-    --accent-foreground: 0 0% 0%; /* Black for contrast on Electric Blue */
+    --accent: 217 91% 60%; /* YouTube Blue (#3EA6FF) */
+    --accent-foreground: 0 0% 100%; /* White */
 
     --destructive: 0 84.2% 60.2%; /* Default destructive */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 15%; /* Darker gray for borders */
-    --input: 0 0% 15%; /* Darker gray for input backgrounds */
-    --ring: 183 100% 74%; /* Electric Blue for rings */
+    --border: 0 0% 89.8%; /* Light Gray Border */
+    --input: 0 0% 100%; /* White input background (border will define edge) */
+    --ring: 217 91% 60%; /* YouTube Blue for rings */
 
     --radius: 0.5rem;
 
-    /* Chart colors - can be adjusted to fit the theme */
-    --chart-1: 46 100% 70%; /* Yellow */
-    --chart-2: 183 100% 74%; /* Electric Blue */
-    --chart-3: 0 0% 60%; /* Mid Gray */
-    --chart-4: 46 80% 60%; /* Darker Yellow */
-    --chart-5: 183 80% 60%; /* Darker Electric Blue */
+    /* Chart colors - Light Theme */
+    --chart-1: 0 100% 50%;  /* Primary Red */
+    --chart-2: 217 91% 60%; /* Accent Blue */
+    --chart-3: 0 0% 60%;    /* Mid Gray */
+    --chart-4: 0 80% 60%;   /* Darker Red */
+    --chart-5: 217 70% 50%; /* Darker Blue */
 
-    /* Sidebar specific colors */
-    --sidebar-background: 0 0% 2.5%; /* Very dark, slightly different from main bg */
-    --sidebar-foreground: 0 0% 80%; /* Light gray for sidebar text */
-    --sidebar-primary: 46 100% 70%; /* Yellow for active/primary items in sidebar */
-    --sidebar-primary-foreground: 0 0% 0%; /* Black text on yellow */
-    --sidebar-accent: 183 100% 74%; /* Electric blue for accents in sidebar */
-    --sidebar-accent-foreground: 0 0% 0%; /* Black text on blue */
-    --sidebar-border: 0 0% 10%;
-    --sidebar-ring: 183 100% 74%;
+    /* Sidebar specific colors - Light Theme */
+    --sidebar-background: 0 0% 96%; /* Slightly off-white */
+    --sidebar-foreground: 0 0% 10%; /* Dark Gray Text */
+    --sidebar-primary: 0 100% 50%; /* YouTube Red for active item BG */
+    --sidebar-primary-foreground: 0 0% 100%; /* White text on red BG */
+    --sidebar-accent: 0 0% 90%; /* Lighter Gray for hover BG */
+    --sidebar-accent-foreground: 0 0% 10%; /* Dark Gray text on hover */
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 217 91% 60%; /* YouTube Blue for focus */
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
+    /* YouTube Dark Theme */
+    --background: 0 0% 13%; /* Very Dark Gray (#212121) */
+    --foreground: 0 0% 98%; /* White/Off-white */
+
+    --card: 0 0% 8%; /* Darker Gray (#181818) */
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 7%;
+
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 98%;
-    --primary: 46 100% 70%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 46 100% 70%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 183 100% 74%;
-    --accent-foreground: 0 0% 0%;
+
+    --primary: 0 100% 50%; /* YouTube Red (#FF0000) */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 0 0% 20%; /* Dark Gray (#333333) */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 60%; /* Light Gray for muted text */
+
+    --accent: 217 91% 60%; /* YouTube Blue (#3EA6FF) */
+    --accent-foreground: 0 0% 100%; /* White */
+
     --destructive: 0 70% 50.6%; /* Slightly adjusted dark destructive */
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 183 100% 74%;
-    
-    --chart-1: 46 100% 70%;
-    --chart-2: 183 100% 74%;
-    --chart-3: 0 0% 50%;
-    --chart-4: 46 80% 60%;
-    --chart-5: 183 80% 60%;
 
-    --sidebar-background: 0 0% 2.5%;
-    --sidebar-foreground: 0 0% 80%;
-    --sidebar-primary: 46 100% 70%;
-    --sidebar-primary-foreground: 0 0% 0%;
-    --sidebar-accent: 183 100% 74%;
-    --sidebar-accent-foreground: 0 0% 0%;
-    --sidebar-border: 0 0% 10%;
-    --sidebar-ring: 183 100% 74%;
+    --border: 0 0% 25%; /* Slightly lighter than secondary (#404040) */
+    --input: 0 0% 7%; /* Very dark gray (#121212) */
+    --ring: 217 91% 60%; /* YouTube Blue */
+    
+    /* Chart colors - Dark Theme */
+    --chart-1: 0 100% 50%;  /* Primary Red */
+    --chart-2: 217 91% 60%; /* Accent Blue */
+    --chart-3: 0 0% 50%;    /* Lighter Gray */
+    --chart-4: 0 80% 60%;   /* Darker Red */
+    --chart-5: 217 70% 50%; /* Darker Blue */
+
+    /* Sidebar specific colors - Dark Theme */
+    --sidebar-background: 0 0% 8%; /* Matching card or slightly distinct dark */
+    --sidebar-foreground: 0 0% 80%; /* Light Gray */
+    --sidebar-primary: 0 100% 50%; /* YouTube Red */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 0 0% 15%; /* Slightly lighter dark gray for hover */
+    --sidebar-accent-foreground: 0 0% 98%; /* White/Off-white */
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 217 91% 60%; /* YouTube Blue */
   }
 }
 

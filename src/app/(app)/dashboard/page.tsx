@@ -1,19 +1,19 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { PlusCircleIcon, BookOpenCheckIcon, ZapIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const placeholderPlaylists = [
-  { id: '1', title: 'Advanced JavaScript Concepts', videoCount: 15, progress: 75, thumbnail: 'https://placehold.co/300x180.png?text=JS', dataAiHint: 'javascript code' },
-  { id: '2', title: 'Python for Data Science', videoCount: 22, progress: 40, thumbnail: 'https://placehold.co/300x180.png?text=Python', dataAiHint: 'python chart' },
-  { id: '3', title: 'React Native Development', videoCount: 12, progress: 90, thumbnail: 'https://placehold.co/300x180.png?text=React', dataAiHint: 'mobile app' },
-];
+// Removed placeholderPlaylists
 
 export default function DashboardPage() {
+  // Using an empty array as playlists will be dynamically loaded or user-created
+  const userPlaylists: any[] = []; 
+
   return (
     <div className="space-y-8">
-      <section className="rounded-xl bg-gradient-to-br from-primary via-yellow-400 to-accent p-8 text-center shadow-lg">
+      <section className="rounded-xl bg-primary p-8 text-center shadow-lg">
         <h1 className="text-4xl font-bold text-primary-foreground mb-2">Welcome back, Learner!</h1>
         <p className="text-lg text-primary-foreground/90 mb-6">Ready to dive back into your learning journey?</p>
         <Link href="/playlists/create">
@@ -26,9 +26,9 @@ export default function DashboardPage() {
 
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary">Continue Learning</h2>
-        {placeholderPlaylists.length > 0 ? (
+        {userPlaylists.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {placeholderPlaylists.map((playlist) => (
+            {userPlaylists.map((playlist) => (
               <Card key={playlist.id} className="overflow-hidden shadow-md hover:shadow-primary/50 transition-shadow duration-300">
                 <Link href={`/playlists/${playlist.id}`} className="block">
                   <CardHeader className="p-0">
@@ -38,7 +38,7 @@ export default function DashboardPage() {
                       width={300} 
                       height={180} 
                       className="w-full h-48 object-cover"
-                      data-ai-hint={playlist.dataAiHint}
+                      data-ai-hint={playlist.dataAiHint || 'playlist thumbnail'}
                     />
                   </CardHeader>
                   <CardContent className="p-4">
@@ -65,10 +65,15 @@ export default function DashboardPage() {
           <Card className="text-center p-8">
             <BookOpenCheckIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
             <CardTitle className="mb-2">No Playlists Yet</CardTitle>
-            <CardDescription className="mb-4">Start by creating a new playlist to organize your learning.</CardDescription>
-            <Link href="/playlists/create">
-              <Button variant="outline">Create Your First Playlist</Button>
-            </Link>
+            <CardDescription className="mb-4">Start by creating a new playlist to organize your learning, or check out your existing playlists.</CardDescription>
+            <div className="flex justify-center gap-4">
+              <Link href="/playlists/create">
+                <Button variant="outline">Create New Playlist</Button>
+              </Link>
+              <Link href="/playlists">
+                <Button variant="default">View My Playlists</Button>
+              </Link>
+            </div>
           </Card>
         )}
       </section>
@@ -82,20 +87,20 @@ export default function DashboardPage() {
             <CardDescription className="text-sm text-muted-foreground mb-4">
               Get smart suggestions based on your learning patterns.
             </CardDescription>
-            <Link href="/playlists"> {/* Or a dedicated recommendations page */}
+            <Link href="/playlists/create"> 
               <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-                Explore Recommendations
+                Suggest Videos
               </Button>
             </Link>
           </Card>
-          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-yellow-400/50 transition-shadow duration-300">
-             <BookOpenCheckIcon className="h-10 w-10 text-yellow-400 mb-3" />
+          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-primary/50 transition-shadow duration-300">
+             <BookOpenCheckIcon className="h-10 w-10 text-primary mb-3" />
             <CardTitle className="text-lg mb-2">View Your Progress</CardTitle>
             <CardDescription className="text-sm text-muted-foreground mb-4">
               Track your learning journey and achievements.
             </CardDescription>
             <Link href="/progress">
-              <Button variant="outline" className="border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-primary-foreground">
+              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
                 See Progress Details
               </Button>
             </Link>

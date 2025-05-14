@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, PlayCircleIcon, TrashIcon } from 'lucide-react';
+import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, PlayCircleIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Playlist } from '@/types';
@@ -21,39 +21,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
-// Initial placeholder data - might be supplemented/replaced by localStorage
-const initialPlaceholderPlaylists: Playlist[] = [
-  {
-    id: '1', // Keep original IDs if you want them to use the old mock data from detail page
-    title: 'Advanced JavaScript Concepts',
-    description: 'Deep dive into closures, prototypes, and async programming in JS.',
-    userId: 'user1',
-    createdAt: new Date('2023-01-10T10:00:00Z'),
-    videos: Array(15).fill({} as any), 
-    aiRecommended: false,
-    tags: ['javascript', 'advanced', 'webdev'],
-  },
-  {
-    id: '2',
-    title: 'Python for Data Science',
-    description: 'Learn NumPy, Pandas, Matplotlib, and Scikit-learn for data analysis.',
-    userId: 'user1',
-    createdAt: new Date('2023-02-15T11:00:00Z'),
-    videos: Array(22).fill({} as any),
-    aiRecommended: true,
-    tags: ['python', 'datascience', 'machinelearning'],
-  },
-  {
-    id: '3',
-    title: 'React Native Mobile Development',
-    description: 'Build cross-platform mobile apps with React Native and Expo.',
-    userId: 'user1',
-    createdAt: new Date('2023-03-20T12:00:00Z'),
-    videos: Array(12).fill({} as any),
-    aiRecommended: false,
-    tags: ['reactnative', 'mobile', 'javascript'],
-  },
-];
+// Initial placeholder data removed - will be loaded from localStorage or API later
 
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -67,30 +35,22 @@ export default function PlaylistsPage() {
       const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
       
       // Convert createdAt from string to Date object
-      const processedStoredPlaylists = storedPlaylists.map(p => ({
+      const processedPlaylists = storedPlaylists.map(p => ({
         ...p,
         createdAt: new Date(p.createdAt) 
       }));
-
-      // Combine initial placeholders with stored, ensuring no ID clashes if desired, or just prioritize stored.
-      // For this example, we'll show stored playlists and only placeholders if their IDs aren't in stored.
-      const combinedPlaylists = [...processedStoredPlaylists];
-      initialPlaceholderPlaylists.forEach(p => {
-        if (!combinedPlaylists.find(sp => sp.id === p.id)) {
-          combinedPlaylists.push(p);
-        }
-      });
       
       // Sort by creation date, newest first
-      combinedPlaylists.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      setPlaylists(combinedPlaylists);
+      processedPlaylists.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setPlaylists(processedPlaylists);
 
     } catch (error) {
       console.error("Error loading playlists from localStorage:", error);
-      setPlaylists(initialPlaceholderPlaylists); // Fallback
+      // Set to empty array if localStorage fails, or handle error appropriately
+      setPlaylists([]); 
        toast({
         title: "Error",
-        description: "Could not load all playlists.",
+        description: "Could not load playlists.",
         variant: "destructive",
       });
     }
@@ -165,7 +125,7 @@ export default function PlaylistsPage() {
                     width={400}
                     height={240}
                     className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    data-ai-hint={playlist.tags.join(' ') || 'technology'}
+                    data-ai-hint={playlist.tags && playlist.tags.length > 0 ? playlist.tags.join(' ').substring(0, 20) : 'technology'}
                     onError={(e) => { e.currentTarget.src = `https://placehold.co/400x240.png?text=Error`; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -176,11 +136,11 @@ export default function PlaylistsPage() {
                   <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary">{playlist.title}</CardTitle>
                   <CardDescription className="text-sm text-muted-foreground mb-2 line-clamp-3">{playlist.description}</CardDescription>
                   <div className="flex flex-wrap gap-1 mb-2">
-                    {playlist.tags.slice(0, 3).map(tag => (
+                    {playlist.tags && playlist.tags.slice(0, 3).map(tag => (
                       <span key={tag} className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">{tag}</span>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground">{playlist.videos.length} videos</p>
+                  <p className="text-xs text-muted-foreground">{playlist.videos?.length || 0} videos</p>
                   {playlist.aiRecommended && (
                      <p className="text-xs text-accent mt-1">AI Recommended</p>
                   )}
