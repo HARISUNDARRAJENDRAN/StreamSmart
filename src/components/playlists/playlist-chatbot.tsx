@@ -84,7 +84,7 @@ export function PlaylistChatbot({ playlistId, playlistContent }: PlaylistChatbot
         <BotIcon className="h-6 w-6 text-primary mr-2" />
         <h3 className="text-lg font-semibold">Playlist Assistant</h3>
       </div>
-      <ScrollArea className="flex-grow p-4 space-y-4" ref={scrollAreaRef}>
+      <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}> {/* Removed space-y-4 from ScrollArea itself */}
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
             <BotIcon className="h-12 w-12 mb-2" />
@@ -95,7 +95,7 @@ export function PlaylistChatbot({ playlistId, playlistContent }: PlaylistChatbot
           <div
             key={msg.id}
             className={cn(
-              'flex items-end gap-3', // Use items-end for better avatar alignment with multi-line messages
+              'flex items-end gap-3 mb-4', // Added mb-4 for bottom margin
               msg.role === 'user' ? 'justify-end' : 'justify-start'
             )}
           >
@@ -125,7 +125,7 @@ export function PlaylistChatbot({ playlistId, playlistContent }: PlaylistChatbot
           </div>
         ))}
         {isLoading && messages.length > 0 && messages[messages.length-1].role === 'user' && (
-           <div className="flex items-end gap-3 justify-start">
+           <div className="flex items-end gap-3 justify-start mb-4"> {/* Added mb-4 here too */}
             <Avatar className="h-8 w-8 shrink-0">
                 <AvatarFallback className="bg-primary text-primary-foreground"><BotIcon size={18}/></AvatarFallback>
             </Avatar>
