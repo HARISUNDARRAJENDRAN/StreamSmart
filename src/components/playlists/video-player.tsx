@@ -25,7 +25,7 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
     console.warn("Invalid video URL for placeholder:", videoUrl);
   }
 
-  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}` : '';
+  const embedUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : '';
   const thumbnailUrl = videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : 'https://placehold.co/1280x720.png?text=Video+Player';
 
 
