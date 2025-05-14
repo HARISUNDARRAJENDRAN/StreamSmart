@@ -94,8 +94,23 @@ export function CreatePlaylistForm() {
       .filter(videoInput => videoInput.url && videoInput.url.trim() !== '')
       .map(async (videoInput, index) => {
         const videoId = extractYouTubeId(videoInput.url);
+        
+        // Check if this video was an AI recommendation (already has details)
+        // Need to compare based on youtubeURL as ID might not be present if it was a search URL initially
+        const existingAiRec = aiRecommendedVideos.find(rec => rec.youtubeURL === videoInput.url);
+        if (existingAiRec) {
+          return {
+            ...existingAiRec, // Spread the AI recommended details
+            id: existingAiRec.id || videoId || `ai-rec-${Date.now()}-${index}`, // Ensure ID exists
+            addedBy: 'ai_selected_by_user',
+            completionStatus: 0,
+          } as Video;
+        }
+
+        // If not an AI rec, or if ID wasn't found from AI rec, try to fetch details
         if (!videoId) {
           // Fallback for non-YouTube URLs or unparsable ones, create a basic entry
+          console.warn(`Could not extract YouTube ID from URL: ${videoInput.url}. Adding as manual entry.`);
           return {
             id: `manual-vid-${Date.now()}-${index}`,
             title: `Video ${index + 1} (URL: ${videoInput.url.substring(0,30)}...)`,
@@ -104,27 +119,17 @@ export function CreatePlaylistForm() {
             duration: 'N/A',
             addedBy: 'user', 
             completionStatus: 0,
-            summary: 'Manually added URL.',
+            summary: 'Manually added URL or ID extraction failed.',
           };
         }
-
-        // Check if this video was an AI recommendation (already has details)
-        const existingAiRec = aiRecommendedVideos.find(rec => rec.id === videoId && rec.youtubeURL === videoInput.url);
-        if (existingAiRec) {
-          return {
-            ...existingAiRec, // Spread the AI recommended details
-            addedBy: 'ai_selected_by_user',
-            completionStatus: 0,
-          } as Video; // Cast as Video, assuming RecommendedVideo is a compatible subset
-        }
-
-        // If not an AI rec, fetch details from YouTube service
+        
+        // Fetch details from YouTube service
         const details = await getVideoDetails(videoId);
         if (details) {
           return {
-            id: videoId,
+            id: videoId, // Use the extracted videoId
             title: details.title || `YouTube Video (${videoId})`,
-            youtubeURL: details.youtubeURL || videoInput.url,
+            youtubeURL: details.youtubeURL || `https://www.youtube.com/watch?v=${videoId}`,
             thumbnail: details.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
             duration: details.duration || 'N/A',
             addedBy: 'user',
@@ -133,10 +138,11 @@ export function CreatePlaylistForm() {
           } as Video;
         } else {
           // Fallback if API call fails or returns no data
+          console.warn(`Could not fetch details for video ID: ${videoId}. Using fallback.`);
           return {
             id: videoId,
             title: `YouTube Video (${videoId})`,
-            youtubeURL: videoInput.url,
+            youtubeURL: `https://www.youtube.com/watch?v=${videoId}`,
             thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
             duration: 'N/A',
             addedBy: 'user',
@@ -148,10 +154,10 @@ export function CreatePlaylistForm() {
 
     const newVideosWithDetails = (await Promise.all(videoProcessingPromises)).filter(Boolean) as Video[];
 
-    if (newVideosWithDetails.length === 0) {
-      form.setError("videos", {type: "manual", message: "Please add at least one valid video URL."});
-      setIsLoading(false);
-      return;
+    if (newVideosWithDetails.length === 0 && data.videos.some(v => v.url.trim() !== '')) {
+       form.setError("videos", {type: "manual", message: "Please add at least one valid video URL or ensure details could be fetched."});
+       setIsLoading(false);
+       return;
     }
     
     const newPlaylist: Playlist = {
@@ -204,15 +210,20 @@ export function CreatePlaylistForm() {
       
       if (result && result.recommendedVideos && result.recommendedVideos.length > 0) {
         setAiRecommendedVideos(result.recommendedVideos);
+         toast({
+            title: "AI Suggestions Loaded",
+            description: `${result.recommendedVideos.length} video suggestions found for "${playlistTitle}".`,
+        });
       } else {
-         toast({ title: "AI Recommendations", description: "No specific video titles found for this topic, or an error occurred."});
+         toast({ title: "AI Recommendations", description: "No specific video suggestions found for this topic, or an error occurred."});
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching AI recommendations:", error);
+      const detail = error?.message ? `Details: ${error.message}` : "An unexpected error occurred.";
       toast({
         title: "AI Recommendation Error",
-        description: "Could not fetch AI suggestions. Check if the YouTube API key is configured and valid.",
+        description: `Could not fetch AI suggestions. ${detail} Please also check if the YouTube API key is configured and valid.`,
         variant: "destructive",
       });
     } finally {
@@ -232,7 +243,8 @@ export function CreatePlaylistForm() {
         return;
     }
 
-    if (currentVideos.length === 1 && currentVideos[0].url === '') {
+    // If the first video field is empty, use that. Otherwise, append.
+    if (fields.length === 1 && currentVideos[0].url === '') {
       form.setValue("videos.0.url", video.youtubeURL, { shouldValidate: true });
     } else {
       append({ url: video.youtubeURL }, { shouldFocus: false });
@@ -377,7 +389,7 @@ export function CreatePlaylistForm() {
               {aiRecommendedVideos.map((video) => (
                 // Cast RecommendedVideo to Video for the card, assuming compatibility
                 <RecommendedVideoCard 
-                  key={video.id} 
+                  key={video.id || video.youtubeURL} // Use youtubeURL as fallback key if id is missing
                   video={video as Video} 
                   onAdd={() => addRecommendedVideoToForm(video)}
                   isLoading={isLoading || isAiLoading}
