@@ -1,5 +1,5 @@
 
-'use client'; // Required for useState, useEffect, and event handlers
+'use client'; 
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
@@ -13,29 +13,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon } from 'lucide-react';
 import type { Playlist, Video } from '@/types';
 
-// Placeholder data fetching function
-async function getPlaylistDetails(playlistId: string): Promise<Playlist | null> {
-  console.log("Fetching playlist:", playlistId);
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 500));
+// Placeholder data fetching function for fallback
+async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
+  // Simulate API call for original mock data
+  await new Promise(resolve => setTimeout(resolve, 100)); // Shorter delay for fallback
   
   const mockVideos: Video[] = [
-    { id: 'vid1', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://placehold.co/120x68.png?text=React', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
-    { id: 'vid2', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://placehold.co/120x68.png?text=NextJS', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
-    { id: 'vid3', title: 'What is HTML? by Programming with Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://placehold.co/120x68.png?text=HTML', duration: '8:42', addedBy: 'user1', completionStatus: 20, summary: 'Understanding HTML and its role in websites.' },
-    { id: 'vid4', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://placehold.co/120x68.png?text=CSS', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
+    { id: 'vid1', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://i.ytimg.com/vi/Tn6-PIqc4UM/hqdefault.jpg', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
+    { id: 'vid2', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://i.ytimg.com/vi/Sklc_fQBmcs/hqdefault.jpg', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
+    { id: 'vid3', title: 'HTML Full Course by Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://i.ytimg.com/vi/qz0aGYrrlhU/hqdefault.jpg', duration: '1:00:00', addedBy: 'user1', completionStatus: 20, summary: 'Learn HTML in one hour.' },
+    { id: 'vid4', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://i.ytimg.com/vi/OEV8gMkCHXQ/hqdefault.jpg', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
   ];
   
-  if (playlistId === "1" || playlistId === "2" || playlistId === "3") { // Match IDs from playlists page
+  // Only return for original mock IDs if not found in localStorage
+  if (playlistId === "1" || playlistId === "2" || playlistId === "3") {
      return {
       id: playlistId,
-      title: playlistId === "1" ? 'Web Development Fundamentals' : playlistId === "2" ? 'Python for Data Science' : 'React Native Development',
-      description: 'This is a detailed description of the playlist focusing on its core concepts and learning objectives. It covers various topics including X, Y, and Z.',
+      title: playlistId === "1" ? 'Web Development Fundamentals (Mock)' : playlistId === "2" ? 'Python for Data Science (Mock)' : 'React Native Development (Mock)',
+      description: 'This is a detailed description of the MOCK playlist focusing on its core concepts and learning objectives. It covers various topics including X, Y, and Z.',
       userId: 'user1',
-      createdAt: new Date(),
+      createdAt: new Date(playlistId === "1" ? '2023-01-10T10:00:00Z' : playlistId === "2" ? '2023-02-15T11:00:00Z' : '2023-03-20T12:00:00Z'),
       videos: mockVideos,
       aiRecommended: playlistId === "2",
-      tags: ['sample', 'learning', 'tech'],
+      tags: ['sample', 'learning', 'tech', 'mock'],
     };
   }
   return null;
@@ -52,13 +52,42 @@ export default function PlaylistDetailPage() {
   useEffect(() => {
     if (playlistId) {
       setIsLoading(true);
-      getPlaylistDetails(playlistId).then(data => {
-        setPlaylist(data);
-        if (data && data.videos.length > 0) {
-          setCurrentVideo(data.videos[0]);
+      let foundPlaylist: Playlist | null = null;
+      try {
+        const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+        if (storedPlaylistsRaw) {
+          const storedPlaylists = JSON.parse(storedPlaylistsRaw) as Playlist[];
+          foundPlaylist = storedPlaylists.find(p => p.id === playlistId) || null;
+          if (foundPlaylist) {
+            // Ensure dates are Date objects
+            foundPlaylist.createdAt = new Date(foundPlaylist.createdAt);
+            foundPlaylist.videos = foundPlaylist.videos.map(v => ({
+                ...v, 
+                // Potentially re-hydrate other date fields if any
+            }));
+          }
+        }
+      } catch (error) {
+        console.error("Error loading playlist from localStorage:", error);
+        // Proceed to fallback
+      }
+
+      if (foundPlaylist) {
+        setPlaylist(foundPlaylist);
+        if (foundPlaylist.videos.length > 0) {
+          setCurrentVideo(foundPlaylist.videos[0]);
         }
         setIsLoading(false);
-      });
+      } else {
+        // Fallback to original mock data fetching if not in localStorage
+        getOriginalMockPlaylistDetails(playlistId).then(data => {
+          setPlaylist(data);
+          if (data && data.videos.length > 0) {
+            setCurrentVideo(data.videos[0]);
+          }
+          setIsLoading(false);
+        });
+      }
     }
   }, [playlistId]);
 
@@ -81,7 +110,7 @@ export default function PlaylistDetailPage() {
   }
 
   if (!playlist) {
-    return <div className="text-center py-10">Playlist not found.</div>;
+    return <div className="text-center py-10">Playlist not found. Ensure it was created or try a different ID.</div>;
   }
   
   const overallProgress = playlist.videos.reduce((acc, vid) => acc + vid.completionStatus, 0) / (playlist.videos.length || 1);
@@ -113,6 +142,13 @@ export default function PlaylistDetailPage() {
                 <p className="text-sm text-muted-foreground">{currentVideo.summary}</p>
               </div>
             )}
+            {currentVideo?.youtubeURL && (
+              <div className="mt-2">
+                <a href={currentVideo.youtubeURL} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
+                  Watch on YouTube
+                </a>
+              </div>
+            )}
           </TabsContent>
           <TabsContent value="chatbot" className="mt-4">
              <PlaylistChatbot playlistId={playlist.id} playlistContent={compiledPlaylistContentForRAG} />
@@ -135,10 +171,10 @@ export default function PlaylistDetailPage() {
               <ListIcon className="h-6 w-6 mr-2 text-primary" />
               Playlist Videos
             </CardTitle>
-            <CardDescription>Select a video to play.</CardDescription>
+            <CardDescription>Select a video to play. ({playlist.videos.length} total)</CardDescription>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-hidden">
-            <ScrollArea className="h-full"> {/* Adjust height dynamically or set a fixed one */}
+            <ScrollArea className="h-full max-h-[calc(100vh-theme(space.48)-100px)]"> {/* Adjust height */}
               <div className="p-2 space-y-1">
                 {playlist.videos.map((video) => (
                   <VideoProgressItem
@@ -148,6 +184,9 @@ export default function PlaylistDetailPage() {
                     onSelectVideo={handleSelectVideo}
                   />
                 ))}
+                 {playlist.videos.length === 0 && (
+                  <p className="p-4 text-center text-muted-foreground">No videos in this playlist yet.</p>
+                )}
               </div>
             </ScrollArea>
           </CardContent>

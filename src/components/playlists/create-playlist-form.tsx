@@ -16,7 +16,9 @@ import { useRouter } from 'next/navigation';
 import { generateVideoRecommendations } from '@/ai/flows/generate-video-recommendations'; // AI Flow
 import type { GenerateVideoRecommendationsInput } from '@/ai/flows/generate-video-recommendations';
 import { RecommendedVideoCard } from './recommended-video-card';
-import type { Video } from '@/types'; // Assuming Video type definition
+import type { Video, Playlist } from '@/types'; 
+import { useToast } from "@/hooks/use-toast";
+
 
 const videoSchema = z.object({
   url: z.string().url({ message: "Please enter a valid YouTube URL." }),
@@ -30,13 +32,14 @@ const playlistFormSchema = z.object({
     const tagsArray = value.split(',').map(tag => tag.trim());
     return tagsArray.every(tag => tag.length > 0);
   }, { message: "Tags should be comma-separated values." }).optional(),
-  videos: z.array(videoSchema).optional(),
+  videos: z.array(videoSchema).min(1, { message: "Please add at least one video URL."}).optional(),
 });
 
 type PlaylistFormValues = z.infer<typeof playlistFormSchema>;
 
 export function CreatePlaylistForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
@@ -58,12 +61,78 @@ export function CreatePlaylistForm() {
 
   const onSubmit: SubmitHandler<PlaylistFormValues> = async (data) => {
     setIsLoading(true);
-    console.log('Playlist data:', data);
-    // TODO: Implement actual playlist creation logic (e.g., save to Firestore)
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    setIsLoading(false);
-    // For now, redirect to playlist list or the new playlist page
-    router.push('/playlists'); 
+    
+    const newVideos: Video[] = (data.videos || [])
+      .filter(videoInput => videoInput.url && videoInput.url.trim() !== '')
+      .map((videoInput, index) => {
+        let title = `Video ${index + 1}`;
+        let thumbnailUrl = `https://placehold.co/120x68.png?text=Vid${index+1}`;
+        let videoIdForThumbnail: string | null = null;
+
+        try {
+          const urlObj = new URL(videoInput.url);
+          if ((urlObj.hostname === 'www.youtube.com' || urlObj.hostname === 'youtube.com') && urlObj.searchParams.has('v')) {
+            videoIdForThumbnail = urlObj.searchParams.get('v');
+            title = `YouTube Video (${videoIdForThumbnail})`;
+          } else if (urlObj.hostname === 'youtu.be') {
+            videoIdForThumbnail = urlObj.pathname.substring(1);
+            title = `YouTube Video (${videoIdForThumbnail})`;
+          }
+          if (videoIdForThumbnail) {
+             thumbnailUrl = `https://i.ytimg.com/vi/${videoIdForThumbnail}/hqdefault.jpg`;
+          }
+        } catch (e) { /* ignore, use default title/thumbnail */ }
+
+        return {
+          id: `form-vid-${Date.now()}-${index}`,
+          title: title,
+          youtubeURL: videoInput.url,
+          thumbnail: thumbnailUrl,
+          duration: 'N/A',
+          addedBy: 'user', 
+          completionStatus: 0,
+          summary: '', 
+        };
+      });
+
+    if (newVideos.length === 0) {
+      form.setError("videos", {type: "manual", message: "Please add at least one valid video URL."});
+      setIsLoading(false);
+      return;
+    }
+    
+    const newPlaylist: Playlist = {
+      id: Date.now().toString(), // Simple unique ID
+      title: data.title,
+      description: data.description || '',
+      userId: 'user1', // Mock user ID
+      createdAt: new Date(), // Will be stringified by JSON
+      videos: newVideos,
+      aiRecommended: recommendedVideos.some(recVid => newVideos.find(nv => nv.youtubeURL === recVid.youtubeURL)),
+      tags: data.tags ? data.tags.split(',').map(t => t.trim()).filter(t => t.length > 0) : [],
+    };
+
+    try {
+      const existingPlaylistsRaw = localStorage.getItem('userPlaylists');
+      const existingPlaylists = existingPlaylistsRaw ? JSON.parse(existingPlaylistsRaw) as Playlist[] : [];
+      localStorage.setItem('userPlaylists', JSON.stringify([...existingPlaylists, newPlaylist]));
+      
+      toast({
+        title: "Playlist Created!",
+        description: `"${newPlaylist.title}" has been saved.`,
+      });
+      router.push('/playlists');
+
+    } catch (error) {
+      console.error("Failed to save playlist to localStorage:", error);
+      toast({
+        title: "Error",
+        description: "Could not save the playlist. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGetAiRecommendations = async () => {
@@ -79,37 +148,46 @@ export function CreatePlaylistForm() {
     try {
       const input: GenerateVideoRecommendationsInput = { playlistTitle };
       const result = await generateVideoRecommendations(input);
-      console.log("AI Recommendations:", result);
       
-      // Mock conversion of titles to Video objects
       const mockRecommendedVideos: Video[] = result.recommendedVideoTitles.map((title, index) => ({
         id: `rec-${index}-${Date.now()}`,
         title: title,
-        youtubeURL: `https://www.youtube.com/results?search_query=${encodeURIComponent(title)}`, // Placeholder URL
+        // This URL is a search query, not a direct video link.
+        youtubeURL: `https://www.youtube.com/results?search_query=${encodeURIComponent(title)}`, 
         thumbnail: `https://placehold.co/300x180.png?text=${encodeURIComponent(title.substring(0,10))}`,
-        duration: "0:00", // Placeholder
+        duration: "0:00", 
         addedBy: "ai",
         completionStatus: 0,
-        summary: result.reasoning, // Using reasoning as a summary for all
+        summary: result.reasoning.substring(0, 200) + (result.reasoning.length > 200 ? '...' : ''),
       }));
       setRecommendedVideos(mockRecommendedVideos);
+      if (mockRecommendedVideos.length === 0) {
+        toast({ title: "AI Recommendations", description: "No specific video titles found for this topic."});
+      }
 
     } catch (error) {
       console.error("Error fetching AI recommendations:", error);
-      // TODO: Show error toast to user
+      toast({
+        title: "AI Recommendation Error",
+        description: "Could not fetch AI suggestions at this time.",
+        variant: "destructive",
+      });
     } finally {
       setIsAiLoading(false);
     }
   };
 
   const addRecommendedVideoToForm = (videoUrl: string) => {
-    // Check if the first video field is empty and use it, otherwise append.
-    const currentVideos = form.getValues("videos");
-    if (currentVideos && currentVideos.length === 1 && currentVideos[0].url === '') {
-      form.setValue("videos.0.url", videoUrl);
+    const currentVideos = form.getValues("videos") || [];
+    if (currentVideos.length === 1 && currentVideos[0].url === '') {
+      form.setValue("videos.0.url", videoUrl, { shouldValidate: true });
     } else {
-      append({ url: videoUrl });
+      append({ url: videoUrl }, { shouldFocus: false });
     }
+     toast({
+        title: "Video URL Added",
+        description: "The recommended video URL has been added to your list.",
+      });
   };
 
 
@@ -168,7 +246,10 @@ export function CreatePlaylistForm() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Add Videos</CardTitle>
+            <div>
+              <CardTitle>Add Videos</CardTitle>
+              <CardDescription>Enter direct YouTube video URLs (e.g., youtube.com/watch?v=...)</CardDescription>
+            </div>
              <Button type="button" variant="outline" onClick={handleGetAiRecommendations} disabled={isLoading || isAiLoading || !form.watch('title')} className="ml-auto border-accent text-accent hover:bg-accent hover:text-accent-foreground">
               <BotIcon className="mr-2 h-4 w-4" />
               {isAiLoading ? 'Getting Suggestions...' : 'Get AI Suggestions'}
@@ -214,6 +295,13 @@ export function CreatePlaylistForm() {
                 )}
               </div>
             ))}
+            {form.formState.errors.videos && !form.formState.errors.videos.root && form.formState.errors.videos.message && (
+                <p className="text-sm font-medium text-destructive">{form.formState.errors.videos.message}</p>
+            )}
+             {form.formState.errors.videos?.root?.message && (
+                <p className="text-sm font-medium text-destructive">{form.formState.errors.videos?.root?.message}</p>
+            )}
+
             <Button
               type="button"
               variant="outline"
@@ -230,7 +318,7 @@ export function CreatePlaylistForm() {
           <Card>
             <CardHeader>
               <CardTitle>AI Recommended Videos</CardTitle>
-              <CardDescription>Click to add a video URL to your playlist above.</CardDescription>
+              <CardDescription>These are general video titles based on your playlist title. Click to add its search URL to your playlist, or find a specific video URL manually.</CardDescription>
             </CardHeader>
             <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {recommendedVideos.map((video) => (
@@ -255,4 +343,3 @@ export function CreatePlaylistForm() {
     </Form>
   );
 }
-

@@ -1,19 +1,35 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, PlayCircleIcon } from 'lucide-react';
+import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, PlayCircleIcon, TrashIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Playlist } from '@/types';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
-// Placeholder data - replace with actual data fetching
-const placeholderPlaylists: Playlist[] = [
+// Initial placeholder data - might be supplemented/replaced by localStorage
+const initialPlaceholderPlaylists: Playlist[] = [
   {
-    id: '1',
+    id: '1', // Keep original IDs if you want them to use the old mock data from detail page
     title: 'Advanced JavaScript Concepts',
     description: 'Deep dive into closures, prototypes, and async programming in JS.',
     userId: 'user1',
-    createdAt: new Date(),
-    videos: Array(15).fill({} as any), // Mock videos
+    createdAt: new Date('2023-01-10T10:00:00Z'),
+    videos: Array(15).fill({} as any), 
     aiRecommended: false,
     tags: ['javascript', 'advanced', 'webdev'],
   },
@@ -22,7 +38,7 @@ const placeholderPlaylists: Playlist[] = [
     title: 'Python for Data Science',
     description: 'Learn NumPy, Pandas, Matplotlib, and Scikit-learn for data analysis.',
     userId: 'user1',
-    createdAt: new Date(),
+    createdAt: new Date('2023-02-15T11:00:00Z'),
     videos: Array(22).fill({} as any),
     aiRecommended: true,
     tags: ['python', 'datascience', 'machinelearning'],
@@ -32,7 +48,7 @@ const placeholderPlaylists: Playlist[] = [
     title: 'React Native Mobile Development',
     description: 'Build cross-platform mobile apps with React Native and Expo.',
     userId: 'user1',
-    createdAt: new Date(),
+    createdAt: new Date('2023-03-20T12:00:00Z'),
     videos: Array(12).fill({} as any),
     aiRecommended: false,
     tags: ['reactnative', 'mobile', 'javascript'],
@@ -40,6 +56,80 @@ const placeholderPlaylists: Playlist[] = [
 ];
 
 export default function PlaylistsPage() {
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    setIsLoading(true);
+    try {
+      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
+      
+      // Convert createdAt from string to Date object
+      const processedStoredPlaylists = storedPlaylists.map(p => ({
+        ...p,
+        createdAt: new Date(p.createdAt) 
+      }));
+
+      // Combine initial placeholders with stored, ensuring no ID clashes if desired, or just prioritize stored.
+      // For this example, we'll show stored playlists and only placeholders if their IDs aren't in stored.
+      const combinedPlaylists = [...processedStoredPlaylists];
+      initialPlaceholderPlaylists.forEach(p => {
+        if (!combinedPlaylists.find(sp => sp.id === p.id)) {
+          combinedPlaylists.push(p);
+        }
+      });
+      
+      // Sort by creation date, newest first
+      combinedPlaylists.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setPlaylists(combinedPlaylists);
+
+    } catch (error) {
+      console.error("Error loading playlists from localStorage:", error);
+      setPlaylists(initialPlaceholderPlaylists); // Fallback
+       toast({
+        title: "Error",
+        description: "Could not load all playlists.",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
+  }, [toast]);
+
+  const handleDeletePlaylist = (playlistId: string) => {
+    try {
+      const updatedPlaylists = playlists.filter(p => p.id !== playlistId);
+      setPlaylists(updatedPlaylists);
+      // Update localStorage by filtering out the deleted playlist
+      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
+      const updatedStoredPlaylists = storedPlaylists.filter(p => p.id !== playlistId);
+      localStorage.setItem('userPlaylists', JSON.stringify(updatedStoredPlaylists));
+      
+      toast({
+        title: "Playlist Deleted",
+        description: "The playlist has been removed.",
+      });
+    } catch (error) {
+       console.error("Error deleting playlist:", error);
+       toast({
+        title: "Error",
+        description: "Could not delete the playlist.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (isLoading) {
+    return (
+       <div className="flex items-center justify-center h-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        <p className="ml-4 text-lg">Loading playlists...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -55,19 +145,20 @@ export default function PlaylistsPage() {
         </Link>
       </div>
 
-      {placeholderPlaylists.length > 0 ? (
+      {playlists.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {placeholderPlaylists.map((playlist) => (
+          {playlists.map((playlist) => (
             <Card key={playlist.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
               <Link href={`/playlists/${playlist.id}`} className="block group">
                 <CardHeader className="relative p-0">
                   <Image
-                    src={`https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,15))}`}
+                    src={playlist.videos && playlist.videos.length > 0 && (playlist.videos[0].thumbnail.startsWith('https://i.ytimg.com') || playlist.videos[0].thumbnail.startsWith('https://placehold.co')) ? playlist.videos[0].thumbnail : `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,15))}`}
                     alt={playlist.title}
                     width={400}
                     height={240}
                     className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     data-ai-hint={playlist.tags.join(' ') || 'technology'}
+                    onError={(e) => { e.currentTarget.src = `https://placehold.co/400x240.png?text=Error`; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <PlayCircleIcon className="h-16 w-16 text-white/80" />
@@ -88,12 +179,33 @@ export default function PlaylistsPage() {
                 </CardContent>
               </Link>
               <CardFooter className="p-4 border-t flex justify-end gap-2">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                  <Edit3Icon className="mr-1 h-4 w-4" /> Edit
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" asChild>
+                  {/* TODO: Implement Edit functionality for localStorage items */}
+                  <Link href={`/playlists/edit/${playlist.id}`}>
+                    <Edit3Icon className="mr-1 h-4 w-4" /> Edit
+                  </Link>
                 </Button>
-                <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10">
-                  <Trash2Icon className="mr-1 h-4 w-4" /> Delete
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10">
+                      <Trash2Icon className="mr-1 h-4 w-4" /> Delete
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the playlist "{playlist.title}".
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDeletePlaylist(playlist.id)} className="bg-destructive hover:bg-destructive/90">
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </CardFooter>
             </Card>
           ))}
