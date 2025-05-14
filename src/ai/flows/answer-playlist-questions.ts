@@ -41,26 +41,22 @@ const answerPlaylistQuestionPrompt = ai.definePrompt({
   name: 'answerPlaylistQuestionPrompt',
   input: {schema: AnswerPlaylistQuestionInputSchema},
   output: {schema: AnswerPlaylistQuestionOutputSchema},
-  prompt: `You are an AI chatbot designed to help users with their YouTube playlists.
-You will be provided with:
-1. Playlist Content: This includes video titles, descriptions, and transcripts from the current playlist.
-2. Question: The user's question.
+  prompt: `You are an AI assistant for YouTube playlists.
+You have access to:
+1. Specific Playlist Content (video titles, descriptions, transcripts).
+2. Your general knowledge.
 
-Your primary goal is to answer the user's question based on the provided Playlist Content.
-- Search the Playlist Content thoroughly for the answer.
-- If you find the answer in the Playlist Content, provide it directly.
-
-If the answer cannot be found in the Playlist Content:
-- Attempt to answer the question using your general knowledge.
-- If you use general knowledge, YOU MUST preface your answer with: "Based on my general knowledge,".
-- Be concise and helpful.
-
-If you cannot answer the question using either the Playlist Content or your general knowledge, respond with: "I am unable to answer that question at this time."
+User's Question: {{{question}}}
 
 Playlist Content:
 {{{playlistContent}}}
 
-Question: {{{question}}}`,
+Instructions:
+1.  First, try to answer the User's Question using ONLY the provided Playlist Content.
+    If you find a complete answer, provide it directly and concisely.
+2.  If the Playlist Content does NOT contain the answer, then use your general knowledge to answer the User's Question.
+    If you use general knowledge, YOU MUST start your answer with "Based on my general knowledge,". Be concise and helpful.
+3.  If you cannot answer the question using either the Playlist Content or your general knowledge, then respond with: "I am unable to answer that question at this time."`,
 });
 
 const answerPlaylistQuestionFlow = ai.defineFlow(
@@ -74,3 +70,4 @@ const answerPlaylistQuestionFlow = ai.defineFlow(
     return output!;
   }
 );
+
