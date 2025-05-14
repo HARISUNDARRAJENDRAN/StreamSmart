@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
@@ -94,18 +95,18 @@ export function PlaylistChatbot({ playlistId, playlistContent }: PlaylistChatbot
           <div
             key={msg.id}
             className={cn(
-              'flex items-start gap-3',
+              'flex items-end gap-3', // Use items-end for better avatar alignment with multi-line messages
               msg.role === 'user' ? 'justify-end' : 'justify-start'
             )}
           >
             {msg.role === 'ai' && (
-              <Avatar className="h-8 w-8">
+              <Avatar className="h-8 w-8 shrink-0">
                 <AvatarFallback className="bg-primary text-primary-foreground"><BotIcon size={18}/></AvatarFallback>
               </Avatar>
             )}
             <div
               className={cn(
-                'max-w-[75%] rounded-lg p-3 text-sm shadow',
+                'max-w-[75%] rounded-lg p-3 text-sm shadow-md',
                 msg.role === 'user'
                   ? 'bg-primary text-primary-foreground rounded-br-none'
                   : 'bg-secondary text-secondary-foreground rounded-bl-none'
@@ -117,19 +118,19 @@ export function PlaylistChatbot({ playlistId, playlistContent }: PlaylistChatbot
               </p>
             </div>
              {msg.role === 'user' && (
-              <Avatar className="h-8 w-8">
-                <AvatarFallback><UserIcon size={18}/></AvatarFallback>
+              <Avatar className="h-8 w-8 shrink-0">
+                <AvatarFallback className="bg-muted"><UserIcon size={18}/></AvatarFallback>
               </Avatar>
             )}
           </div>
         ))}
         {isLoading && messages.length > 0 && messages[messages.length-1].role === 'user' && (
-           <div className="flex items-start gap-3 justify-start">
-            <Avatar className="h-8 w-8">
+           <div className="flex items-end gap-3 justify-start">
+            <Avatar className="h-8 w-8 shrink-0">
                 <AvatarFallback className="bg-primary text-primary-foreground"><BotIcon size={18}/></AvatarFallback>
             </Avatar>
-            <div className="max-w-[75%] rounded-lg p-3 text-sm shadow bg-secondary text-secondary-foreground rounded-bl-none">
-              <Loader2Icon className="h-5 w-5 animate-spin" />
+            <div className="max-w-[75%] rounded-lg p-3 text-sm shadow-md bg-secondary text-secondary-foreground rounded-bl-none">
+              <Loader2Icon className="h-5 w-5 animate-spin text-current" />
             </div>
            </div>
         )}
