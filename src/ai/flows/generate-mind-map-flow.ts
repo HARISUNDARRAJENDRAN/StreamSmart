@@ -54,28 +54,26 @@ const mindMapPrompt = ai.definePrompt({
   input: {schema: GenerateMindMapInputSchema},
   output: {schema: GenerateMindMapOutputSchema},
   prompt: `
-You are an AI assistant specialized in creating structured mind maps from provided text, titles, or YouTube video URLs.
-Your goal is to identify key concepts, entities, and their relationships to construct a clear and concise mind map.
+You are an AI assistant specialized in creating structured mind maps from text, titles, or YouTube video URLs.
+Your task is to identify key concepts and their relationships to construct a clear mind map.
 
 Input Content:
 {{{sourceTextOrUrl}}}
 
 Instructions:
-1.  Analyze the 'Input Content'. If it's a YouTube URL, infer the main topics from the likely title or content. If it's text or a title, use that directly.
-2.  Identify the central theme or main idea. This should be your root node (e.g., type: 'input').
-3.  Extract up to {{{maxNodes}}} key sub-topics, concepts, or entities related to the central theme. These will be other nodes.
-4.  Determine logical connections (edges) between these nodes. Edges should represent relationships like 'leads to', 'is part of', 'explains', 'contrasts with', etc. You can optionally label edges.
-5.  Assign appropriate positions (x, y coordinates) for each node to create a visually balanced and readable layout. Start the root node near (0,0) and arrange other nodes radially or hierarchically.
-    - For x and y coordinates, use values typically between -500 and 500.
-    - Ensure nodes do not excessively overlap.
-6.  Provide a concise 'title' for the mind map based on the input content.
-7.  Structure your output strictly according to the 'GenerateMindMapOutputSchema' JSON format, ensuring all node and edge IDs are unique strings. Ensure all 'source' and 'target' fields in edges correspond to valid node 'id's.
-8.  If the input is very short or unclear, try to make a simple mind map with 2-3 nodes or return empty nodes and edges if no meaningful map can be created.
+1.  Analyze the 'Input Content'. If it's a YouTube URL, infer topics from its likely title or content. If it's text/title, use that directly.
+2.  Identify the central theme for the root node (e.g., type: 'input').
+3.  Extract up to {{{maxNodes}}} key sub-topics/concepts. These are other nodes.
+4.  Determine logical connections (edges) between nodes. Edges represent relationships (e.g., 'leads to', 'is part of'). Optionally label edges.
+5.  Assign (x, y) positions for a balanced layout. Start the root node near (0,0). Use values between -500 and 500, avoiding overlap.
+6.  Provide a concise 'title' for the mind map based on the input.
+7.  Ensure your output strictly follows the 'GenerateMindMapOutputSchema' JSON format, with unique node/edge IDs and valid source/target links.
+8.  If input is very short/unclear, create a simple 2-3 node map or return empty nodes/edges if no meaningful map is possible.
 
 Example Node: { "id": "node-1", "type": "default", "data": { "label": "Concept A" }, "position": { "x": 100, "y": 50 } }
 Example Edge: { "id": "edge-1-2", "source": "node-1", "target": "node-2", "label": "is related to" }
 
-Generate the mind map now.
+Please generate the mind map data.
 `,
 });
 
@@ -100,3 +98,4 @@ const generateMindMapFlow = ai.defineFlow(
     };
   }
 );
+

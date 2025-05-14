@@ -21,8 +21,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 
-// Initial placeholder data removed - will be loaded from localStorage or API later
-
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +32,6 @@ export default function PlaylistsPage() {
       const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
       const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
       
-      // Convert createdAt from string to Date object
       const processedPlaylists = storedPlaylists.map(p => ({
         ...p,
         createdAt: new Date(p.createdAt) 
@@ -46,7 +43,6 @@ export default function PlaylistsPage() {
 
     } catch (error) {
       console.error("Error loading playlists from localStorage:", error);
-      // Set to empty array if localStorage fails, or handle error appropriately
       setPlaylists([]); 
        toast({
         title: "Error",
@@ -61,7 +57,6 @@ export default function PlaylistsPage() {
     try {
       const updatedPlaylists = playlists.filter(p => p.id !== playlistId);
       setPlaylists(updatedPlaylists);
-      // Update localStorage by filtering out the deleted playlist
       const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
       const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
       const updatedStoredPlaylists = storedPlaylists.filter(p => p.id !== playlistId);
@@ -197,3 +192,4 @@ export default function PlaylistsPage() {
     </div>
   );
 }
+

@@ -14,14 +14,11 @@ interface VideoProgressItemProps {
 }
 
 export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgressItemProps) {
-  // Prioritize video.thumbnail if it's a valid string and looks like a URL.
-  // Otherwise, use a placeholder with the video title or a generic "Video" text.
   let imgSrc = `https://placehold.co/120x68.png?text=${encodeURIComponent(video.title?.substring(0,10) || 'Video')}`;
   if (typeof video.thumbnail === 'string' && (video.thumbnail.startsWith('http://') || video.thumbnail.startsWith('https://'))) {
     imgSrc = video.thumbnail;
   }
   
-  // A distinct fallback for the onError event of the Image component
   const errorFallbackSrc = `https://placehold.co/120x68.png?text=Err`;
 
 
@@ -45,7 +42,6 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
           className="rounded-md aspect-video object-cover border"
           data-ai-hint="video thumbnail"
           onError={(e) => {
-            // Prevent an infinite loop if the errorFallbackSrc itself fails
             if (e.currentTarget.src !== errorFallbackSrc) {
               e.currentTarget.src = errorFallbackSrc;
             }

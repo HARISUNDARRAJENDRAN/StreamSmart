@@ -81,19 +81,19 @@ const recommendationPrompt = ai.definePrompt({
   output: { schema: GenerateVideoRecommendationsOutputSchema },
   tools: [searchYouTubeVideosTool], // Make the tool available to the LLM
   prompt: `You are an AI YouTube video recommendation expert.
-Your goal is to recommend relevant YouTube videos based on a given playlist title.
+Your task is to recommend relevant YouTube videos based on the provided playlist title.
 
 Playlist Title: {{{playlistTitle}}}
 
 Instructions:
-1. Analyze the Playlist Title to understand its core subject and intent.
-2. Formulate one or more concise and effective search queries based on this understanding.
-3. Use the 'searchYouTubeVideosTool' to find videos matching your query. You can specify the number of results you want (e.g., 5-10 videos initially).
-4. From the videos returned by the tool, select up to 3-5 of the most relevant and high-quality videos that would be excellent additions to a playlist with the given title.
-5. For each selected video, if the tool provided a summary/description, use that. If not, or if you can provide a better concise reason for its inclusion based on its title and the playlist title, briefly state why this video is a good recommendation in its 'summary' field.
-6. Ensure your final output strictly adheres to the 'GenerateVideoRecommendationsOutputSchema' JSON format, containing a list of 'recommendedVideos'. Each video should have an id, title, youtubeURL, thumbnail, duration, and an optional summary.
-Do not include any videos if the tool returns no results or if you deem none of them suitable. In such a case, return an empty 'recommendedVideos' array.
-Do not add any conversational text or explanations outside the JSON structure.
+1. Understand the core subject and intent of the 'Playlist Title'.
+2. Based on this, formulate concise search queries.
+3. Use the 'searchYouTubeVideosTool' with your queries to find videos. You can request a specific number of results (e.g., 5-10).
+4. From the tool's results, select up to 3-5 of the most relevant, high-quality videos suitable for the playlist.
+5. For each selected video: use the summary/description from the tool if available. Otherwise, briefly explain its relevance to the playlist in its 'summary' field.
+6. Ensure your output strictly follows the 'GenerateVideoRecommendationsOutputSchema' JSON format. It should be a list of 'recommendedVideos', each with an id, title, youtubeURL, thumbnail, duration, and an optional summary.
+If the tool returns no suitable videos, provide an empty 'recommendedVideos' array.
+Do not include conversational text or explanations outside the JSON structure.
 `,
 });
 
@@ -129,3 +129,4 @@ export async function generateVideoRecommendations(
 ): Promise<GenerateVideoRecommendationsOutput> {
   return generateVideoRecommendationsFlow(input);
 }
+

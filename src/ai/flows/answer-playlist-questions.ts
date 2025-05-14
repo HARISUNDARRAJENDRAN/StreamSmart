@@ -42,21 +42,19 @@ const answerPlaylistQuestionPrompt = ai.definePrompt({
   input: {schema: AnswerPlaylistQuestionInputSchema},
   output: {schema: AnswerPlaylistQuestionOutputSchema},
   prompt: `You are an AI assistant for YouTube playlists.
-You have access to:
-1. Specific Playlist Content (video titles, descriptions, transcripts).
-2. Your general knowledge.
+You have access to the following:
+- Specific Playlist Content (video titles, descriptions, transcripts).
+- Your general knowledge.
 
 User's Question: {{{question}}}
 
 Playlist Content:
 {{{playlistContent}}}
 
-Instructions:
-1.  First, try to answer the User's Question using ONLY the provided Playlist Content.
-    If you find a complete answer, provide it directly and concisely.
-2.  If the Playlist Content does NOT contain the answer, then use your general knowledge to answer the User's Question.
-    If you use general knowledge, YOU MUST start your answer with "Based on my general knowledge,". Be concise and helpful.
-3.  If you cannot answer the question using either the Playlist Content or your general knowledge, then respond with: "I am unable to answer that question at this time."`,
+Please follow these steps to answer:
+1.  First, check if the 'Playlist Content' directly answers the 'User's Question'. If it does, provide a concise answer from this content.
+2.  If the 'Playlist Content' doesn't fully answer the question, use your 'General Knowledge'. If you use general knowledge, you MUST begin your response with "Based on my general knowledge,".
+3.  If you cannot answer using either source, respond with: "I am unable to answer that question at this time."`,
 });
 
 const answerPlaylistQuestionFlow = ai.defineFlow(

@@ -21,25 +21,24 @@ import {
 interface OverallStats {
   playlistsCompleted: number;
   videosWatched: number;
-  totalLearningTime: string; // Formatted string like "X hours Y minutes"
-  averageCompletion: number; // percentage
+  totalLearningTime: string; 
+  averageCompletion: number; 
 }
 
 interface RecentPlaylistProgress {
   id: string;
   title: string;
-  progress: number; // percentage
-  lastActivity: string; // Formatted date string
+  progress: number; 
+  lastActivity: string; 
   videoCount: number;
   completedVideoCount: number;
 }
 
-// Helper to parse duration string (e.g., "1:02:03" or "5:30") to seconds
 function parseDurationToSeconds(durationStr?: string): number {
   if (!durationStr || durationStr === 'N/A' || typeof durationStr !== 'string') return 0;
   const parts = durationStr.split(':').map(Number);
   let seconds = 0;
-  if (parts.some(isNaN)) return 0; // Invalid number in duration
+  if (parts.some(isNaN)) return 0;
 
   if (parts.length === 3) { // HH:MM:SS
     seconds += parts[0] * 3600;
@@ -54,7 +53,6 @@ function parseDurationToSeconds(durationStr?: string): number {
   return seconds;
 }
 
-// Helper to format total seconds to "X hours Y minutes"
 function formatSecondsToHoursMinutes(totalSeconds: number): string {
   if (totalSeconds === 0) return "0 minutes";
   const hours = Math.floor(totalSeconds / 3600);
@@ -109,7 +107,6 @@ export default function ProgressPage() {
       const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
       
       if (storedPlaylists.length === 0) {
-        // Set default zeroed stats if no playlists exist
         setOverallStats({
           playlistsCompleted: 0,
           videosWatched: 0,
@@ -162,7 +159,6 @@ export default function ProgressPage() {
         });
       });
       
-      // Sort by last activity, newest first
       processedPlaylistsActivity.sort((a, b) => {
           return new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime();
       });
@@ -174,11 +170,10 @@ export default function ProgressPage() {
         totalLearningTime: formatSecondsToHoursMinutes(totalLearningSeconds),
         averageCompletion: totalVideos > 0 ? parseFloat((sumOfCompletionPercentages / totalVideos).toFixed(0)) : 0,
       });
-      setRecentPlaylistsProgress(processedPlaylistsActivity.slice(0, 5)); // Show top 5 recent
+      setRecentPlaylistsProgress(processedPlaylistsActivity.slice(0, 5)); 
 
     } catch (error) {
       console.error("Error processing progress data:", error);
-      // Keep default zeroed stats in case of error
        setOverallStats({
           playlistsCompleted: 0,
           videosWatched: 0,
@@ -315,3 +310,4 @@ export default function ProgressPage() {
     </div>
   );
 }
+
