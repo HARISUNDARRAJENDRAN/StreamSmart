@@ -10,13 +10,15 @@ import { VideoProgressItem } from '@/components/playlists/video-progress-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CheckCircle2Icon, CircleIcon } from 'lucide-react';
 import type { Playlist, Video } from '@/types';
+import { useToast } from "@/hooks/use-toast";
 
 // Placeholder data fetching function for fallback
 async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
   // Simulate API call for original mock data
-  await new Promise(resolve => setTimeout(resolve, 100)); // Shorter delay for fallback
+  await new Promise(resolve => setTimeout(resolve, 100)); 
   
   const mockVideos: Video[] = [
     { id: 'vid1', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://i.ytimg.com/vi/Tn6-PIqc4UM/hqdefault.jpg', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
@@ -25,7 +27,6 @@ async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playl
     { id: 'vid4', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://i.ytimg.com/vi/OEV8gMkCHXQ/hqdefault.jpg', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
   ];
   
-  // Only return for original mock IDs if not found in localStorage
   if (playlistId === "1" || playlistId === "2" || playlistId === "3") {
      return {
       id: playlistId,
@@ -48,6 +49,7 @@ export default function PlaylistDetailPage() {
   const [playlist, setPlaylist] = useState<Playlist | null>(null);
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (playlistId) {
@@ -59,17 +61,14 @@ export default function PlaylistDetailPage() {
           const storedPlaylists = JSON.parse(storedPlaylistsRaw) as Playlist[];
           foundPlaylist = storedPlaylists.find(p => p.id === playlistId) || null;
           if (foundPlaylist) {
-            // Ensure dates are Date objects
             foundPlaylist.createdAt = new Date(foundPlaylist.createdAt);
             foundPlaylist.videos = foundPlaylist.videos.map(v => ({
                 ...v, 
-                // Potentially re-hydrate other date fields if any
             }));
           }
         }
       } catch (error) {
         console.error("Error loading playlist from localStorage:", error);
-        // Proceed to fallback
       }
 
       if (foundPlaylist) {
@@ -79,7 +78,6 @@ export default function PlaylistDetailPage() {
         }
         setIsLoading(false);
       } else {
-        // Fallback to original mock data fetching if not in localStorage
         getOriginalMockPlaylistDetails(playlistId).then(data => {
           setPlaylist(data);
           if (data && data.videos.length > 0) {
@@ -99,6 +97,52 @@ export default function PlaylistDetailPage() {
     `${playlist.title}\n${playlist.description}\n\n${playlist.videos.map(v => `${v.title}\n${v.summary || ''}\n${v.transcript || ''}`).join('\n\n')}`
     : "No playlist content available.";
 
+  const handleToggleCompletion = (videoId: string) => {
+    if (!playlist || !playlist.videos) return;
+
+    const updatedVideos = playlist.videos.map(video => {
+      if (video.id === videoId) {
+        return { ...video, completionStatus: video.completionStatus === 100 ? 0 : 100 };
+      }
+      return video;
+    });
+
+    const updatedPlaylist = { ...playlist, videos: updatedVideos };
+    setPlaylist(updatedPlaylist);
+
+    // Update currentVideo state if it's the one being toggled
+    if (currentVideo && currentVideo.id === videoId) {
+      setCurrentVideo(prevCurrentVideo => {
+        if (!prevCurrentVideo) return null;
+        return {
+            ...prevCurrentVideo,
+            completionStatus: prevCurrentVideo.completionStatus === 100 ? 0 : 100
+        };
+      });
+    }
+    
+    try {
+      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
+      const playlistIndex = storedPlaylists.findIndex(p => p.id === playlistId);
+      if (playlistIndex > -1) {
+        storedPlaylists[playlistIndex] = updatedPlaylist;
+        localStorage.setItem('userPlaylists', JSON.stringify(storedPlaylists));
+        toast({
+          title: "Progress Updated",
+          description: `Video completion status changed.`,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating playlist in localStorage:", error);
+      toast({
+        title: "Error",
+        description: "Could not save progress. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
 
   if (isLoading) {
     return (
@@ -113,7 +157,9 @@ export default function PlaylistDetailPage() {
     return <div className="text-center py-10">Playlist not found. Ensure it was created or try a different ID.</div>;
   }
   
-  const overallProgress = playlist.videos.reduce((acc, vid) => acc + vid.completionStatus, 0) / (playlist.videos.length || 1);
+  const overallProgress = playlist.videos.length > 0 
+    ? playlist.videos.reduce((acc, vid) => acc + vid.completionStatus, 0) / playlist.videos.length
+    : 0;
 
 
   return (
@@ -136,17 +182,33 @@ export default function PlaylistDetailPage() {
               {playlist.aiRecommended && <span className="ml-2 text-xs bg-accent text-accent-foreground px-2 py-0.5 rounded-full">AI Recommended</span>}
             </p>
             <p className="text-sm mb-4">{playlist.description}</p>
-            {currentVideo?.summary && (
-              <div>
-                <h4 className="font-semibold text-primary">Current Video Summary:</h4>
-                <p className="text-sm text-muted-foreground">{currentVideo.summary}</p>
-              </div>
-            )}
-            {currentVideo?.youtubeURL && (
-              <div className="mt-2">
-                <a href={currentVideo.youtubeURL} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
-                  Watch on YouTube
-                </a>
+            
+            {currentVideo && (
+              <div className="mt-4 space-y-2">
+                <h3 className="text-lg font-semibold text-primary">Current Video: {currentVideo.title}</h3>
+                {currentVideo.summary && (
+                  <div>
+                    <h4 className="font-medium">Summary:</h4>
+                    <p className="text-sm text-muted-foreground">{currentVideo.summary}</p>
+                  </div>
+                )}
+                {currentVideo.youtubeURL && (
+                  <div className="mt-1">
+                    <a href={currentVideo.youtubeURL} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
+                      Watch on YouTube
+                    </a>
+                  </div>
+                )}
+                <Button 
+                  onClick={() => handleToggleCompletion(currentVideo.id)}
+                  variant={currentVideo.completionStatus === 100 ? "secondary" : "default"}
+                  size="sm"
+                  className="mt-2"
+                >
+                  {currentVideo.completionStatus === 100 ? 
+                    <><CheckCircle2Icon className="mr-2 h-4 w-4" /> Mark as Incomplete</> : 
+                    <><CircleIcon className="mr-2 h-4 w-4" /> Mark as Completed</>}
+                </Button>
               </div>
             )}
           </TabsContent>
@@ -159,6 +221,18 @@ export default function PlaylistDetailPage() {
           <TabsContent value="progress" className="mt-4 p-4 border rounded-lg bg-card">
              <h3 className="text-xl font-semibold mb-2">Overall Progress: {overallProgress.toFixed(0)}%</h3>
              {/* More detailed progress visualization can go here */}
+             <div className="w-full bg-muted rounded-full h-4 mb-1 shadow-inner">
+                <div 
+                    className="bg-primary h-4 rounded-full transition-all duration-500 ease-out" 
+                    style={{ width: `${overallProgress.toFixed(0)}%` }}
+                    aria-valuenow={overallProgress}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    role="progressbar"
+                    aria-label={`Overall playlist progress ${overallProgress.toFixed(0)}%`}
+                ></div>
+            </div>
+            <p className="text-xs text-muted-foreground text-right">{overallProgress.toFixed(0)}% complete</p>
           </TabsContent>
         </Tabs>
       </div>
@@ -195,3 +269,5 @@ export default function PlaylistDetailPage() {
     </div>
   );
 }
+
+    
