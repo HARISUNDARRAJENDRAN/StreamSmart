@@ -6,12 +6,13 @@ import { useParams } from 'next/navigation';
 import { VideoPlayer } from '@/components/playlists/video-player';
 import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
 import { MindMapDisplay } from '@/components/playlists/mind-map-display';
+import { OtherLearnersProgress } from '@/components/playlists/other-learners-progress'; 
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CheckCircle2Icon, CircleIcon, LightbulbIcon } from 'lucide-react';
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CheckCircle2Icon, CircleIcon, LightbulbIcon, UsersIcon } from 'lucide-react'; 
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
@@ -52,7 +53,7 @@ export default function PlaylistDetailPage() {
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const videoPlayerKey = useId(); // Unique key for VideoPlayer
+  const videoPlayerKey = useId(); 
 
   useEffect(() => {
     if (playlistId) {
@@ -175,11 +176,12 @@ export default function PlaylistDetailPage() {
         {currentVideo && <VideoPlayer key={videoPlayerKey + currentVideo.id} videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />}
         
         <Tabs defaultValue="info" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 md:grid-cols-5 bg-card border">
+          <TabsList className="grid w-full grid-cols-4 sm:grid-cols-5 md:grid-cols-6 bg-card border">
             <TabsTrigger value="info"><InfoIcon className="w-4 h-4 mr-1 md:mr-2" />Info</TabsTrigger>
             <TabsTrigger value="chatbot"><MessageCircleIcon className="w-4 h-4 mr-1 md:mr-2" />Chatbot</TabsTrigger>
             <TabsTrigger value="mindmap"><BrainIcon className="w-4 h-4 mr-1 md:mr-2" />Mind Map</TabsTrigger>
             <TabsTrigger value="quiz"><LightbulbIcon className="w-4 h-4 mr-1 md:mr-2" />Quiz</TabsTrigger>
+            <TabsTrigger value="fellows" className="sm:flex"><UsersIcon className="w-4 h-4 mr-1 md:mr-2" />Learners</TabsTrigger> 
             <TabsTrigger value="progress" className="hidden md:flex"><PercentIcon className="w-4 h-4 mr-1 md:mr-2" />Progress</TabsTrigger>
           </TabsList>
           <TabsContent value="info" className="mt-4 p-4 border rounded-lg bg-card">
@@ -232,6 +234,9 @@ export default function PlaylistDetailPage() {
               playlistContent={compiledPlaylistContentForRAG} 
             />
           </TabsContent>
+          <TabsContent value="fellows" className="mt-4"> 
+            <OtherLearnersProgress playlistTitle={playlist.title} />
+          </TabsContent>
           <TabsContent value="progress" className="mt-4 p-4 border rounded-lg bg-card">
              <h3 className="text-xl font-semibold mb-2">Overall Progress: {overallProgress.toFixed(0)}%</h3>
              <div className="w-full bg-muted rounded-full h-4 mb-1 shadow-inner">
@@ -260,7 +265,7 @@ export default function PlaylistDetailPage() {
             <CardDescription>Select a video to play. ({playlist.videos.length} total)</CardDescription>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-hidden">
-            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]"> {/* Adjusted max-h */}
+            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]"> 
               <div className="p-2 space-y-1">
                 {playlist.videos.map((video) => (
                   <VideoProgressItem
