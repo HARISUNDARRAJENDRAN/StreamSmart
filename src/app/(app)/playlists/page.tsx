@@ -152,7 +152,15 @@ export default function PlaylistsPage() {
               <Link href={`/playlists/${playlist.id}`} className="block group">
                 <CardHeader className="relative p-0">
                   <Image
-                    src={playlist.videos && playlist.videos.length > 0 && (playlist.videos[0].thumbnail.startsWith('https://i.ytimg.com') || playlist.videos[0].thumbnail.startsWith('https://placehold.co')) ? playlist.videos[0].thumbnail : `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,15))}`}
+                    src={
+                      playlist.videos && 
+                      playlist.videos.length > 0 && 
+                      playlist.videos[0] && 
+                      playlist.videos[0].thumbnail && 
+                      (playlist.videos[0].thumbnail.startsWith('https://i.ytimg.com') || playlist.videos[0].thumbnail.startsWith('https://placehold.co')) 
+                      ? playlist.videos[0].thumbnail 
+                      : `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,15))}`
+                    }
                     alt={playlist.title}
                     width={400}
                     height={240}
