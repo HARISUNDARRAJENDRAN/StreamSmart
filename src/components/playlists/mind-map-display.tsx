@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
@@ -21,17 +21,15 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 
-import { generateMindMap, type GenerateMindMapInput } from '@/ai/flows/generate-mind-map-flow';
-import type { MindMapNode as AppMindMapNode, MindMapEdge as AppMindMapEdge } from '@/types'; // Our app's types
+import { generateMindMap, type GenerateMindMapInput, type GenerateMindMapNode, type GenerateMindMapEdge } from '@/ai/flows/generate-mind-map-flow';
 
 interface MindMapDisplayProps {
-  playlistTitle: string; // Changed from optional to required for initial generation
-  playlistId: string; // To ensure unique flow calls if needed, or for future features
+  playlistTitle: string;
+  playlistId: string; 
 }
 
-// Initial static nodes and edges for placeholder/fallback
-const initialNodes: Node<AppMindMapNode['data']>[] = [
-  { id: '1', type: 'input', data: { label: 'Playlist Topic' }, position: { x: 250, y: 5 } },
+const initialNodes: Node<GenerateMindMapNode['data']>[] = [
+  { id: '1', type: 'input', data: { label: 'Playlist Topic (Example)' }, position: { x: 250, y: 5 } },
   { id: '2', data: { label: 'Key Concept A' }, position: { x: 100, y: 100 } },
   { id: '3', data: { label: 'Key Concept B' }, position: { x: 400, y: 100 } },
   { id: '4', type: 'output', data: { label: 'Conclusion/Summary' }, position: { x: 250, y: 200 } },
@@ -49,10 +47,11 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
   const { toast } = useToast();
   
-  const [nodes, setNodes] = useState<Node<AppMindMapNode['data']>[]>(initialNodes);
+  const [nodes, setNodes] = useState<Node<GenerateMindMapNode['data']>[]>(initialNodes);
   const [edges, setEdges] = useState<Edge[]>(initialEdges);
   const [isLoading, setIsLoading] = useState(false);
   const [generatedTitle, setGeneratedTitle] = useState(playlistTitle);
+  const mindMapContainerRef = useRef<HTMLDivElement>(null);
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -65,8 +64,8 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
 
   const fetchMindMapData = useCallback(async (title: string) => {
     setIsLoading(true);
-    setNodes([]); // Clear previous nodes
-    setEdges([]); // Clear previous edges
+    setNodes([]); 
+    setEdges([]); 
     setGeneratedTitle("Generating Mind Map...");
 
     try {
@@ -74,8 +73,7 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
       const result = await generateMindMap(input);
       
       if (result && result.nodes.length > 0) {
-        // Transform AI output to ReactFlow compatible nodes/edges
-        const reactFlowNodes: Node<AppMindMapNode['data']>[] = result.nodes.map(node => ({
+        const reactFlowNodes: Node<GenerateMindMapNode['data']>[] = result.nodes.map(node => ({
           id: node.id,
           type: node.type || 'default',
           data: { label: node.data.label },
@@ -94,17 +92,18 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
         setGeneratedTitle(result.title || title);
         toast({ title: "Mind Map Generated", description: `Created a mind map for "${result.title || title}".` });
       } else {
-        // Fallback to initial example if AI returns no nodes
-        setNodes(initialNodes.map(n => n.id === '1' ? {...n, data: {label: title}} : n));
+        const exampleTitle = title || "Example Playlist";
+        setNodes(initialNodes.map(n => n.id === '1' ? {...n, data: {label: exampleTitle}} : n));
         setEdges(initialEdges);
-        setGeneratedTitle(title + " (Example)");
+        setGeneratedTitle(exampleTitle + " (Example)");
         toast({ title: "Mind Map Issue", description: "Could not generate a new mind map, showing example.", variant: "default" });
       }
     } catch (error: any) {
       console.error("Error generating mind map:", error);
-      setNodes(initialNodes.map(n => n.id === '1' ? {...n, data: {label: title}} : n)); // Fallback on error
+      const errorTitle = title || "Error Playlist";
+      setNodes(initialNodes.map(n => n.id === '1' ? {...n, data: {label: errorTitle}} : n));
       setEdges(initialEdges);
-      setGeneratedTitle(title + " (Error)");
+      setGeneratedTitle(errorTitle + " (Error)");
       toast({
         title: "Mind Map Error",
         description: `Failed to generate mind map: ${error.message || 'Unknown error'}. Showing example.`,
@@ -119,19 +118,56 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
     if (playlistTitle) {
       fetchMindMapData(playlistTitle);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playlistTitle]); // Removed fetchMindMapData from deps to avoid re-trigger loop, playlistTitle is the trigger.
+  }, [playlistTitle, fetchMindMapData]);
 
 
   const handleDownloadMindMap = () => {
-    toast({
-      title: "Download Mind Map",
-      description: "Download functionality will be implemented soon!",
-    });
+    const containerToDownloadFrom = mindMapContainerRef.current; 
+    if (!containerToDownloadFrom) {
+      toast({ title: "Download Error", description: "Mind map container not ready or found.", variant: "destructive" });
+      return;
+    }
+
+    const svgElement = containerToDownloadFrom.querySelector('.react-flow__renderer > svg');
+
+    if (svgElement) {
+      const clonedSvgElement = svgElement.cloneNode(true) as SVGSVGElement;
+      const { width, height } = containerToDownloadFrom.getBoundingClientRect();
+      
+      clonedSvgElement.setAttribute('width', String(width));
+      clonedSvgElement.setAttribute('height', String(height));
+      if (!clonedSvgElement.getAttribute('xmlns')) {
+          clonedSvgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      }
+      clonedSvgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+      const serializer = new XMLSerializer();
+      const svgString = serializer.serializeToString(clonedSvgElement);
+      const finalSvgString = `<?xml version="1.0" standalone="no"?>\r\n${svgString}`;
+      
+      const svgBlob = new Blob([finalSvgString], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(svgBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      
+      const filename = (generatedTitle || 'mindmap').replace(/[^\w\s-]/gi, '').replace(/\s+/g, '_').toLowerCase();
+      link.download = `${filename || 'mindmap'}.svg`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      toast({ title: "Mind Map Downloaded", description: "SVG file saved." });
+    } else {
+      toast({ title: "Download Error", description: "Could not find SVG element to download.", variant: "destructive" });
+    }
   };
   
-  const reactFlowContent = (
-    <div className="w-full h-full bg-background rounded-md">
+  const renderReactFlowContent = (isFullScreenContext: boolean) => (
+    <div 
+      className="w-full h-full bg-background rounded-md"
+      ref={!isFullScreenContext ? mindMapContainerRef : null}
+    >
       {isLoading && nodes.length === 0 ? (
          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
            <Loader2Icon className="h-12 w-12 animate-spin text-primary mb-4" />
@@ -155,7 +191,7 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
   );
 
   return (
-    <Card className="shadow-lg flex flex-col h-full"> {/* Ensure card takes full height of its container */}
+    <Card className="shadow-lg flex flex-col h-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div className="flex-grow min-w-0">
             <CardTitle className="flex items-center text-lg md:text-xl truncate">
@@ -170,7 +206,7 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
           </Button>
           <Dialog open={isFullScreenOpen} onOpenChange={setIsFullScreenOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="icon" aria-label="View Fullscreen">
+              <Button variant="outline" size="icon" aria-label="View Fullscreen" disabled={isLoading}>
                 <ExpandIcon className="h-4 w-4 md:h-5 md:w-5" />
               </Button>
             </DialogTrigger>
@@ -188,21 +224,22 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
                 </DialogClose>
               </DialogHeader>
               <div className="flex-grow p-1 md:p-2 overflow-auto bg-card">
-                {reactFlowContent}
+                {renderReactFlowContent(true)}
               </div>
             </DialogContent>
           </Dialog>
-          <Button variant="outline" size="icon" onClick={handleDownloadMindMap} aria-label="Download Mind Map" disabled={isLoading}>
+          <Button variant="outline" size="icon" onClick={handleDownloadMindMap} aria-label="Download Mind Map" disabled={isLoading || nodes.length === 0}>
             <DownloadIcon className="h-4 w-4 md:h-5 md:w-5" />
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow p-1 md:p-2"> {/* Ensure content area can grow */}
-        {/* Aspect ratio for the embedded view, ensure it doesn't collapse */}
-        <div className="w-full h-full min-h-[300px] md:min-h-[400px]">  {/* Ensure minimum height */}
-          {reactFlowContent}
+      <CardContent className="flex-grow p-1 md:p-2">
+        <div className="w-full h-full min-h-[300px] md:min-h-[400px]">
+          {renderReactFlowContent(false)}
         </div>
       </CardContent>
     </Card>
   );
 }
+
+    
