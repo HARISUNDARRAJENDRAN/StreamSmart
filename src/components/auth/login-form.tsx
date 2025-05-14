@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -37,7 +38,7 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md shadow-2xl bg-card">
       <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold text-primary">LearnFlow</CardTitle>
+        <CardTitle className="text-3xl font-bold text-primary">StreamSmart</CardTitle>
         <CardDescription>Sign in to your personalized learning hub</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -104,3 +105,4 @@ export function LoginForm() {
     </Card>
   );
 }
+

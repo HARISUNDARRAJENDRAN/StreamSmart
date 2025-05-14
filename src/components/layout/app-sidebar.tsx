@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -32,7 +33,7 @@ export function AppSidebar() {
         <Link href="/dashboard" className="flex items-center gap-2">
           <BotMessageSquareIcon className="h-8 w-8 text-primary" />
           <h1 className="text-xl font-semibold group-data-[collapsible=icon]:hidden">
-            LearnFlow
+            StreamSmart
           </h1>
         </Link>
         <div className="group-data-[collapsible=icon]:hidden">
@@ -97,3 +98,4 @@ export function AppSidebar() {
     </Sidebar>
   );
 }
+

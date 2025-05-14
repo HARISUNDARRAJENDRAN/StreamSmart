@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'LearnFlow',
+  title: 'StreamSmart',
   description: 'AI-Powered Personalized YouTube Learning Platform',
 };
 
@@ -33,3 +33,4 @@ export default function RootLayout({
     </html>
   );
 }
+
