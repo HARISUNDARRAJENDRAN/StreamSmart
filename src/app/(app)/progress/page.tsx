@@ -1,23 +1,23 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { BarChart3Icon, CheckCircle, TrendingUpIcon } from 'lucide-react';
 
-// Placeholder data - replace with actual data fetching and types
+// Placeholder data - will be replaced by actual data fetching when progress tracking is implemented
 const overallStats = {
-  playlistsCompleted: 3,
-  videosWatched: 42,
-  totalLearningTime: "25 hours",
-  averageCompletion: 68, // percentage
+  playlistsCompleted: 0,
+  videosWatched: 0,
+  totalLearningTime: "0 hours",
+  averageCompletion: 0, // percentage
 };
 
-const recentPlaylistsProgress = [
-  { id: '1', title: 'Advanced JavaScript', progress: 75, lastActivity: '2 days ago' },
-  { id: '2', title: 'Python for Data Science', progress: 40, lastActivity: '5 days ago' },
-  { id: '3', title: 'React Native Development', progress: 90, lastActivity: '1 day ago' },
-  { id: '4', title: 'The Art of Prompt Engineering', progress: 25, lastActivity: 'Today' },
-];
+const recentPlaylistsProgress: { id: string; title: string; progress: number; lastActivity: string }[] = [];
 
 export default function ProgressPage() {
+  // In a real application, you would fetch overallStats and recentPlaylistsProgress
+  // from a backend or calculate it from localStorage/user activity.
+  // For now, they are initialized as empty or zero.
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -72,23 +72,23 @@ export default function ProgressPage() {
           <CardDescription>Overview of your progress in ongoing playlists.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          {recentPlaylistsProgress.map((playlist) => (
-            <div key={playlist.id} className="p-4 border rounded-lg bg-background/50 hover:border-primary transition-colors">
-              <div className="flex justify-between items-center mb-1">
-                <h3 className="font-semibold text-lg text-foreground">{playlist.title}</h3>
-                <span className="text-sm text-muted-foreground">{playlist.lastActivity}</span>
+          {recentPlaylistsProgress.length > 0 ? (
+            recentPlaylistsProgress.map((playlist) => (
+              <div key={playlist.id} className="p-4 border rounded-lg bg-background/50 hover:border-primary transition-colors">
+                <div className="flex justify-between items-center mb-1">
+                  <h3 className="font-semibold text-lg text-foreground">{playlist.title}</h3>
+                  <span className="text-sm text-muted-foreground">{playlist.lastActivity}</span>
+                </div>
+                <Progress value={playlist.progress} className="h-3 mb-1" />
+                <p className="text-xs text-muted-foreground text-right">{playlist.progress}% complete</p>
               </div>
-              <Progress value={playlist.progress} className="h-3 mb-1" />
-              <p className="text-xs text-muted-foreground text-right">{playlist.progress}% complete</p>
-            </div>
-          ))}
-           {recentPlaylistsProgress.length === 0 && (
-            <p className="text-center text-muted-foreground py-4">No recent activity to display. Start a playlist!</p>
+            ))
+          ) : (
+            <p className="text-center text-muted-foreground py-4">No recent activity to display. Start a playlist to see your progress here!</p>
           )}
         </CardContent>
       </Card>
       
-      {/* Placeholder for more detailed charts or visualizations */}
       <Card className="shadow-md">
         <CardHeader>
           <CardTitle>Learning Trends (Placeholder)</CardTitle>
