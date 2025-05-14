@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -24,7 +25,7 @@ export type AnswerPlaylistQuestionInput = z.infer<
 const AnswerPlaylistQuestionOutputSchema = z.object({
   answer: z
     .string()
-    .describe('The AI-generated answer to the user question based on the playlist content.'),
+    .describe('The AI-generated answer to the user question based on the playlist content or general knowledge.'),
 });
 export type AnswerPlaylistQuestionOutput = z.infer<
   typeof AnswerPlaylistQuestionOutputSchema
@@ -40,9 +41,24 @@ const answerPlaylistQuestionPrompt = ai.definePrompt({
   name: 'answerPlaylistQuestionPrompt',
   input: {schema: AnswerPlaylistQuestionInputSchema},
   output: {schema: AnswerPlaylistQuestionOutputSchema},
-  prompt: `You are an AI chatbot designed to answer questions about YouTube playlists.  You will be provided with the content of the playlist, which includes video titles, descriptions, and transcripts.  Use this information to answer the user's question as accurately and thoroughly as possible. If the answer is not available in the provided content, respond that you cannot answer the question.
+  prompt: `You are an AI chatbot designed to help users with their YouTube playlists.
+You will be provided with:
+1. Playlist Content: This includes video titles, descriptions, and transcripts from the current playlist.
+2. Question: The user's question.
 
-Playlist Content: {{{playlistContent}}}
+Your primary goal is to answer the user's question based on the provided Playlist Content.
+- Search the Playlist Content thoroughly for the answer.
+- If you find the answer in the Playlist Content, provide it directly.
+
+If the answer cannot be found in the Playlist Content:
+- Attempt to answer the question using your general knowledge.
+- If you use general knowledge, YOU MUST preface your answer with: "Based on my general knowledge,".
+- Be concise and helpful.
+
+If you cannot answer the question using either the Playlist Content or your general knowledge, respond with: "I am unable to answer that question at this time."
+
+Playlist Content:
+{{{playlistContent}}}
 
 Question: {{{question}}}`,
 });
