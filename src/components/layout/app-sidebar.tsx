@@ -14,7 +14,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, BotMessageSquareIcon } from 'lucide-react';
+import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -31,7 +31,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r">
       <SidebarHeader className="flex items-center justify-between p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
-          <BotMessageSquareIcon className="h-8 w-8 text-primary" />
+          {/* <BotMessageSquareIcon className="h-8 w-8 text-primary" /> */}
           <h1 className="text-xl font-semibold group-data-[collapsible=icon]:hidden">
             StreamSmart
           </h1>
