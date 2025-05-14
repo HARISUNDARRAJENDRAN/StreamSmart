@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription } from '@/components/ui/card';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { PlusCircleIcon, Trash2Icon, YoutubeIcon, BotIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -67,10 +68,7 @@ export function CreatePlaylistForm() {
 
   const handleGetAiRecommendations = async () => {
     const playlistTitle = form.getValues("title");
-    const playlistDescription = form.getValues("description") || "";
-    const playlistTagsString = form.getValues("tags") || "";
-    const playlistTags = playlistTagsString.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-
+    
     if (!playlistTitle) {
       form.setError("title", { type: "manual", message: "Please enter a title to get recommendations." });
       return;
@@ -79,7 +77,7 @@ export function CreatePlaylistForm() {
     setIsAiLoading(true);
     setRecommendedVideos([]);
     try {
-      const input: GenerateVideoRecommendationsInput = { playlistTitle, playlistDescription, playlistTags };
+      const input: GenerateVideoRecommendationsInput = { playlistTitle };
       const result = await generateVideoRecommendations(input);
       console.log("AI Recommendations:", result);
       
@@ -257,3 +255,4 @@ export function CreatePlaylistForm() {
     </Form>
   );
 }
+

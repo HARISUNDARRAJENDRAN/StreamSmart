@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -13,8 +14,6 @@ import {z} from 'genkit';
 
 const GenerateVideoRecommendationsInputSchema = z.object({
   playlistTitle: z.string().describe('The title of the playlist.'),
-  playlistDescription: z.string().describe('The description of the playlist.'),
-  playlistTags: z.array(z.string()).describe('Tags associated with the playlist.'),
 });
 
 export type GenerateVideoRecommendationsInput = z.infer<typeof GenerateVideoRecommendationsInputSchema>;
@@ -36,15 +35,13 @@ const prompt = ai.definePrompt({
   output: {schema: GenerateVideoRecommendationsOutputSchema},
   prompt: `You are an AI video recommendation expert.
 
-  Based on the following playlist information, recommend a list of relevant YouTube videos.
+  Based on the following playlist title, recommend a list of relevant YouTube videos.
 
   Playlist Title: {{{playlistTitle}}}
-  Playlist Description: {{{playlistDescription}}}
-  Playlist Tags: {{#each playlistTags}}{{{this}}}{{#unless @last}}, {{/unless}}{{/each}}
 
-  Consider the playlist's topic, description, and tags to identify suitable videos.
-  Provide a brief explanation of why each video is recommended.
-  Format your response as a JSON object with 'recommendedVideoTitles' (an array of video titles) and 'reasoning' (your explanation).`,
+  Consider the playlist's topic based SOLELY on its title to identify suitable videos. Do NOT assume or use any other information like description or tags, as they are not provided.
+  Provide a brief explanation of why each video is recommended based on the title.
+  Format your response as a JSON object with 'recommendedVideoTitles' (an array of video titles) and 'reasoning' (your explanation for the recommendations).`,
 });
 
 const generateVideoRecommendationsFlow = ai.defineFlow(
@@ -58,3 +55,4 @@ const generateVideoRecommendationsFlow = ai.defineFlow(
     return output!;
   }
 );
+
