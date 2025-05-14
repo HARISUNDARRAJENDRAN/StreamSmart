@@ -5,16 +5,15 @@ import { PlusCircleIcon, BookOpenCheckIcon, ZapIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// Removed placeholderPlaylists
-
 export default function DashboardPage() {
   // Using an empty array as playlists will be dynamically loaded or user-created
   const userPlaylists: any[] = []; 
+  const userName = "Alex"; // Placeholder for actual user name
 
   return (
     <div className="space-y-8">
       <section className="rounded-xl bg-primary p-8 text-center shadow-lg">
-        <h1 className="text-4xl font-bold text-primary-foreground mb-2">Welcome back, Learner!</h1>
+        <h1 className="text-4xl font-bold text-primary-foreground mb-2">Welcome back, {userName}!</h1>
         <p className="text-lg text-primary-foreground/90 mb-6">Ready to dive back into your learning journey?</p>
         <Link href="/playlists/create">
           <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
