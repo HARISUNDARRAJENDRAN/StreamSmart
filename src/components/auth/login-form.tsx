@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { ChromeIcon, KeyRoundIcon, MailIcon } from 'lucide-react'; // Using ChromeIcon as a stand-in for Google G
+import { ChromeIcon, KeyRoundIcon, MailIcon, Loader2Icon } from 'lucide-react'; // Using ChromeIcon as a stand-in for Google G
 
 export function LoginForm() {
   const router = useRouter();
@@ -75,7 +75,7 @@ export function LoginForm() {
             </div>
           </div>
           <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isLoading}>
-            {isLoading ? 'Signing In...' : 'Sign In'}
+            {isLoading ? <><Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Signing In...</> : 'Sign In'}
           </Button>
         </form>
         <div className="relative">
@@ -89,7 +89,7 @@ export function LoginForm() {
           </div>
         </div>
         <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isLoading}>
-          <ChromeIcon className="mr-2 h-5 w-5" /> {/* Placeholder for Google icon */}
+          {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : <ChromeIcon className="mr-2 h-5 w-5" /> }
           {isLoading ? 'Processing...' : 'Sign in with Google'}
         </Button>
       </CardContent>

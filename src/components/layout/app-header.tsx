@@ -45,12 +45,15 @@ export function AppHeader() {
           <DropdownMenuContent className="w-56" align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {/* 
+            // Placeholder for a dedicated profile page if different from settings
             <DropdownMenuItem asChild>
-              <Link href="/profile">
+              <Link href="/profile"> 
                 <UserIcon className="mr-2 h-4 w-4" />
                 <span>Profile</span>
               </Link>
-            </DropdownMenuItem>
+            </DropdownMenuItem> 
+            */}
             <DropdownMenuItem asChild>
               <Link href="/settings">
                 <SettingsIcon className="mr-2 h-4 w-4" />
@@ -59,7 +62,6 @@ export function AppHeader() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              {/* TODO: Implement logout */}
               <Link href="/login">
                 <LogOutIcon className="mr-2 h-4 w-4" />
                 <span>Log out</span>

@@ -63,7 +63,14 @@ export function AppSidebar() {
       <SidebarFooter className="p-2">
          <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={{ children: 'Settings', side: 'right', className:"bg-popover text-popover-foreground" }}>
+              <SidebarMenuButton 
+                asChild 
+                tooltip={{ children: 'Settings', side: 'right', className:"bg-popover text-popover-foreground" }}
+                isActive={pathname === '/settings'}
+                className={cn(
+                  pathname === '/settings' && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                )}
+                >
                 <Link href="/settings">
                   <SettingsIcon className="h-5 w-5" />
                   <span className="truncate group-data-[collapsible=icon]:hidden">Settings</span>
@@ -71,7 +78,14 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={{ children: 'Help', side: 'right', className:"bg-popover text-popover-foreground" }}>
+              <SidebarMenuButton 
+                asChild 
+                tooltip={{ children: 'Help', side: 'right', className:"bg-popover text-popover-foreground" }}
+                isActive={pathname === '/help'}
+                 className={cn(
+                  pathname === '/help' && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                )}
+                >
                 <Link href="/help">
                   <HelpCircleIcon className="h-5 w-5" />
                   <span className="truncate group-data-[collapsible=icon]:hidden">Help</span>
