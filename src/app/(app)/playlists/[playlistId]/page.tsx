@@ -1,3 +1,4 @@
+
 'use client'; // Required for useState, useEffect, and event handlers
 
 import { useState, useEffect } from 'react';
@@ -19,16 +20,16 @@ async function getPlaylistDetails(playlistId: string): Promise<Playlist | null> 
   await new Promise(resolve => setTimeout(resolve, 500));
   
   const mockVideos: Video[] = [
-    { id: 'vid1', title: 'Introduction to Quantum Physics', youtubeURL: 'https://www.youtube.com/watch?v= primjer1', thumbnail: 'https://placehold.co/120x68.png?text=QP1', duration: '12:34', addedBy: 'user1', completionStatus: 100, summary: 'Basics of quantum mechanics.' },
-    { id: 'vid2', title: 'Superposition and Entanglement', youtubeURL: 'https://www.youtube.com/watch?v= primjer2', thumbnail: 'https://placehold.co/120x68.png?text=QP2', duration: '15:50', addedBy: 'user1', completionStatus: 60, summary: 'Exploring key quantum phenomena.' },
-    { id: 'vid3', title: 'Quantum Computing Explained', youtubeURL: 'https://www.youtube.com/watch?v= primjer3', thumbnail: 'https://placehold.co/120x68.png?text=QC', duration: '18:22', addedBy: 'user1', completionStatus: 20, summary: 'How quantum computers work.' },
-    { id: 'vid4', title: 'The Future of Quantum Tech', youtubeURL: 'https://www.youtube.com/watch?v= primjer4', thumbnail: 'https://placehold.co/120x68.png?text=QFuture', duration: '10:05', addedBy: 'user1', completionStatus: 0, summary: 'Potential applications and advancements.' },
+    { id: 'vid1', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://placehold.co/120x68.png?text=React', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
+    { id: 'vid2', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://placehold.co/120x68.png?text=NextJS', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
+    { id: 'vid3', title: 'What is HTML? by Programming with Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://placehold.co/120x68.png?text=HTML', duration: '8:42', addedBy: 'user1', completionStatus: 20, summary: 'Understanding HTML and its role in websites.' },
+    { id: 'vid4', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://placehold.co/120x68.png?text=CSS', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
   ];
   
   if (playlistId === "1" || playlistId === "2" || playlistId === "3") { // Match IDs from playlists page
      return {
       id: playlistId,
-      title: playlistId === "1" ? 'Advanced JavaScript Concepts' : playlistId === "2" ? 'Python for Data Science' : 'React Native Development',
+      title: playlistId === "1" ? 'Web Development Fundamentals' : playlistId === "2" ? 'Python for Data Science' : 'React Native Development',
       description: 'This is a detailed description of the playlist focusing on its core concepts and learning objectives. It covers various topics including X, Y, and Z.',
       userId: 'user1',
       createdAt: new Date(),
