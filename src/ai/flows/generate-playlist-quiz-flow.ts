@@ -24,6 +24,7 @@ const GeneratePlaylistQuizInputSchema = z.object({
   playlistTitle: z.string().describe('The title of the playlist, to give context to the quiz.'),
   playlistContent: z.string().describe('The textual content of the playlist (e.g., concatenated titles, descriptions, summaries, or transcripts).'),
   numQuestions: z.number().min(1).max(10).default(5).describe('The desired number of questions for the quiz.'),
+  difficulty: z.enum(['easy', 'medium', 'hard']).optional().default('medium').describe('The difficulty level of the quiz questions.'),
 });
 export type GeneratePlaylistQuizInput = z.infer<typeof GeneratePlaylistQuizInputSchema>;
 
@@ -44,26 +45,31 @@ const quizGenerationPrompt = ai.definePrompt({
   output: {schema: GeneratePlaylistQuizOutputSchema},
   prompt: `
 You are an AI expert specializing in creating educational quizzes from textual content.
-Your task is to generate a multiple-choice quiz based on the provided playlist information.
+Your task is to generate a multiple-choice quiz based on the provided playlist information and selected difficulty.
 
 Playlist Title: {{{playlistTitle}}}
 Content to Base Quiz On:
 {{{playlistContent}}}
+Difficulty Level: {{{difficulty}}}
 
 Instructions:
 1.  Analyze the 'Playlist Title' and 'Content to Base Quiz On' to understand the key topics and concepts.
 2.  Generate exactly {{{numQuestions}}} unique multiple-choice questions.
-3.  For each question:
-    a.  Formulate a clear and concise 'questionText' that tests understanding of the material.
-    b.  Provide exactly four 'options'. Three should be plausible distractors, and one must be the correct answer.
+3.  Adjust the complexity of questions based on the 'Difficulty Level':
+    *   'easy': Focus on straightforward facts, definitions, and main ideas. Options should have one clearly correct answer and obvious distractors.
+    *   'medium': Questions may require some interpretation, comparison, or connection of concepts. Distractors might be more plausible.
+    *   'hard': Questions should involve deeper analysis, synthesis of information, application of knowledge, or nuanced distinctions. Distractors should be very plausible.
+4.  For each question:
+    a.  Formulate a clear and concise 'questionText' appropriate for the difficulty.
+    b.  Provide exactly four 'options'. Three should be plausible distractors (matching difficulty), and one must be the correct answer.
     c.  Specify the 'correctAnswerIndex' (0-3) corresponding to the correct option.
     d.  Optionally, provide a brief 'explanation' for why the answer is correct, especially for complex or nuanced questions.
     e.  Ensure each question has a unique 'id' (e.g., "q1", "q2", ... "q{{{numQuestions}}}").
-4.  The overall quiz should have a 'title', like "Quiz: {{{playlistTitle}}}".
-5.  Ensure your output strictly follows the 'GeneratePlaylistQuizOutputSchema' JSON format.
+5.  The overall quiz should have a 'title', like "Quiz: {{{playlistTitle}}}".
+6.  Ensure your output strictly follows the 'GeneratePlaylistQuizOutputSchema' JSON format.
 
 Focus on creating questions that test important information and concepts presented in the content. Avoid overly trivial or obscure details unless they are central to the material.
-Make sure distractors are believable but clearly incorrect based on the provided content.
+Make sure distractors are believable but clearly incorrect based on the provided content and selected difficulty.
 `,
 });
 
@@ -77,13 +83,12 @@ const generatePlaylistQuizFlow = ai.defineFlow(
     const {output} = await quizGenerationPrompt(input);
     if (!output) {
         console.error('AI did not return an output for quiz generation.');
-        // Return a default empty state or a minimal quiz
         return { title: `Quiz: ${input.playlistTitle} (Error)`, questions: [] };
     }
-    // Ensure questions is an array, even if AI messes up
     return {
         title: output.title || `Quiz: ${input.playlistTitle}`,
         questions: Array.isArray(output.questions) ? output.questions : [],
     };
   }
 );
+

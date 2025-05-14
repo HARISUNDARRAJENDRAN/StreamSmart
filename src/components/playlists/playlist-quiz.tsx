@@ -9,8 +9,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2Icon, LightbulbIcon, CheckCircle2Icon, XCircleIcon, RefreshCwIcon, ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
+import { Loader2Icon, LightbulbIcon, CheckCircle2Icon, XCircleIcon, RefreshCwIcon, ArrowLeftIcon, ArrowRightIcon, SettingsIcon, PlayIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 interface PlaylistQuizProps {
   playlistId: string;
@@ -18,37 +20,44 @@ interface PlaylistQuizProps {
   playlistContent: string;
 }
 
-const NUM_QUESTIONS_TO_GENERATE = 5;
+type QuizDifficulty = 'easy' | 'medium' | 'hard';
 
 export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: PlaylistQuizProps) {
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<{ [key: string]: number }>({}); // Store answers by question id
+  const [userAnswers, setUserAnswers] = useState<{ [key: string]: number }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
-  const fetchQuiz = async () => {
+  const [showSettings, setShowSettings] = useState(true);
+  const [numQuestions, setNumQuestions] = useState(5);
+  const [difficulty, setDifficulty] = useState<QuizDifficulty>('medium');
+
+  const handleFetchQuiz = async () => {
     setIsLoading(true);
     setError(null);
     setQuiz(null);
     setUserAnswers({});
     setCurrentQuestionIndex(0);
     setIsSubmitted(false);
+    setShowSettings(false); // Move to quiz view once generation starts
 
     try {
       const input: GeneratePlaylistQuizInput = {
         playlistTitle: playlistTitle,
         playlistContent: playlistContent,
-        numQuestions: NUM_QUESTIONS_TO_GENERATE,
+        numQuestions: numQuestions,
+        difficulty: difficulty,
       };
       const result = await generatePlaylistQuiz(input);
       if (result && result.questions.length > 0) {
         setQuiz(result);
       } else {
-        setError('The AI could not generate a quiz for this playlist. There might not be enough content, or the content is too abstract. Try a different playlist or add more descriptive video summaries.');
-        setQuiz({ title: `Quiz: ${playlistTitle}`, questions: [] }); // Empty quiz
+        setError('The AI could not generate a quiz for this playlist with the current settings. There might not be enough content, or the content is too abstract. Try different settings or a different playlist.');
+        setQuiz({ title: `Quiz: ${playlistTitle}`, questions: [] }); 
+        setShowSettings(true); // Go back to settings on error
       }
     } catch (err: any) {
       console.error('Error generating quiz:', err);
@@ -58,17 +67,23 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
         description: `Could not create a quiz. ${err.message || 'Please try again.'}`,
         variant: "destructive",
       });
+      setShowSettings(true); // Go back to settings on error
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Initial effect to ensure settings are shown if no quiz is loaded
   useEffect(() => {
-    if (playlistContent) {
-      fetchQuiz();
+    if (!playlistContent) {
+        setError("Playlist content is not available to generate a quiz.");
+        setShowSettings(true);
+    } else if (!quiz && !isLoading && !error) {
+        setShowSettings(true); // Default to showing settings if no quiz is loaded and not currently loading/error
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playlistContent, playlistTitle]); // Removed playlistId, fetchQuiz as it's stable
+  }, [playlistContent]);
+
 
   const handleAnswerSelect = (questionId: string, optionIndex: number) => {
     setUserAnswers((prev) => ({ ...prev, [questionId]: optionIndex }));
@@ -94,7 +109,83 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
     });
   };
 
-  if (isLoading) {
+  const handleNumQuestionsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (value >= 1 && value <= 10) {
+      setNumQuestions(value);
+    } else if (e.target.value === '') {
+      setNumQuestions(1); // Or some other default/handling for empty input
+    }
+  };
+  
+  const resetQuizAndShowSettings = () => {
+    setQuiz(null);
+    setError(null);
+    setIsSubmitted(false);
+    setCurrentQuestionIndex(0);
+    setUserAnswers({});
+    setShowSettings(true);
+  };
+
+
+  if (showSettings || isLoading && !quiz) {
+    return (
+      <Card className="w-full p-6 min-h-[400px] flex flex-col justify-center">
+        <CardHeader>
+          <CardTitle className="flex items-center"><SettingsIcon className="mr-2 h-6 w-6 text-primary"/>Quiz Settings</CardTitle>
+          <CardDescription>Customize your quiz experience for "{playlistTitle}".</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="numQuestions">Number of Questions (1-10)</Label>
+            <Input
+              id="numQuestions"
+              type="number"
+              min="1"
+              max="10"
+              value={numQuestions}
+              onChange={handleNumQuestionsChange}
+              disabled={isLoading}
+              className="w-full"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="difficulty">Difficulty Level</Label>
+            <Select
+              value={difficulty}
+              onValueChange={(value: string) => setDifficulty(value as QuizDifficulty)}
+              disabled={isLoading}
+            >
+              <SelectTrigger id="difficulty" className="w-full">
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="easy">Easy</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="hard">Hard</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {error && (
+            <Alert variant="destructive">
+              <XCircleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+        </CardContent>
+        <CardFooter>
+          <Button onClick={handleFetchQuiz} disabled={isLoading || !playlistContent} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+            {isLoading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : <PlayIcon className="mr-2 h-4 w-4" />}
+            {isLoading ? 'Generating Quiz...' : 'Start Quiz'}
+          </Button>
+        </CardFooter>
+      </Card>
+    );
+  }
+
+
+  if (isLoading) { // This covers loading after settings are submitted
     return (
       <Card className="w-full min-h-[400px] flex flex-col items-center justify-center">
         <Loader2Icon className="h-12 w-12 animate-spin text-primary mb-4" />
@@ -102,30 +193,31 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
       </Card>
     );
   }
-
-  if (error) {
+  
+  // This error handles errors AFTER attempting to fetch quiz (not initial config errors)
+  if (error && !showSettings) { 
     return (
       <Alert variant="destructive" className="mb-4">
         <XCircleIcon className="h-4 w-4" />
         <AlertTitle>Error Generating Quiz</AlertTitle>
         <AlertDescription>{error}</AlertDescription>
-         <Button onClick={fetchQuiz} variant="outline" size="sm" className="mt-4">
-          <RefreshCwIcon className="mr-2 h-4 w-4" /> Try Again
+         <Button onClick={resetQuizAndShowSettings} variant="outline" size="sm" className="mt-4">
+          <RefreshCwIcon className="mr-2 h-4 w-4" /> Change Settings & Try Again
         </Button>
       </Alert>
     );
   }
 
   if (!quiz || quiz.questions.length === 0) {
-    return (
+     return (
       <Card className="w-full min-h-[400px] flex flex-col items-center justify-center text-center p-6">
         <LightbulbIcon className="h-12 w-12 text-muted-foreground mb-4" />
         <CardTitle className="mb-2">No Quiz Available</CardTitle>
         <CardDescription>
-          The AI couldn't create a quiz for this playlist. This can happen if there's not enough textual content (like detailed video summaries or transcripts) or if the content is very abstract.
+          The AI couldn't create a quiz for this playlist with the selected settings. This can happen if there's not enough textual content or if the content is very abstract.
         </CardDescription>
-        <Button onClick={fetchQuiz} variant="outline" size="sm" className="mt-6">
-          <RefreshCwIcon className="mr-2 h-4 w-4" /> Attempt to Regenerate Quiz
+        <Button onClick={resetQuizAndShowSettings} variant="outline" size="sm" className="mt-6">
+          <RefreshCwIcon className="mr-2 h-4 w-4" /> Change Settings & Regenerate
         </Button>
       </Card>
     );
@@ -164,9 +256,12 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
             </div>
           ))}
         </CardContent>
-        <CardFooter className="flex justify-center mt-6">
-          <Button onClick={fetchQuiz} variant="default">
-            <RefreshCwIcon className="mr-2 h-4 w-4" /> Retake Quiz
+        <CardFooter className="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+          <Button onClick={resetQuizAndShowSettings} variant="default">
+            <RefreshCwIcon className="mr-2 h-4 w-4" /> New Quiz (Change Settings)
+          </Button>
+           <Button onClick={handleFetchQuiz} variant="outline">
+            <RefreshCwIcon className="mr-2 h-4 w-4" /> Retake Same Quiz
           </Button>
         </CardFooter>
       </Card>
@@ -176,7 +271,7 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
   return (
     <Card className="w-full p-6">
       <CardHeader>
-        <CardTitle>{quiz.title}</CardTitle>
+        <CardTitle>{quiz.title} ({difficulty}, {numQuestions} questions)</CardTitle>
         <CardDescription>
           Question {currentQuestionIndex + 1} of {quiz.questions.length}
         </CardDescription>
@@ -197,23 +292,31 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
         </RadioGroup>
       </CardContent>
       <CardFooter className="flex justify-between mt-6">
-        <Button
-          onClick={handlePreviousQuestion}
-          disabled={currentQuestionIndex === 0}
-          variant="outline"
-        >
-          <ArrowLeftIcon className="mr-2 h-4 w-4"/> Previous
-        </Button>
-        {currentQuestionIndex < quiz.questions.length - 1 ? (
-          <Button onClick={handleNextQuestion} variant="outline">
-            Next <ArrowRightIcon className="ml-2 h-4 w-4"/>
-          </Button>
-        ) : (
-          <Button onClick={handleSubmitQuiz} variant="default" className="bg-green-600 hover:bg-green-700 text-white">
-            <CheckCircle2Icon className="mr-2 h-4 w-4"/> Submit Quiz
-          </Button>
-        )}
+         <div>
+            <Button onClick={resetQuizAndShowSettings} variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                <SettingsIcon className="mr-2 h-4 w-4"/> Change Settings
+            </Button>
+        </div>
+        <div className="flex gap-2">
+            <Button
+            onClick={handlePreviousQuestion}
+            disabled={currentQuestionIndex === 0}
+            variant="outline"
+            >
+            <ArrowLeftIcon className="mr-2 h-4 w-4"/> Previous
+            </Button>
+            {currentQuestionIndex < quiz.questions.length - 1 ? (
+            <Button onClick={handleNextQuestion} variant="outline">
+                Next <ArrowRightIcon className="ml-2 h-4 w-4"/>
+            </Button>
+            ) : (
+            <Button onClick={handleSubmitQuiz} variant="default" className="bg-green-600 hover:bg-green-700 text-white">
+                <CheckCircle2Icon className="mr-2 h-4 w-4"/> Submit Quiz
+            </Button>
+            )}
+        </div>
       </CardFooter>
     </Card>
   );
 }
+
