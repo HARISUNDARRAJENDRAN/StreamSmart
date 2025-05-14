@@ -16,7 +16,6 @@ import ReactFlow, {
   type Edge,
   type OnNodesChange,
   type OnEdgesChange,
-  MiniMap,
   BackgroundVariant,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
@@ -183,7 +182,6 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
           attributionPosition="bottom-right"
         >
           <Controls />
-          <MiniMap nodeStrokeWidth={3} zoomable pannable />
           <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
         </ReactFlow>
       )}
@@ -241,5 +239,3 @@ export function MindMapDisplay({ playlistTitle, playlistId }: MindMapDisplayProp
     </Card>
   );
 }
-
-    
