@@ -163,7 +163,7 @@ export default function PlaylistDetailPage() {
 
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 max-h-[calc(100vh-theme(space.24))]"> {/* Adjust max-h based on header height */}
+    <div className="flex flex-col lg:flex-row gap-6"> {/* Removed max-h constraint here */}
       {/* Main Content Area (Video Player + Tabs) */}
       <div className="lg:w-2/3 flex flex-col gap-6">
         {currentVideo && <VideoPlayer videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />}
@@ -248,7 +248,11 @@ export default function PlaylistDetailPage() {
             <CardDescription>Select a video to play. ({playlist.videos.length} total)</CardDescription>
           </CardHeader>
           <CardContent className="p-0 flex-grow overflow-hidden">
-            <ScrollArea className="h-full max-h-[calc(100vh-theme(space.48)-100px)]"> {/* Adjust height */}
+            {/* Adjusted max-h calculation slightly for ScrollArea; you may need to fine-tune this 
+                based on actual header/footer heights within this card if overflow issues persist. 
+                The primary goal is to ensure this ScrollArea doesn't try to be infinitely tall.
+            */}
+            <ScrollArea className="h-full max-h-[calc(100vh-theme(spacing.24)-theme(spacing.12)-4rem)]"> {/* Heuristic adjustment */}
               <div className="p-2 space-y-1">
                 {playlist.videos.map((video) => (
                   <VideoProgressItem
@@ -269,5 +273,3 @@ export default function PlaylistDetailPage() {
     </div>
   );
 }
-
-    
