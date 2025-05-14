@@ -25,9 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    // The className="dark" is removed to make the :root styles (now dark themed) the default.
-    // If you want explicit dark mode switching later, you'd re-add a toggled class here.
-    <html lang="en"> 
+    <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <Toaster />
@@ -35,4 +33,3 @@ export default function RootLayout({
     </html>
   );
 }
-
