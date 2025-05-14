@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -13,6 +14,17 @@ interface VideoProgressItemProps {
 }
 
 export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgressItemProps) {
+  // Prioritize video.thumbnail if it's a valid string and looks like a URL.
+  // Otherwise, use a placeholder with the video title or a generic "Video" text.
+  let imgSrc = `https://placehold.co/120x68.png?text=${encodeURIComponent(video.title?.substring(0,10) || 'Video')}`;
+  if (typeof video.thumbnail === 'string' && (video.thumbnail.startsWith('http://') || video.thumbnail.startsWith('https://'))) {
+    imgSrc = video.thumbnail;
+  }
+  
+  // A distinct fallback for the onError event of the Image component
+  const errorFallbackSrc = `https://placehold.co/120x68.png?text=Err`;
+
+
   return (
     <button
       onClick={() => onSelectVideo(video)}
@@ -22,16 +34,22 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       )}
       aria-current={isActive ? "true" : "false"}
-      aria-label={`Play video: ${video.title}`}
+      aria-label={`Play video: ${video.title || 'Untitled Video'}`}
     >
       <div className="relative shrink-0">
         <Image
-          src={video.thumbnail || `https://placehold.co/120x68.png?text=${encodeURIComponent(video.title.substring(0,5))}`}
-          alt={video.title}
+          src={imgSrc}
+          alt={video.title || 'Video thumbnail'}
           width={120}
           height={68}
           className="rounded-md aspect-video object-cover border"
           data-ai-hint="video thumbnail"
+          onError={(e) => {
+            // Prevent an infinite loop if the errorFallbackSrc itself fails
+            if (e.currentTarget.src !== errorFallbackSrc) {
+              e.currentTarget.src = errorFallbackSrc;
+            }
+          }}
         />
         {isActive && (
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
@@ -40,16 +58,16 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
         )}
       </div>
       <div className="flex-grow overflow-hidden">
-        <h4 className="text-sm font-medium truncate" title={video.title}>
-          {video.title}
+        <h4 className="text-sm font-medium truncate" title={video.title || 'Untitled Video'}>
+          {video.title || 'Untitled Video'}
         </h4>
-        <p className="text-xs text-muted-foreground mb-1">{video.duration}</p>
+        <p className="text-xs text-muted-foreground mb-1">{video.duration || 'N/A'}</p>
         <div className="flex items-center gap-2">
-          <Progress value={video.completionStatus} className="h-1.5 w-full" aria-label={`${video.title} progress ${video.completionStatus}%`} />
+          <Progress value={video.completionStatus || 0} className="h-1.5 w-full" aria-label={`${video.title || 'Video'} progress ${video.completionStatus || 0}%`} />
           <span className="text-xs text-muted-foreground w-8 text-right">
-            {video.completionStatus}%
+            {video.completionStatus || 0}%
           </span>
-          {video.completionStatus === 100 && (
+          {(video.completionStatus === 100) && (
             <CheckCircle2Icon className="h-4 w-4 text-green-500 shrink-0" />
           )}
         </div>
@@ -57,3 +75,4 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
     </button>
   );
 }
+    
