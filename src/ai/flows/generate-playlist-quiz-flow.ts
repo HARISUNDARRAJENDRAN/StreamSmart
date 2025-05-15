@@ -8,9 +8,53 @@
  * - GeneratePlaylistQuizOutput - The return type (Quiz data).
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-import type { Quiz, QuizQuestion } from '@/types'; // Assuming Quiz types are in src/types
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
+import { z } from 'zod';
+import type { Quiz as AppQuiz, QuizQuestion as AppQuizQuestion } from '@/types'; // Renamed to avoid conflict
+
+const MODEL_NAME = "gemini-1.5-flash-latest";
+const API_KEY = process.env.GEMINI_API_KEY;
+
+const generationConfig = {
+  temperature: 0.7,
+  topK: 1,
+  topP: 1,
+  maxOutputTokens: 4096, 
+  responseMimeType: "application/json",
+};
+
+const safetySettings = [
+  { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+  { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+  { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+  { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+];
+
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+  if (!API_KEY) {
+    throw new Error("GEMINI_API_KEY is not set in .env file.");
+  }
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({
+    model: MODEL_NAME,
+    generationConfig,
+    safetySettings
+  });
+
+  const fullPrompt = [
+      ...promptParts,
+      {text: "\n\nProduce JSON output that strictly adheres to the following Zod schema. Do not include any markdown formatting (e.g. ```json ... ```) around the JSON output:\n" + JSON.stringify(zodSchema, null, 2)}
+  ];
+
+  const result = await model.generateContent({ contents: [{ role: "user", parts: fullPrompt }] });
+  try {
+    const text = result.response.text();
+    return JSON.parse(text);
+  } catch (e) {
+    console.error("Failed to parse AI JSON output for generatePlaylistQuiz:", result.response.text(), e);
+    throw new Error("The AI returned an unexpected response. Please try again.");
+  }
+}
 
 const QuizQuestionSchema = z.object({
   id: z.string().describe('A unique identifier for this question (e.g., "q1", "q2").'),
@@ -36,59 +80,49 @@ export type GeneratePlaylistQuizOutput = z.infer<typeof GeneratePlaylistQuizOutp
 
 
 export async function generatePlaylistQuiz(input: GeneratePlaylistQuizInput): Promise<GeneratePlaylistQuizOutput> {
-  return generatePlaylistQuizFlow(input);
-}
+  const zodJsonSchema = GeneratePlaylistQuizOutputSchema.openapi('GeneratePlaylistQuizOutput');
 
-const quizGenerationPrompt = ai.definePrompt({
-  name: 'generatePlaylistQuizPrompt',
-  input: {schema: GeneratePlaylistQuizInputSchema},
-  output: {schema: GeneratePlaylistQuizOutputSchema},
-  prompt: `
+  const prompt = `
 You are an AI expert specializing in creating educational quizzes from textual content.
-Your task is to generate a multiple-choice quiz based on the provided playlist information and selected difficulty.
+Your task is to generate a multiple-choice quiz based on the provided playlist information, desired number of questions, and selected difficulty.
 
-Playlist Title: {{{playlistTitle}}}
+Playlist Title: "${input.playlistTitle}"
 Content to Base Quiz On:
-{{{playlistContent}}}
-Difficulty Level: {{{difficulty}}}
+"""
+${input.playlistContent}
+"""
+Number of Questions to Generate: ${input.numQuestions}
+Difficulty Level: ${input.difficulty}
 
 Instructions:
-1.  Analyze the 'Playlist Title' and 'Content to Base Quiz On' to understand the key topics and concepts.
-2.  Generate exactly {{{numQuestions}}} unique multiple-choice questions.
-3.  Adjust the complexity of questions based on the 'Difficulty Level':
-    *   'easy': Focus on straightforward facts, definitions, and main ideas. Options should have one clearly correct answer and obvious distractors.
-    *   'medium': Questions may require some interpretation, comparison, or connection of concepts. Distractors might be more plausible.
-    *   'hard': Questions should involve deeper analysis, synthesis of information, application of knowledge, or nuanced distinctions. Distractors should be very plausible.
+1.  Thoroughly analyze the 'Playlist Title' and 'Content to Base Quiz On' to understand the key topics, concepts, and information presented.
+2.  Generate exactly ${input.numQuestions} unique multiple-choice questions that accurately test understanding of the provided content.
+3.  Adjust the complexity of questions and the plausibility of distractors based on the 'Difficulty Level':
+    *   'easy': Focus on straightforward facts, definitions, and main ideas directly stated in the content. Options should have one clearly correct answer and obvious distractors.
+    *   'medium': Questions may require some interpretation, comparison, or connection of concepts from the content. Distractors should be plausible but incorrect.
+    *   'hard': Questions should involve deeper analysis, synthesis of information from different parts of the content, application of knowledge, or nuanced distinctions. Distractors should be very plausible and subtle.
 4.  For each question:
-    a.  Formulate a clear and concise 'questionText' appropriate for the difficulty.
-    b.  Provide exactly four 'options'. Three should be plausible distractors (matching difficulty), and one must be the correct answer.
-    c.  Specify the 'correctAnswerIndex' (0-3) corresponding to the correct option.
-    d.  Optionally, provide a brief 'explanation' for why the answer is correct, especially for complex or nuanced questions.
-    e.  Ensure each question has a unique 'id' (e.g., "q1", "q2", ... "q{{{numQuestions}}}").
-5.  The overall quiz should have a 'title', like "Quiz: {{{playlistTitle}}}".
-6.  Ensure your output strictly follows the 'GeneratePlaylistQuizOutputSchema' JSON format.
+    a.  Formulate a clear and concise 'questionText' appropriate for the difficulty level and based on the content.
+    b.  Provide exactly four 'options'. Three should be plausible distractors (matching the difficulty), and one must be the correct answer based on the content.
+    c.  Specify the 'correctAnswerIndex' (0-3) corresponding to the correct option in the 'options' array.
+    d.  Provide a brief 'explanation' for why the correct answer is right, especially for medium or hard questions, or if the concept is nuanced. This explanation should also be based on the provided content.
+    e.  Ensure each question has a unique 'id' string (e.g., "q1", "q2", ... "q${input.numQuestions}").
+5.  The overall quiz should have a 'title', like "Quiz: ${input.playlistTitle}".
+6.  Ensure your entire output strictly follows the JSON format defined by the 'GeneratePlaylistQuizOutputSchema'.
 
-Focus on creating questions that test important information and concepts presented in the content. Avoid overly trivial or obscure details unless they are central to the material.
-Make sure distractors are believable but clearly incorrect based on the provided content and selected difficulty.
-`,
-});
+Focus on creating high-quality questions that test important information and concepts presented in the content. Avoid overly trivial or obscure details unless they are central to the material.
+Make sure distractors are believable but unambiguously incorrect based on the provided content and selected difficulty.
+If the content is too short or unsuitable for generating the requested number of questions at the specified difficulty, generate as many high-quality questions as possible up to the requested number. If no questions can be generated, return an empty 'questions' array.
+`;
 
-const generatePlaylistQuizFlow = ai.defineFlow(
-  {
-    name: 'generatePlaylistQuizFlow',
-    inputSchema: GeneratePlaylistQuizInputSchema,
-    outputSchema: GeneratePlaylistQuizOutputSchema,
-  },
-  async (input: GeneratePlaylistQuizInput) => {
-    const {output} = await quizGenerationPrompt(input);
-    if (!output) {
-        console.error('AI did not return an output for quiz generation.');
-        return { title: `Quiz: ${input.playlistTitle} (Error)`, questions: [] };
-    }
-    return {
-        title: output.title || `Quiz: ${input.playlistTitle}`,
-        questions: Array.isArray(output.questions) ? output.questions : [],
-    };
+  const aiOutput = await runChat([{text: prompt}], zodJsonSchema);
+  const parsedOutput = GeneratePlaylistQuizOutputSchema.parse(aiOutput);
+
+  if (!parsedOutput) {
+      return { title: `Quiz: ${input.playlistTitle} (Error)`, questions: [] };
   }
-);
-
+  return {
+      title: parsedOutput.title || `Quiz: ${input.playlistTitle}`,
+      questions: Array.isArray(parsedOutput.questions) ? parsedOutput.questions : [],
+  };
+}
