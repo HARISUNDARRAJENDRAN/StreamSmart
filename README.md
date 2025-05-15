@@ -139,3 +139,4 @@ Hari Sundar Rajendran
 ---
 
 This README provides a good starting point. Feel free to expand on it as your project evolves!
+# StreamSmart
