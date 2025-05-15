@@ -16,7 +16,7 @@ export default function DashboardPage() {
         <h1 className="text-4xl font-bold text-primary-foreground mb-2">Welcome back, {userName}!</h1>
         <p className="text-lg text-primary-foreground/90 mb-6">Ready to dive back into your learning journey?</p>
         <Link href="/playlists/create">
-          <Button size="lg" className="bg-background text-foreground hover:bg-background/90">
+          <Button size="lg" className="bg-background text-foreground hover:bg-background/90 transition-transform duration-300 hover:scale-105">
             <PlusCircleIcon className="mr-2 h-5 w-5" />
             Create New Playlist
           </Button>
@@ -28,7 +28,7 @@ export default function DashboardPage() {
         {userPlaylists.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {userPlaylists.map((playlist) => (
-              <Card key={playlist.id} className="overflow-hidden shadow-md hover:shadow-primary/50 transition-shadow duration-300">
+              <Card key={playlist.id} className="overflow-hidden shadow-md hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1">
                 <Link href={`/playlists/${playlist.id}`} className="block">
                   <CardHeader className="p-0">
                     <Image 
@@ -67,10 +67,10 @@ export default function DashboardPage() {
             <CardDescription className="mb-4">Start by creating a new playlist to organize your learning, or check out your existing playlists.</CardDescription>
             <div className="flex justify-center gap-4">
               <Link href="/playlists/create">
-                <Button variant="outline">Create New Playlist</Button>
+                <Button variant="outline" className="transition-transform duration-300 hover:scale-105">Create New Playlist</Button>
               </Link>
               <Link href="/playlists">
-                <Button variant="default">View My Playlists</Button>
+                <Button variant="default" className="transition-transform duration-300 hover:scale-105">View My Playlists</Button>
               </Link>
             </div>
           </Card>
@@ -80,26 +80,26 @@ export default function DashboardPage() {
       <section>
         <h2 className="text-2xl font-semibold mb-4 text-primary">Discover</h2>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-accent/50 transition-shadow duration-300">
+          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-accent/50 transition-all duration-300 transform hover:-translate-y-1">
             <ZapIcon className="h-10 w-10 text-accent mb-3" />
             <CardTitle className="text-lg mb-2">AI Video Recommendations</CardTitle>
             <CardDescription className="text-sm text-muted-foreground mb-4">
               Get smart suggestions based on your learning patterns.
             </CardDescription>
             <Link href="/playlists/create"> 
-              <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+              <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground transition-transform duration-300 hover:scale-105">
                 Suggest Videos
               </Button>
             </Link>
           </Card>
-          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-primary/50 transition-shadow duration-300">
+          <Card className="p-6 flex flex-col items-center justify-center text-center shadow-md hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1">
              <BookOpenCheckIcon className="h-10 w-10 text-primary mb-3" />
             <CardTitle className="text-lg mb-2">View Your Progress</CardTitle>
             <CardDescription className="text-sm text-muted-foreground mb-4">
               Track your learning journey and achievements.
             </CardDescription>
             <Link href="/progress">
-              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+              <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-transform duration-300 hover:scale-105">
                 See Progress Details
               </Button>
             </Link>

@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CheckCircle2Icon, BarChart3Icon } from 'lucide-react';
@@ -46,7 +47,7 @@ export default function LandingPage() {
             Create AI-curated playlists, visualize concepts with mind maps, and test your knowledge with dynamic quizzes.
           </p>
           <Link href="/login" passHref>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-primary/50 transition-shadow">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-primary/60 transition-shadow duration-300">
               Get Started for Free
             </Button>
           </Link>
@@ -64,7 +65,7 @@ export default function LandingPage() {
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature) => (
-              <Card key={feature.title} className="bg-card shadow-xl hover:shadow-primary/30 transition-shadow duration-300 flex flex-col text-center p-6 rounded-xl">
+              <Card key={feature.title} className="bg-card shadow-xl hover:shadow-primary/40 transition-all duration-300 transform hover:-translate-y-1 flex flex-col text-center p-6 rounded-xl">
                 <CardHeader className="items-center p-0">
                   {feature.icon}
                   <CardTitle className="text-xl font-semibold mb-2">{feature.title}</CardTitle>
@@ -85,21 +86,21 @@ export default function LandingPage() {
             Start Learning in <span className="text-primary">3 Simple Steps</span>
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <div className="flex flex-col items-center text-center p-6">
+            <div className="flex flex-col items-center text-center p-6 transition-transform duration-300 hover:scale-105">
               <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">1</div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Build Your Playlist</h3>
               <p className="text-muted-foreground">
                 Manually add YouTube videos or let our AI suggest content based on your learning goals.
               </p>
             </div>
-            <div className="flex flex-col items-center text-center p-6">
+            <div className="flex flex-col items-center text-center p-6 transition-transform duration-300 hover:scale-105">
               <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">2</div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Learn Interactively</h3>
               <p className="text-muted-foreground">
                 Engage with AI-generated mind maps, take quizzes, and chat with our AI assistant about your playlist content.
               </p>
             </div>
-            <div className="flex flex-col items-center text-center p-6">
+            <div className="flex flex-col items-center text-center p-6 transition-transform duration-300 hover:scale-105">
               <div className="bg-primary text-primary-foreground rounded-full w-16 h-16 flex items-center justify-center text-2xl font-bold mb-6 shadow-lg">3</div>
               <h3 className="text-xl font-semibold mb-2 text-foreground">Track & Grow</h3>
               <p className="text-muted-foreground">
@@ -120,7 +121,7 @@ export default function LandingPage() {
             Join StreamSmart today and experience a smarter, more effective way to learn from YouTube.
           </p>
           <Link href="/login" passHref>
-            <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90 text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-md transition-shadow">
+            <Button size="lg" variant="secondary" className="bg-background text-foreground hover:bg-background/90 text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
               Sign Up Now & Learn Smarter
             </Button>
           </Link>
