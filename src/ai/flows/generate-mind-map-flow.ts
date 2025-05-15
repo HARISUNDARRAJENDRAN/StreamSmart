@@ -91,7 +91,7 @@ export type GenerateMindMapOutput = z.infer<typeof GenerateMindMapOutputSchema>;
 
 
 export async function generateMindMap(input: GenerateMindMapInput): Promise<GenerateMindMapOutput> {
-  const zodJsonSchema = GenerateMindMapOutputSchema.openapi('GenerateMindMapOutput');
+  const zodJsonSchema = GenerateMindMapOutputSchema; // Removed .openapi() call
   
   const prompt = `
 You are an AI assistant specialized in creating structured mind maps from provided text, titles, or YouTube video URLs.

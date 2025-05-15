@@ -107,7 +107,7 @@ export async function generateVideoRecommendations(
   }));
 
   // Step 2: Pass these results to the AI for selection and refined summarization
-  const zodJsonSchema = GenerateVideoRecommendationsOutputSchema.openapi('GenerateVideoRecommendationsOutput');
+  const zodJsonSchema = GenerateVideoRecommendationsOutputSchema; // Removed .openapi() call
   
   const prompt = `
 You are an AI YouTube video recommendation expert.
@@ -161,3 +161,4 @@ Instructions:
   console.log('Received recommendations from AI:', finalRecommendedVideos);
   return { recommendedVideos: finalRecommendedVideos };
 }
+

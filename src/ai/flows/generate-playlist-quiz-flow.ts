@@ -80,7 +80,7 @@ export type GeneratePlaylistQuizOutput = z.infer<typeof GeneratePlaylistQuizOutp
 
 
 export async function generatePlaylistQuiz(input: GeneratePlaylistQuizInput): Promise<GeneratePlaylistQuizOutput> {
-  const zodJsonSchema = GeneratePlaylistQuizOutputSchema.openapi('GeneratePlaylistQuizOutput');
+  const zodJsonSchema = GeneratePlaylistQuizOutputSchema; // Removed .openapi() call
 
   const prompt = `
 You are an AI expert specializing in creating educational quizzes from textual content.
@@ -126,3 +126,4 @@ If the content is too short or unsuitable for generating the requested number of
       questions: Array.isArray(parsedOutput.questions) ? parsedOutput.questions : [],
   };
 }
+

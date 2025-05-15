@@ -78,25 +78,29 @@ export type AnswerPlaylistQuestionOutput = z.infer<
 export async function answerPlaylistQuestion(
   input: AnswerPlaylistQuestionInput
 ): Promise<AnswerPlaylistQuestionOutput> {
-  const zodJsonSchema = AnswerPlaylistQuestionOutputSchema.openapi('AnswerPlaylistQuestionOutput');
+  const zodJsonSchema = AnswerPlaylistQuestionOutputSchema; // Removed .openapi() call
 
   const prompt = `You are an AI assistant for YouTube playlists.
-You have access to the following:
-- Specific Playlist Content (video titles, descriptions, transcripts).
-- Your general knowledge.
+You have access to the following sources of information:
+1. Specific Playlist Content (video titles, descriptions, transcripts).
+2. Your General Knowledge.
 
-User's Question: ${input.question}
+User's Question: "${input.question}"
 
 Playlist Content (use this as the primary source):
+"""
 ${input.playlistContent}
+"""
 
 Please follow these steps to construct your answer:
 1.  Carefully analyze the 'Playlist Content' to see if it directly answers the 'User's Question'.
 2.  If a clear answer is found in the 'Playlist Content', provide a concise answer directly derived from it.
-3.  If the 'Playlist Content' does NOT contain a direct answer, then use your 'General Knowledge' to answer the question. If you use general knowledge, YOU MUST explicitly state this by beginning your response with: "Based on my general knowledge,".
+3.  If the 'Playlist Content' does NOT contain a direct answer, then use your 'General Knowledge' to answer the question.
+    If you use general knowledge, YOU MUST explicitly state this by beginning your response with: "Based on my general knowledge,".
 4.  If you cannot answer the question using either the 'Playlist Content' or your 'General Knowledge', then respond with: "I am unable to answer that question at this time."
 5.  Ensure your final output is only the answer text.`;
 
   const aiOutput = await runChat([{text: prompt}], zodJsonSchema);
   return AnswerPlaylistQuestionOutputSchema.parse(aiOutput);
 }
+
