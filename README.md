@@ -19,7 +19,7 @@ StreamSmart is a Next.js application designed to transform your YouTube viewing 
 *   **AI Chatbot**:
     *   Ask questions about your playlist content and get AI-assisted answers.
 *   **Progress Tracking**:
-    *   UI to track overall learning progress, completed videos, and time spent (currently simulates data from localStorage).
+    *   UI to track overall learning progress, completed videos, and time spent (simulates data from localStorage).
     *   Manually mark videos as complete/incomplete.
 *   **User Authentication (Mock)**:
     *   Basic login page flow.
@@ -41,7 +41,7 @@ StreamSmart is a Next.js application designed to transform your YouTube viewing 
     *   [Lucide React](https://lucide.dev/) (Icons)
     *   [Recharts](https://recharts.org/) (For Charts)
 *   **AI Integration**:
-    *   [Genkit (Firebase Genkit)](https://firebase.google.com/docs/genkit)
+    *   [Genkit](https://firebase.google.com/docs/genkit)
     *   Google Gemini Models (e.g., `gemini-2.0-flash`)
 *   **Form Handling & Validation**:
     *   [React Hook Form](https://react-hook-form.com/)
