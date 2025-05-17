@@ -94,14 +94,7 @@ To get a local copy up and running, follow these simple steps.
     ```
     *   You can obtain a YouTube Data API key from the [Google Cloud Console](https://console.cloud.google.com/). Make sure the "YouTube Data API v3" is enabled for your project.
 
-4.  **Run the Genkit Development Server:**
-    Genkit flows (like AI recommendations, quiz generation) run on a separate development server. Open a new terminal window and run:
-    ```bash
-    npm run genkit:watch
-    ```
-    This will start the Genkit server and watch for changes in your AI flow files.
-
-5.  **Run the Next.js Development Server:**
+4.  **Run the Next.js Development Server:**
     In another terminal window, run:
     ```bash
     npm run dev

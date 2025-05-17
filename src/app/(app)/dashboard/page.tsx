@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { PlusCircleIcon, BookOpenCheckIcon, ZapIcon } from 'lucide-react';
@@ -8,7 +7,7 @@ import Link from 'next/link';
 export default function DashboardPage() {
   // Using an empty array as playlists will be dynamically loaded or user-created
   const userPlaylists: any[] = []; 
-  const userName = "Alex"; // Placeholder for actual user name
+  const userName = "Learner"; // Changed from 'Alex' to 'Learner'
 
   return (
     <div className="space-y-8">
