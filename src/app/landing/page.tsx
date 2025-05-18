@@ -9,7 +9,7 @@ const features = [
   {
     icon: <ListVideoIcon className="h-10 w-10 text-primary mb-4" />,
     title: 'AI-Powered Playlists',
-    description: 'Describe your learning goal, and let our AI curate relevant YouTube videos into a structured playlist for you.',
+    description: 'Describe your learning goal, and let our AI generate relevant YouTube videos into a structured playlist for you.',
     dataAiHint: 'playlist creation',
   },
   {
@@ -44,7 +44,7 @@ export default function LandingPage() {
           </h1>
           <p className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground mb-10">
             Tired of endless scrolling? StreamSmart transforms YouTube into your personalized learning powerhouse. 
-            Create AI-curated playlists, visualize concepts with mind maps, and test your knowledge with dynamic quizzes.
+            Create AI-generated playlists, visualize concepts with mind maps, and test your knowledge with dynamic quizzes.
           </p>
           <Link href="/login" passHref>
             <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-primary/60 transition-shadow duration-300">
