@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -21,6 +20,7 @@ const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
   { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
+  { href: '/about', label: 'About', icon: HelpCircleIcon },
   // Add more items as needed e.g. AI Chatbot global access if any
 ];
 

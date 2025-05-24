@@ -1,10 +1,9 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, PlayCircleIcon } from 'lucide-react';
+import { PlusCircleIcon, ListVideoIcon, Edit3Icon, Trash2Icon, CirclePlay } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Playlist } from '@/types';
@@ -124,7 +123,7 @@ export default function PlaylistsPage() {
                     onError={(e) => { e.currentTarget.src = `https://placehold.co/400x240.png?text=Error`; }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <PlayCircleIcon className="h-16 w-16 text-white/80" />
+                    <CirclePlay className="h-16 w-16 text-white/80" />
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 flex-grow">

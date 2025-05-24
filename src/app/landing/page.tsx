@@ -2,36 +2,77 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CheckCircle2Icon, BarChart3Icon, BookOpenIcon, UsersIcon } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const features = [
   {
-    icon: <ListVideoIcon className="h-10 w-10 text-primary mb-4" />,
-    title: 'AI-Powered Playlists',
-    description: 'Describe your learning goal, and let our AI generate relevant YouTube videos into a structured playlist for you.',
-    dataAiHint: 'playlist creation',
+    icon: <BrainIcon className="h-8 w-8 text-primary" />,
+    title: 'AI-Powered Learning',
+    description: 'Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.',
+    dataAiHint: 'AI learning technology',
   },
   {
-    icon: <BrainIcon className="h-10 w-10 text-primary mb-4" />,
-    title: 'Interactive Mind Maps',
-    description: 'Visualize complex topics with AI-generated mind maps that break down video content into key concepts and relationships.',
-    dataAiHint: 'mind map visualization',
+    icon: <ListVideoIcon className="h-8 w-8 text-primary" />,
+    title: 'Smart Playlists',
+    description: 'Automatically curate and organize YouTube videos into coherent learning sequences tailored to your goals.',
+    dataAiHint: 'playlist organization',
   },
   {
-    icon: <LightbulbIcon className="h-10 w-10 text-primary mb-4" />,
-    title: 'Engaging Quizzes',
-    description: 'Test your understanding with AI-generated quizzes based on your playlist content, reinforcing your learning.',
-    dataAiHint: 'quiz assessment',
+    icon: <LightbulbIcon className="h-8 w-8 text-primary" />,
+    title: 'Interactive Quizzes',
+    description: 'Test your knowledge with AI-generated quizzes that adapt to your learning progress and reinforce key concepts.',
+    dataAiHint: 'interactive assessment',
   },
   {
-    icon: <BarChart3Icon className="h-10 w-10 text-primary mb-4" />,
-    title: 'Track Your Progress',
-    description: 'Monitor your learning journey, see completed videos, and stay motivated with clear progress indicators.',
-    dataAiHint: 'learning analytics',
+    icon: <BarChart3Icon className="h-8 w-8 text-primary" />,
+    title: 'Progress Analytics',
+    description: 'Track your learning journey with detailed analytics, completion rates, and personalized insights.',
+    dataAiHint: 'learning analytics dashboard',
   },
+  {
+    icon: <UsersIcon className="h-8 w-8 text-primary" />,
+    title: 'Community Learning',
+    description: 'Connect with fellow learners, share playlists, and learn together in collaborative study groups.',
+    dataAiHint: 'collaborative learning community',
+  },
+  {
+    icon: <Shield className="h-8 w-8 text-primary" />,
+    title: 'Quality Assurance',
+    description: 'AI-powered content curation ensures you only learn from high-quality, verified educational content.',
+    dataAiHint: 'content quality verification',
+  },
+];
+
+const testimonials = [
+  {
+    name: "Sarah Chen",
+    role: "Data Science Student",
+    content: "StreamSmart helped me organize 50+ machine learning videos into a coherent curriculum. The AI-generated mind maps are incredibly helpful!",
+    avatar: "SC"
+  },
+  {
+    name: "Marcus Rodriguez",
+    role: "Full-Stack Developer",
+    content: "I've increased my learning efficiency by 300%. The personalized quizzes ensure I actually retain what I watch.",
+    avatar: "MR"
+  },
+  {
+    name: "Emily Thompson",
+    role: "UX Designer",
+    content: "The progress tracking keeps me motivated. I love seeing my learning journey visualized with beautiful charts.",
+    avatar: "ET"
+  }
+];
+
+const stats = [
+  { number: "50K+", label: "Active Learners", icon: Users },
+  { number: "1M+", label: "Videos Organized", icon: PlayCircle },
+  { number: "98%", label: "User Satisfaction", icon: Star },
+  { number: "5x", label: "Faster Learning", icon: TrendingUp },
 ];
 
 const containerVariants = {
@@ -39,7 +80,7 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.2,
+      staggerChildren: 0.1,
     },
   },
 };
@@ -55,103 +96,282 @@ const itemVariants = {
   },
 };
 
+const fadeInUpVariants = {
+  hidden: { y: 30, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function LandingPage() {
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="w-full py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 wave-bg opacity-10"></div>
-        <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="logo-animate mb-8"
-          >
-            <div className="flex items-center justify-center gap-4">
-              <ZapIcon className="h-16 w-16 text-primary" />
-              <span className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                StreamSmart
+      <section className="relative w-full py-24 md:py-32 lg:py-40 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"></div>
+        
+        <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="flex flex-col items-center text-center space-y-8">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+              className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20"
+            >
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Trusted by 50,000+ learners worldwide</span>
+            </motion.div>
+
+            <motion.h1
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.1 }}
+              className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+            >
+              Transform Your YouTube Learning with{' '}
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                AI Power
               </span>
-            </div>
-          </motion.div>
-          <motion.h1
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6"
-          >
-            Transform Your YouTube Learning with{' '}
-            <span className="text-primary">AI Power</span>
-          </motion.h1>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="max-w-3xl mx-auto text-lg md:text-xl text-muted-foreground mb-10"
-          >
-            Tired of endless scrolling? StreamSmart transforms YouTube into your personalized learning powerhouse. 
-            Create AI-generated playlists, visualize concepts with mind maps, and test your knowledge with dynamic quizzes.
-          </motion.p>
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.7 }}
-          >
-            <Link href="/login" passHref>
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-primary/60 transition-all duration-300 hover:scale-105"
-              >
-                Get Started for Free
-              </Button>
-            </Link>
-          </motion.div>
+            </motion.h1>
+
+            <motion.p
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.2 }}
+              className="max-w-3xl text-xl md:text-2xl text-muted-foreground leading-relaxed"
+            >
+              Stop endless scrolling. Start structured learning. StreamSmart transforms YouTube into your personalized education platform with AI-generated playlists, mind maps, and intelligent progress tracking.
+            </motion.p>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4"
+            >
+              <Link href="/login">
+                <Button
+                  size="lg"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-primary/60 transition-all duration-300 hover:scale-105 group"
+                >
+                  Get Started for Free
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link href="/demo">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-lg px-8 py-6 rounded-xl border-2 hover:bg-accent/10 transition-all duration-300 hover:scale-105"
+                >
+                  <PlayCircle className="mr-2 h-5 w-5" />
+                  Watch Demo
+                </Button>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeInUpVariants}
+              transition={{ delay: 0.4 }}
+              className="flex items-center gap-1 text-sm text-muted-foreground"
+            >
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <span className="ml-2">4.9/5 from 1,200+ reviews</span>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="w-full py-16 md:py-24 bg-background">
+      {/* Stats Section */}
+      <section className="py-16 bg-accent/5">
         <div className="container mx-auto px-4 md:px-6">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={containerVariants}
-            className="text-center mb-12"
+            className="grid grid-cols-2 md:grid-cols-4 gap-8"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why <span className="text-primary">StreamSmart</span>?
+            {stats.map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                variants={itemVariants}
+                className="text-center"
+              >
+                <div className="flex items-center justify-center mb-2">
+                  <stat.icon className="h-8 w-8 text-primary" />
+                </div>
+                <div className="text-3xl font-bold text-foreground">{stat.number}</div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="features" className="py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <Badge variant="outline" className="mb-4 px-4 py-2">
+              ✨ Powerful Features
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Everything you need to{' '}
+              <span className="text-primary">learn smarter</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              StreamSmart offers a suite of intelligent tools designed to make your YouTube learning more effective, organized, and engaging.
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              StreamSmart combines cutting-edge AI with intuitive design to deliver the ultimate YouTube learning experience.
             </p>
           </motion.div>
+
           <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {features.map((feature, index) => (
               <motion.div
                 key={feature.title}
                 variants={itemVariants}
-                className="card-hover"
+                className="group"
               >
-                <Card className="bg-card shadow-xl h-full flex flex-col text-center p-6 rounded-xl border-primary/20">
-                  <CardHeader className="items-center p-0">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      className="text-primary"
-                    >
+                <Card className="h-full p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-0 shadow-md bg-gradient-to-br from-card to-card/50">
+                  <CardHeader className="text-center pb-4">
+                    <div className="mx-auto mb-4 p-3 bg-primary/10 rounded-xl w-fit group-hover:scale-110 transition-transform duration-300">
                       {feature.icon}
-                    </motion.div>
-                    <CardTitle className="text-xl font-semibold mb-2">{feature.title}</CardTitle>
+                    </div>
+                    <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
                   </CardHeader>
-                  <CardContent className="p-0 flex-grow">
-                    <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
+                  <CardContent>
+                    <CardDescription className="text-center text-muted-foreground leading-relaxed">
+                      {feature.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="about" className="py-20 md:py-28 bg-gradient-to-br from-accent/5 to-primary/5">
+        <div className="container mx-auto px-4 md:px-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeInUpVariants}
+            className="max-w-4xl mx-auto text-center"
+          >
+            <Badge variant="outline" className="mb-6 px-4 py-2">
+              🚀 About StreamSmart
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-8">
+              Empowering the next generation of{' '}
+              <span className="text-primary">digital learners</span>
+            </h2>
+            <div className="space-y-8 text-lg text-muted-foreground leading-relaxed">
+              <p>
+                StreamSmart was born from a simple observation: YouTube contains the world&apos;s largest collection of educational content, but it&apos;s scattered, unorganized, and overwhelming. We knew there had to be a better way.
+              </p>
+              <p>
+                Our mission is to transform YouTube into a structured, personalized learning platform using the power of artificial intelligence. We help learners discover, organize, and master knowledge efficiently through AI-powered playlists, interactive mind maps, and intelligent progress tracking.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                <div className="text-center">
+                  <Award className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Our Mission</h3>
+                  <p className="text-sm">Making quality education accessible and organized for everyone, everywhere.</p>
+                </div>
+                <div className="text-center">
+                  <Users className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Our Community</h3>
+                  <p className="text-sm">A passionate group of educators, technologists, and lifelong learners.</p>
+                </div>
+                <div className="text-center">
+                  <TrendingUp className="h-12 w-12 text-primary mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-foreground mb-2">Our Impact</h3>
+                  <p className="text-sm">Helping thousands of learners achieve their educational goals faster.</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 md:py-28">
+        <div className="container mx-auto px-4 md:px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={containerVariants}
+            className="text-center mb-16"
+          >
+            <Badge variant="outline" className="mb-4 px-4 py-2">
+              💬 What our users say
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Loved by learners{' '}
+              <span className="text-primary">worldwide</span>
+            </h2>
+          </motion.div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.name}
+                variants={itemVariants}
+                className="group"
+              >
+                <Card className="p-6 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                  <CardContent className="space-y-4">
+                    <div className="flex">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground italic">&quot;{testimonial.content}&quot;</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-semibold">
+                        {testimonial.avatar}
+                      </div>
+                      <div>
+                        <div className="font-semibold">{testimonial.name}</div>
+                        <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                      </div>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -161,16 +381,24 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="w-full py-16 md:py-24 bg-card">
+      <section className="py-20 md:py-28 bg-gradient-to-br from-primary/5 to-accent/5">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12"
+            variants={fadeInUpVariants}
+            className="text-center mb-16"
           >
-            Start Learning in <span className="text-primary">3 Simple Steps</span>
-          </motion.h2>
+            <Badge variant="outline" className="mb-4 px-4 py-2">
+              🎯 How it works
+            </Badge>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              Start learning in{' '}
+              <span className="text-primary">3 simple steps</span>
+            </h2>
+          </motion.div>
+
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -180,31 +408,39 @@ export default function LandingPage() {
           >
             {[
               {
+                step: "01",
                 icon: <ListVideoIcon className="h-12 w-12 text-primary" />,
-                title: "Build Your Playlist",
-                description: "Manually add YouTube videos or let our AI suggest content based on your learning goals."
+                title: "Create Your Playlist",
+                description: "Add YouTube videos manually or let our AI suggest the perfect content based on your learning goals and interests."
               },
               {
+                step: "02",
                 icon: <BrainIcon className="h-12 w-12 text-primary" />,
                 title: "Learn Interactively",
-                description: "Engage with AI-generated mind maps, take quizzes, and chat with our AI assistant about your playlist content."
+                description: "Engage with AI-generated mind maps, take personalized quizzes, and chat with our AI tutor about your content."
               },
               {
+                step: "03",
                 icon: <BarChart3Icon className="h-12 w-12 text-primary" />,
-                title: "Track & Grow",
-                description: "Monitor your progress, mark videos as complete, and see your understanding deepen over time."
+                title: "Track & Master",
+                description: "Monitor your progress with detailed analytics, celebrate milestones, and watch your understanding grow over time."
               }
             ].map((step, index) => (
               <motion.div
                 key={step.title}
                 variants={itemVariants}
-                className="flex flex-col items-center text-center p-6 glass-effect rounded-xl hover-lift"
+                className="relative text-center p-8 group"
               >
-                <div className="bg-primary/10 rounded-full w-24 h-24 flex items-center justify-center mb-6 animate-pulse-slow">
-                  {step.icon}
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center font-bold text-lg">
+                  {step.step}
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-foreground">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
+                <div className="bg-card rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 mt-6">
+                  <div className="bg-primary/10 rounded-full w-20 h-20 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300">
+                    {step.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-4 text-foreground">{step.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -212,41 +448,44 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="w-full py-20 md:py-32 bg-primary text-primary-foreground relative overflow-hidden">
-        <div className="absolute inset-0 wave-bg opacity-20"></div>
+      <section className="py-24 md:py-32 bg-gradient-to-r from-primary to-accent text-primary-foreground relative overflow-hidden">
         <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
-          <motion.h2
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-3xl md:text-5xl font-bold mb-6"
-          >
-            Ready to Supercharge Your Learning?
-          </motion.h2>
-          <motion.p
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto text-lg md:text-xl opacity-90 mb-10"
-          >
-            Join StreamSmart today and experience a smarter, more effective way to learn from YouTube.
-          </motion.p>
           <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
+            variants={fadeInUpVariants}
+            className="max-w-4xl mx-auto"
           >
-            <Link href="/login" passHref>
+            <h2 className="text-4xl md:text-6xl font-bold mb-6">
+              Ready to revolutionize your learning?
+            </h2>
+            <p className="text-xl md:text-2xl opacity-90 mb-10 leading-relaxed">
+              Join 50,000+ learners who have already transformed their YouTube experience. Start building your personalized learning journey today.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/login">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group"
+                >
+                  Start Learning for Free
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
               <Button
                 size="lg"
-                variant="secondary"
-                className="bg-background text-foreground hover:bg-background/90 text-lg px-8 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                variant="outline"
+                className="border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6 rounded-xl transition-all duration-300 hover:scale-105"
               >
-                Sign Up Now & Learn Smarter
+                <Clock className="mr-2 h-5 w-5" />
+                No Credit Card Required
               </Button>
-            </Link>
+            </div>
+            <p className="text-sm opacity-75 mt-6">
+              ✅ Free forever plan available • ✅ 50+ AI-generated playlists • ✅ Cancel anytime
+            </p>
           </motion.div>
         </div>
       </section>

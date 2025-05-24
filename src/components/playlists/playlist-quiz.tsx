@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Quiz, QuizQuestion } from '@/types';
@@ -9,7 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2Icon, LightbulbIcon, CheckCircle2Icon, XCircleIcon, RefreshCwIcon, ArrowLeftIcon, ArrowRightIcon, SettingsIcon, PlayIcon } from 'lucide-react';
+import { Loader2Icon, LightbulbIcon, CircleCheck, XCircleIcon, RefreshCwIcon, ArrowLeftIcon, ArrowRightIcon, SettingsIcon, PlayIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
@@ -311,7 +310,7 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
             </Button>
             ) : (
             <Button onClick={handleSubmitQuiz} variant="default" className="bg-green-600 hover:bg-green-700 text-white">
-                <CheckCircle2Icon className="mr-2 h-4 w-4"/> Submit Quiz
+                <CircleCheck className="mr-2 h-4 w-4"/> Submit Quiz
             </Button>
             )}
         </div>

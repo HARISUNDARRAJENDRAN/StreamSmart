@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -19,6 +18,7 @@ import { RecommendedVideoCard } from './recommended-video-card';
 import type { Video, Playlist } from '@/types'; 
 import { useToast } from "@/hooks/use-toast";
 import { getVideoDetails } from '@/services/youtube'; // Import YouTube service
+import { useUser } from '@/contexts/UserContext';
 
 // Schema for individual video URL input in the form
 const formVideoSchema = z.object({
@@ -41,6 +41,7 @@ type PlaylistFormValues = z.infer<typeof playlistFormSchema>;
 export function CreatePlaylistForm() {
   const router = useRouter();
   const { toast } = useToast();
+  const { user, recordActivity, updateUserStats } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [aiRecommendedVideos, setAiRecommendedVideos] = useState<RecommendedVideo[]>([]);
@@ -158,7 +159,7 @@ export function CreatePlaylistForm() {
       id: Date.now().toString(),
       title: data.title,
       description: data.description || '',
-      userId: 'user1', 
+      userId: user?.id || 'anonymous', 
       createdAt: currentDate,
       lastModified: currentDate, // Initialize lastModified
       videos: newVideosWithDetails,
@@ -171,10 +172,23 @@ export function CreatePlaylistForm() {
       const existingPlaylists = existingPlaylistsRaw ? JSON.parse(existingPlaylistsRaw) as Playlist[] : [];
       localStorage.setItem('userPlaylists', JSON.stringify([...existingPlaylists, newPlaylist]));
       
-      toast({
-        title: "Playlist Created!",
-        description: `"${newPlaylist.title}" has been saved.`,
+      // Record playlist creation activity
+      recordActivity({
+        action: "Created playlist",
+        item: newPlaylist.title,
+        type: "created"
       });
+      
+      toast({
+        title: "Playlist Created! 🎉",
+        description: `"${newPlaylist.title}" has been saved with ${newVideosWithDetails.length} videos.`,
+      });
+      
+      // Update user stats after creation
+      setTimeout(() => {
+        updateUserStats();
+      }, 100);
+      
       router.push('/playlists');
 
     } catch (error) {

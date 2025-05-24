@@ -1,9 +1,8 @@
-
 'use client';
 
 import Image from 'next/image';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle2Icon, PlayCircleIcon } from 'lucide-react';
+import { CircleCheck, CirclePlay } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Video } from '@/types';
 
@@ -49,7 +48,7 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
         />
         {isActive && (
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
-            <PlayCircleIcon className="h-8 w-8 text-white" />
+            <CirclePlay className="h-8 w-8 text-white" />
           </div>
         )}
       </div>
@@ -64,7 +63,7 @@ export function VideoProgressItem({ video, isActive, onSelectVideo }: VideoProgr
             {video.completionStatus || 0}%
           </span>
           {(video.completionStatus === 100) && (
-            <CheckCircle2Icon className="h-4 w-4 text-green-500 shrink-0" />
+            <CircleCheck className="h-4 w-4 text-green-500 shrink-0" />
           )}
         </div>
       </div>
