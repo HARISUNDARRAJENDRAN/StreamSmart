@@ -13,14 +13,15 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon } from 'lucide-react';
+import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
   { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
-  { href: '/about', label: 'About', icon: HelpCircleIcon },
+  { href: '/achievements', label: 'Achievements', icon: Trophy },
+  { href: '/landing#about', label: 'About', icon: HelpCircleIcon },
   // Add more items as needed e.g. AI Chatbot global access if any
 ];
 
@@ -46,10 +47,10 @@ export function AppSidebar() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))}
+                isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0]))}
                 tooltip={{ children: item.label, side: 'right', className:"bg-popover text-popover-foreground" }}
                 className={cn(
-                  (pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))) && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
+                  (pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0]))) && 'bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground'
                 )}
               >
                 <Link href={item.href}>

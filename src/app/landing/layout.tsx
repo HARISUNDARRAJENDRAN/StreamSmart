@@ -22,7 +22,7 @@ export default function LandingLayout({
             <span className="text-xl font-bold">StreamSmart</span>
           </Link>
           <nav className="flex items-center gap-4">
-            <Link href="/about" passHref>
+            <Link href="#about" passHref>
               <Button variant="ghost">About</Button>
             </Link>
             <Link href="#features" passHref>

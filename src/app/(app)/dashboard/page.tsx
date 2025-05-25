@@ -30,6 +30,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { Playlist } from '@/types';
 import { useUser } from '@/contexts/UserContext';
+import { playlistService } from '@/services/playlistService';
+import { WeeklyGoalSettings } from '@/components/dashboard/weekly-goal-settings';
+import { AchievementsSystem } from '@/components/achievements/achievements-system';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -52,50 +55,37 @@ export default function DashboardPage() {
   const { user, userStats, isAuthenticated, recordActivity } = useUser();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    const loadPlaylists = async () => {
+      if (!isAuthenticated || !user) {
       setIsLoading(false);
       return;
     }
 
-    // Load user playlists from localStorage
     try {
-      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
-      // Filter playlists for current user
-      const userPlaylists = storedPlaylists.filter(p => p.userId === user?.id);
-      setPlaylists(userPlaylists.slice(0, 3)); // Show only first 3 for dashboard
+        const userPlaylists = await playlistService.getPlaylists(user.id);
+        
+        const processedPlaylists = userPlaylists.slice(0, 3).map((p: any) => ({
+          ...p,
+          id: p._id, // MongoDB uses _id
+          createdAt: new Date(p.createdAt),
+          lastModified: new Date(p.updatedAt || p.createdAt),
+          videos: p.videos || [],
+          tags: p.tags || [],
+          userId: p.userId,
+          overallProgress: p.overallProgress || 0,
+        }));
+        
+        setPlaylists(processedPlaylists);
     } catch (error) {
       console.error("Error loading playlists:", error);
     }
     setIsLoading(false);
+    };
+
+    loadPlaylists();
   }, [user, isAuthenticated]);
 
-  const achievements = [
-    { 
-      icon: <Flame className="h-5 w-5" />, 
-      title: `${userStats?.currentStreak || 0}-Day Streak`, 
-      description: "Learning consistently", 
-      color: "text-orange-500" 
-    },
-    { 
-      icon: <BookOpenCheckIcon className="h-5 w-5" />, 
-      title: "Fast Learner", 
-      description: `Completed ${userStats?.totalVideosCompleted || 0} videos`, 
-      color: "text-blue-500" 
-    },
-    { 
-      icon: <StarIcon className="h-5 w-5" />, 
-      title: "Quiz Master", 
-      description: "Aced quizzes", 
-      color: "text-yellow-500" 
-    },
-    { 
-      icon: <TargetIcon className="h-5 w-5" />, 
-      title: "Goal Getter", 
-      description: `${userStats?.weeklyGoal.progress || 0}% weekly target`, 
-      color: "text-green-500" 
-    },
-  ];
+  // Remove the old achievements array - we'll use the new AchievementsSystem component
 
   const recommendations = [
     {
@@ -384,31 +374,7 @@ export default function DashboardPage() {
         <div className="space-y-8">
           {/* Achievements */}
           <motion.section variants={fadeInUp}>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-yellow-500" />
-                  Achievements
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {achievements.map((achievement, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-accent/50 hover:bg-accent/70 transition-colors">
-                    <div className={`p-2 rounded-full bg-background ${achievement.color}`}>
-                      {achievement.icon}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{achievement.title}</p>
-                      <p className="text-xs text-muted-foreground">{achievement.description}</p>
-                    </div>
-                  </div>
-                ))}
-                <Button variant="outline" className="w-full mt-4">
-                  <AwardIcon className="mr-2 h-4 w-4" />
-                  View All Achievements
-                </Button>
-              </CardContent>
-            </Card>
+            <AchievementsSystem maxDisplay={4} />
           </motion.section>
 
           {/* Recent Activity */}
@@ -457,9 +423,12 @@ export default function DashboardPage() {
           <motion.section variants={fadeInUp}>
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <CardTitle className="flex items-center justify-between">
+                  <span className="flex items-center gap-2">
                   <TargetIcon className="h-5 w-5 text-green-500" />
                   Weekly Goal
+                  </span>
+                  <WeeklyGoalSettings />
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -473,13 +442,10 @@ export default function DashboardPage() {
                   <Progress value={userStats?.weeklyGoal.progress || 0} className="h-2" />
                   <p className="text-xs text-muted-foreground">
                     {userStats?.weeklyGoal.target ? 
-                      `${(userStats.weeklyGoal.target - userStats.weeklyGoal.completed)} more videos to reach your weekly goal! 🎯` :
+                      `${Math.max(0, userStats.weeklyGoal.target - userStats.weeklyGoal.completed)} more videos to reach your weekly goal! 🎯` :
                       'Set a weekly goal to track your progress! 🎯'
                     }
                   </p>
-                  <Button variant="outline" className="w-full">
-                    Adjust Goal
-                  </Button>
                 </div>
               </CardContent>
             </Card>

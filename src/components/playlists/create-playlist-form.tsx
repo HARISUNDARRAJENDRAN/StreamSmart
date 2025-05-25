@@ -19,6 +19,7 @@ import type { Video, Playlist } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { getVideoDetails } from '@/services/youtube'; // Import YouTube service
 import { useUser } from '@/contexts/UserContext';
+import { playlistService } from '@/services/playlistService';
 
 // Schema for individual video URL input in the form
 const formVideoSchema = z.object({
@@ -88,6 +89,15 @@ export function CreatePlaylistForm() {
 
 
   const onSubmit: SubmitHandler<PlaylistFormValues> = async (data) => {
+    if (!user) {
+      toast({
+        title: "Error",
+        description: "Please log in to create a playlist.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
     
     const videoProcessingPromises: Promise<Video | null>[] = (data.videos || [])
@@ -127,6 +137,7 @@ export function CreatePlaylistForm() {
             youtubeURL: details.youtubeURL || `https://www.youtube.com/watch?v=${videoId}`,
             thumbnail: details.thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
             duration: details.duration || 'N/A',
+            channelTitle: details.channelTitle || 'Unknown Channel',
             addedBy: 'user',
             completionStatus: 0,
             summary: details.summary || '',
@@ -139,6 +150,7 @@ export function CreatePlaylistForm() {
             youtubeURL: `https://www.youtube.com/watch?v=${videoId}`,
             thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
             duration: 'N/A',
+            channelTitle: 'Unknown Channel',
             addedBy: 'user',
             completionStatus: 0,
             summary: 'Could not fetch details.',
@@ -154,34 +166,46 @@ export function CreatePlaylistForm() {
        return;
     }
     
-    const currentDate = new Date();
-    const newPlaylist: Playlist = {
-      id: Date.now().toString(),
-      title: data.title,
-      description: data.description || '',
-      userId: user?.id || 'anonymous', 
-      createdAt: currentDate,
-      lastModified: currentDate, // Initialize lastModified
-      videos: newVideosWithDetails,
-      aiRecommended: aiRecommendedVideos.length > 0 && newVideosWithDetails.some(v => v.addedBy === 'ai_selected_by_user'),
-      tags: data.tags ? data.tags.split(',').map(t => t.trim()).filter(t => t.length > 0) : [],
-    };
-
     try {
-      const existingPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const existingPlaylists = existingPlaylistsRaw ? JSON.parse(existingPlaylistsRaw) as Playlist[] : [];
-      localStorage.setItem('userPlaylists', JSON.stringify([...existingPlaylists, newPlaylist]));
+      // Save playlist to MongoDB
+      const result = await playlistService.createPlaylist({
+        userId: user.id,
+        title: data.title,
+        description: data.description,
+        category: 'General', // You might want to add a category field to the form
+        tags: data.tags ? data.tags.split(',').map(t => t.trim()).filter(t => t.length > 0) : [],
+        isPublic: false,
+        videos: newVideosWithDetails.map(v => ({
+          id: v.id,
+          title: v.title || '',
+          channelTitle: v.channelTitle || '',
+          thumbnail: v.thumbnail || '',
+          duration: v.duration || '',
+          url: v.youtubeURL || '',
+          completionStatus: v.completionStatus || 0,
+        })),
+      });
+
+      if (!result.success) {
+        toast({
+          title: "Error",
+          description: result.error || "Failed to create playlist",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
       
       // Record playlist creation activity
-      recordActivity({
+      await recordActivity({
         action: "Created playlist",
-        item: newPlaylist.title,
+        item: data.title,
         type: "created"
       });
       
       toast({
         title: "Playlist Created! 🎉",
-        description: `"${newPlaylist.title}" has been saved with ${newVideosWithDetails.length} videos.`,
+        description: `"${data.title}" has been saved with ${newVideosWithDetails.length} videos.`,
       });
       
       // Update user stats after creation
@@ -192,7 +216,7 @@ export function CreatePlaylistForm() {
       router.push('/playlists');
 
     } catch (error) {
-      console.error("Failed to save playlist to localStorage:", error);
+      console.error("Failed to save playlist:", error);
       toast({
         title: "Error",
         description: "Could not save the playlist. Please try again.",
@@ -262,6 +286,43 @@ export function CreatePlaylistForm() {
       });
   };
 
+  const handleCopyToClipboard = async (text: string) => {
+    try {
+      if (navigator.clipboard) {
+        await navigator.clipboard.writeText(text);
+        toast({
+          title: "Copied!",
+          description: "Text copied to clipboard",
+        });
+      } else {
+        // Fallback for browsers that don't support clipboard API
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          toast({
+            title: "Copied!",
+            description: "Text copied to clipboard",
+          });
+        } catch (err) {
+          toast({
+            title: "Error",
+            description: "Could not copy text. Please copy manually.",
+            variant: "destructive",
+          });
+        }
+        document.body.removeChild(textArea);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Could not copy text. Please copy manually.",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <Form {...form}>

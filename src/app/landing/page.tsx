@@ -49,29 +49,29 @@ const features = [
 
 const testimonials = [
   {
-    name: "Sarah Chen",
-    role: "Data Science Student",
-    content: "StreamSmart helped me organize 50+ machine learning videos into a coherent curriculum. The AI-generated mind maps are incredibly helpful!",
-    avatar: "SC"
+    name: "Naveen Sekhar",
+    role: "CyberSecurity Student",
+    content: "Fantastic work! The way you've integrated AI to turn YouTube videos into interactive lessons with mind maps and quizzes is super impressive. The platform feels fresh and genuinely useful for learners. I loved the interface it's clean and engaging and since it's still in the testing stage, it's totally understandable and expected. It's clear you've put a lot of thought and effort into this. Big kudos on building something impactful.",
+    avatar: "NS"
   },
   {
-    name: "Marcus Rodriguez",
-    role: "Full-Stack Developer",
+    name: "Anandavalli",
+    role: "MBBS UG Student",
     content: "I've increased my learning efficiency by 300%. The personalized quizzes ensure I actually retain what I watch.",
-    avatar: "MR"
+    avatar: "AV"
   },
   {
-    name: "Emily Thompson",
-    role: "UX Designer",
-    content: "The progress tracking keeps me motivated. I love seeing my learning journey visualized with beautiful charts.",
-    avatar: "ET"
+    name: "Dhanushya Sai",
+    role: "Data Science Student",
+    content: "Overall Impressive work!",
+    avatar: "DS"
   }
 ];
 
 const stats = [
-  { number: "50K+", label: "Active Learners", icon: Users },
-  { number: "1M+", label: "Videos Organized", icon: PlayCircle },
-  { number: "98%", label: "User Satisfaction", icon: Star },
+  { number: "10+", label: "Active Learners", icon: Users },
+  { number: "50+", label: "Videos Organized", icon: PlayCircle },
+  { number: "93%", label: "User Satisfaction", icon: Star },
   { number: "5x", label: "Faster Learning", icon: TrendingUp },
 ];
 
@@ -114,18 +114,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative w-full py-24 md:py-32 lg:py-40 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5"></div>
-        
+
         <div className="container mx-auto px-4 md:px-6 relative z-10">
           <div className="flex flex-col items-center text-center space-y-8">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={fadeInUpVariants}
-              className="flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full border border-primary/20"
-            >
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-primary">Trusted by 50,000+ learners worldwide</span>
-            </motion.div>
 
             <motion.h1
               initial="hidden"
@@ -157,7 +148,7 @@ export default function LandingPage() {
               transition={{ delay: 0.3 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link href="/login">
+              <Link href="/register">
                 <Button
                   size="lg"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-primary/60 transition-all duration-300 hover:scale-105 group"
@@ -166,14 +157,14 @@ export default function LandingPage() {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link href="/demo">
+              <Link href="/login">
                 <Button
                   variant="outline"
                   size="lg"
                   className="text-lg px-8 py-6 rounded-xl border-2 hover:bg-accent/10 transition-all duration-300 hover:scale-105"
                 >
                   <PlayCircle className="mr-2 h-5 w-5" />
-                  Watch Demo
+                  Try Demo
                 </Button>
               </Link>
             </motion.div>
@@ -190,7 +181,7 @@ export default function LandingPage() {
                   <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <span className="ml-2">4.9/5 from 1,200+ reviews</span>
+              <span className="ml-2">4.65/5 from 30+ reviews</span>
             </motion.div>
           </div>
         </div>
@@ -234,7 +225,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4 px-4 py-2">
-              ✨ Powerful Features
+              Powerful Features
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Everything you need to{' '}
@@ -288,7 +279,7 @@ export default function LandingPage() {
             className="max-w-4xl mx-auto text-center"
           >
             <Badge variant="outline" className="mb-6 px-4 py-2">
-              🚀 About StreamSmart
+              About StreamSmart
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-8">
               Empowering the next generation of{' '}
@@ -334,7 +325,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4 px-4 py-2">
-              💬 What our users say
+              What our users say
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Loved by learners{' '}
@@ -391,7 +382,7 @@ export default function LandingPage() {
             className="text-center mb-16"
           >
             <Badge variant="outline" className="mb-4 px-4 py-2">
-              🎯 How it works
+              How it works
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Start learning in{' '}
@@ -408,19 +399,19 @@ export default function LandingPage() {
           >
             {[
               {
-                step: "01",
+                step: "1",
                 icon: <ListVideoIcon className="h-12 w-12 text-primary" />,
                 title: "Create Your Playlist",
                 description: "Add YouTube videos manually or let our AI suggest the perfect content based on your learning goals and interests."
               },
               {
-                step: "02",
+                step: "2",
                 icon: <BrainIcon className="h-12 w-12 text-primary" />,
                 title: "Learn Interactively",
                 description: "Engage with AI-generated mind maps, take personalized quizzes, and chat with our AI tutor about your content."
               },
               {
-                step: "03",
+                step: "3",
                 icon: <BarChart3Icon className="h-12 w-12 text-primary" />,
                 title: "Track & Master",
                 description: "Monitor your progress with detailed analytics, celebrate milestones, and watch your understanding grow over time."
@@ -464,7 +455,7 @@ export default function LandingPage() {
               Join 50,000+ learners who have already transformed their YouTube experience. Start building your personalized learning journey today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/login">
+              <Link href="/register">
                 <Button
                   size="lg"
                   variant="secondary"
@@ -474,14 +465,16 @@ export default function LandingPage() {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6 rounded-xl transition-all duration-300 hover:scale-105"
-              >
-                <Clock className="mr-2 h-5 w-5" />
-                No Credit Card Required
-              </Button>
+              <Link href="/login">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/30 text-white hover:bg-white/10 text-lg px-8 py-6 rounded-xl transition-all duration-300 hover:scale-105"
+                >
+                  <Clock className="mr-2 h-5 w-5" />
+                  Try Demo Mode
+                </Button>
+              </Link>
             </div>
             <p className="text-sm opacity-75 mt-6">
               ✅ Free forever plan available • ✅ 50+ AI-generated playlists • ✅ Cancel anytime

@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation';
 import { VideoPlayer } from '@/components/playlists/video-player';
 import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
 import { MindMapDisplay } from '@/components/playlists/mind-map-display';
-import { OtherLearnersProgress } from '@/components/playlists/other-learners-progress'; 
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,12 +13,13 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCheck, CircleIcon, LightbulbIcon, UsersIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon } from 'lucide-react'; 
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon } from 'lucide-react'; 
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
 import { motion } from 'framer-motion';
 import { useUser } from '@/contexts/UserContext';
+import { playlistService } from '@/services/playlistService';
 
 // Placeholder data fetching function for fallback
 async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
@@ -61,59 +61,106 @@ export default function PlaylistDetailPage() {
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
-  const { recordActivity, updateUserStats } = useUser();
+  const { user, recordActivity, updateUserStats } = useUser();
   const videoPlayerKey = useId(); 
 
   useEffect(() => {
-    if (playlistId) {
-      setIsLoading(true);
-      let foundPlaylist: Playlist | null = null;
-      try {
-        const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-        if (storedPlaylistsRaw) {
-          const storedPlaylists = JSON.parse(storedPlaylistsRaw) as Playlist[];
-          foundPlaylist = storedPlaylists.find(p => p.id === playlistId) || null;
-          if (foundPlaylist) {
-            // Ensure dates are Date objects
-            foundPlaylist.createdAt = new Date(foundPlaylist.createdAt);
-            foundPlaylist.lastModified = new Date(foundPlaylist.lastModified); 
-            foundPlaylist.videos = foundPlaylist.videos.map(v => ({
-                ...v, 
-            }));
-          }
-        }
-      } catch (error) {
-        console.error("Error loading playlist from localStorage:", error);
+    const loadPlaylist = async () => {
+      if (!playlistId || !user) {
+        setIsLoading(false);
+        return;
       }
 
-      if (foundPlaylist) {
-        setPlaylist(foundPlaylist);
-        if (foundPlaylist.videos.length > 0) {
-          setCurrentVideo(foundPlaylist.videos[0]);
-        }
-        setIsLoading(false);
-      } else {
-        // Fallback to original mock data if not in localStorage
-        getOriginalMockPlaylistDetails(playlistId).then(data => {
-          setPlaylist(data);
-          if (data && data.videos.length > 0) {
-            setCurrentVideo(data.videos[0]);
+      setIsLoading(true);
+      try {
+        // Fetch the specific playlist by ID from MongoDB
+        const foundPlaylist = await playlistService.getPlaylistById(playlistId);
+        
+        if (foundPlaylist) {
+          const processedPlaylist = {
+            ...foundPlaylist,
+            id: foundPlaylist._id, // MongoDB uses _id
+            createdAt: new Date(foundPlaylist.createdAt),
+            lastModified: new Date(foundPlaylist.updatedAt || foundPlaylist.createdAt),
+            videos: (foundPlaylist.videos || []).map((video: any) => ({
+              id: video.id,
+              title: video.title || '',
+              youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
+              thumbnail: video.thumbnail || '',
+              duration: video.duration || '',
+              addedBy: video.addedBy || 'user',
+              summary: video.summary || '',
+              completionStatus: video.completionStatus || 0,
+              channelTitle: video.channelTitle || '',
+            })),
+            tags: foundPlaylist.tags || [],
+            userId: foundPlaylist.userId,
+            overallProgress: foundPlaylist.overallProgress || 0,
+            aiRecommended: foundPlaylist.aiRecommended || false,
+          };
+          
+          setPlaylist(processedPlaylist);
+          if (processedPlaylist.videos.length > 0) {
+            setCurrentVideo(processedPlaylist.videos[0]);
           }
-          setIsLoading(false);
+        } else {
+          setPlaylist(null);
+        }
+      } catch (error) {
+        console.error("Error loading playlist:", error);
+        setPlaylist(null);
+        toast({
+          title: "Error",
+          description: "Could not load playlist.",
+          variant: "destructive",
         });
       }
-    }
-  }, [playlistId]);
+      setIsLoading(false);
+    };
+
+    loadPlaylist();
+  }, [playlistId, user, toast]);
 
   const handleSelectVideo = (video: Video) => {
     setCurrentVideo(video);
   };
   
   const compiledPlaylistContentForRAG = playlist ? 
-    `Playlist Title: ${playlist.title}\nPlaylist Description: ${playlist.description}\n\nVideo Content:\n${playlist.videos.map(v => `Video Title: ${v.title}\nVideo Summary: ${v.summary || 'No summary available.'}\nVideo Transcript (if available): ${v.transcript || 'No transcript available.'}`).join('\n\n---\n\n')}`
-    : "No playlist content available.";
+    `Playlist Title: ${playlist.title}
+Playlist Description: ${playlist.description}
+Total Videos: ${playlist.videos.length}
+Tags: ${playlist.tags.join(', ')}
 
-  const handleToggleCompletion = (videoId: string) => {
+=== VIDEO CONTENT ===
+
+${playlist.videos.map((v, index) => `
+Video ${index + 1}:
+- Title: ${v.title}
+- Channel: ${v.channelTitle || 'Unknown Channel'}
+- Duration: ${v.duration}
+- Video URL: ${v.youtubeURL}
+- Summary: ${v.summary || 'No summary available.'}
+- Completion Status: ${v.completionStatus}%
+- Transcript: ${v.transcript || 'No transcript available.'}
+${v.channelTitle && v.channelTitle.toLowerCase().includes('mosh') ? '- Instructor: Mosh Hamedani (Programming with Mosh)' : ''}
+${v.title && (v.title.toLowerCase().includes('oops') || v.title.toLowerCase().includes('oop') || v.title.toLowerCase().includes('object oriented')) ? '- Topic: Object-Oriented Programming (OOP/OOPS) concepts' : ''}
+${v.title && v.title.toLowerCase().includes('python') ? '- Language: Python Programming' : ''}
+${v.title && v.title.toLowerCase().includes('comparison') ? '- Covers: Comparison operators and conditional logic' : ''}
+${v.title && v.title.toLowerCase().includes('beginner') ? '- Level: Beginner-friendly content' : ''}
+${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehensive course covering multiple topics' : ''}
+`).join('\n---\n')}
+
+=== ADDITIONAL CONTEXT ===
+- This playlist contains programming tutorials
+- Videos may include coding concepts, tutorials, and explanations
+- Channel information and instructor names are included where available
+- OOP/OOPS refers to Object-Oriented Programming concepts
+- For Python videos, common topics include: variables, data types, operators, control structures, functions, classes
+- Comparison operators in Python include: ==, !=, <, >, <=, >=, is, is not, in, not in
+- When transcript data is unavailable, provide educational explanations based on video titles and general programming knowledge
+` : "No playlist content available.";
+
+  const handleToggleCompletion = async (videoId: string) => {
     if (!playlist || !playlist.videos) return;
 
     const targetVideo = playlist.videos.find(v => v.id === videoId);
@@ -164,22 +211,29 @@ export default function PlaylistDetailPage() {
     }
     
     try {
-      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
-      const playlistIndex = storedPlaylists.findIndex(p => p.id === playlistId);
-      if (playlistIndex > -1) {
-        storedPlaylists[playlistIndex] = updatedPlaylist;
-        localStorage.setItem('userPlaylists', JSON.stringify(storedPlaylists));
-        
-        // Update user stats after saving
-        setTimeout(() => {
-          updateUserStats();
-        }, 100);
-      } else {
-        console.warn("Tried to update progress for a playlist not found in localStorage (likely a mock).");
+      // Update playlist in MongoDB
+      const result = await playlistService.updatePlaylist(playlist.id, {
+        videos: updatedVideos.map(v => ({
+          id: v.id,
+          title: v.title || '',
+          channelTitle: v.channelTitle || '',
+          thumbnail: v.thumbnail || '',
+          duration: v.duration || '',
+          url: v.youtubeURL || '',
+          completionStatus: v.completionStatus || 0,
+        })),
+      });
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update playlist');
       }
+      
+      // Update user stats after saving
+      setTimeout(() => {
+        updateUserStats();
+      }, 100);
     } catch (error) {
-      console.error("Error updating playlist in localStorage:", error);
+      console.error("Error updating playlist:", error);
       toast({
         title: "Error",
         description: "Could not save progress. Please try again.",
@@ -207,10 +261,39 @@ export default function PlaylistDetailPage() {
 
   const completedVideos = playlist.videos.filter(video => video.completionStatus === 100).length;
   const totalDuration = playlist.videos.reduce((acc, video) => {
-    // Simple duration parsing (assumes format like "2:18")
-    const [minutes, seconds] = video.duration.split(':').map(Number);
-    return acc + (minutes || 0) + (seconds || 0) / 60;
+    // Enhanced duration parsing to handle various formats: "2:18", "1:30:45", "10:30", etc.
+    if (!video.duration || video.duration === 'N/A') return acc;
+    
+    const parts = video.duration.split(':').map(Number);
+    let totalSeconds = 0;
+    
+    if (parts.length === 3) {
+      // Format: "H:MM:SS"
+      const [hours, minutes, seconds] = parts;
+      totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+    } else if (parts.length === 2) {
+      // Format: "MM:SS" or "H:MM" (assume MM:SS for most YouTube videos)
+      const [minutes, seconds] = parts;
+      totalSeconds = (minutes * 60) + seconds;
+    } else if (parts.length === 1) {
+      // Format: "SS" (just seconds)
+      totalSeconds = parts[0];
+    }
+    
+    return acc + totalSeconds;
   }, 0);
+
+  // Convert total seconds to a readable format
+  const formatDuration = (totalSeconds: number): string => {
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    } else {
+      return `${minutes}m`;
+    }
+  };
 
   return (
     <motion.div 
@@ -314,7 +397,7 @@ export default function PlaylistDetailPage() {
           {/* Interactive Tabs */}
           <motion.div variants={fadeInUp}>
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 bg-muted/50 p-1 rounded-xl">
+              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 bg-muted/50 p-1 rounded-xl">
                 <TabsTrigger value="info" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <InfoIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Info</span>
@@ -330,10 +413,6 @@ export default function PlaylistDetailPage() {
                 <TabsTrigger value="quiz" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <LightbulbIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Quiz</span>
-                </TabsTrigger>
-                <TabsTrigger value="fellows" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                  <UsersIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Community</span>
                 </TabsTrigger>
                 <TabsTrigger value="progress" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <TrendingUpIcon className="w-4 h-4 mr-2" />
@@ -392,7 +471,12 @@ export default function PlaylistDetailPage() {
                 </TabsContent>
                 
                 <TabsContent value="chatbot">
-                   <PlaylistChatbot playlistId={playlist.id} playlistContent={compiledPlaylistContentForRAG} />
+                   <PlaylistChatbot 
+                     playlistId={playlist.id} 
+                     playlistContent={compiledPlaylistContentForRAG}
+                     currentVideoTitle={currentVideo?.title}
+                     currentVideoSummary={currentVideo?.summary}
+                   />
                 </TabsContent>
                 
                 <TabsContent value="mindmap">
@@ -405,10 +489,6 @@ export default function PlaylistDetailPage() {
                     playlistTitle={playlist.title} 
                     playlistContent={compiledPlaylistContentForRAG} 
                   />
-                </TabsContent>
-                
-                <TabsContent value="fellows"> 
-                  <OtherLearnersProgress playlistTitle={playlist.title} />
                 </TabsContent>
                 
                 <TabsContent value="progress">
@@ -433,7 +513,7 @@ export default function PlaylistDetailPage() {
                         </div>
                         <div className="text-center p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
                           <ClockIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-purple-600">{Math.round(totalDuration)}m</div>
+                          <div className="text-2xl font-bold text-purple-600">{formatDuration(totalDuration)}</div>
                           <div className="text-sm text-muted-foreground">Total Time</div>
                         </div>
                       </div>

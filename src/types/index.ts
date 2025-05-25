@@ -1,4 +1,3 @@
-
 export type User = {
   id: string;
   name?: string | null;
@@ -33,6 +32,7 @@ export type Video = {
   summary?: string;
   completionStatus: number; // Percentage
   understandingScore?: number; // Optional
+  channelTitle?: string; // Optional channel title
 };
 
 export type ChatMessage = {

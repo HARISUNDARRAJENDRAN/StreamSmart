@@ -1,11 +1,9 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { BarChart3Icon, CheckCircle, TrendingUpIcon, ClockIcon, ListChecksIcon } from 'lucide-react';
-import type { Playlist, Video } from '@/types';
+import { BarChart3Icon, CheckCircle, TrendingUpIcon, ClockIcon, ListChecksIcon, RefreshCwIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer } from 'recharts';
@@ -17,13 +15,9 @@ import {
   ChartLegendContent,
   type ChartConfig,
 } from '@/components/ui/chart';
-
-interface OverallStats {
-  playlistsCompleted: number;
-  videosWatched: number;
-  totalLearningTime: string; 
-  averageCompletion: number; 
-}
+import { useUser } from '@/contexts/UserContext';
+import { playlistService } from '@/services/playlistService';
+import { useToast } from "@/hooks/use-toast";
 
 interface RecentPlaylistProgress {
   id: string;
@@ -72,15 +66,30 @@ function formatSecondsToHoursMinutes(totalSeconds: number): string {
   return timeString || "0 minutes";
 }
 
-const learningTrendsData = [
-  { day: "Mon", videosWatched: 2 },
-  { day: "Tue", videosWatched: 3 },
-  { day: "Wed", videosWatched: 1 },
-  { day: "Thu", videosWatched: 4 },
-  { day: "Fri", videosWatched: 2 },
-  { day: "Sat", videosWatched: 5 },
-  { day: "Sun", videosWatched: 3 },
-];
+// Generate learning trends data based on recent activities
+function generateLearningTrends(activities: any[]): any[] {
+  const last7Days = [];
+  const today = new Date();
+  
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(today);
+    date.setDate(date.getDate() - i);
+    const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+    
+    const dayActivities = activities.filter(activity => {
+      const activityDate = new Date(activity.timestamp);
+      return activityDate.toDateString() === date.toDateString() && 
+             activity.type === 'completed';
+    });
+    
+    last7Days.push({
+      day: dayName,
+      videosWatched: dayActivities.length,
+    });
+  }
+  
+  return last7Days;
+}
 
 const chartConfig = {
   videosWatched: {
@@ -89,68 +98,56 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-
 export default function ProgressPage() {
-  const [overallStats, setOverallStats] = useState<OverallStats>({
-    playlistsCompleted: 0,
-    videosWatched: 0,
-    totalLearningTime: "0 minutes",
-    averageCompletion: 0,
-  });
+  const { user, userStats, isLoading: userLoading, updateUserStats } = useUser();
   const [recentPlaylistsProgress, setRecentPlaylistsProgress] = useState<RecentPlaylistProgress[]>([]);
+  const [learningTrendsData, setLearningTrendsData] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [lastFetchTime, setLastFetchTime] = useState<number>(0);
+  const { toast } = useToast();
 
-  useEffect(() => {
+  const fetchProgressData = async (forceRefresh = false) => {
+    if (!user) {
+      setIsLoading(false);
+      return;
+    }
+
+    // Prevent frequent refetches (minimum 30 seconds between automatic fetches)
+    const now = Date.now();
+    if (!forceRefresh && now - lastFetchTime < 30000) {
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
+      // Fetch playlists from MongoDB
+      const playlists = await playlistService.getPlaylists(user.id);
       
-      if (storedPlaylists.length === 0) {
-        setOverallStats({
-          playlistsCompleted: 0,
-          videosWatched: 0,
-          totalLearningTime: "0 minutes",
-          averageCompletion: 0,
-        });
-        setRecentPlaylistsProgress([]);
-        setIsLoading(false);
-        return;
-      }
-
-      let totalVideos = 0;
-      let totalCompletedVideos = 0;
-      let sumOfCompletionPercentages = 0;
-      let totalLearningSeconds = 0;
-      let completedPlaylistsCount = 0;
-
+      // Fetch all activities for trends
+      const allActivities = await playlistService.getActivities(user.id, 100);
+      
+      // Process playlist progress
       const processedPlaylistsActivity: RecentPlaylistProgress[] = [];
 
-      storedPlaylists.forEach(playlist => {
+      playlists.forEach((playlist: any) => {
         if (!playlist.videos || playlist.videos.length === 0) return;
 
         let playlistCompletedVideos = 0;
         let playlistTotalCompletion = 0;
         
-        playlist.videos.forEach(video => {
-          totalVideos++;
+        playlist.videos.forEach((video: any) => {
           const completion = video.completionStatus || 0;
           playlistTotalCompletion += completion;
-          sumOfCompletionPercentages += completion;
           if (completion === 100) {
-            totalCompletedVideos++;
             playlistCompletedVideos++;
-            totalLearningSeconds += parseDurationToSeconds(video.duration);
           }
         });
 
         const playlistProgress = playlist.videos.length > 0 ? playlistTotalCompletion / playlist.videos.length : 0;
-        if (playlistProgress === 100) {
-          completedPlaylistsCount++;
-        }
         
         processedPlaylistsActivity.push({
-          id: playlist.id,
+          id: playlist._id || playlist.id,
           title: playlist.title,
           progress: parseFloat(playlistProgress.toFixed(0)),
           lastActivity: new Date(playlist.lastModified || playlist.createdAt).toLocaleDateString(),
@@ -159,33 +156,86 @@ export default function ProgressPage() {
         });
       });
       
+      // Sort by last activity
       processedPlaylistsActivity.sort((a, b) => {
           return new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime();
       });
 
-
-      setOverallStats({
-        playlistsCompleted: completedPlaylistsCount,
-        videosWatched: totalCompletedVideos,
-        totalLearningTime: formatSecondsToHoursMinutes(totalLearningSeconds),
-        averageCompletion: totalVideos > 0 ? parseFloat((sumOfCompletionPercentages / totalVideos).toFixed(0)) : 0,
-      });
       setRecentPlaylistsProgress(processedPlaylistsActivity.slice(0, 5)); 
+      
+      // Generate learning trends
+      const trends = generateLearningTrends(allActivities);
+      setLearningTrendsData(trends);
+
+      // Update user stats only if this is a forced refresh
+      if (forceRefresh) {
+        updateUserStats();
+      }
+
+      setLastFetchTime(now);
 
     } catch (error) {
-      console.error("Error processing progress data:", error);
-       setOverallStats({
-          playlistsCompleted: 0,
-          videosWatched: 0,
-          totalLearningTime: "0 minutes",
-          averageCompletion: 0,
+      console.error("Error fetching progress data:", error);
+      
+      // Fallback to localStorage if MongoDB fails
+      try {
+        const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+        const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
+        const userPlaylists = storedPlaylists.filter((p: any) => p.userId === user.id);
+        
+        const processedPlaylistsActivity: RecentPlaylistProgress[] = [];
+
+        userPlaylists.forEach((playlist: any) => {
+          if (!playlist.videos || playlist.videos.length === 0) return;
+
+          let playlistCompletedVideos = 0;
+          let playlistTotalCompletion = 0;
+          
+          playlist.videos.forEach((video: any) => {
+            const completion = video.completionStatus || 0;
+            playlistTotalCompletion += completion;
+            if (completion === 100) {
+              playlistCompletedVideos++;
+            }
+          });
+
+          const playlistProgress = playlist.videos.length > 0 ? playlistTotalCompletion / playlist.videos.length : 0;
+          
+          processedPlaylistsActivity.push({
+            id: playlist.id,
+            title: playlist.title,
+            progress: parseFloat(playlistProgress.toFixed(0)),
+            lastActivity: new Date(playlist.lastModified || playlist.createdAt).toLocaleDateString(),
+            videoCount: playlist.videos.length,
+            completedVideoCount: playlistCompletedVideos,
+          });
         });
+        
+        processedPlaylistsActivity.sort((a, b) => {
+          return new Date(b.lastActivity).getTime() - new Date(a.lastActivity).getTime();
+        });
+
+        setRecentPlaylistsProgress(processedPlaylistsActivity.slice(0, 5));
+        
+        // Generate trends from localStorage activities
+        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        const trends = generateLearningTrends(activityLog);
+        setLearningTrendsData(trends);
+        
+      } catch (fallbackError) {
+        console.error("Error with localStorage fallback:", fallbackError);
         setRecentPlaylistsProgress([]);
+        setLearningTrendsData([]);
+      }
     }
     setIsLoading(false);
-  }, []);
+  };
 
-  if (isLoading) {
+  useEffect(() => {
+    fetchProgressData();
+  }, [user]); // Removed updateUserStats from dependencies to prevent excessive calls
+
+  if (userLoading || isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -194,6 +244,18 @@ export default function ProgressPage() {
     );
   }
 
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center">
+          <p className="text-lg text-muted-foreground mb-4">Please log in to view your progress</p>
+          <Button asChild>
+            <Link href="/login">Login</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -202,6 +264,33 @@ export default function ProgressPage() {
           <BarChart3Icon className="mr-3 h-8 w-8" />
           My Learning Progress
         </h1>
+        <Button 
+          variant="outline" 
+          onClick={async () => {
+            toast({
+              title: "Refreshing progress data...",
+              description: "Please wait while we refresh your progress data.",
+            });
+            try {
+              await fetchProgressData(true); // Force refresh
+              toast({
+                title: "Progress Updated! ✅",
+                description: "Your progress data has been refreshed.",
+              });
+            } catch (error) {
+              console.error("Error refreshing progress:", error);
+              toast({
+                title: "Refresh Error",
+                description: "Could not refresh progress data. Please try again.",
+                variant: "destructive",
+              });
+            }
+          }}
+          disabled={isLoading}
+        >
+          <RefreshCwIcon className="mr-2 h-4 w-4" />
+          Refresh
+        </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -211,7 +300,9 @@ export default function ProgressPage() {
             <ListChecksIcon className="h-5 w-5 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{overallStats.playlistsCompleted}</div>
+            <div className="text-3xl font-bold text-foreground">
+              {userStats?.totalPlaylists || 0}
+            </div>
           </CardContent>
         </Card>
         <Card className="shadow-md">
@@ -220,7 +311,9 @@ export default function ProgressPage() {
             <CheckCircle className="h-5 w-5 text-accent" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{overallStats.videosWatched}</div>
+            <div className="text-3xl font-bold text-foreground">
+              {userStats?.totalVideosCompleted || 0}
+            </div>
           </CardContent>
         </Card>
         <Card className="shadow-md">
@@ -229,21 +322,48 @@ export default function ProgressPage() {
             <ClockIcon className="h-5 w-5 text-blue-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">{overallStats.totalLearningTime}</div>
-            <p className="text-xs text-muted-foreground">(Sum of completed video durations)</p>
+            <div className="text-2xl font-bold text-foreground">
+              {userStats?.totalLearningTime || "0h 0m"}
+            </div>
+            <p className="text-xs text-muted-foreground">(Estimated from completed videos)</p>
           </CardContent>
         </Card>
         <Card className="shadow-md">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Completion</CardTitle>
+            <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
             <TrendingUpIcon className="h-5 w-5 text-orange-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{overallStats.averageCompletion}%</div>
-            <Progress value={overallStats.averageCompletion} className="mt-2 h-2" />
+            <div className="text-3xl font-bold text-foreground">
+              {userStats?.overallProgress || 0}%
+            </div>
+            <Progress value={userStats?.overallProgress || 0} className="mt-2 h-2" />
           </CardContent>
         </Card>
       </div>
+
+      {/* Weekly Goal Progress */}
+      {userStats?.weeklyGoal && (
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>Weekly Learning Goal</CardTitle>
+            <CardDescription>
+              Your progress towards completing {userStats.weeklyGoal.target} videos this week
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium">
+                {userStats.weeklyGoal.completed} / {userStats.weeklyGoal.target} videos
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {userStats.weeklyGoal.progress}%
+              </span>
+            </div>
+            <Progress value={userStats.weeklyGoal.progress} className="h-3" />
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="shadow-lg">
         <CardHeader>
@@ -283,7 +403,7 @@ export default function ProgressPage() {
       <Card className="shadow-md">
         <CardHeader>
           <CardTitle>Learning Trends</CardTitle>
-           <CardDescription>Videos watched over the last 7 days (sample data).</CardDescription>
+           <CardDescription>Videos completed over the last 7 days.</CardDescription>
         </CardHeader>
         <CardContent className="h-80">
           <ChartContainer config={chartConfig} className="w-full h-full">
@@ -307,6 +427,39 @@ export default function ProgressPage() {
           </ChartContainer>
         </CardContent>
       </Card>
+
+      {/* Recent Activity */}
+      {userStats?.recentActivity && userStats.recentActivity.length > 0 && (
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+            <CardDescription>Your latest learning activities</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {userStats.recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-2 h-2 rounded-full ${
+                      activity.type === 'completed' ? 'bg-green-500' :
+                      activity.type === 'started' ? 'bg-blue-500' :
+                      activity.type === 'created' ? 'bg-purple-500' :
+                      'bg-orange-500'
+                    }`} />
+                    <div>
+                      <p className="text-sm font-medium">{activity.action}</p>
+                      <p className="text-xs text-muted-foreground">{activity.item}</p>
+                    </div>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(activity.timestamp).toLocaleDateString()}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

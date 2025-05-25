@@ -1,4 +1,3 @@
-
 'use server';
 /**
  * @fileOverview YouTube Data API service.
@@ -73,6 +72,7 @@ export async function getVideoDetails(videoId: string): Promise<Partial<Video> |
       thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
       duration: "N/A",
       summary: "Details unavailable (API key missing).",
+      channelTitle: "Unknown Channel",
     };
   }
 
@@ -95,6 +95,7 @@ export async function getVideoDetails(videoId: string): Promise<Partial<Video> |
         thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
         duration: item.contentDetails ? formatDuration(item.contentDetails.duration) : 'N/A',
         summary: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
+        channelTitle: item.snippet.channelTitle || '',
       };
     }
     return null;
@@ -147,6 +148,7 @@ export async function searchVideos(query: string, maxResults: number = 5): Promi
             thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
             duration: 'N/A', // Duration not available from search snippet directly
             summary: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
+            channelTitle: item.snippet.channelTitle || '',
         }));
     }
     const detailsData = await detailsResponse.json();
@@ -164,6 +166,7 @@ export async function searchVideos(query: string, maxResults: number = 5): Promi
         thumbnail: detailedItem?.snippet.thumbnails?.high?.url || searchItem.snippet.thumbnails?.high?.url || searchItem.snippet.thumbnails?.medium?.url || searchItem.snippet.thumbnails?.default?.url || '',
         duration: detailedItem?.contentDetails ? formatDuration(detailedItem.contentDetails.duration) : 'N/A',
         summary: (detailedItem?.snippet.description || searchItem.snippet.description || '').substring(0, 200) + ((detailedItem?.snippet.description || searchItem.snippet.description || '').length > 200 ? '...' : ''),
+        channelTitle: detailedItem?.snippet.channelTitle || searchItem.snippet.channelTitle || '',
       };
     });
 

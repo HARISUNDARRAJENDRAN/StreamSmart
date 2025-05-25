@@ -19,57 +19,98 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from '@/contexts/UserContext';
+import { playlistService } from '@/services/playlistService';
 
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const { user, recordActivity, updateUserStats } = useUser();
 
   useEffect(() => {
-    setIsLoading(true);
-    try {
-      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
-      
-      const processedPlaylists = storedPlaylists.map(p => ({
-        ...p,
-        createdAt: new Date(p.createdAt) 
-      }));
-      
-      // Sort by creation date, newest first
-      processedPlaylists.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-      setPlaylists(processedPlaylists);
+    const loadPlaylists = async () => {
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
 
+      setIsLoading(true);
+      try {
+        const userPlaylists = await playlistService.getPlaylists(user.id);
+        
+        const processedPlaylists = userPlaylists.map((p: any) => ({
+          ...p,
+          id: p._id, // MongoDB uses _id
+          createdAt: new Date(p.createdAt),
+          lastModified: new Date(p.updatedAt || p.createdAt),
+          videos: (p.videos || []).map((video: any) => ({
+            id: video.id,
+            title: video.title || '',
+            youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
+            thumbnail: video.thumbnail || '',
+            duration: video.duration || '',
+            addedBy: video.addedBy || 'user',
+            summary: video.summary || '',
+            completionStatus: video.completionStatus || 0,
+            channelTitle: video.channelTitle || '',
+          })),
+          tags: p.tags || [],
+          userId: p.userId,
+          overallProgress: p.overallProgress || 0,
+          aiRecommended: p.aiRecommended || false,
+        }));
+        
+        // Sort by creation date, newest first
+        processedPlaylists.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setPlaylists(processedPlaylists);
+
+      } catch (error) {
+        console.error("Error loading playlists:", error);
+        setPlaylists([]); 
+        toast({
+          title: "Error",
+          description: "Could not load playlists.",
+          variant: "destructive",
+        });
+      }
+      setIsLoading(false);
+    };
+
+    loadPlaylists();
+  }, [user, toast]);
+
+  const handleDeletePlaylist = async (playlistId: string) => {
+    try {
+      const result = await playlistService.deletePlaylist(playlistId);
+      
+      if (result.success) {
+        setPlaylists(playlists.filter(p => p.id !== playlistId));
+        
+        // Record deletion activity
+        await recordActivity({
+          action: "Deleted playlist",
+          item: playlists.find(p => p.id === playlistId)?.title || "Unknown playlist",
+          type: "started"
+        });
+        
+        toast({
+          title: "Playlist Deleted",
+          description: "The playlist has been removed.",
+        });
+        
+        // Update user stats
+        setTimeout(() => {
+          updateUserStats();
+        }, 100);
+      } else {
+        throw new Error(result.error || 'Failed to delete playlist');
+      }
     } catch (error) {
-      console.error("Error loading playlists from localStorage:", error);
-      setPlaylists([]); 
-       toast({
-        title: "Error",
-        description: "Could not load playlists.",
-        variant: "destructive",
-      });
-    }
-    setIsLoading(false);
-  }, [toast]);
-
-  const handleDeletePlaylist = (playlistId: string) => {
-    try {
-      const updatedPlaylists = playlists.filter(p => p.id !== playlistId);
-      setPlaylists(updatedPlaylists);
-      const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-      const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) as Playlist[] : [];
-      const updatedStoredPlaylists = storedPlaylists.filter(p => p.id !== playlistId);
-      localStorage.setItem('userPlaylists', JSON.stringify(updatedStoredPlaylists));
-      
+      console.error("Error deleting playlist:", error);
       toast({
-        title: "Playlist Deleted",
-        description: "The playlist has been removed.",
-      });
-    } catch (error) {
-       console.error("Error deleting playlist:", error);
-       toast({
         title: "Error",
-        description: "Could not delete the playlist.",
+        description: error instanceof Error ? error.message : "Could not delete the playlist.",
         variant: "destructive",
       });
     }
@@ -81,6 +122,22 @@ export default function PlaylistsPage() {
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
         <p className="ml-4 text-lg">Loading playlists...</p>
       </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Card className="col-span-full text-center p-10 border-dashed">
+        <CardTitle className="text-xl mb-2">Please Log In</CardTitle>
+        <CardDescription className="mb-6">
+          You need to be logged in to view your playlists.
+        </CardDescription>
+        <Link href="/login">
+          <Button variant="default" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            Log In
+          </Button>
+        </Link>
+      </Card>
     );
   }
 
@@ -135,14 +192,22 @@ export default function PlaylistsPage() {
                     ))}
                   </div>
                   <p className="text-xs text-muted-foreground">{playlist.videos?.length || 0} videos</p>
-                  {playlist.aiRecommended && (
-                     <p className="text-xs text-accent mt-1">AI Recommended</p>
+                  {playlist.overallProgress > 0 && (
+                    <div className="mt-2">
+                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-primary transition-all duration-300"
+                          style={{ width: `${playlist.overallProgress}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">{playlist.overallProgress}% complete</p>
+                    </div>
                   )}
                 </CardContent>
               </Link>
               <CardFooter className="p-4 border-t flex justify-end gap-2">
                 <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" asChild>
-                  {/* TODO: Implement Edit functionality for localStorage items */}
+                  {/* TODO: Implement Edit functionality for MongoDB items */}
                   <Link href={`/playlists/edit/${playlist.id}`}>
                     <Edit3Icon className="mr-1 h-4 w-4" /> Edit
                   </Link>

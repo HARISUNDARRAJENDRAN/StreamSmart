@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useRef, useId } from 'react';
@@ -79,6 +78,22 @@ export function VideoPlayer({ videoUrl, videoTitle = "Video" }: VideoPlayerProps
   const uniquePlayerDivId = `youtube-player-${useId().replace(/:/g, "")}`;
 
   useEffect(() => {
+    // Early return if videoUrl is undefined or empty
+    if (!videoUrl || videoUrl.trim() === '') {
+      console.warn("VideoPlayer: No video URL provided");
+      if (playerRef.current && typeof playerRef.current.destroy === 'function') {
+        try {
+          playerRef.current.destroy();
+        } catch(e) { console.error("Error destroying player:", e)}
+        playerRef.current = null;
+      }
+      if (playerDivRef.current) {
+        playerDivRef.current.innerHTML = `<div class="w-full h-full flex items-center justify-center bg-muted text-muted-foreground p-4 rounded">No video URL provided.</div>`;
+      }
+      currentVideoIdRef.current = null;
+      return;
+    }
+
     const extractVideoId = (url: string): string | null => {
       if (!url) return null;
       try {

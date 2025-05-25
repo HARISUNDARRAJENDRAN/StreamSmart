@@ -1,16 +1,21 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { userService } from '@/services/userService';
+import { playlistService } from '@/services/playlistService';
 
 export interface User {
   id: string;
   name: string;
   email: string;
   avatarUrl?: string;
+  phoneNumber?: string;
+  bio?: string;
   createdAt: Date;
   lastLoginDate: Date;
   learningStreak: number;
   totalLearningTime: number; // in minutes
+  weeklyGoal: number; // customizable weekly goal
   preferences: {
     theme: 'light' | 'dark' | 'system';
     notifications: boolean;
@@ -41,9 +46,13 @@ interface UserContextType {
   user: User | null;
   userStats: UserStats | null;
   isAuthenticated: boolean;
-  login: (userData: Partial<User>) => void;
+  isLoading: boolean;
+  login: (userData: Partial<User>) => Promise<void>;
+  loginWithAPI: (email: string, password?: string, authProvider?: 'email' | 'google' | 'demo', additionalData?: any) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
-  updateUserStats: () => void;
+  updateUserProfile: (data: { name?: string; phoneNumber?: string; bio?: string }) => Promise<{ success: boolean; error?: string }>;
+  updateWeeklyGoal: (weeklyGoal: number) => Promise<{ success: boolean; error?: string }>;
+  updateUserStats: (forceUpdate?: boolean) => void;
   recordActivity: (activity: { action: string; item: string; type: 'completed' | 'started' | 'created' | 'quiz' }) => void;
   calculateStreak: () => number;
 }
@@ -53,114 +62,127 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [lastStatsUpdate, setLastStatsUpdate] = useState<number>(0);
 
   // Calculate learning streak based on daily activity
   const calculateStreak = (): number => {
-    if (!user) return 0;
-    
-    try {
-      const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
-      if (activityLog.length === 0) return 0;
-
-      // Sort activities by date (newest first)
-      const sortedActivities = activityLog.sort((a: any, b: any) => 
-        new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
-
-      let streak = 0;
-      let currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0);
-
-      // Check each day going backwards
-      for (let i = 0; i < 30; i++) { // Check last 30 days
-        const dayToCheck = new Date(currentDate);
-        dayToCheck.setDate(dayToCheck.getDate() - i);
-        
-        const hasActivityOnDay = sortedActivities.some((activity: any) => {
-          const activityDate = new Date(activity.timestamp);
-          activityDate.setHours(0, 0, 0, 0);
-          return activityDate.getTime() === dayToCheck.getTime();
-        });
-
-        if (hasActivityOnDay) {
-          if (i === 0 || streak > 0) { // Today or continuing streak
-            streak++;
-          }
-        } else if (i === 0) {
-          // No activity today, check yesterday
-          continue;
-        } else {
-          // Gap in streak
-          break;
-        }
-      }
-
-      return streak;
-    } catch (error) {
-      console.error('Error calculating streak:', error);
-      return 0;
-    }
+    return user?.learningStreak || 0;
   };
 
   // Record user activity for streak tracking
-  const recordActivity = (activity: { action: string; item: string; type: 'completed' | 'started' | 'created' | 'quiz' }) => {
+  const recordActivity = async (activity: { action: string; item: string; type: 'completed' | 'started' | 'created' | 'quiz' }) => {
     if (!user) return;
 
     try {
-      const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
-      const newActivity = {
-        id: Date.now().toString(),
+      const result = await playlistService.recordActivity({
+        userId: user.id,
         ...activity,
-        timestamp: new Date(),
-      };
-
-      activityLog.unshift(newActivity);
-      // Keep only last 100 activities
-      const trimmedLog = activityLog.slice(0, 100);
+      });
       
-      localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-      updateUserStats();
+      if (result.success) {
+        // Update stats after recording activity
+        updateUserStats();
+      } else {
+        // Fallback to localStorage if MongoDB fails
+        console.log('Falling back to localStorage for activity recording');
+        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        const newActivity = {
+          id: Date.now().toString(),
+          ...activity,
+          timestamp: new Date(),
+        };
+
+        activityLog.unshift(newActivity);
+        // Keep only last 100 activities
+        const trimmedLog = activityLog.slice(0, 100);
+        
+        localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
+        updateUserStats();
+      }
     } catch (error) {
       console.error('Error recording activity:', error);
+      
+      // Fallback to localStorage
+      try {
+        console.log('Falling back to localStorage for activity recording');
+        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        const newActivity = {
+          id: Date.now().toString(),
+          ...activity,
+          timestamp: new Date(),
+        };
+
+        activityLog.unshift(newActivity);
+        // Keep only last 100 activities
+        const trimmedLog = activityLog.slice(0, 100);
+        
+        localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
+        updateUserStats();
+      } catch (fallbackError) {
+        console.error('Error with localStorage fallback:', fallbackError);
+      }
     }
   };
 
-  // Update user statistics
-  const updateUserStats = () => {
+  // Update user statistics with throttling
+  const updateUserStats = async (forceUpdate = false) => {
     if (!user) return;
 
+    // Throttle updates to prevent excessive API calls (minimum 10 seconds between updates)
+    const now = Date.now();
+    if (!forceUpdate && now - lastStatsUpdate < 10000) {
+      return;
+    }
+
     try {
-      // Get user playlists
-      const playlists = JSON.parse(localStorage.getItem('userPlaylists') || '[]');
-      const userPlaylists = playlists.filter((p: any) => p.userId === user.id);
+      // Try to get user playlists from MongoDB first
+      let playlists = await playlistService.getPlaylists(user.id);
+      let activities = await playlistService.getActivities(user.id, 5);
+      let allActivities = await playlistService.getActivities(user.id, 100);
+
+      // If MongoDB is not available, fall back to localStorage
+      if (playlists.length === 0 && activities.length === 0) {
+        console.log('Falling back to localStorage for user stats');
+        
+        // Get playlists from localStorage
+        const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+        const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
+        playlists = storedPlaylists.filter((p: any) => p.userId === user.id);
+
+        // Get activities from localStorage
+        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        activities = activityLog.slice(0, 5);
+        allActivities = activityLog.slice(0, 100);
+      }
 
       // Calculate stats
-      const totalVideos = userPlaylists.reduce((sum: number, playlist: any) => 
+      const totalVideos = playlists.reduce((sum: number, playlist: any) => 
         sum + (playlist.videos?.length || 0), 0);
       
-      const completedVideos = userPlaylists.reduce((sum: number, playlist: any) => 
+      const completedVideos = playlists.reduce((sum: number, playlist: any) => 
         sum + (playlist.videos?.filter((v: any) => v.completionStatus === 100).length || 0), 0);
 
       const overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
 
-      // Get activity log
-      const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
-      const recentActivity = activityLog.slice(0, 5).map((activity: any) => ({
+      // Process recent activities
+      const recentActivity = activities.map((activity: any) => ({
         ...activity,
+        id: activity._id || activity.id || Date.now().toString(),
         timestamp: new Date(activity.timestamp),
       }));
 
-      // Calculate weekly goal (example: 15 videos per week)
+      // Calculate weekly goal progress
       const weekStart = new Date();
       weekStart.setDate(weekStart.getDate() - weekStart.getDay());
       weekStart.setHours(0, 0, 0, 0);
 
-      const weeklyCompleted = activityLog.filter((activity: any) => {
+      const weeklyCompleted = allActivities.filter((activity: any) => {
         const activityDate = new Date(activity.timestamp);
         return activityDate >= weekStart && activity.type === 'completed';
       }).length;
 
-      const weeklyTarget = 15;
+      const weeklyTarget = user.weeklyGoal || 15;
       const weeklyProgress = Math.min(Math.round((weeklyCompleted / weeklyTarget) * 100), 100);
 
       // Calculate total learning time (rough estimate)
@@ -170,9 +192,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const totalLearningTime = `${hours}h ${minutes}m`;
 
       const newStats: UserStats = {
-        totalPlaylists: userPlaylists.length,
+        totalPlaylists: playlists.length,
         totalVideosCompleted: completedVideos,
-        currentStreak: calculateStreak(),
+        currentStreak: user.learningStreak || 0,
         overallProgress,
         totalLearningTime,
         weeklyGoal: {
@@ -184,22 +206,102 @@ export function UserProvider({ children }: { children: ReactNode }) {
       };
 
       setUserStats(newStats);
+      setLastStatsUpdate(now);
     } catch (error) {
       console.error('Error updating user stats:', error);
+      // Set default stats to prevent crashes
+      const defaultStats: UserStats = {
+        totalPlaylists: 0,
+        totalVideosCompleted: 0,
+        currentStreak: user.learningStreak || 0,
+        overallProgress: 0,
+        totalLearningTime: '0h 0m',
+        weeklyGoal: {
+          target: user.weeklyGoal || 15,
+          completed: 0,
+          progress: 0,
+        },
+        recentActivity: [],
+      };
+      setUserStats(defaultStats);
     }
   };
 
-  // Login function
-  const login = (userData: Partial<User>) => {
+  // Login with API
+  const loginWithAPI = async (
+    email: string, 
+    password?: string, 
+    authProvider: 'email' | 'google' | 'demo' = 'email',
+    additionalData?: any
+  ): Promise<{ success: boolean; error?: string }> => {
+    setIsLoading(true);
+    
+    try {
+      const loginData = {
+        email,
+        password,
+        authProvider,
+        ...additionalData,
+      };
+
+      const result = await userService.login(loginData);
+
+      if (result.error) {
+        setIsLoading(false);
+        return { success: false, error: result.error };
+      }
+
+      if (result.user) {
+        const userData: User = {
+          ...result.user,
+          createdAt: new Date(result.user.createdAt),
+          lastLoginDate: new Date(result.user.lastLoginDate),
+          weeklyGoal: result.user.weeklyGoal || 15,
+        };
+        
+        setUser(userData);
+        
+        // Store user session in localStorage for persistence
+        localStorage.setItem('userSession', JSON.stringify({
+          userId: userData.id,
+          email: userData.email,
+          loginTime: new Date().toISOString(),
+        }));
+
+        // Record login activity
+        await recordActivity({
+          action: 'Logged in',
+          item: 'StreamSmart',
+          type: 'started',
+        });
+
+        setIsLoading(false);
+        return { success: true };
+      }
+
+      setIsLoading(false);
+      return { success: false, error: 'Login failed' };
+    } catch (error) {
+      console.error('Login error:', error);
+      setIsLoading(false);
+      return { success: false, error: 'Login failed' };
+    }
+  };
+
+  // Legacy login function for backward compatibility
+  const login = async (userData: Partial<User>) => {
     const newUser: User = {
       id: userData.id || Date.now().toString(),
       name: userData.name || 'Anonymous User',
       email: userData.email || 'user@example.com',
       avatarUrl: userData.avatarUrl,
+      phoneNumber: userData.phoneNumber || '',
+      bio: userData.bio || '',
       createdAt: userData.createdAt || new Date(),
       lastLoginDate: new Date(),
       learningStreak: 0,
       totalLearningTime: 0,
+      weeklyGoal: 15,
       preferences: {
         theme: 'system',
         notifications: true,
@@ -207,7 +309,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
 
     setUser(newUser);
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
     
     // Record login activity
     setTimeout(() => {
@@ -219,26 +320,112 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }, 100);
   };
 
+  // Update user profile
+  const updateUserProfile = async (data: { name?: string; phoneNumber?: string; bio?: string }): Promise<{ success: boolean; error?: string }> => {
+    if (!user) {
+      return { success: false, error: 'No user logged in' };
+    }
+
+    try {
+      const result = await userService.updateProfile({
+        userId: user.id,
+        ...data,
+      });
+
+      if (result.error) {
+        return { success: false, error: result.error };
+      }
+
+      if (result.user) {
+        const updatedUser: User = {
+          ...result.user,
+          createdAt: new Date(result.user.createdAt),
+          lastLoginDate: new Date(result.user.lastLoginDate),
+          weeklyGoal: result.user.weeklyGoal || 15,
+        };
+        
+        setUser(updatedUser);
+        return { success: true };
+      }
+
+      return { success: false, error: 'Update failed' };
+    } catch (error) {
+      console.error('Profile update error:', error);
+      return { success: false, error: 'Update failed' };
+    }
+  };
+
+  // Update weekly goal
+  const updateWeeklyGoal = async (weeklyGoal: number): Promise<{ success: boolean; error?: string }> => {
+    if (!user) {
+      return { success: false, error: 'No user logged in' };
+    }
+
+    try {
+      const result = await userService.updateWeeklyGoal(user.id, weeklyGoal);
+
+      if (result.error) {
+        return { success: false, error: result.error };
+      }
+
+      if (result.user) {
+        const updatedUser: User = {
+          ...user,
+          weeklyGoal: result.user.weeklyGoal,
+        };
+        
+        setUser(updatedUser);
+        updateUserStats(true); // Force update stats to reflect new goal
+        return { success: true };
+      }
+
+      return { success: false, error: 'Update failed' };
+    } catch (error) {
+      console.error('Weekly goal update error:', error);
+      return { success: false, error: 'Update failed' };
+    }
+  };
+
   // Logout function
   const logout = () => {
     setUser(null);
     setUserStats(null);
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('userSession');
   };
 
-  // Load user from localStorage on mount
+  // Load user session on mount
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem('currentUser');
-      if (savedUser) {
-        const userData = JSON.parse(savedUser);
-        userData.createdAt = new Date(userData.createdAt);
-        userData.lastLoginDate = new Date(userData.lastLoginDate);
-        setUser(userData);
+    const loadUserSession = async () => {
+      try {
+        const session = localStorage.getItem('userSession');
+        if (session) {
+          const { userId } = JSON.parse(session);
+          
+          // Fetch user data from API
+          const result = await userService.getProfile(userId);
+          
+          if (result.user) {
+            const userData: User = {
+              ...result.user,
+              createdAt: new Date(result.user.createdAt),
+              lastLoginDate: new Date(result.user.lastLoginDate),
+              weeklyGoal: result.user.weeklyGoal || 15,
+            };
+            setUser(userData);
+          } else {
+            // Invalid session, clear it
+            localStorage.removeItem('userSession');
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user session:', error);
+        localStorage.removeItem('userSession');
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error loading user from localStorage:', error);
-    }
+    };
+
+    loadUserSession();
   }, []);
 
   // Update stats when user changes
@@ -252,8 +439,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     user,
     userStats,
     isAuthenticated: !!user,
+    isLoading,
     login,
+    loginWithAPI,
     logout,
+    updateUserProfile,
+    updateWeeklyGoal,
     updateUserStats,
     recordActivity,
     calculateStreak,
