@@ -17,6 +17,7 @@ import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCh
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
+import { MLEnhancedVideoSummary } from '@/components/playlists/ml-enhanced-video-summary';
 import { motion } from 'framer-motion';
 import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
@@ -408,7 +409,7 @@ ${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehens
                 </TabsTrigger>
                 <TabsTrigger value="mindmap" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <BrainIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Mind Map</span>
+                  <span className="hidden sm:inline">AI Mind Map</span>
                 </TabsTrigger>
                 <TabsTrigger value="quiz" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <LightbulbIcon className="w-4 h-4 mr-2" />
@@ -480,7 +481,24 @@ ${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehens
                 </TabsContent>
                 
                 <TabsContent value="mindmap">
+                  <div className="space-y-6">
+                    {/* Enhanced Mind Map with ML Analysis */}
+                    {currentVideo && (
+                      <MLEnhancedVideoSummary 
+                        video={currentVideo}
+                        onEnhancedSummaryGenerated={(enhancedSummary, multiModalData) => {
+                          setCurrentVideo(prev => prev ? { ...prev, enhancedSummary } : null);
+                          toast({
+                            title: "AI Mind Map Enhanced! 🧠",
+                            description: "Mind map updated with multi-modal analysis.",
+                          });
+                        }}
+                      />
+                    )}
+                    
+                    {/* Traditional Mind Map for Playlist Overview */}
                   <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id}/>
+                  </div>
                 </TabsContent>
                 
                 <TabsContent value="quiz">

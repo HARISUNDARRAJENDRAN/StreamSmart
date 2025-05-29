@@ -76,8 +76,19 @@ export async function POST(request: NextRequest) {
           userId: user._id, 
           authProvider: user.authProvider 
         });
+        
+        // Provide helpful error message based on auth provider
+        let errorMessage = 'Invalid login method. ';
+        if (user.authProvider === 'google') {
+          errorMessage += 'This account was created with Google. Please use the "Google" login button.';
+        } else if (user.authProvider === 'demo') {
+          errorMessage += 'This account was created in demo mode. Please use the "Demo" login button.';
+        } else {
+          errorMessage += 'This account was created with a different authentication method.';
+        }
+        
         return NextResponse.json(
-          { error: 'Invalid login method. This account was created with a different authentication method.' },
+          { error: errorMessage },
           { status: 400 }
         );
       }

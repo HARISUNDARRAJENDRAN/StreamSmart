@@ -30,6 +30,7 @@ export type Video = {
   duration: string; // e.g., "10:30"
   addedBy: string; // userId
   summary?: string;
+  enhancedSummary?: string; // AI-enhanced summary from multi-modal analysis
   completionStatus: number; // Percentage
   understandingScore?: number; // Optional
   channelTitle?: string; // Optional channel title

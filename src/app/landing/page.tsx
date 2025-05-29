@@ -452,7 +452,7 @@ export default function LandingPage() {
               Ready to revolutionize your learning?
             </h2>
             <p className="text-xl md:text-2xl opacity-90 mb-10 leading-relaxed">
-              Join 50,000+ learners who have already transformed their YouTube experience. Start building your personalized learning journey today.
+              Join learners who have already transformed their YouTube experience. Start building your personalized learning journey today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register">

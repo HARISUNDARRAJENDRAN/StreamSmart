@@ -1,0 +1,23 @@
+# Environment variables for StreamSmart ML Backend
+
+# Model configurations
+WHISPER_MODEL_SIZE=base
+CLIP_MODEL_NAME=ViT-B/32
+FLAN_T5_MODEL_NAME=google/flan-t5-large
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+CORS_ORIGINS=http://localhost:3000
+
+# Processing configurations
+MAX_VIDEO_DURATION=7200  # 2 hours in seconds
+FRAME_EXTRACTION_INTERVAL=30  # Extract frame every 30 frames
+MAX_CONCURRENT_REQUESTS=3
+
+# Cache settings
+CACHE_DIR=./cache
+TEMP_DIR=./temp
+
+# Logging
+LOG_LEVEL=INFO 

@@ -1,0 +1,51 @@
+# Alternative requirements with more conservative versions
+# Use this if the main requirements.txt has dependency conflicts
+
+# Core ML libraries
+torch==1.13.1
+torchvision==0.14.1
+torchaudio==0.13.1
+transformers==4.35.0
+sentence-transformers==2.2.2
+
+# Audio processing
+openai-whisper==20231117
+librosa==0.10.1
+soundfile==0.12.1
+
+# Video processing  
+opencv-python==4.8.1.78
+moviepy==1.0.3
+pillow==10.0.1
+
+# CLIP model - manual installation method
+ftfy==6.1.1
+regex==2023.10.3
+
+# API and web framework
+fastapi==0.104.1
+uvicorn==0.24.0
+python-multipart==0.0.6
+
+# Utilities
+numpy==1.24.3
+scipy==1.11.4
+requests==2.31.0
+python-dotenv==1.0.0
+pydantic==2.5.2
+
+# YouTube video downloading
+yt-dlp==2023.12.30
+
+# YouTube transcript extraction
+youtube-transcript-api==0.6.1
+
+# Data handling
+pandas==2.1.4
+
+# Additional dependencies
+scikit-learn==1.3.2
+psutil==5.9.6
+
+# Note: For CLIP, you may need to install manually:
+# pip install git+https://github.com/openai/CLIP.git 

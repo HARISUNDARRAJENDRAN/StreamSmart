@@ -5,10 +5,10 @@ import Playlist from '@/models/Playlist';
 // GET - Fetch a single playlist by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { playlistId: string } }
+  { params }: { params: Promise<{ playlistId: string }> }
 ) {
   try {
-    const { playlistId } = params;
+    const { playlistId } = await params;
     
     if (!playlistId) {
       return NextResponse.json({ error: 'Playlist ID is required' }, { status: 400 });
