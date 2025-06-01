@@ -113,14 +113,32 @@ const getLayoutedElements = async (
 
 // Custom collapsible node component
 function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeData>) {
-  // The `expanded` state for showing/hiding children is managed by MindMapDisplay
-  const nodeDimensions = {
-    0: { width: 320, height: 110, fontSize: '20px', padding: '22px 26px' }, // Root
-    1: { width: 300, height: 90, fontSize: '17px', padding: '18px 22px' }, // Themes
-    2: { width: 280, height: 80, fontSize: '15px', padding: '14px 18px' }, // Sub-concepts
-    3: { width: 240, height: 70, fontSize: '14px', padding: '12px 16px' }, // Details
+  // Calculate dynamic dimensions based on content
+  const calculateDynamicDimensions = (label: string, description?: string, level: number = 0) => {
+    const baseWidth = Math.max(200, Math.min(400, label.length * 8 + 100));
+    const descriptionHeight = description ? Math.min(40, (description.length / 50) * 15) : 0;
+    const baseHeight = 60 + descriptionHeight;
+    
+    // Level-based scaling
+    const levelScale = {
+      0: { widthMultiplier: 1.4, heightMultiplier: 1.3, fontSize: '18px' }, // Root
+      1: { widthMultiplier: 1.2, heightMultiplier: 1.2, fontSize: '16px' }, // Themes
+      2: { widthMultiplier: 1.0, heightMultiplier: 1.0, fontSize: '14px' }, // Concepts
+      3: { widthMultiplier: 0.9, heightMultiplier: 0.9, fontSize: '13px' }, // Details
+      4: { widthMultiplier: 0.8, heightMultiplier: 0.8, fontSize: '12px' }, // Sub-details
+    };
+    
+    const currentScale = levelScale[level as keyof typeof levelScale] || levelScale[4];
+    
+    return {
+      width: Math.round(baseWidth * currentScale.widthMultiplier),
+      height: Math.round(baseHeight * currentScale.heightMultiplier),
+      fontSize: currentScale.fontSize,
+      padding: level === 0 ? '20px 24px' : level === 1 ? '16px 20px' : '12px 16px'
+    };
   };
-  const currentDimensions = nodeDimensions[data.level as keyof typeof nodeDimensions] || nodeDimensions[2];
+
+  const currentDimensions = calculateDynamicDimensions(data.label, data.description, data.level);
 
   // Assign width and height to data for ELK
   data.width = currentDimensions.width;
@@ -131,18 +149,29 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
     1: { background: 'linear-gradient(135deg, #0080a3 0%, #00a6cc 100%)', color: 'white', border: '2px solid #006680', borderRadius: '12px', fontWeight: '600', boxShadow: '0 6px 16px rgba(0, 128, 163, 0.3)', textAlign: 'center' as const },
     2: { background: 'linear-gradient(135deg, #66b3cc 0%, #80ccdd 100%)', color: '#003d52', border: '2px solid #4d9fb8', borderRadius: '10px', fontWeight: '500', boxShadow: '0 4px 12px rgba(102, 179, 204, 0.3)', textAlign: 'center' as const },
     3: { background: 'linear-gradient(135deg, #ffcc66 0%, #ffdd99 100%)', color: '#003d52', border: '2px solid #ffb833', borderRadius: '8px', fontWeight: '400', boxShadow: '0 3px 8px rgba(255, 204, 102, 0.3)', textAlign: 'center' as const },
+    4: { background: 'linear-gradient(135deg, #ffe6cc 0%, #fff2e6 100%)', color: '#003d52', border: '1px solid #ffcc99', borderRadius: '6px', fontWeight: '400', boxShadow: '0 2px 6px rgba(255, 230, 204, 0.3)', textAlign: 'center' as const },
   };
-  const currentStyle = nodeStyleDefinition[data.level as keyof typeof nodeStyleDefinition] || nodeStyleDefinition[2];
+  const currentStyle = nodeStyleDefinition[Math.min(data.level || 0, 4) as keyof typeof nodeStyleDefinition] || nodeStyleDefinition[4];
 
   return (
-    <div style={{ ...currentStyle, width: currentDimensions.width, height: currentDimensions.height, padding: currentDimensions.padding, fontSize: currentDimensions.fontSize, cursor: 'pointer', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+    <div style={{ 
+      ...currentStyle, 
+      width: currentDimensions.width, 
+      height: currentDimensions.height, 
+      padding: currentDimensions.padding, 
+      fontSize: currentDimensions.fontSize, 
+      cursor: 'pointer', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      justifyContent: 'center' 
+    }}>
       <Handle type="target" position={Position.Top} isConnectable={isConnectable} style={{background: '#888'}} />
       <div className="flex items-center justify-between gap-2 p-1 flex-grow">
         <div className="flex-1 overflow-hidden">
           <div className="font-semibold truncate" title={data.label}>{data.label}</div>
           {/* Description is always shown if present, but can be truncated if too long */}
           {data.description && (
-            <div className="text-xs mt-1 opacity-90 whitespace-pre-wrap break-words" style={{fontSize: '0.8em'}}>{data.description}</div>
+            <div className="text-xs mt-1 opacity-90 whitespace-pre-wrap break-words" style={{fontSize: '0.8em', lineHeight: '1.2'}}>{data.description}</div>
           )}
         </div>
         {data.childrenIds && data.childrenIds.length > 0 && (
@@ -270,106 +299,210 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
   const edges: Edge[] = [];
   let nodeIdCounter = 1;
 
-  // Helper function to create detailed sub-nodes from text content
-  const createDetailedSubNodes = (parentContent: any, parentId: string, startLevel: number): { childIds: string[], maxLevel: number } => {
+  // Helper function to create meaningful sub-nodes from content
+  const createMeaningfulSubNodes = (parentContent: any, parentId: string, parentLabel: string, startLevel: number): { childIds: string[], maxLevel: number } => {
     const childIds: string[] = [];
     let currentLevel = startLevel;
     let maxLevel = startLevel;
 
     if (typeof parentContent === 'string') {
-      // Break down string content into detailed components
-      const sentences = parentContent.split(/[.!?]+/).filter(s => s.trim().length > 10);
+      // Intelligent content analysis for meaningful breakdowns
+      const content = parentContent.trim();
       
-      sentences.slice(0, 4).forEach((sentence, index) => {
-        const detailNodeId = nodeIdCounter.toString();
-        const cleanSentence = sentence.trim();
-        
-        if (cleanSentence.length > 5) {
+      // Look for structured patterns in the content
+      const patterns = {
+        // Key features or characteristics (look for bullet points, lists, or "includes" patterns)
+        features: content.match(/(?:includes?|features?|consists? of|contains?)[:\s]([^.!?]*)/gi),
+        // Benefits or advantages
+        benefits: content.match(/(?:benefits?|advantages?|helps?|allows?|enables?)[:\s]([^.!?]*)/gi),
+        // Examples or applications
+        examples: content.match(/(?:examples?|such as|like|including|for instance)[:\s]([^.!?]*)/gi),
+        // Steps or processes
+        steps: content.match(/(?:steps?|process|procedure|how to)[:\s]([^.!?]*)/gi),
+        // Technical details
+        technical: content.match(/(?:technically|specifically|implementation|details?)[:\s]([^.!?]*)/gi),
+      };
+
+      // Create meaningful categories based on detected patterns
+      Object.entries(patterns).forEach(([category, matches]) => {
+        if (matches && matches.length > 0) {
+          matches.slice(0, 3).forEach((match, index) => {
+            const cleanMatch = match.replace(/^(?:includes?|features?|consists? of|contains?|benefits?|advantages?|helps?|allows?|enables?|examples?|such as|like|including|for instance|steps?|process|procedure|how to|technically|specifically|implementation|details?)[:\s]*/i, '').trim();
+            
+            if (cleanMatch.length > 15) {
+              const detailNodeId = nodeIdCounter.toString();
+              const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+              
+              nodes.push({
+                id: detailNodeId,
+                type: 'collapsible',
+                data: {
+                  label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
+                  description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
+                  childrenIds: [],
+                  level: currentLevel + 1
+                },
+                position: { x: 0, y: 0 }
+              });
+
+              childIds.push(detailNodeId);
+              maxLevel = Math.max(maxLevel, currentLevel + 1);
+
+              edges.push({
+                id: `e${parentId}-${detailNodeId}`,
+                source: parentId,
+                target: detailNodeId,
+                style: { stroke: '#ffdd99', strokeWidth: 2 }
+              });
+
+              nodeIdCounter++;
+            }
+          });
+        }
+      });
+
+      // If no patterns found, create logical topic breakdowns
+      if (childIds.length === 0 && content.length > 50) {
+        // Split by meaningful delimiters and create logical sub-topics
+        const meaningfulSentences = content
+          .split(/[.!?]+/)
+          .map(s => s.trim())
+          .filter(s => s.length > 20 && s.length < 200);
+
+        // Group related sentences or create key point extractions
+        const keyPoints = meaningfulSentences.slice(0, 3).map((sentence, index) => {
+          // Extract the main concept from each sentence
+          const mainConcept = sentence.split(/(?:,|;|\s(?:and|or|but|because|since|although)\s)/)[0].trim();
+          return {
+            concept: mainConcept.length > 8 ? mainConcept : sentence.substring(0, 50),
+            detail: sentence
+          };
+        });
+
+        keyPoints.forEach((point, index) => {
+          if (point.concept.length > 8) {
+            const conceptNodeId = nodeIdCounter.toString();
+            
+            nodes.push({
+              id: conceptNodeId,
+              type: 'collapsible',
+              data: {
+                label: point.concept.length > 50 ? point.concept.substring(0, 47) + '...' : point.concept,
+                description: point.detail !== point.concept ? point.detail : `Key aspect of ${parentLabel}`,
+                level: currentLevel + 1
+              },
+              position: { x: 0, y: 0 }
+            });
+
+            childIds.push(conceptNodeId);
+            maxLevel = Math.max(maxLevel, currentLevel + 1);
+
+            edges.push({
+              id: `e${parentId}-${conceptNodeId}`,
+              source: parentId,
+              target: conceptNodeId,
+              style: { stroke: '#b3e0ff', strokeWidth: 2 }
+            });
+
+            nodeIdCounter++;
+          }
+        });
+      }
+    } else if (Array.isArray(parentContent)) {
+      // Handle arrays by creating logical groupings
+      const groupSize = Math.ceil(parentContent.length / 3);
+      const groups = [];
+      
+      for (let i = 0; i < parentContent.length; i += groupSize) {
+        groups.push(parentContent.slice(i, i + groupSize));
+      }
+
+      groups.slice(0, 4).forEach((group, groupIndex) => {
+        if (group.length > 0) {
+          const groupNodeId = nodeIdCounter.toString();
+          const groupLabel = `${parentLabel} Group ${groupIndex + 1}`;
+          
           nodes.push({
-            id: detailNodeId,
+            id: groupNodeId,
             type: 'collapsible',
             data: {
-              label: cleanSentence.length > 50 ? cleanSentence.substring(0, 47) + '...' : cleanSentence,
-              description: cleanSentence.length > 50 ? cleanSentence : undefined,
+              label: groupLabel,
+              description: `Contains ${group.length} related items`,
               childrenIds: [],
               level: currentLevel + 1
             },
             position: { x: 0, y: 0 }
           });
 
-          childIds.push(detailNodeId);
+          childIds.push(groupNodeId);
           maxLevel = Math.max(maxLevel, currentLevel + 1);
 
           edges.push({
-            id: `e${parentId}-${detailNodeId}`,
+            id: `e${parentId}-${groupNodeId}`,
             source: parentId,
-            target: detailNodeId,
-            style: { stroke: '#ffdd99', strokeWidth: 2 }
+            target: groupNodeId,
+            style: { stroke: '#ccf2ff', strokeWidth: 2 }
           });
 
           nodeIdCounter++;
 
-          // Create even deeper level if sentence has multiple clauses
-          const clauses = cleanSentence.split(/[,;:]/).filter(c => c.trim().length > 8);
-          if (clauses.length > 1 && currentLevel < 5) { // Limit depth to prevent infinite recursion
-            const subChildIds: string[] = [];
-            
-            clauses.slice(0, 3).forEach((clause, clauseIndex) => {
-              const clauseNodeId = nodeIdCounter.toString();
-              const cleanClause = clause.trim();
-              
-              if (cleanClause.length > 8) {
-                nodes.push({
-                  id: clauseNodeId,
-                  type: 'collapsible',
-                  data: {
-                    label: cleanClause.length > 40 ? cleanClause.substring(0, 37) + '...' : cleanClause,
-                    description: cleanClause.length > 40 ? cleanClause : undefined,
-                    level: currentLevel + 2
-                  },
-                  position: { x: 0, y: 0 }
-                });
+          // Add items to this group
+          const itemChildIds: string[] = [];
+          group.slice(0, 4).forEach((item: any) => {
+            const itemNodeId = nodeIdCounter.toString();
+            const itemLabel = typeof item === 'string' ? item : 
+                             typeof item === 'object' && item?.title ? item.title :
+                             String(item);
 
-                subChildIds.push(clauseNodeId);
-                maxLevel = Math.max(maxLevel, currentLevel + 2);
+            if (itemLabel.length > 5) {
+              nodes.push({
+                id: itemNodeId,
+                type: 'collapsible',
+                data: {
+                  label: itemLabel.length > 40 ? itemLabel.substring(0, 37) + '...' : itemLabel,
+                  description: typeof item === 'object' && item?.description ? item.description : undefined,
+                  level: currentLevel + 2
+                },
+                position: { x: 0, y: 0 }
+              });
 
-                edges.push({
-                  id: `e${detailNodeId}-${clauseNodeId}`,
-                  source: detailNodeId,
-                  target: clauseNodeId,
-                  style: { stroke: '#ffe6cc', strokeWidth: 1.5 }
-                });
+              itemChildIds.push(itemNodeId);
+              maxLevel = Math.max(maxLevel, currentLevel + 2);
 
-                nodeIdCounter++;
-              }
-            });
+              edges.push({
+                id: `e${groupNodeId}-${itemNodeId}`,
+                source: groupNodeId,
+                target: itemNodeId,
+                style: { stroke: '#e6f7ff', strokeWidth: 1.5 }
+              });
 
-            // Update parent node with children
-            const parentNode = nodes.find(n => n.id === detailNodeId);
-            if (parentNode && subChildIds.length > 0) {
-              parentNode.data.childrenIds = subChildIds;
+              nodeIdCounter++;
             }
+          });
+
+          // Update group node with its children
+          const groupNode = nodes.find(n => n.id === groupNodeId);
+          if (groupNode) {
+            groupNode.data.childrenIds = itemChildIds;
           }
         }
       });
-    } else if (Array.isArray(parentContent)) {
-      // Handle arrays by creating sub-categories
-      parentContent.slice(0, 6).forEach((item, index) => {
-        const subResult = createDetailedSubNodes(item, parentId, currentLevel);
-        childIds.push(...subResult.childIds);
-        maxLevel = Math.max(maxLevel, subResult.maxLevel);
-      });
     } else if (typeof parentContent === 'object' && parentContent !== null) {
-      // Handle objects by creating nodes for each property
-      Object.entries(parentContent).slice(0, 5).forEach(([key, value]) => {
+      // Handle objects by creating meaningful property categories
+      const propertyEntries = Object.entries(parentContent).slice(0, 5);
+      
+      propertyEntries.forEach(([key, value]) => {
         const objNodeId = nodeIdCounter.toString();
+        const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         
         nodes.push({
           id: objNodeId,
           type: 'collapsible',
           data: {
-            label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
-            description: typeof value === 'string' ? value.substring(0, 100) : String(value).substring(0, 100),
+            label: formattedKey,
+            description: typeof value === 'string' && value.length > 10 ? 
+                        value.substring(0, 80) + (value.length > 80 ? '...' : '') : 
+                        `${formattedKey} details for ${parentLabel}`,
             childrenIds: [],
             level: currentLevel + 1
           },
@@ -388,9 +521,9 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
 
         nodeIdCounter++;
 
-        // Recursively create sub-nodes for this object property
-        if (typeof value === 'string' || Array.isArray(value)) {
-          const subResult = createDetailedSubNodes(value, objNodeId, currentLevel + 1);
+        // Only recurse if the value is meaningful and we're not too deep
+        if (currentLevel < 4 && ((typeof value === 'string' && value.length > 30) || Array.isArray(value))) {
+          const subResult = createMeaningfulSubNodes(value, objNodeId, formattedKey, currentLevel + 1);
           const objNode = nodes.find(n => n.id === objNodeId);
           if (objNode) {
             objNode.data.childrenIds = subResult.childIds;
@@ -506,7 +639,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
       nodeIdCounter++;
 
       // Create detailed sub-nodes for this concept (infinite levels)
-      const detailResult = createDetailedSubNodes(item, conceptNodeId, 2);
+      const detailResult = createMeaningfulSubNodes(item, conceptNodeId, itemLabel, 2);
       const conceptNode = nodes.find(n => n.id === conceptNodeId);
       if (conceptNode) {
         conceptNode.data.childrenIds = detailResult.childIds;
