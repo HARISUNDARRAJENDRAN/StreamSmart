@@ -33,6 +33,9 @@ interface CollapsibleNodeData {
   level?: number;
   width?: number; 
   height?: number; 
+  // Dynamic properties added at runtime
+  onToggleExpansion?: (nodeId: string) => void;
+  isGloballyExpanded?: boolean;
 }
 
 const elk = new Elk();
@@ -83,8 +86,8 @@ const getLayoutedElements = async (
     layoutOptions: options,
     children: elkNodes.filter(n => !nodesToLayout.find(rn => rn.id === n.id)?.hidden), // Only layout visible nodes
     edges: elkEdges.filter(edge => {
-      const sourceNode = nodesToLayout.find(n => n.id === edge.source);
-      const targetNode = nodesToLayout.find(n => n.id === edge.target);
+      const sourceNode = nodesToLayout.find(n => n.id === edge.sources[0]);
+      const targetNode = nodesToLayout.find(n => n.id === edge.targets[0]);
       return !sourceNode?.hidden && !targetNode?.hidden;
     }),
   };
@@ -110,11 +113,7 @@ const getLayoutedElements = async (
 
 // Custom collapsible node component
 function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeData>) {
-  // The `expanded` state for showing/hiding children will be managed by MindMapDisplay
-  // This internal `expanded` can be used for things like showing/hiding node's own long description if needed in future
-  // For now, the button primarily signals to the parent to toggle child visibility.
-  const [descriptionExpanded, setDescriptionExpanded] = useState(data.expanded ?? true); 
-
+  // The `expanded` state for showing/hiding children is managed by MindMapDisplay
   const nodeDimensions = {
     0: { width: 320, height: 110, fontSize: '20px', padding: '22px 26px' }, // Root
     1: { width: 300, height: 90, fontSize: '17px', padding: '18px 22px' }, // Themes
@@ -150,20 +149,17 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // This button click will be handled by a prop passed from MindMapDisplay
-              // to toggle children visibility in the main graph state.
-              // For now, let's assume a prop like data.onToggleExpansion(id) will be available.
-              // This local setExpanded is just for the chevron for now.
-              setDescriptionExpanded(!descriptionExpanded); 
+              // Call the onToggleExpansion function passed from the parent
               if ((data as any).onToggleExpansion) {
                 (data as any).onToggleExpansion(id);
               }
             }}
-            className="ml-2 p-1 hover:bg-white/20 rounded transition-colors self-center flex-shrink-0"
+            className="ml-2 p-2 hover:bg-white/30 rounded-full transition-colors self-center flex-shrink-0 border border-white/20 hover:border-white/40"
+            title={`${(data as any).isGloballyExpanded ? 'Collapse' : 'Expand'} children`}
           >
             {/* The icon displayed (ChevronDown/ChevronRight) should reflect if children are visible */}
             {/* This will be driven by a prop like data.isGloballyExpanded */} 
-            {(data as any).isGloballyExpanded ? <ChevronDownIcon className="h-5 w-5" /> : <ChevronRightIcon className="h-5 w-5" />}
+            {(data as any).isGloballyExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
           </button>
         )}
       </div>
@@ -181,6 +177,7 @@ interface MindMapDisplayProps {
   playlistTitle: string;
   playlistId: string; 
   keyConceptsFromSummary?: string[];
+  enhancedSummaryData?: any;
 }
 
 const generateAgenticAIMindMap = (keyConceptsFromSummary?: string[]): { nodes: Node<CollapsibleNodeData>[], edges: Edge[] } => {
@@ -245,7 +242,365 @@ const generateAgenticAIMindMap = (keyConceptsFromSummary?: string[]): { nodes: N
   return { nodes, edges: initialEdges };
 };
 
-export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSummary }: MindMapDisplayProps) {
+const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any): { nodes: Node<CollapsibleNodeData>[], edges: Edge[] } => {
+  // DEBUG: Log function call and parameters
+  console.log('🎯 [generateDynamicMindMap] Called with:', {
+    playlistTitle,
+    hasEnhancedData: !!enhancedSummaryData,
+    enhancedSummaryData: enhancedSummaryData,
+    hasMultimodalData: !!(enhancedSummaryData?.multimodal_data)
+  });
+
+  // If no enhanced data is available, return empty structure - no placeholder nodes
+  if (!enhancedSummaryData || !enhancedSummaryData.multimodal_data) {
+    console.log('⚠️ [generateDynamicMindMap] No enhanced data - returning empty structure');
+    return { nodes: [], edges: [] };
+  }
+
+  const multiModalData = enhancedSummaryData.multimodal_data;
+  const rootTopic = multiModalData.ROOT_TOPIC || playlistTitle || 'Video Analysis';
+  const keyConcepts = multiModalData.key_concepts || multiModalData.KEY_CONCEPTS || [];
+  const keyTopics = multiModalData.key_topics || [];
+  const learningObjectives = multiModalData.learning_objectives || [];
+  const visualInsights = multiModalData.visual_insights || [];
+  const timestampHighlights = multiModalData.timestamp_highlights || [];
+  const terminologies = multiModalData.terminologies || [];
+
+  const nodes: Node<CollapsibleNodeData>[] = [];
+  const edges: Edge[] = [];
+  let nodeIdCounter = 1;
+
+  // Helper function to create detailed sub-nodes from text content
+  const createDetailedSubNodes = (parentContent: any, parentId: string, startLevel: number): { childIds: string[], maxLevel: number } => {
+    const childIds: string[] = [];
+    let currentLevel = startLevel;
+    let maxLevel = startLevel;
+
+    if (typeof parentContent === 'string') {
+      // Break down string content into detailed components
+      const sentences = parentContent.split(/[.!?]+/).filter(s => s.trim().length > 10);
+      
+      sentences.slice(0, 4).forEach((sentence, index) => {
+        const detailNodeId = nodeIdCounter.toString();
+        const cleanSentence = sentence.trim();
+        
+        if (cleanSentence.length > 5) {
+          nodes.push({
+            id: detailNodeId,
+            type: 'collapsible',
+            data: {
+              label: cleanSentence.length > 50 ? cleanSentence.substring(0, 47) + '...' : cleanSentence,
+              description: cleanSentence.length > 50 ? cleanSentence : undefined,
+              childrenIds: [],
+              level: currentLevel + 1
+            },
+            position: { x: 0, y: 0 }
+          });
+
+          childIds.push(detailNodeId);
+          maxLevel = Math.max(maxLevel, currentLevel + 1);
+
+          edges.push({
+            id: `e${parentId}-${detailNodeId}`,
+            source: parentId,
+            target: detailNodeId,
+            style: { stroke: '#ffdd99', strokeWidth: 2 }
+          });
+
+          nodeIdCounter++;
+
+          // Create even deeper level if sentence has multiple clauses
+          const clauses = cleanSentence.split(/[,;:]/).filter(c => c.trim().length > 8);
+          if (clauses.length > 1 && currentLevel < 5) { // Limit depth to prevent infinite recursion
+            const subChildIds: string[] = [];
+            
+            clauses.slice(0, 3).forEach((clause, clauseIndex) => {
+              const clauseNodeId = nodeIdCounter.toString();
+              const cleanClause = clause.trim();
+              
+              if (cleanClause.length > 8) {
+                nodes.push({
+                  id: clauseNodeId,
+                  type: 'collapsible',
+                  data: {
+                    label: cleanClause.length > 40 ? cleanClause.substring(0, 37) + '...' : cleanClause,
+                    description: cleanClause.length > 40 ? cleanClause : undefined,
+                    level: currentLevel + 2
+                  },
+                  position: { x: 0, y: 0 }
+                });
+
+                subChildIds.push(clauseNodeId);
+                maxLevel = Math.max(maxLevel, currentLevel + 2);
+
+                edges.push({
+                  id: `e${detailNodeId}-${clauseNodeId}`,
+                  source: detailNodeId,
+                  target: clauseNodeId,
+                  style: { stroke: '#ffe6cc', strokeWidth: 1.5 }
+                });
+
+                nodeIdCounter++;
+              }
+            });
+
+            // Update parent node with children
+            const parentNode = nodes.find(n => n.id === detailNodeId);
+            if (parentNode && subChildIds.length > 0) {
+              parentNode.data.childrenIds = subChildIds;
+            }
+          }
+        }
+      });
+    } else if (Array.isArray(parentContent)) {
+      // Handle arrays by creating sub-categories
+      parentContent.slice(0, 6).forEach((item, index) => {
+        const subResult = createDetailedSubNodes(item, parentId, currentLevel);
+        childIds.push(...subResult.childIds);
+        maxLevel = Math.max(maxLevel, subResult.maxLevel);
+      });
+    } else if (typeof parentContent === 'object' && parentContent !== null) {
+      // Handle objects by creating nodes for each property
+      Object.entries(parentContent).slice(0, 5).forEach(([key, value]) => {
+        const objNodeId = nodeIdCounter.toString();
+        
+        nodes.push({
+          id: objNodeId,
+          type: 'collapsible',
+          data: {
+            label: key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
+            description: typeof value === 'string' ? value.substring(0, 100) : String(value).substring(0, 100),
+            childrenIds: [],
+            level: currentLevel + 1
+          },
+          position: { x: 0, y: 0 }
+        });
+
+        childIds.push(objNodeId);
+        maxLevel = Math.max(maxLevel, currentLevel + 1);
+
+        edges.push({
+          id: `e${parentId}-${objNodeId}`,
+          source: parentId,
+          target: objNodeId,
+          style: { stroke: '#b3d9ff', strokeWidth: 2 }
+        });
+
+        nodeIdCounter++;
+
+        // Recursively create sub-nodes for this object property
+        if (typeof value === 'string' || Array.isArray(value)) {
+          const subResult = createDetailedSubNodes(value, objNodeId, currentLevel + 1);
+          const objNode = nodes.find(n => n.id === objNodeId);
+          if (objNode) {
+            objNode.data.childrenIds = subResult.childIds;
+          }
+          maxLevel = Math.max(maxLevel, subResult.maxLevel);
+        }
+      });
+    }
+
+    return { childIds, maxLevel };
+  };
+
+  // Root node
+  const rootNodeId = nodeIdCounter.toString();
+  nodes.push({
+    id: rootNodeId,
+    type: 'collapsible',
+    data: {
+      label: rootTopic,
+      description: 'AI-generated mind map based on comprehensive video content analysis.',
+      expanded: true,
+      childrenIds: [],
+      level: 0
+    },
+    position: { x: 0, y: 0 }
+  });
+  nodeIdCounter++;
+
+  // Create comprehensive theme categories with detailed breakdowns
+  const comprehensiveCategories = [
+    { title: 'Core Concepts', items: keyConcepts, color: '#0080a3', description: 'Fundamental ideas and principles' },
+    { title: 'Key Topics', items: keyTopics, color: '#00a6cc', description: 'Main subject areas covered' },
+    { title: 'Learning Objectives', items: learningObjectives, color: '#66b3cc', description: 'Educational goals and outcomes' },
+    { title: 'Visual Elements', items: visualInsights, color: '#80ccdd', description: 'Important visual content and imagery' },
+    { title: 'Timeline Highlights', items: timestampHighlights, color: '#99d6ea', description: 'Key moments and timestamps' },
+    { title: 'Terminology', items: terminologies, color: '#b3e0f0', description: 'Important terms and definitions' }
+  ].filter(category => category.items && category.items.length > 0);
+
+  // If we have detailed summary, add it as a category too
+  if (multiModalData.detailed_summary) {
+    comprehensiveCategories.unshift({
+      title: 'Detailed Analysis',
+      items: [multiModalData.detailed_summary],
+      color: '#004d66',
+      description: 'Comprehensive content breakdown'
+    });
+  }
+
+  comprehensiveCategories.forEach((category, categoryIndex) => {
+    const themeNodeId = nodeIdCounter.toString();
+    nodes.push({
+      id: themeNodeId,
+      type: 'collapsible',
+      data: {
+        label: category.title,
+        description: category.description,
+        expanded: true,
+        childrenIds: [],
+        level: 1
+      },
+      position: { x: 0, y: 0 }
+    });
+
+    // Add to root node's children
+    const rootNode = nodes.find(n => n.id === rootNodeId);
+    if (rootNode?.data.childrenIds) {
+      rootNode.data.childrenIds.push(themeNodeId);
+    }
+
+    // Create edge from root to theme
+    edges.push({
+      id: `e${rootNodeId}-${themeNodeId}`,
+      source: rootNodeId,
+      target: themeNodeId,
+      animated: true,
+      style: { stroke: category.color, strokeWidth: 3, strokeDasharray: '5,5' }
+    });
+
+    nodeIdCounter++;
+
+    // Create detailed concept nodes under this theme with infinite levels
+    const themeChildIds: string[] = [];
+    category.items.slice(0, 8).forEach((item: any, itemIndex: number) => {
+      const conceptNodeId = nodeIdCounter.toString();
+      const itemLabel = typeof item === 'string' ? item : 
+                       typeof item === 'object' && item?.title ? item.title :
+                       typeof item === 'object' && item?.text ? item.text :
+                       String(item);
+
+      nodes.push({
+        id: conceptNodeId,
+        type: 'collapsible',
+        data: {
+          label: itemLabel.length > 60 ? itemLabel.substring(0, 57) + '...' : itemLabel,
+          description: typeof item === 'object' && item?.description ? item.description : 
+                      itemLabel.length > 60 ? itemLabel : undefined,
+          childrenIds: [],
+          level: 2
+        },
+        position: { x: 0, y: 0 }
+      });
+
+      themeChildIds.push(conceptNodeId);
+
+      // Create edge from theme to concept
+      edges.push({
+        id: `e${themeNodeId}-${conceptNodeId}`,
+        source: themeNodeId,
+        target: conceptNodeId,
+        style: { stroke: '#66b3cc', strokeWidth: 2.5 }
+      });
+
+      nodeIdCounter++;
+
+      // Create detailed sub-nodes for this concept (infinite levels)
+      const detailResult = createDetailedSubNodes(item, conceptNodeId, 2);
+      const conceptNode = nodes.find(n => n.id === conceptNodeId);
+      if (conceptNode) {
+        conceptNode.data.childrenIds = detailResult.childIds;
+      }
+    });
+
+    // Update theme node with its children
+    const themeNode = nodes.find(n => n.id === themeNodeId);
+    if (themeNode) {
+      themeNode.data.childrenIds = themeChildIds;
+    }
+  });
+
+  // Add a comprehensive insights node if we have enough data
+  if (nodes.length > 10) {
+    const insightsNodeId = nodeIdCounter.toString();
+    nodes.push({
+      id: insightsNodeId,
+      type: 'collapsible',
+      data: {
+        label: 'Deep Insights & Connections',
+        description: 'Advanced analysis connecting different concepts and themes',
+        expanded: true,
+        childrenIds: [],
+        level: 1
+      },
+      position: { x: 0, y: 0 }
+    });
+
+    // Add to root
+    const rootNode = nodes.find(n => n.id === rootNodeId);
+    if (rootNode?.data.childrenIds) {
+      rootNode.data.childrenIds.push(insightsNodeId);
+    }
+
+    edges.push({
+      id: `e${rootNodeId}-${insightsNodeId}`,
+      source: rootNodeId,
+      target: insightsNodeId,
+      animated: true,
+      style: { stroke: '#ff9999', strokeWidth: 3, strokeDasharray: '5,5' }
+    });
+
+    nodeIdCounter++;
+
+    // Create cross-connections and relationships
+    const insightChildIds: string[] = [];
+    
+    // Connection insights
+    ['Concept Relationships', 'Learning Pathways', 'Practical Applications', 'Advanced Topics'].forEach((insightType, index) => {
+      const insightDetailId = nodeIdCounter.toString();
+      nodes.push({
+        id: insightDetailId,
+        type: 'collapsible',
+        data: {
+          label: insightType,
+          description: `Exploring ${insightType.toLowerCase()} within the video content`,
+          level: 2
+        },
+        position: { x: 0, y: 0 }
+      });
+
+      insightChildIds.push(insightDetailId);
+
+      edges.push({
+        id: `e${insightsNodeId}-${insightDetailId}`,
+        source: insightsNodeId,
+        target: insightDetailId,
+        style: { stroke: '#ffb3b3', strokeWidth: 2 }
+      });
+
+      nodeIdCounter++;
+    });
+
+    // Update insights node with children
+    const insightsNode = nodes.find(n => n.id === insightsNodeId);
+    if (insightsNode) {
+      insightsNode.data.childrenIds = insightChildIds;
+    }
+  }
+
+  console.log(`🌳 [generateDynamicMindMap] Generated ${nodes.length} nodes with multiple levels of detail`);
+  return { nodes, edges };
+};
+
+export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
+  // DEBUG: Log component renders and props
+  console.log('🖼️ [MindMapDisplay] Rendering with props:', {
+    playlistTitle,
+    playlistId,
+    hasEnhancedSummaryData: !!enhancedSummaryData,
+    enhancedSummaryData
+  });
+
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
   const { toast } = useToast();
   
@@ -304,8 +659,12 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     const visibleNodesAccumulator: Node<CollapsibleNodeData>[] = [];
     const nodesToProcess = new Set<string>();
 
-    // Always ensure the root node (id: '1') is a candidate for visibility checks
-    // Its children will only be processed if '1' is in expandedNodeIds
+    // Find the actual root node (level 0) instead of hardcoding '1'
+    const rootNode = allNodes.find(node => node.data.level === 0);
+    if (!rootNode) {
+      return { visibleNodes: [], visibleEdges: [] };
+    }
+
     function findVisibleRecursive(nodeId: string) {
       if (nodesToProcess.has(nodeId)) return; // Already added or scheduled
       nodesToProcess.add(nodeId);
@@ -331,8 +690,8 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
       }
     }
 
-    // Start traversal from the root node. If root is not expanded, only root will be in visibleNodesAccumulator.
-    findVisibleRecursive('1'); 
+    // Start traversal from the actual root node
+    findVisibleRecursive(rootNode.id); 
     
     const visibleNodeIds = new Set(visibleNodesAccumulator.map(n => n.id));
     const visibleEdges = allEdges.filter(edge => 
@@ -353,19 +712,32 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
 
   const loadMindMapData = useCallback(async () => {
     setIsLoading(true);
-    setGeneratedTitle("Crafting Agentic AI Mind Map...");
+    
+    // Set dynamic title based on available data
+    const dynamicTitle = enhancedSummaryData?.multimodal_data?.ROOT_TOPIC || playlistTitle || 'Mind Map';
+    setGeneratedTitle(`Generating ${dynamicTitle} Mind Map...`);
+    
+    // DEBUG: Log enhancedSummaryData to trace data flow
+    console.log('🔍 [loadMindMapData] enhancedSummaryData:', enhancedSummaryData);
+    console.log('🔍 [loadMindMapData] multimodal_data:', enhancedSummaryData?.multimodal_data);
+    console.log('🔍 [loadMindMapData] playlistTitle:', playlistTitle);
+    
     try {
-      const { nodes: generatedNodes, edges: generatedEdges } = generateAgenticAIMindMap(keyConceptsFromSummary);
+      const { nodes: generatedNodes, edges: generatedEdges } = generateDynamicMindMap(playlistTitle, enhancedSummaryData);
+      
+      // Find the root node and set it as initially expanded BEFORE setting nodes
+      const rootNode = generatedNodes.find(node => node.data.level === 0);
+      if (rootNode) {
+        setExpandedNodeIds(new Set([rootNode.id]));
+      }
+      
       setAllNodes(generatedNodes);
       setAllEdges(generatedEdges);
-      
-      // Initial expansion state is already set to root node '1'
-      // The useEffect listening to expandedNodeIds will trigger the first layout
 
-      setGeneratedTitle("Agentic AI: Capabilities and Distinctions");
+      setGeneratedTitle(dynamicTitle);
         toast({ 
         title: "Mind Map Structure Ready! 🧠", 
-        description: "Initial mind map structure loaded. Performing layout..." 
+        description: enhancedSummaryData ? "AI-generated mind map structure loaded. Performing layout..." : "Basic mind map structure loaded. Start AI analysis for enhanced content." 
       });
     } catch (error: any) {
       console.error("Error generating mind map:", error);
@@ -378,7 +750,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     } finally {
       // setIsLoading(false); //isLoading will be false after layout in the useEffect
     }
-  }, [keyConceptsFromSummary, toast]);
+  }, [playlistTitle, enhancedSummaryData, toast]);
 
   useEffect(() => {
     loadMindMapData();
@@ -401,9 +773,13 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
             let focusIds: string[] = [];
             let padding = 0.25; // Default padding for most focused views
 
-            // Scenario 1: Initial load, only root node is visible (because expandedNodeIds is empty)
-            if (layoutedNodes.length === 1 && layoutedNodes[0]?.id === '1' && expandedNodeIds.size === 0) {
-              focusIds = ['1'];
+            // Find the actual root node
+            const rootNode = layoutedNodes.find(node => node.data.level === 0);
+            const rootNodeId = rootNode?.id;
+
+            // Scenario 1: Initial load, only root node is visible (because expandedNodeIds is empty or has only root)
+            if (layoutedNodes.length === 1 && rootNodeId && layoutedNodes[0]?.id === rootNodeId && expandedNodeIds.size <= 1) {
+              focusIds = [rootNodeId];
               padding = 0.8; // Very spacious padding for a single root node overview
             } 
             // Scenario 2: User has interacted, and we have a lastInteractedNodeId
@@ -550,10 +926,35 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
             <div className="mt-6 text-center space-y-2">
               <h3 className="text-lg font-semibold text-white">Generating Mind Map...</h3>
               <p className="text-sm text-gray-300 max-w-md">
-                Structuring Agentic AI concepts with ELK layout...
+                {enhancedSummaryData ? 'Structuring AI-analyzed content with ELK layout...' : 'Preparing mind map structure...'}
               </p>
             </div>
          </div>
+      ) : displayedNodes.length === 0 ? (
+        // Show "Start Analysis" message when no nodes are available
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="text-center space-y-6 max-w-md">
+            <div className="relative mx-auto">
+              <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center">
+                <BrainIcon className="w-12 h-12 text-primary" />
+              </div>
+              <div className="absolute -top-2 -right-2 w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                <AlertCircleIcon className="w-4 h-4 text-accent-foreground" />
+              </div>
+            </div>
+            <div className="space-y-3">
+              <h3 className="text-xl font-semibold text-white">AI Mind Map Ready</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Click <span className="font-medium text-primary">"Start AI Analysis"</span> above to generate an intelligent mind map based on the video content.
+              </p>
+              <div className="text-xs text-muted-foreground/80 space-y-1">
+                <p>✨ AI will analyze video transcript and visual content</p>
+                <p>🧠 Generate key concepts and learning objectives</p>
+                <p>🗺️ Create an interactive knowledge map</p>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : (
         <ReactFlow
           nodes={displayedNodes}
@@ -612,7 +1013,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
                 Mind Map: {generatedTitle}
             </CardTitle>
               <CardDescription className="text-sm text-muted-foreground mt-1">
-                {isLoading && displayedNodes.length === 0 ? 'AI is structuring your mind map...' : 'Interactive Mind Map - Agentic AI Concepts'}
+                {isLoading && displayedNodes.length === 0 ? 'AI is structuring your mind map...' : displayedNodes.length === 0 ? 'Click "Start AI Analysis" above to generate your mind map' : enhancedSummaryData ? 'Interactive AI-Generated Mind Map' : 'Interactive Mind Map - Start AI Analysis for Dynamic Content'}
               </CardDescription>
             </div>
         </div>

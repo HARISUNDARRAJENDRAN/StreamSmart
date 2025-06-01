@@ -65,6 +65,28 @@ export default function PlaylistDetailPage() {
   const { user, recordActivity, updateUserStats } = useUser();
   const videoPlayerKey = useId();
 
+  // State to handle enhanced summary data from ML processing
+  const [enhancedSummaryData, setEnhancedSummaryData] = useState<any>(null);
+
+  const handleEnhancedSummaryGenerated = (enhancedSummary: string, multiModalData: any) => {
+    console.log('🚀 [handleEnhancedSummaryGenerated] Called with:', {
+      enhancedSummary: enhancedSummary?.substring(0, 100) + '...',
+      multiModalData,
+      hasMultiModalData: !!multiModalData,
+      keyConcepts: multiModalData?.key_concepts || multiModalData?.KEY_CONCEPTS || []
+    });
+    
+    const newEnhancedData = {
+      enhanced_summary: enhancedSummary,
+      multimodal_data: multiModalData,
+      // Extract key concepts for mind map
+      key_concepts: multiModalData?.key_concepts || multiModalData?.KEY_CONCEPTS || []
+    };
+    
+    console.log('💾 [handleEnhancedSummaryGenerated] Setting enhancedSummaryData to:', newEnhancedData);
+    setEnhancedSummaryData(newEnhancedData);
+  };
+
   useEffect(() => {
     const loadPlaylist = async () => {
       if (!playlistId || !user) {
@@ -444,11 +466,12 @@ export default function PlaylistDetailPage() {
                     {currentVideo && (
                       <MLEnhancedVideoSummary 
                         video={currentVideo}
+                        onEnhancedSummaryGenerated={handleEnhancedSummaryGenerated}
                       />
                     )}
                     
                     {/* Traditional Mind Map for Playlist Overview */}
-                  <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id}/>
+                    <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id} enhancedSummaryData={enhancedSummaryData}/>
                   </div>
                 </TabsContent>
                 

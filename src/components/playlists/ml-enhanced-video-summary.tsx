@@ -187,7 +187,7 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
         </CardContent>
       </Card>
 
-      {/* Enhanced Mind Map - Clean, All-in-One Display */}
+      {/* Enhanced Summary and Analysis Results - WITHOUT Mind Map */}
       {enhancedData && (
         <SimpleEnhancedMindMap
           title={video.title || 'Video Analysis'}
@@ -197,10 +197,11 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
           visualInsights={enhancedData.multimodal_data?.visual_insights || []}
           timestampHighlights={enhancedData.multimodal_data?.timestamp_highlights || []}
           processingMethod={enhancedData.processing_method || 'fallback'}
-          mindMapStructure={enhancedData.multimodal_data?.mind_map_structure}
           learningObjectives={enhancedData.multimodal_data?.learning_objectives}
           keyConceptsDetailed={enhancedData.multimodal_data?.key_concepts}
           terminologies={enhancedData.multimodal_data?.terminologies}
+          // Remove mind map structure prop to hide the mind map
+          // mindMapStructure={enhancedData.multimodal_data?.mind_map_structure}
         />
       )}
     </div>
