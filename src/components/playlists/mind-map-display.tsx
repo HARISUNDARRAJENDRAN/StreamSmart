@@ -21,6 +21,7 @@ import ReactFlow, {
   Handle,
   Position,
   type NodeProps,
+  MarkerType,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Elk, { type ElkNode, type ElkExtendedEdge, type LayoutOptions } from 'elkjs/lib/elk.bundled.js';
@@ -40,19 +41,50 @@ interface CollapsibleNodeData {
 
 const elk = new Elk();
 
-// ELK layout options - refined for a more balanced, top-down tree structure
+// ELK layout options - optimized for professional, clean appearance
 const elkLayoutOptions: LayoutOptions = {
-  'elk.algorithm': 'layered', // Start with layered, can experiment with mrtree or radial
+  'elk.algorithm': 'layered',
   'elk.direction': 'DOWN',
-  'elk.alignment': 'CENTER', // Attempt to center nodes within their layer
-  'elk.layered.spacing.nodeNodeBetweenLayers': '100', // Spacing between layers
-  'elk.spacing.nodeNode': '80', // Spacing between nodes in the same layer
-  'elk.edgeRouting': 'POLYLINE', // POLYLINE can be smoother than ORTHOGONAL for some trees
-  'elk.layered.compaction.postCompaction.strategy': 'BALANCED', // Try to balance layer widths
-  'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF', // Good general purpose placer
-  'elk.hierarchyHandling': 'INCLUDE_CHILDREN', // Important for ELK to understand hierarchy properly
+  'elk.alignment': 'CENTER',
+  
+  // Enhanced spacing for better visual clarity
+  'elk.layered.spacing.nodeNodeBetweenLayers': '120', // Increased vertical spacing between levels
+  'elk.spacing.nodeNode': '100', // Increased horizontal spacing between nodes
+  'elk.spacing.edgeNode': '40', // Better edge-to-node spacing
+  'elk.spacing.edgeEdge': '20', // Space between edges
+  
+  // Improved edge routing for cleaner connections
+  'elk.edgeRouting': 'POLYLINE',
+  'elk.layered.edgeRouting.polyline.sloppy': 'false', // Cleaner edge paths
+  
+  // Better layer management
+  'elk.layered.compaction.postCompaction.strategy': 'BALANCED',
+  'elk.layered.compaction.postCompaction.constraints': 'SEQUENCE',
+  'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
+  'elk.layered.nodePlacement.favorStraightEdges': 'true',
+  
+  // Enhanced hierarchy handling
+  'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
+  'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
   'elk.layered.cycleBreaking.strategy': 'DEPTH_FIRST',
-  'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES', // Encourage respecting input order for siblings
+  
+  // Improved layout quality
+  'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
+  'elk.layered.crossingMinimization.greedySwitch': 'true',
+  'elk.layered.layering.strategy': 'LONGEST_PATH',
+  
+  // Better aspect ratio and overall appearance
+  'elk.aspectRatio': '1.6', // Golden ratio-inspired layout
+  'elk.nodeSize.constraints': 'MINIMUM_SIZE',
+  'elk.nodeSize.options': 'DEFAULT_MINIMUM_SIZE',
+  
+  // Padding and margins for professional appearance
+  'elk.padding': '[top=40,left=40,bottom=40,right=40]',
+  'elk.spacing.componentComponent': '80',
+  
+  // Performance optimizations
+  'elk.stress.desired.edgeLength': '120',
+  'elk.layered.thoroughness': '10' // Higher quality layout
 };
 
 const getLayoutedElements = async (
@@ -113,86 +145,276 @@ const getLayoutedElements = async (
 
 // Custom collapsible node component
 function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeData>) {
-  // Calculate dynamic dimensions based on content
-  const calculateDynamicDimensions = (label: string, description?: string, level: number = 0) => {
-    const baseWidth = Math.max(200, Math.min(400, label.length * 8 + 100));
-    const descriptionHeight = description ? Math.min(40, (description.length / 50) * 15) : 0;
-    const baseHeight = 60 + descriptionHeight;
+  // Enhanced dynamic dimensions calculation with better text handling
+  const calculateOptimalDimensions = (label: string, description?: string, level: number = 0) => {
+    // More sophisticated text measurement
+    const labelWords = label.split(' ').length;
+    const labelLength = label.length;
     
-    // Level-based scaling
-    const levelScale = {
-      0: { widthMultiplier: 1.4, heightMultiplier: 1.3, fontSize: '18px' }, // Root
-      1: { widthMultiplier: 1.2, heightMultiplier: 1.2, fontSize: '16px' }, // Themes
-      2: { widthMultiplier: 1.0, heightMultiplier: 1.0, fontSize: '14px' }, // Concepts
-      3: { widthMultiplier: 0.9, heightMultiplier: 0.9, fontSize: '13px' }, // Details
-      4: { widthMultiplier: 0.8, heightMultiplier: 0.8, fontSize: '12px' }, // Sub-details
+    // Calculate optimal width based on content and level
+    let baseWidth: number;
+    if (labelLength <= 20) {
+      baseWidth = Math.max(180, labelLength * 9);
+    } else if (labelLength <= 40) {
+      baseWidth = Math.max(220, labelLength * 8);
+    } else {
+      baseWidth = Math.max(280, Math.min(360, labelLength * 7));
+    }
+    
+    // Account for multi-line text
+    const estimatedLines = Math.ceil(labelLength / (baseWidth / 8));
+    const labelHeight = Math.max(24, estimatedLines * 18);
+    
+    // Description height calculation
+    let descriptionHeight = 0;
+    if (description && description.length > 0) {
+      const descLines = Math.ceil(description.length / (baseWidth / 6));
+      descriptionHeight = Math.min(60, Math.max(20, descLines * 14));
+    }
+    
+    // Level-based scaling with better proportions
+    const levelConfigs = {
+      0: { // Root
+        widthMultiplier: 1.5,
+        heightMultiplier: 1.4,
+        fontSize: '16px',
+        fontWeight: '700',
+        padding: '20px 24px',
+        minHeight: 100,
+        lineHeight: '1.3'
+      },
+      1: { // Themes
+        widthMultiplier: 1.3,
+        heightMultiplier: 1.25,
+        fontSize: '15px',
+        fontWeight: '600',
+        padding: '16px 20px',
+        minHeight: 80,
+        lineHeight: '1.25'
+      },
+      2: { // Concepts
+        widthMultiplier: 1.1,
+        heightMultiplier: 1.1,
+        fontSize: '14px',
+        fontWeight: '500',
+        padding: '14px 18px',
+        minHeight: 70,
+        lineHeight: '1.2'
+      },
+      3: { // Details
+        widthMultiplier: 1.0,
+        heightMultiplier: 1.0,
+        fontSize: '13px',
+        fontWeight: '400',
+        padding: '12px 16px',
+        minHeight: 60,
+        lineHeight: '1.2'
+      },
+      4: { // Sub-details
+        widthMultiplier: 0.9,
+        heightMultiplier: 0.9,
+        fontSize: '12px',
+        fontWeight: '400',
+        padding: '10px 14px',
+        minHeight: 50,
+        lineHeight: '1.15'
+      }
     };
     
-    const currentScale = levelScale[level as keyof typeof levelScale] || levelScale[4];
+    const config = levelConfigs[Math.min(level, 4) as keyof typeof levelConfigs] || levelConfigs[4];
+    
+    const finalWidth = Math.round(baseWidth * config.widthMultiplier);
+    const finalHeight = Math.round(Math.max(
+      config.minHeight,
+      (labelHeight + descriptionHeight + 40) * config.heightMultiplier
+    ));
     
     return {
-      width: Math.round(baseWidth * currentScale.widthMultiplier),
-      height: Math.round(baseHeight * currentScale.heightMultiplier),
-      fontSize: currentScale.fontSize,
-      padding: level === 0 ? '20px 24px' : level === 1 ? '16px 20px' : '12px 16px'
+      width: finalWidth,
+      height: finalHeight,
+      fontSize: config.fontSize,
+      fontWeight: config.fontWeight,
+      padding: config.padding,
+      lineHeight: config.lineHeight
     };
   };
 
-  const currentDimensions = calculateDynamicDimensions(data.label, data.description, data.level);
+  const dimensions = calculateOptimalDimensions(data.label, data.description, data.level);
 
-  // Assign width and height to data for ELK
-  data.width = currentDimensions.width;
-  data.height = currentDimensions.height;
+  // Assign width and height to data for ELK layout
+  data.width = dimensions.width;
+  data.height = dimensions.height;
 
-  const nodeStyleDefinition = {
-    0: { background: 'linear-gradient(135deg, #004d66 0%, #006680 100%)', color: 'white', border: '3px solid #003d52', borderRadius: '16px', fontWeight: '700', boxShadow: '0 8px 20px rgba(0, 77, 102, 0.4)', textAlign: 'center' as const },
-    1: { background: 'linear-gradient(135deg, #0080a3 0%, #00a6cc 100%)', color: 'white', border: '2px solid #006680', borderRadius: '12px', fontWeight: '600', boxShadow: '0 6px 16px rgba(0, 128, 163, 0.3)', textAlign: 'center' as const },
-    2: { background: 'linear-gradient(135deg, #66b3cc 0%, #80ccdd 100%)', color: '#003d52', border: '2px solid #4d9fb8', borderRadius: '10px', fontWeight: '500', boxShadow: '0 4px 12px rgba(102, 179, 204, 0.3)', textAlign: 'center' as const },
-    3: { background: 'linear-gradient(135deg, #ffcc66 0%, #ffdd99 100%)', color: '#003d52', border: '2px solid #ffb833', borderRadius: '8px', fontWeight: '400', boxShadow: '0 3px 8px rgba(255, 204, 102, 0.3)', textAlign: 'center' as const },
-    4: { background: 'linear-gradient(135deg, #ffe6cc 0%, #fff2e6 100%)', color: '#003d52', border: '1px solid #ffcc99', borderRadius: '6px', fontWeight: '400', boxShadow: '0 2px 6px rgba(255, 230, 204, 0.3)', textAlign: 'center' as const },
+  // Enhanced visual styles with better color harmony and depth
+  const levelStyles = {
+    0: { 
+      background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%)', 
+      color: 'white', 
+      border: '3px solid #1e40af', 
+      borderRadius: '18px', 
+      boxShadow: '0 12px 32px rgba(30, 58, 138, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3)',
+      textAlign: 'center' as const
+    },
+    1: { 
+      background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%)', 
+      color: 'white', 
+      border: '2px solid #0e7490', 
+      borderRadius: '14px', 
+      boxShadow: '0 8px 24px rgba(8, 145, 178, 0.35), 0 3px 12px rgba(6, 182, 212, 0.25)',
+      textAlign: 'center' as const
+    },
+    2: { 
+      background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%)', 
+      color: '#003d3d', 
+      border: '2px solid #0f766e', 
+      borderRadius: '12px', 
+      boxShadow: '0 6px 20px rgba(13, 148, 136, 0.3), 0 2px 8px rgba(20, 184, 166, 0.2)',
+      textAlign: 'center' as const
+    },
+    3: { 
+      background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fde047 100%)', 
+      color: '#78350f', 
+      border: '2px solid #d97706', 
+      borderRadius: '10px', 
+      boxShadow: '0 4px 16px rgba(245, 158, 11, 0.25), 0 2px 6px rgba(251, 191, 36, 0.2)',
+      textAlign: 'center' as const
+    },
+    4: { 
+      background: 'linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fed7aa 100%)', 
+      color: '#9a3412', 
+      border: '1px solid #ea580c', 
+      borderRadius: '8px', 
+      boxShadow: '0 3px 12px rgba(249, 115, 22, 0.2), 0 1px 4px rgba(251, 146, 60, 0.15)',
+      textAlign: 'center' as const
+    },
   };
-  const currentStyle = nodeStyleDefinition[Math.min(data.level || 0, 4) as keyof typeof nodeStyleDefinition] || nodeStyleDefinition[4];
+
+  const currentStyle = levelStyles[Math.min(data.level || 0, 4) as keyof typeof levelStyles] || levelStyles[4];
+
+  // Smart text truncation with better word boundaries
+  const getTruncatedText = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) return text;
+    
+    const truncated = text.substring(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
+    
+    if (lastSpace > maxLength * 0.7) {
+      return truncated.substring(0, lastSpace) + '...';
+    }
+    return truncated + '...';
+  };
+
+  const displayLabel = getTruncatedText(data.label, dimensions.width / 7);
+  const displayDescription = data.description ? 
+    getTruncatedText(data.description, dimensions.width / 5) : undefined;
 
   return (
-    <div style={{ 
-      ...currentStyle, 
-      width: currentDimensions.width, 
-      height: currentDimensions.height, 
-      padding: currentDimensions.padding, 
-      fontSize: currentDimensions.fontSize, 
-      cursor: 'pointer', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      justifyContent: 'center' 
-    }}>
-      <Handle type="target" position={Position.Top} isConnectable={isConnectable} style={{background: '#888'}} />
-      <div className="flex items-center justify-between gap-2 p-1 flex-grow">
-        <div className="flex-1 overflow-hidden">
-          <div className="font-semibold truncate" title={data.label}>{data.label}</div>
-          {/* Description is always shown if present, but can be truncated if too long */}
-          {data.description && (
-            <div className="text-xs mt-1 opacity-90 whitespace-pre-wrap break-words" style={{fontSize: '0.8em', lineHeight: '1.2'}}>{data.description}</div>
-          )}
+    <div 
+      style={{ 
+        ...currentStyle,
+        width: dimensions.width,
+        height: dimensions.height,
+        padding: dimensions.padding,
+        fontSize: dimensions.fontSize,
+        fontWeight: dimensions.fontWeight,
+        lineHeight: dimensions.lineHeight,
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        transition: 'all 0.3s ease',
+        wordWrap: 'break-word',
+        wordBreak: 'break-word'
+      }}
+      className="hover:scale-105 hover:shadow-lg transition-all duration-300"
+    >
+      <Handle 
+        type="target" 
+        position={Position.Top} 
+        isConnectable={isConnectable} 
+        style={{
+          background: '#6b7280',
+          width: 8,
+          height: 8,
+          border: '2px solid white',
+          top: -4
+        }} 
+      />
+      
+      <div className="flex flex-col items-center justify-center w-full h-full gap-1">
+        {/* Main Label */}
+        <div 
+          className="font-semibold text-center leading-tight"
+          style={{
+            fontSize: dimensions.fontSize,
+            fontWeight: dimensions.fontWeight,
+            lineHeight: dimensions.lineHeight,
+            wordBreak: 'break-word',
+            hyphens: 'auto',
+            maxWidth: '100%'
+          }}
+          title={data.label}
+        >
+          {displayLabel}
         </div>
+        
+        {/* Description */}
+        {displayDescription && (
+          <div 
+            className="text-center opacity-90 leading-tight"
+            style={{
+              fontSize: `calc(${dimensions.fontSize} * 0.8)`,
+              lineHeight: '1.15',
+              marginTop: '4px',
+              wordBreak: 'break-word',
+              hyphens: 'auto',
+              maxWidth: '100%'
+            }}
+            title={data.description}
+          >
+            {displayDescription}
+          </div>
+        )}
+        
+        {/* Expand/Collapse Button */}
         {data.childrenIds && data.childrenIds.length > 0 && (
           <button
             onClick={(e) => {
               e.stopPropagation();
-              // Call the onToggleExpansion function passed from the parent
               if ((data as any).onToggleExpansion) {
                 (data as any).onToggleExpansion(id);
               }
             }}
-            className="ml-2 p-2 hover:bg-white/30 rounded-full transition-colors self-center flex-shrink-0 border border-white/20 hover:border-white/40"
-            title={`${(data as any).isGloballyExpanded ? 'Collapse' : 'Expand'} children`}
+            className="absolute top-2 right-2 p-1.5 hover:bg-white/30 rounded-full transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
+            style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              backdropFilter: 'blur(4px)'
+            }}
+            title={`${(data as any).isGloballyExpanded ? 'Collapse' : 'Expand'} children (${data.childrenIds.length})`}
           >
-            {/* The icon displayed (ChevronDown/ChevronRight) should reflect if children are visible */}
-            {/* This will be driven by a prop like data.isGloballyExpanded */} 
-            {(data as any).isGloballyExpanded ? <ChevronDownIcon className="h-4 w-4" /> : <ChevronRightIcon className="h-4 w-4" />}
+            {(data as any).isGloballyExpanded ? 
+              <ChevronDownIcon className="h-3 w-3" /> : 
+              <ChevronRightIcon className="h-3 w-3" />
+            }
           </button>
         )}
       </div>
-      <Handle type="source" position={Position.Bottom} isConnectable={isConnectable} style={{background: '#888'}} />
+      
+      <Handle 
+        type="source" 
+        position={Position.Bottom} 
+        isConnectable={isConnectable} 
+        style={{
+          background: '#6b7280',
+          width: 8,
+          height: 8,
+          border: '2px solid white',
+          bottom: -4
+        }} 
+      />
     </div>
   );
 }
@@ -352,7 +574,12 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
                 id: `e${parentId}-${detailNodeId}`,
                 source: parentId,
                 target: detailNodeId,
-                style: { stroke: '#ffdd99', strokeWidth: 2 }
+                style: { 
+                  stroke: '#14b8a6', 
+                  strokeWidth: 2.5,
+                  strokeLinecap: 'round',
+                  opacity: 0.9
+                }
               });
 
               nodeIdCounter++;
@@ -401,7 +628,12 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               id: `e${parentId}-${conceptNodeId}`,
               source: parentId,
               target: conceptNodeId,
-              style: { stroke: '#b3e0ff', strokeWidth: 2 }
+              style: { 
+                stroke: '#0d9488', 
+                strokeWidth: 3,
+                strokeLinecap: 'round',
+                opacity: 0.85
+              }
             });
 
             nodeIdCounter++;
@@ -599,7 +831,19 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
       source: rootNodeId,
       target: themeNodeId,
       animated: true,
-      style: { stroke: category.color, strokeWidth: 3, strokeDasharray: '5,5' }
+      style: { 
+        stroke: category.color, 
+        strokeWidth: 4, 
+        strokeDasharray: '8,4',
+        strokeLinecap: 'round',
+        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+      },
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+        width: 12,
+        height: 12,
+        color: category.color
+      }
     });
 
     nodeIdCounter++;
@@ -633,7 +877,12 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
         id: `e${themeNodeId}-${conceptNodeId}`,
         source: themeNodeId,
         target: conceptNodeId,
-        style: { stroke: '#66b3cc', strokeWidth: 2.5 }
+        style: { 
+          stroke: '#0d9488', 
+          strokeWidth: 3,
+          strokeLinecap: 'round',
+          opacity: 0.85
+        }
       });
 
       nodeIdCounter++;
@@ -963,7 +1212,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     };
 
     performLayout();
-  }, [allNodes, allEdges, expandedNodeIds, getVisibleNodesAndEdges]); // Add getVisibleNodesAndEdges
+  }, [allNodes, allEdges, expandedNodeIds, getVisibleNodesAndEdges]);
 
   const downloadAsSVG = (containerRef: React.RefObject<HTMLDivElement>) => {
     const container = containerRef.current;
@@ -977,7 +1226,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
       const { width, height } = container.getBoundingClientRect();
       clonedSvgElement.setAttribute('width', String(Math.max(width, 800)));
       clonedSvgElement.setAttribute('height', String(Math.max(height, 600)));
-          clonedSvgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clonedSvgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
       clonedSvgElement.setAttribute('preserveAspectRatio', 'xMidYMid meet');
       const serializer = new XMLSerializer();
       const svgString = serializer.serializeToString(clonedSvgElement);
