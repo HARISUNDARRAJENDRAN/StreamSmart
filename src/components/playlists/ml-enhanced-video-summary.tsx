@@ -15,8 +15,10 @@ interface MLEnhancedVideoSummaryProps {
   onEnhancedSummaryGenerated?: (enhancedSummary: string, multiModalData: any) => void;
 }
 
+type ProcessingStage = 'idle' | 'downloading' | 'transcribing' | 'analyzing_visuals' | 'aligning' | 'summarizing' | 'completed' | 'error';
+
 interface ProcessingStatus {
-  stage: 'idle' | 'downloading' | 'transcribing' | 'analyzing_visuals' | 'aligning' | 'summarizing' | 'completed' | 'error';
+  stage: ProcessingStage;
   progress: number;
   message: string;
 }
@@ -90,25 +92,24 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
     }
   };
 
-  const getStageIcon = (stage: string) => {
+  const getStageIcon = (stage: ProcessingStage) => {
     switch (stage) {
-      case 'downloading': return <Clock className="h-4 w-4" />;
+      case 'downloading': return <TrendingUp className="h-4 w-4" />;
       case 'transcribing': return <Mic className="h-4 w-4" />;
       case 'analyzing_visuals': return <Eye className="h-4 w-4" />;
-      case 'aligning': return <TrendingUp className="h-4 w-4" />;
+      case 'aligning': return <Clock className="h-4 w-4" />;
       case 'summarizing': return <Brain className="h-4 w-4" />;
       case 'completed': return <Sparkles className="h-4 w-4" />;
-      case 'error': return <Sparkles className="h-4 w-4" />;
+      case 'error': return <div className="h-4 w-4 bg-red-500 rounded-full" />;
       default: return <Brain className="h-4 w-4" />;
     }
   };
 
-  const getStageColor = (stage: string) => {
+  const getStageColor = (stage: ProcessingStage) => {
     switch (stage) {
-      case 'completed': return 'text-green-600 bg-green-50';
-      case 'error': return 'text-red-600 bg-red-50';
-      case 'idle': return 'text-gray-600 bg-gray-50';
-      default: return 'text-blue-600 bg-blue-50';
+      case 'completed': return 'bg-green-100 text-green-700';
+      case 'error': return 'bg-red-100 text-red-700';
+      default: return 'bg-blue-100 text-blue-700';
     }
   };
 
@@ -123,6 +124,7 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
             {enhancedData?.processing_method === 'multimodal' && (
               <Badge variant="secondary" className="text-xs">ML Enhanced</Badge>
             )}
+            {isProcessing && <Loader2 className="h-4 w-4 animate-spin" />}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -132,8 +134,12 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
               <p className="text-muted-foreground mb-4">
                 Use advanced AI models to analyze this video's audio and visual content
               </p>
-              <Button onClick={handleStartProcessing} className="gap-2">
-                <Sparkles className="h-4 w-4" />
+              <Button 
+                onClick={handleStartProcessing}
+                className="bg-primary hover:bg-primary/90"
+                size="lg"
+              >
+                <Brain className="mr-2 h-4 w-4" />
                 Start AI Analysis
               </Button>
             </div>
@@ -190,7 +196,7 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
           keyTopics={enhancedData.multimodal_data?.key_topics || []}
           visualInsights={enhancedData.multimodal_data?.visual_insights || []}
           timestampHighlights={enhancedData.multimodal_data?.timestamp_highlights || []}
-          processingMethod={enhancedData.processing_method}
+          processingMethod={enhancedData.processing_method || 'fallback'}
           mindMapStructure={enhancedData.multimodal_data?.mind_map_structure}
           learningObjectives={enhancedData.multimodal_data?.learning_objectives}
           keyConceptsDetailed={enhancedData.multimodal_data?.key_concepts}

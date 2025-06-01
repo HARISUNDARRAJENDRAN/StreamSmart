@@ -7,9 +7,14 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BotIcon, SendHorizonalIcon, UserIcon, Loader2Icon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { answerPlaylistQuestion } from '@/ai/flows/answer-playlist-questions';
-import type { AnswerPlaylistQuestionInput } from '@/ai/flows/answer-playlist-questions';
+import { answerWithRAG, processVideosForRAG, type PlaylistRAGInput } from '@/ai/flows/rag-answer-questions';
 import type { ChatMessage } from '@/types';
+
+function extractVideoIdFromTitle(title?: string): string | undefined {
+  if (!title) return undefined;
+  const urlMatch = title.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  return urlMatch ? urlMatch[1] : undefined;
+}
 
 interface PlaylistChatbotProps {
   playlistId: string;
@@ -18,10 +23,18 @@ interface PlaylistChatbotProps {
   currentVideoSummary?: string;
 }
 
-export function PlaylistChatbot({ playlistId, playlistContent, currentVideoTitle, currentVideoSummary }: PlaylistChatbotProps) {
+export function PlaylistChatbot({ 
+  playlistId, 
+  playlistContent, 
+  currentVideoTitle, 
+  currentVideoSummary
+}: PlaylistChatbotProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isProcessingVideos, setIsProcessingVideos] = useState(false);
+  const [processingComplete, setProcessingComplete] = useState(false);
+  const [processedVideoIds, setProcessedVideoIds] = useState<string[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -45,11 +58,16 @@ export function PlaylistChatbot({ playlistId, playlistContent, currentVideoTitle
         role: 'ai',
         content: `Hi! I'm your playlist assistant. I can help you with questions about the videos in this playlist${currentVideoTitle ? `, including the current video: "${currentVideoTitle}"` : ''}. 
 
+I analyze the full video transcripts to provide you with accurate answers directly from the content of each video.
+
+🔄 Please click "Process Videos First" to enable transcript-based Q&A.
+
 You can ask me about:
 • Specific concepts explained in the videos
 • How to apply what you've learned
 • Comparisons between different topics
 • Step-by-step explanations
+• Quotes or explanations from the instructors
 • And much more!
 
 What would you like to know?`,
@@ -58,6 +76,108 @@ What would you like to know?`,
       setMessages([welcomeMessage]);
     }
   }, [currentVideoTitle]);
+
+  const handleProcessVideos = async () => {
+    console.log('Processing videos for RAG...');
+    setIsProcessingVideos(true);
+    
+    // Add a status message
+    const processingMessage: ChatMessage = {
+      id: Date.now().toString(),
+      role: 'ai',
+      content: "🔄 Processing video transcripts for enhanced Q&A. This may take a moment...",
+      timestamp: new Date(),
+    };
+    setMessages(prev => [...prev, processingMessage]);
+    
+    try {
+      // Extract video URLs from playlist content and current video
+      const videoUrls: string[] = [];
+      
+      // Extract from playlist content
+      const urlPattern = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)(?:&\S*)?/g;
+      const matches = [...playlistContent.matchAll(urlPattern)];
+      
+      // Add URLs from playlist content
+      matches.forEach(match => {
+        const fullMatch = match[0];
+        const videoId = match[1];
+        
+        if (fullMatch.startsWith('http')) {
+          videoUrls.push(fullMatch);
+        } else {
+          videoUrls.push(`https://www.youtube.com/watch?v=${videoId}`);
+        }
+      });
+      
+      // Also try from current video title if no URLs found in content
+      if (videoUrls.length === 0 && currentVideoTitle) {
+        const idMatch = currentVideoTitle.match(/([a-zA-Z0-9_-]{11})/);
+        if (idMatch) {
+          videoUrls.push(`https://www.youtube.com/watch?v=${idMatch[1]}`);
+        }
+      }
+
+      // If still no URLs, try to extract from the playlist content structure
+      if (videoUrls.length === 0) {
+        // Look for video IDs in the content structure
+        const lines = playlistContent.split('\n');
+        lines.forEach(line => {
+          const idMatch = line.match(/([a-zA-Z0-9_-]{11})/);
+          if (idMatch && line.toLowerCase().includes('url')) {
+            videoUrls.push(`https://www.youtube.com/watch?v=${idMatch[1]}`);
+          }
+        });
+      }
+
+      if (videoUrls.length === 0) {
+        const noVideosMessage: ChatMessage = {
+          id: (Date.now() + 1).toString(),
+          role: 'ai',
+          content: "I couldn't find any YouTube videos to process. The playlist might not contain valid YouTube links yet.",
+          timestamp: new Date(),
+        };
+        setMessages(prev => [...prev, noVideosMessage]);
+      } else {
+        console.log('Processing video URLs for transcripts:', videoUrls);
+        
+        // Process the videos
+        const result = await processVideosForRAG(videoUrls);
+        
+        if (result.video_ids && result.video_ids.length > 0) {
+          setProcessedVideoIds(result.video_ids);
+          
+          const successMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'ai',
+            content: `✅ Successfully processed ${result.video_ids.length} video transcripts: ${result.video_ids.join(', ')}. You can now ask questions about the content!`,
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, successMessage]);
+          setProcessingComplete(true);
+        } else {
+          const errorMessage: ChatMessage = {
+            id: (Date.now() + 1).toString(),
+            role: 'ai',
+            content: 'No videos were successfully processed. I can still answer general questions, but may not have access to specific video transcripts.',
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, errorMessage]);
+        }
+      }
+    } catch (error) {
+      console.error('Error processing videos:', error);
+      const errorMessage: ChatMessage = {
+        id: Date.now().toString(),
+        role: 'ai',
+        content: 'I encountered an error while processing the videos. I can still answer general questions, but may not have access to specific video transcripts.',
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
+      setIsProcessingVideos(false);
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -74,28 +194,30 @@ What would you like to know?`,
     setIsLoading(true);
 
     try {
-      const aiInput: AnswerPlaylistQuestionInput = {
-        playlistContent: playlistContent,
+      const aiInput: PlaylistRAGInput = {
         question: userMessage.content,
-        currentVideoTitle,
-        currentVideoSummary,
+        playlistContent: playlistContent,
+        currentVideoId: extractVideoIdFromTitle(currentVideoTitle),
+        allVideoIds: processedVideoIds.length > 0 ? processedVideoIds : undefined,
       };
-      const response = await answerPlaylistQuestion(aiInput);
+      const response = await answerWithRAG(aiInput);
       
       let aiContent = response.answer;
       
-      // Add source information and relevant videos if available
-      if (response.sourceType === 'general_knowledge') {
-        aiContent += '\n\n💡 *This answer is based on general knowledge since the specific information wasn\'t found in your playlist content.*';
-      } else if (response.sourceType === 'current_video') {
-        aiContent += '\n\n🎥 *This answer is based on the currently playing video.*';
-      } else if (response.sourceType === 'playlist_content') {
-        aiContent += '\n\n📚 *This answer is based on your playlist content.*';
+      if (response.sourceType === 'no_content') {
+        aiContent += '\n\n💡 *No video transcripts are available yet. Please click "Process Videos First" to enable transcript-based Q&A.*';
+      } else if (response.sourceType === 'rag_search') {
+        aiContent += '\n\n🔍 *This answer is based on searching through the video transcripts.*';
+        if (response.confidence) {
+          aiContent += ` (Confidence: ${(response.confidence * 100).toFixed(1)}%)`;
+        }
+      } else if (response.sourceType === 'error') {
+        aiContent += '\n\n⚠️ *There was an error accessing the transcript database.*';
       }
       
       if (response.relevantVideos && response.relevantVideos.length > 0) {
-        aiContent += '\n\n**Related videos in your playlist:**\n' + 
-          response.relevantVideos.map(video => `• ${video}`).join('\n');
+        aiContent += '\n\n**Videos referenced:**\n' + 
+          response.relevantVideos.map(videoId => `• Video ${videoId}`).join('\n');
       }
       
       const aiMessage: ChatMessage = {
@@ -123,8 +245,8 @@ What would you like to know?`,
   const suggestedQuestions = [
     "What are the key concepts covered in this playlist?",
     "Can you explain the main topic in simple terms?",
-    "How can I apply what I learned from these videos?",
-    currentVideoTitle ? `What is "${currentVideoTitle}" about?` : "What should I focus on while watching?",
+    "What exactly did the instructor say about this topic?",
+    currentVideoTitle ? `What does the transcript of "${currentVideoTitle}" cover?` : "What should I focus on while watching?",
   ];
 
   const handleSuggestedQuestion = (question: string) => {
@@ -141,11 +263,30 @@ What would you like to know?`,
             <p className="text-sm text-muted-foreground">RAG-powered AI for your learning content</p>
           </div>
         </div>
-        {currentVideoTitle && (
-          <div className="text-xs text-muted-foreground max-w-xs truncate">
-            Current: {currentVideoTitle}
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleProcessVideos}
+            disabled={isProcessingVideos || processingComplete}
+            size="sm"
+            className="bg-primary hover:bg-primary/90"
+          >
+            {isProcessingVideos ? (
+              <>
+                <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : processingComplete ? (
+              '✅ Processed'
+            ) : (
+              'Process Videos First'
+            )}
+          </Button>
+          {currentVideoTitle && (
+            <div className="text-xs text-muted-foreground max-w-xs truncate">
+              Current: {currentVideoTitle}
+            </div>
+          )}
+        </div>
       </div>
       
       <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
@@ -197,8 +338,8 @@ What would you like to know?`,
           </div>
         )}
         
-        {/* Suggested questions */}
-        {messages.length <= 1 && !isLoading && (
+        {/* Show suggested questions when there are few messages and processing is not in progress */}
+        {messages.length <= 3 && !isLoading && !isProcessingVideos && (
           <div className="mt-4 space-y-2">
             <p className="text-sm text-muted-foreground">Try asking:</p>
             <div className="grid grid-cols-1 gap-2">
@@ -221,7 +362,7 @@ What would you like to know?`,
       <form onSubmit={handleSubmit} className="p-4 border-t flex items-center gap-2">
         <Input
           type="text"
-          placeholder="Ask about the playlist content..."
+          placeholder={processingComplete ? "Ask about the video content or transcripts..." : "Process videos first for transcript-based Q&A..."}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="flex-grow"

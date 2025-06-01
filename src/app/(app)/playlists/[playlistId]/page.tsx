@@ -63,7 +63,7 @@ export default function PlaylistDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
   const { user, recordActivity, updateUserStats } = useUser();
-  const videoPlayerKey = useId(); 
+  const videoPlayerKey = useId();
 
   useEffect(() => {
     const loadPlaylist = async () => {
@@ -127,39 +127,10 @@ export default function PlaylistDetailPage() {
   };
   
   const compiledPlaylistContentForRAG = playlist ? 
-    `Playlist Title: ${playlist.title}
-Playlist Description: ${playlist.description}
-Total Videos: ${playlist.videos.length}
-Tags: ${playlist.tags.join(', ')}
-
-=== VIDEO CONTENT ===
-
-${playlist.videos.map((v, index) => `
-Video ${index + 1}:
-- Title: ${v.title}
-- Channel: ${v.channelTitle || 'Unknown Channel'}
-- Duration: ${v.duration}
-- Video URL: ${v.youtubeURL}
-- Summary: ${v.summary || 'No summary available.'}
-- Completion Status: ${v.completionStatus}%
-- Transcript: ${v.transcript || 'No transcript available.'}
-${v.channelTitle && v.channelTitle.toLowerCase().includes('mosh') ? '- Instructor: Mosh Hamedani (Programming with Mosh)' : ''}
-${v.title && (v.title.toLowerCase().includes('oops') || v.title.toLowerCase().includes('oop') || v.title.toLowerCase().includes('object oriented')) ? '- Topic: Object-Oriented Programming (OOP/OOPS) concepts' : ''}
-${v.title && v.title.toLowerCase().includes('python') ? '- Language: Python Programming' : ''}
-${v.title && v.title.toLowerCase().includes('comparison') ? '- Covers: Comparison operators and conditional logic' : ''}
-${v.title && v.title.toLowerCase().includes('beginner') ? '- Level: Beginner-friendly content' : ''}
-${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehensive course covering multiple topics' : ''}
-`).join('\n---\n')}
-
-=== ADDITIONAL CONTEXT ===
-- This playlist contains programming tutorials
-- Videos may include coding concepts, tutorials, and explanations
-- Channel information and instructor names are included where available
-- OOP/OOPS refers to Object-Oriented Programming concepts
-- For Python videos, common topics include: variables, data types, operators, control structures, functions, classes
-- Comparison operators in Python include: ==, !=, <, >, <=, >=, is, is not, in, not in
-- When transcript data is unavailable, provide educational explanations based on video titles and general programming knowledge
-` : "No playlist content available.";
+    `Playlist: ${playlist.title}\nDescription: ${playlist.description}\nCategory: ${playlist.category || 'General'}\n\nVideos:\n` +
+    playlist.videos.map((video, index) => 
+      `${index + 1}. ${video.title}\n   URL: ${video.youtubeURL}\n   Summary: ${video.summary || 'No summary available'}\n`
+    ).join('\n') : '';
 
   const handleToggleCompletion = async (videoId: string) => {
     if (!playlist || !playlist.videos) return;
@@ -175,41 +146,24 @@ ${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehens
       return video;
     });
 
-    const updatedPlaylist = { ...playlist, videos: updatedVideos, lastModified: new Date() }; 
-    setPlaylist(updatedPlaylist);
-
+    // Update the playlist state for immediate feedback
+    setPlaylist(prev => prev ? { ...prev, videos: updatedVideos } : null);
+    
+    // Update the current video if it's the one being modified
     if (currentVideo && currentVideo.id === videoId) {
-      setCurrentVideo(prevCurrentVideo => {
-        if (!prevCurrentVideo) return null;
-        return {
-            ...prevCurrentVideo,
-            completionStatus: newCompletionStatus
-        };
-      });
+      setCurrentVideo(prev => prev ? { ...prev, completionStatus: newCompletionStatus } : null);
     }
 
-    // Record activity for streak tracking
-    if (newCompletionStatus === 100) {
-      recordActivity({
-        action: "Completed",
-        item: targetVideo.title,
-        type: "completed"
-      });
-      toast({
-        title: "Video Completed! 🎉",
-        description: `Great job completing "${targetVideo.title}"`,
-      });
-    } else {
-      recordActivity({
-        action: "Marked as incomplete",
-        item: targetVideo.title,
-        type: "started"
-      });
-      toast({
-        title: "Progress Updated",
-        description: `"${targetVideo.title}" marked as incomplete.`,
-      });
-    }
+    // Record activity for the user
+    recordActivity({
+      type: newCompletionStatus === 100 ? 'video_completed' : 'video_uncompleted',
+      description: `${newCompletionStatus === 100 ? 'Completed' : 'Marked incomplete'}: ${targetVideo.title}`,
+      metadata: {
+        videoId,
+        playlistId: playlist.id,
+        videoTitle: targetVideo.title,
+      },
+    });
     
     try {
       // Update playlist in MongoDB
@@ -390,7 +344,11 @@ ${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehens
           {currentVideo && (
             <motion.div variants={fadeInUp}>
               <Card className="overflow-hidden shadow-lg">
-                <VideoPlayer key={videoPlayerKey + currentVideo.id} videoUrl={currentVideo.youtubeURL} videoTitle={currentVideo.title} />
+                <VideoPlayer 
+                  key={videoPlayerKey + currentVideo.id} 
+                  videoUrl={currentVideo.youtubeURL} 
+                  videoTitle={currentVideo.title}
+                />
               </Card>
             </motion.div>
           )}
@@ -486,13 +444,6 @@ ${v.title && v.title.toLowerCase().includes('full course') ? '- Type: Comprehens
                     {currentVideo && (
                       <MLEnhancedVideoSummary 
                         video={currentVideo}
-                        onEnhancedSummaryGenerated={(enhancedSummary, multiModalData) => {
-                          setCurrentVideo(prev => prev ? { ...prev, enhancedSummary } : null);
-                          toast({
-                            title: "AI Mind Map Enhanced! 🧠",
-                            description: "Mind map updated with multi-modal analysis.",
-                          });
-                        }}
                       />
                     )}
                     

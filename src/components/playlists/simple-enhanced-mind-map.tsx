@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Clock, Eye, Lightbulb, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ReactMarkdown from 'react-markdown';
 
 interface SimpleEnhancedMindMapProps {
   title: string;
@@ -78,7 +79,12 @@ export function SimpleEnhancedMindMap({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm leading-relaxed text-muted-foreground">{summary}</p>
+          <div
+            className="text-sm leading-relaxed text-muted-foreground prose prose-sm max-w-none"
+            style={{ whiteSpace: 'pre-line' }}
+          >
+            <ReactMarkdown>{summary}</ReactMarkdown>
+          </div>
           
           {/* Detailed Summary Expandable Section */}
           {detailedSummary && detailedSummary !== summary && (
@@ -179,57 +185,13 @@ export function SimpleEnhancedMindMap({
         </Card>
       )}
 
-      {/* Mind Map Layout */}
+      {/* Mind Map Layout (REMOVING Key Topics and Visual Insights from here) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
-        {/* Key Topics */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Lightbulb className="h-5 w-5 text-yellow-600" />
-              Key Learning Topics
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {keyTopics.slice(0, 15).map((topic, index) => (
-                <Badge
-                  key={index}
-                  variant="outline"
-                  className={cn(
-                    "px-3 py-1 text-xs font-medium border transition-all hover:scale-105 cursor-pointer",
-                    topicColors[index % topicColors.length]
-                  )}
-                >
-                  {topic}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Key Topics - REMOVED */}
 
-        {/* Visual Insights */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <Eye className="h-5 w-5 text-blue-600" />
-              Visual Learning Elements
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {visualInsights.slice(0, 3).map((insight, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-2 p-2 rounded-lg bg-blue-50 border border-blue-100"
-                >
-                  <Sparkles className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-blue-800">{insight}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Visual Insights - REMOVED */}
+
       </div>
 
       {/* Key Concepts and Terminologies */}

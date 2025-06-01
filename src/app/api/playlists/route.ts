@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await playlist.save();
+      
       return NextResponse.json({ playlist });
     } catch (saveError) {
       console.error('Error saving playlist:', saveError);

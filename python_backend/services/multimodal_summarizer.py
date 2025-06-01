@@ -1,1334 +1,645 @@
+import os
+import asyncio # Added for async operations in helpers
+import google.generativeai as genai
+from youtube_transcript_api import YouTubeTranscriptApi
 import torch
-import torch.nn as nn
-import numpy as np
-from transformers import T5Tokenizer, T5ForConditionalGeneration, AutoTokenizer, AutoModelForSeq2SeqLM
-from sentence_transformers import SentenceTransformer
 import logging
-from typing import Dict, List, Any, Optional
-import json
-import asyncio
-from concurrent.futures import ThreadPoolExecutor
+from typing import Dict, Any, List
 import re
+import json # Added for parsing Gemini's JSON output
 
 logger = logging.getLogger(__name__)
 
-class MultiModalFusion(nn.Module):
-    """
-    Neural network module for fusing text and visual features
-    """
-    def __init__(self, text_dim: int = 384, visual_dim: int = 512, fusion_dim: int = 768):
-        super().__init__()
-        self.text_dim = text_dim
-        self.visual_dim = visual_dim
-        self.fusion_dim = fusion_dim
-        
-        # Projection layers
-        self.text_proj = nn.Linear(text_dim, fusion_dim)
-        self.visual_proj = nn.Linear(visual_dim, fusion_dim)
-        
-        # Cross-attention mechanism
-        self.cross_attention = nn.MultiheadAttention(fusion_dim, num_heads=8, batch_first=True)
-        
-        # Output projection
-        self.output_proj = nn.Linear(fusion_dim, fusion_dim)
-        self.dropout = nn.Dropout(0.1)
-        self.layer_norm = nn.LayerNorm(fusion_dim)
-        
-    def forward(self, text_features: torch.Tensor, visual_features: torch.Tensor) -> torch.Tensor:
-        """
-        Forward pass for multi-modal fusion
-        
-        Args:
-            text_features: [batch_size, seq_len, text_dim]
-            visual_features: [batch_size, num_frames, visual_dim]
-        
-        Returns:
-            fused_features: [batch_size, seq_len, fusion_dim]
-        """
-        # Project to common dimension
-        text_proj = self.text_proj(text_features)  # [batch_size, seq_len, fusion_dim]
-        visual_proj = self.visual_proj(visual_features)  # [batch_size, num_frames, fusion_dim]
-        
-        # Cross-attention: text attends to visual features
-        fused_features, attention_weights = self.cross_attention(
-            query=text_proj,
-            key=visual_proj,
-            value=visual_proj
-        )
-        
-        # Residual connection and layer normalization
-        fused_features = self.layer_norm(fused_features + text_proj)
-        
-        # Output projection
-        output = self.output_proj(self.dropout(fused_features))
-        
-        return output
+def get_video_id(url_link: str) -> str:
+    """Extracts the YouTube video ID from a URL."""
+    if "watch?v=" in url_link:
+        return url_link.split("watch?v=")[-1].split("&")[0]
+    elif "youtu.be/" in url_link:
+        return url_link.split("youtu.be/")[-1].split("?")[0]
+    # Add more robust parsing if other URL formats are expected
+    raise ValueError("Invalid YouTube URL format. Could not extract video ID.")
 
-class MultiModalSummarizer:
-    """
-    Multi-modal summarizer using FLAN-T5 with visual and textual features
-    """
-    
-    def __init__(self, model_name: str = "google/flan-t5-large", chunk_summary_model_name: str = "google/flan-t5-base"):
-        """Initialize the multi-modal summarizer"""
+class TranscriptSummarizer:
+    def __init__(self):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        logger.info(f"Using device: {self.device}")
-        
-        # Load FLAN-T5 model and tokenizer for final summaries
-        logger.info(f"Loading FLAN-T5 model for final summary: {model_name}")
-        self.tokenizer = T5Tokenizer.from_pretrained(model_name)
-        self.model = T5ForConditionalGeneration.from_pretrained(model_name).to(self.device)
-
-        # Load a smaller FLAN-T5 model for chunk summarization
+        logger.info(f"TranscriptSummarizer initialized. Device check: {self.device}.")
+        self._ready = False
+        self.gemini_model = None
         try:
-            logger.info(f"Loading FLAN-T5 model for chunk summaries: {chunk_summary_model_name}")
-            self.chunk_tokenizer = T5Tokenizer.from_pretrained(chunk_summary_model_name)
-            self.chunk_model = T5ForConditionalGeneration.from_pretrained(chunk_summary_model_name).to(self.device)
-            logger.info("Chunk summarization model loaded successfully.")
+            api_key = os.getenv("GEMINI_API_KEY")
+            if not api_key:
+                logger.error("GEMINI_API_KEY environment variable not found.")
+                raise ValueError("GEMINI_API_KEY not set.")
+            
+            genai.configure(api_key=api_key)
+            self.gemini_model = genai.GenerativeModel('gemini-1.5-flash-latest')
+            logger.info("Gemini API configured and model initialized successfully.")
+            self._ready = True
+        except ValueError as ve:
+            logger.error(f"ValueError during Gemini initialization (e.g., API key missing or invalid): {ve}", exc_info=True)
         except Exception as e:
-            logger.warning(f"Could not load dedicated chunk summarization model ({chunk_summary_model_name}): {e}. Will use main model for chunks.")
-            self.chunk_tokenizer = self.tokenizer
-            self.chunk_model = self.model
-        
-        # Load sentence transformer for text embeddings
-        logger.info("Loading SentenceTransformer for text embeddings")
-        self.sentence_transformer = SentenceTransformer('all-MiniLM-L6-v2')
-        
-        # Initialize fusion module
-        self.fusion_module = MultiModalFusion().to(self.device)
-        
-        # Thread pool for CPU-intensive tasks
-        self.executor = ThreadPoolExecutor(max_workers=2)
-        
-        # Model ready flag
-        self._ready = True
-        
-        logger.info("MultiModalSummarizer initialized successfully")
+            logger.error(f"Error initializing Gemini API: {e}", exc_info=True)
     
     def is_ready(self) -> bool:
-        """Check if all models are loaded and ready"""
-        return self._ready
+        """Check if the Gemini API is configured and ready."""
+        return self._ready and self.gemini_model is not None
     
-    async def generate_multimodal_summary(
-        self, 
-        transcript_data: Dict[str, Any], 
-        visual_data: Dict[str, Any], 
-        video_id: str
-    ) -> Dict[str, Any]:
-        """
-        Generate comprehensive summary using both transcript and visual features
-        """
+    def _add_basic_punctuation(self, text: str) -> str:
+        """Adds very basic punctuation if missing. Can be improved."""
+        # This is a simplistic approach. For robust punctuation, use a dedicated library.
+        # Example: deepmultilingualpunctuation or spacy-based rules.
+        processed_text = text.replace("  ", " ").strip()
+        if not processed_text:
+            return ""
+        if not processed_text.endswith(('.', '?', '!')):
+            processed_text += '.'
+        return processed_text
+
+    async def _summarize_text_with_gemini(self, text_to_summarize: str, max_summary_length: int = 700, min_summary_length: int = 150) -> str:
+        """Internal method to summarize provided text using Gemini API."""
+        if not self.is_ready():
+            logger.error("Gemini model not ready for direct text summarization.")
+            return "Error: Summarizer (Gemini) not ready."
         try:
-            logger.info(f"Starting multi-modal summary generation for video: {video_id}")
+            transcript_punctuated = self._add_basic_punctuation(text_to_summarize)
+            logger.info(f"Starting Gemini summarization for text (first 300 chars): {transcript_punctuated[:300]}")
             
-            # Stage 3: Combine transcript and visual features
-            loop = asyncio.get_event_loop()
-            combined_features = await loop.run_in_executor(
-                self.executor,
-                self._combine_modalities,
-                transcript_data,
-                visual_data
+            # Updated prompt for clearer subtopic and pointwise structure
+            prompt = f"""As an expert analyst, provide a structured outline summary of the following video transcript. 
+Your summary MUST begin with a concise overview statement (1-2 sentences) that captures the essence of the video's message.
+
+Following the overview, identify 2-3 key strategic themes. For each theme:
+  - Present the theme as a BOLDED section header (e.g., **Key Strategic Theme 1: Defining Agentic AI**).
+  - Underneath each theme header, provide 2-4 CONCISE bullet points. 
+  - Each bullet point MUST start on a COMPLETELY NEW LINE.
+  - Each bullet point MUST begin with a simple dash and a space (e.g., "- ").
+  - These bullet points should cover the key arguments, components, or implications of the theme.
+
+Maintain an analytical tone. Focus on implications and core arguments.
+
+EXAMPLE OF DESIRED OUTPUT STRUCTURE:
+This video explains the core concepts of X and its applications in Y.
+
+**Key Strategic Theme 1: Understanding X**
+- X is defined by its ability to A and B.
+- A key component of X is its C module.
+- The primary implication of X is D.
+
+**Key Strategic Theme 2: Applications of X in Y**
+- X can be applied to solve problem P in domain Y.
+- An example is using X for Q, resulting in R.
+- Challenges in applying X include S and T.
+
+[And so on for other themes]
+
+Transcript:
+{transcript_punctuated}
+
+Structured Outline Summary (approx {min_summary_length}-{max_summary_length} words):
+"""
+            
+            generation_config = genai.types.GenerationConfig(
+                temperature=0.7 
             )
-            
-            # Stage 4: Generate summary using FLAN-T5
-            summary_result = await loop.run_in_executor(
-                self.executor,
-                self._generate_summary,
-                combined_features,
-                transcript_data,
-                visual_data
-            )
-            
-            logger.info("Multi-modal summary generation completed successfully")
-            return summary_result
-            
-        except Exception as e:
-            logger.error(f"Error in multi-modal summary generation: {str(e)}")
-            raise
-    
-    def _combine_modalities(self, transcript_data: Dict[str, Any], visual_data: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Stage 3: Combine transcript and visual features using neural fusion
-        """
-        try:
-            # Extract text segments
-            segments = transcript_data.get("segments", [])
-            full_text = transcript_data.get("full_text", "")
-            
-            # Extract visual frames
-            frames = visual_data.get("frames", [])
-            
-            # Handle case where transcript extraction failed
-            if not full_text or full_text.strip() == "" or "failed due to YouTube restrictions" in full_text:
-                logger.warning("No valid transcript found, using fallback text analysis")
-                # Create synthetic segments for analysis
-                fallback_text = "This video contains educational content that could not be transcribed due to technical limitations."
-                segments = [{
-                    "start": 0,
-                    "end": 60,
-                    "text": fallback_text,
-                    "confidence": 0.5
-                }]
-                full_text = fallback_text
-            
-            # Generate text embeddings for segments
-            segment_texts = [seg.get("text", "") for seg in segments if seg.get("text", "").strip()]
-            
-            if not segment_texts:
-                logger.warning("No valid text segments found, creating fallback")
-                segment_texts = ["Educational video content analysis"]
-            
-            # Get sentence embeddings
-            text_embeddings = self.sentence_transformer.encode(segment_texts)
-            
-            # Prepare visual embeddings
-            visual_embeddings = []
-            for frame in frames:
-                embedding = frame.get("embedding", [])
-                if embedding:
-                    visual_embeddings.append(embedding)
-            
-            if not visual_embeddings:
-                logger.warning("No valid visual embeddings found")
-                visual_embeddings = [np.zeros(512).tolist()]  # Fallback
-            
-            visual_embeddings = np.array(visual_embeddings)
-            
-            # Combine modalities using fusion module
-            combined_features = []
-            segment_mappings = []
-            
-            with torch.no_grad():
-                for i, (text_emb, segment) in enumerate(zip(text_embeddings, segments)):
-                    # Find relevant visual frames for this segment
-                    segment_start = segment.get("start", 0)
-                    segment_end = segment.get("end", 0)
-                    
-                    relevant_frames = []
-                    for frame in frames:
-                        frame_time = frame.get("timestamp", 0)
-                        if segment_start <= frame_time <= segment_end + 5:  # 5-second buffer
-                            relevant_frames.append(frame.get("embedding", []))
-                    
-                    if not relevant_frames:
-                        # Use average visual embedding if no specific frames found
-                        relevant_frames = [visual_data.get("average_embedding", np.zeros(512).tolist())]
-                    
-                    # Convert to tensors
-                    text_tensor = torch.tensor([text_emb], dtype=torch.float32).unsqueeze(0).to(self.device)
-                    visual_tensor = torch.tensor(relevant_frames, dtype=torch.float32).unsqueeze(0).to(self.device)
-                    
-                    # Apply fusion
-                    fused_features = self.fusion_module(text_tensor, visual_tensor)
-                    
-                    combined_features.append({
-                        "segment_index": i,
-                        "text": segment.get("text", ""),
-                        "start_time": segment_start,
-                        "end_time": segment_end,
-                        "fused_embedding": fused_features.cpu().numpy().tolist(),
-                        "text_embedding": text_emb.tolist(),
-                        "visual_frames_count": len(relevant_frames)
-                    })
-                    
-                    segment_mappings.append({
-                        "segment_text": segment.get("text", ""),
-                        "time_range": [segment_start, segment_end],
-                        "visual_alignment_score": len(relevant_frames) / max(len(frames), 1)
-                    })
-            
-            return {
-                "combined_features": combined_features,
-                "segment_mappings": segment_mappings,
-                "total_segments": len(segments),
-                "total_frames": len(frames)
-            }
-            
-        except Exception as e:
-            logger.error(f"Error in modality combination: {str(e)}")
-            raise
-    
-    def _generate_summary(
-        self, 
-        combined_features: Dict[str, Any], 
-        transcript_data: Dict[str, Any], 
-        visual_data: Dict[str, Any]
-    ) -> Dict[str, Any]:
-        """
-        Generate comprehensive summary based ONLY on the full transcript content
-        """
-        # video_id = combined_features.get("video_id", "unknown_video") # Get video_id if available
-        try:
-            full_text = transcript_data.get("full_text", "")
-            # logger.info(f"VIDEO_ID FOR SUMMARY: {video_id} -- TRANSCRIPT START: {full_text[:500]}") 
-            segments = transcript_data.get("segments", [])
-            # duration = transcript_data.get("duration", 0) # Not directly used in this func now
 
-            if not full_text or len(full_text.strip()) < 100:
-                logger.warning("Insufficient transcript data for analysis.")
-                return self._generate_fallback_response(is_insufficient_data=True)
+            response = await self.gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            
+            summary = response.text.strip()
+            if not summary:
+                 logger.warning("Gemini summarization produced an empty summary.")
+                 return "Error: Summarization (Gemini) resulted in empty content."
 
-            # CRITICAL: Validate transcript content for severe mismatches
-            logger.info(f"Processing FULL transcript: {len(full_text)} characters, {len(segments)} segments")
-            logger.info(f"Transcript preview (first 300 chars): {full_text[:300]}")
+            # Post-processing to enforce newlines for bullet points
+            # This attempts to split themes and then ensure points under themes start with a newline
+            processed_summary_parts = []
+            # We use a regex that captures the theme header itself to preserve it.
+            themes = re.split(r'(\*\*Key Strategic Theme.*?\*\*)', summary) # Corrected regex for literal **
             
-            # Check for obvious content mismatches
-            content_mismatch_indicators = [
-                "anatomy of the human brain", "university of california", "berkeley",
-                "nervous system", "medical professional", "physician", "doctor",
-                "digestive system", "immune system", "physiology", "consultation"
-            ]
+            for i, part in enumerate(themes):
+                if i % 2 == 1: # This is a theme header (already captured with its **...**)
+                    processed_summary_parts.append(part.strip()) 
+                else: # This is content under a theme, or the initial overview
+                    content_part = part.strip()
+                    if not content_part:
+                        continue
+                    
+                    # Split content_part by bullet markers (\n- followed by space(s))
+                    # The pattern r'\n-\s+' identifies the start of a bullet point.
+                    bullet_marker_pattern = r'\n-\s+' # This should remain a raw string with \n
+                    split_by_bullets = re.split(bullet_marker_pattern, content_part)
+                    
+                    current_part_processed_text = ""
+
+                    # The first element is the preamble (text before any bullets, or whole text if no bullets)
+                    if split_by_bullets[0].strip():
+                        preamble = re.sub(r'\s+', ' ', split_by_bullets[0].strip()) # This should remain a raw string with \s
+                        current_part_processed_text = preamble
+                    
+                    # Subsequent elements are the actual bullet contents
+                    if len(split_by_bullets) > 1:
+                        processed_bullets = []
+                        for bullet_text in split_by_bullets[1:]:
+                            if bullet_text.strip():
+                                normalized_bullet = re.sub(r'\s+', ' ', bullet_text.strip()) # This should remain a raw string with \s
+                                processed_bullets.append("- " + normalized_bullet)
+                        
+                        if processed_bullets:
+                            if current_part_processed_text: # If there was a preamble
+                                current_part_processed_text += "\n" # Corrected to actual newline
+                            current_part_processed_text += "\n".join(processed_bullets) # Corrected to actual newline
+                    
+                    if current_part_processed_text:
+                         processed_summary_parts.append(current_part_processed_text)
             
-            transcript_lower = full_text.lower()
-            mismatch_count = sum(1 for indicator in content_mismatch_indicators if indicator in transcript_lower)
-            
-            if mismatch_count >= 2:
-                logger.error(f"TRANSCRIPT CONTENT MISMATCH DETECTED! Found {mismatch_count} medical/anatomy indicators in what should be programming content.")
-                logger.error(f"Problematic transcript content: {full_text[:500]}")
-                logger.error("This suggests transcript extraction failure or wrong video content.")
+            # Construct final summary ensuring a blank line before theme headers
+            final_summary_structure = []
+            for i, part_text in enumerate(processed_summary_parts):
+                if not part_text: # Skip any potentially empty parts from earlier processing
+                    continue
+
+                # Add a blank line before a theme header if it's not the first element 
+                # and the previous element added to final_summary_structure was not already a blank line.
+                if part_text.startswith("**Key Strategic Theme") and final_summary_structure:
+                    if final_summary_structure[-1]: # Check if the last added part was not an empty string
+                        final_summary_structure.append("") # Insert a blank line
                 
-                # Force content-based analysis instead of trusting the transcript
-                return {
-                    "ROOT_TOPIC": "Content Analysis Error", 
-                    "LEARNING_OBJECTIVES": ["Review video content manually due to processing error"],
-                    "KEY_CONCEPTS": [], 
-                    "TERMINOLOGIES": {},
-                    "SUMMARY": self._generate_error_summary_for_content_mismatch(),
-                    "MINDMAP_JSON": {"title": "Content Error", "children": [{"title": "Processing Error Detected", "children": []}]},
-                    "REACT_FLOWCHART": {"title": "Error", "nodes": [{"id": "error", "label": "Content Processing Error"}], "edges": []},
-                    "visual_insights": [],
-                    "timestamp_highlights": []
-                }
+                final_summary_structure.append(part_text)
 
-            # Attempt to extract a dynamic root topic from the transcript itself
-            extracted_root_topic = self._extract_main_topic_from_transcript(full_text)
+            summary = "\n".join(final_summary_structure).strip()
 
-            learning_objectives = self._extract_learning_objectives_from_full_transcript(full_text, segments)
-            detailed_summary = self._generate_chatgpt_style_summary(full_text, segments, visual_data)
-            
-            # Use extracted_root_topic for mind map and flowchart if available, else a generic one
-            mindmap_title = f'{extracted_root_topic} - Mind Map' if extracted_root_topic else "Video Content Mind Map"
-            flowchart_title = f'{extracted_root_topic} - Learning Flow' if extracted_root_topic else "Video Learning Flow"
-
-            # Pass the extracted_root_topic (or a generic default) to mindmap and flowchart generators
-            # The mindmap building logic itself should be generic now, not hardcoded to "Python Playlist"
-            generated_mindmap = self._build_dynamic_mindmap(extracted_root_topic or "Video Content", full_text, segments)
-            react_flowchart = self._generate_react_flowchart(extracted_root_topic or "Video Content", full_text, segments, flowchart_title)
-
-            return {
-                "ROOT_TOPIC": extracted_root_topic or "Video Content Analysis", # Dynamic root topic
-                "LEARNING_OBJECTIVES": learning_objectives,
-                "KEY_CONCEPTS": [], 
-                "TERMINOLOGIES": {},
-                "SUMMARY": detailed_summary,
-                "MINDMAP_JSON": generated_mindmap, # Now generic mindmap
-                "REACT_FLOWCHART": react_flowchart,
-                "visual_insights": [],
-                "timestamp_highlights": self._generate_transcript_highlights(segments)
-            }
-
-        except Exception as e:
-            logger.error(f"Error in summary generation: {str(e)}", exc_info=True)
-            return self._generate_fallback_response()
-
-    def _extract_main_topic_from_transcript(self, full_text:str) -> Optional[str]:
-        """Attempt to extract a concise main topic from the beginning of the transcript."""
-        if not full_text or len(full_text.strip()) < 50:
-            return None
-        try:
-            prompt = f"""Analyze the BEGINNING of the following video transcript and identify the primary subject or topic in 2-5 words.
-            Focus only on the core subject matter introduced early in the text.
-
-            Transcript (first 500 characters):
-            {full_text[:500]}
-
-            Main Topic (2-5 words, e.g., 'Agentic AI Systems', 'Python Programming Basics'):"""
-            
-            inputs = self.tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True).to(self.device)
-            # Use chunk_model as it's faster and this is a simple extraction
-            outputs = self.chunk_model.generate(**inputs, max_length=25, num_beams=3, early_stopping=True, no_repeat_ngram_size=2)
-            topic = self.tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
-            
-            # Basic validation
-            if topic and len(topic) > 3 and len(topic) < 50 and not any(stop_word in topic.lower() for stop_word in ["transcript", "video", "this content"]):
-                logger.info(f"Extracted main topic: {topic}")
-                return topic
-            logger.warning(f"Could not reliably extract main topic. Got: '{topic}'")
-            return None
-        except Exception as e:
-            logger.error(f"Error extracting main topic: {e}")
-            return None
-
-    def _generate_fallback_response(self, is_insufficient_data: bool = False) -> Dict[str, Any]:
-        """Generate a generic fallback response."""
-        summary_note = "Note: Detailed analysis could not be completed due to an error."
-        if is_insufficient_data:
-            summary_note = "Note: Insufficient transcript data for detailed analysis."
-        
-        return {
-            "ROOT_TOPIC": "Video Content Analysis",
-            "LEARNING_OBJECTIVES": ["Understand the main themes of the video content."],
-            "KEY_CONCEPTS": [],
-            "TERMINOLOGIES": {},
-            "SUMMARY": f"### 📚 Detailed Summary\n\n{summary_note}",
-            "MINDMAP_JSON": {
-                "title": "Content Mind Map",
-                "children": [
-                    {"title": "Main Topics", "children": []},
-                    {"title": "Key Details", "children": []}
-                ]
-            },
-            "REACT_FLOWCHART": {
-                "title": "Content Learning Flow",
-                "nodes": [{"id": "start", "label": "Video Start"}],
-                "edges": []
-            },
-            "visual_insights": [],
-            "timestamp_highlights": []
-        }
-
-    # Modify _update_python_playlist_mindmap to _build_dynamic_mindmap
-    def _build_dynamic_mindmap(self, root_topic_title: str, full_text: str, segments: List[Dict]) -> Dict[str, Any]:
-        """Builds a dynamic mind map based on extracted concepts from the transcript."""
-        try:
-            mind_map_data = {
-                "title": root_topic_title if root_topic_title else "Video Content Mind Map",
-                "children": [
-                    {"title": "Key Concepts Discussed", "children": []},
-                    {"title": "Supporting Details/Examples", "children": []},
-                    {"title": "Potential Applications (if mentioned)", "children": []}
-                ]
-            }
-            
-            # Extract some generic concepts/keywords from the transcript for the mind map
-            # This can be a simplified version of _extract_python_concepts_from_transcript or a new generic one
-            extracted_concepts = self._extract_generic_concepts_from_transcript(full_text, count=3) # Get 3 main concepts
-            extracted_details = self._extract_generic_concepts_from_transcript(full_text, count=2, offset=3) # Get 2 supporting details
-            extracted_apps = self._extract_generic_concepts_from_transcript(full_text, count=2, keyword_hints=["application", "use case", "example"]) # Get 2 applications
-
-            if extracted_concepts:
-                for concept in extracted_concepts:
-                    mind_map_data["children"][0]["children"].append({"title": concept, "children": []})
-            if extracted_details:
-                for detail in extracted_details:
-                    mind_map_data["children"][1]["children"].append({"title": detail, "children": []})
-            if extracted_apps:
-                for app in extracted_apps:
-                    mind_map_data["children"][2]["children"].append({"title": app, "children": []})
-            
-            # Ensure children lists are not empty for frontend rendering
-            for category in mind_map_data["children"]:
-                if not category["children"]:
-                    category["children"].append({"title": "Content not extracted", "children": []})
-
-            return mind_map_data
-        except Exception as e:
-            logger.error(f"Error building dynamic mindmap: {e}")
-            return {
-                "title": root_topic_title if root_topic_title else "Video Content Mind Map",
-                "children": [
-                    {"title": "Key Concepts", "children": [{"title": "Analysis Error", "children": []}]},
-                ]
-            }
-
-    def _extract_generic_concepts_from_transcript(self, full_text: str, count: int = 3, offset: int = 0, keyword_hints: Optional[List[str]] = None) -> List[str]:
-        """Extracts generic concepts/keywords from the full transcript for mind map/flowchart population."""
-        if not full_text:
-            return []
-        try:
-            hint_text = ""
-            if keyword_hints:
-                hint_text = f"Focus on terms related to: {', '.join(keyword_hints)}."
-
-            prompt = f"""From this COMPLETE video transcript, extract {count} distinct key phrases, topics, or concepts.
-            {hint_text}
-            Prioritize items mentioned frequently or explained in detail.
-            List each concept on a new line.
-            
-            COMPLETE TRANSCRIPT (first 3000 chars for context):
-            {full_text[:3000]}
-            
-            {count} Key Phrases/Topics:"""
-            
-            inputs = self.chunk_tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-            outputs = self.chunk_model.generate(**inputs, max_length=40*count, num_beams=3, early_stopping=True, no_repeat_ngram_size=2)
-            raw_text = self.chunk_tokenizer.decode(outputs[0], skip_special_tokens=True)
-            
-            concepts = []
-            for line in raw_text.split('\n'):
-                concept = line.strip().lstrip('-').lstrip('*').lstrip('•').strip('.').strip()
-                if concept and len(concept) > 3 and len(concept) < 80: # Basic validation
-                    if concept not in concepts: # Avoid duplicates
-                        concepts.append(concept)
-                if len(concepts) >= count + offset:
-                    break
-            
-            return concepts[offset:count+offset]
-        except Exception as e:
-            logger.error(f"Error extracting generic concepts: {e}")
-            return [f"Default Concept {i+1}" for i in range(count)]
-
-    # Modify _generate_react_flowchart to accept a dynamic title and use generic concepts
-    def _generate_react_flowchart(self, root_topic_title: str, full_text: str, segments: List[Dict], flowchart_title_override: Optional[str] = None) -> Dict[str, Any]:
-        """Generate React-compatible flowchart based on transcript content, with a dynamic title."""
-        try:
-            flow_steps = self._extract_learning_flow_from_transcript(full_text) # This already uses full_text
-            
-            flowchart = {
-                "title": flowchart_title_override if flowchart_title_override else (root_topic_title + " - Learning Flow" if root_topic_title else "Video Learning Flow"),
-                "nodes": [],
-                "edges": []
-            }
-            
-            if not flow_steps:
-                 flow_steps = ["Introduction", "Main Content", "Examples", "Conclusion"] # Generic fallback flow
-
-            for i, step_label in enumerate(flow_steps):
-                flowchart["nodes"].append({"id": f"step{i}", "label": step_label, "type": "educational" if i==0 else "instructional" })
-            
-            for i in range(len(flow_steps) - 1):
-                flowchart["edges"].append({"from": f"step{i}", "to": f"step{i+1}", "type": "sequential"})
-            
-            return flowchart
-        except Exception as e:
-            logger.error(f"Error generating React flowchart: {e}")
-            # Generic fallback flowchart
-            return {
-                "title": flowchart_title_override if flowchart_title_override else "Video Learning Flow",
-                "nodes": [
-                    {"id": "start", "label": "Start Video"},
-                    {"id": "content1", "label": "Key Topic 1"},
-                    {"id": "content2", "label": "Key Topic 2"},
-                    {"id": "end", "label": "Conclusion"}
-                ],
-                "edges": [
-                    {"from": "start", "to": "content1"}, {"from": "content1", "to": "content2"}, {"from": "content2", "to": "end"}
-                ]
-            }
-
-    def _extract_learning_objectives_from_full_transcript(self, full_text: str, segments: List[Dict]) -> List[str]:
-        """Extract learning objectives from the COMPLETE transcript content only"""
-        try:
-            # Use the FULL transcript, not just first part
-            prompt = f"""Based ONLY on this COMPLETE educational video transcript, extract 3-5 specific learning objectives.
-            Use ONLY information explicitly mentioned in the transcript. Do NOT infer from metadata or video titles.
-            
-            COMPLETE TRANSCRIPT:
-            {full_text}
-            
-            Extract learning objectives that start with action verbs (Learn, Understand, Build, Create, etc.)
-            Learning Objectives:
-            1."""
-            
-            inputs = self.tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-            outputs = self.model.generate(
-                **inputs, 
-                max_length=200,
-                num_beams=3,
-                early_stopping=True,
-                no_repeat_ngram_size=2
-            )
-            
-            objectives_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            
-            # Parse objectives
-            objectives = []
-            for line in objectives_text.split('\n'):
-                if line.strip() and any(line.strip().startswith(f"{i}.") for i in range(1, 7)):
-                    obj = line.strip()
-                    # Clean numbering
-                    for i in range(1, 7):
-                        obj = obj.replace(f"{i}.", "").strip()
-                    if len(obj) > 10 and len(obj) < 150:
-                        objectives.append(obj)
-            
-            return objectives[:5] if objectives else [
-                "Learn Python programming fundamentals",
-                "Understand core programming concepts", 
-                "Apply Python to real-world projects"
-            ]
-            
-        except Exception as e:
-            logger.error(f"Error extracting learning objectives: {e}")
-            return ["Learn Python programming fundamentals", "Understand core programming concepts"]
-
-    def _generate_chatgpt_style_summary(self, full_text: str, segments: List[Dict], visual_data: Optional[Dict[str, Any]] = None) -> str:
-        """Generate structured multimodal summary following the exact format with 5 sections."""
-        try:
-            logger.info(f"Generating structured multimodal summary from transcript: {len(full_text)} characters, {len(segments)} segments")
-            
-            if len(full_text.strip()) < 100:
-                logger.warning("Transcript too short for detailed analysis")
-                return self._generate_simple_transcript_summary(full_text)
-
-            # Extract visual descriptions if available
-            visual_descriptions = []
-            if visual_data and visual_data.get("frames"):
-                for frame in visual_data["frames"]:
-                    if frame.get("description"):
-                        timestamp = frame.get("timestamp", 0)
-                        description = frame.get("description", "")
-                        visual_descriptions.append(f"[{int(timestamp//60):02d}:{int(timestamp%60):02d}] {description}")
-
-            # Determine if we need chunking for long transcripts
-            MAX_CHARS_PER_LLM_CALL = 3500
-            
-            if len(full_text) > MAX_CHARS_PER_LLM_CALL:
-                logger.info(f"Transcript is long ({len(full_text)} chars), using chunking strategy.")
-                return self._generate_chunked_structured_summary(full_text, segments, visual_descriptions)
-            
-            # Single-pass structured summary for shorter transcripts
-            visual_context_str = "No visual descriptions provided."
-            if visual_descriptions:
-                visual_context_str = "\n".join(visual_descriptions[:10])  # Limit to 10 visual descriptions
-            
-            prompt = f'''You are an AI assistant tasked with generating a structured summary of a video transcript.
-Analyze the provided video transcript and visual descriptions.
-Base your entire response ONLY on the provided content. Do NOT add any external information, opinions, or interpretations.
-Do NOT repeat any part of these instructions, section descriptions, or headers in your output.
-Generate content for the following sections, in this exact order. Start your response directly with the content for "### 📌 Detailed Summary".
-
-TRANSCRIPT:
-{full_text}
-
-VISUAL DESCRIPTIONS:
-{visual_context_str}
-
----
-STRUCTURED SUMMARY TO GENERATE:
-
-### 📌 Detailed Summary
-(Summarize the overall goal and main discussion of the video in 3–5 sentences. Focus on what the main topic, e.g., "Agentic AI", is and how it is demonstrated in the video.)
-
-### 1. **Overview and Introduction**
-(Briefly describe the topic introduced in the video and how it is set up. 2–3 sentences.)
-
-### 2. **Key Themes or Concepts**
-(List the main concepts or ideas discussed in the video. Be specific, and explain how these relate to the main topic or autonomous systems.)
-
-### 3. **Visual-Text Alignment**
-(Explain how visuals shown in the video support the verbal explanation. Mention examples like UIs, diagrams, or workflows that appear alongside the narration. If no visuals or no clear alignment, state that.)
-
-### 4. **Applications or Case Studies**
-(List any examples, scenarios, or use cases shown in the video. Highlight real-world relevance or tools used. If none, state that.)
-
-### 5. **Conclusion**
-(Summarize the main takeaway or conclusion provided at the end of the video.)
-
----
-Your response should ONLY contain the generated content for these sections, starting directly with "### 📌 Detailed Summary".
-Do not include the descriptions in parentheses above. They are for your guidance only.
-Do not include the "---" separators in your output.
-'''
-
-            inputs = self.tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-            outputs = self.model.generate(
-                **inputs,
-                max_length=800,
-                min_length=300,
-                num_beams=4,
-                early_stopping=True,
-                no_repeat_ngram_size=3,
-                do_sample=True,
-                temperature=0.3,
-                length_penalty=1.2
-            )
-            
-            summary = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            summary = self._validate_structured_summary(summary, full_text, visual_descriptions)
-            
-            return summary.strip()
-            
-        except Exception as e:
-            logger.error(f"Error generating structured multimodal summary: {e}", exc_info=True)
-            return self._generate_content_based_fallback_summary(full_text, [])
-
-    def _generate_chunked_structured_summary(self, full_text: str, segments: List[Dict], visual_descriptions: List[str]) -> str:
-        """Generate structured summary for long transcripts using chunking."""
-        try:
-            # First, generate chunk summaries focusing on factual content
-            text_chunks = self._split_text_into_chunks(full_text, 3000)
-            chunk_summaries = []
-            
-            for i, chunk in enumerate(text_chunks):
-                logger.info(f"Processing chunk {i+1}/{len(text_chunks)}")
-                
-                chunk_prompt = f"""Extract the key factual information from this video transcript segment.
-                Focus on what was actually said and explained. Do not add interpretations.
-                
-                Transcript Segment:
-                {chunk}
-                
-                Key factual points from this segment:"""
-                
-                inputs = self.chunk_tokenizer(chunk_prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-                outputs = self.chunk_model.generate(
-                    **inputs,
-                    max_length=200,
-                    num_beams=3,
-                    early_stopping=True,
-                    do_sample=True,
-                    temperature=0.2
-                )
-                chunk_summary = self.chunk_tokenizer.decode(outputs[0], skip_special_tokens=True)
-                chunk_summaries.append(chunk_summary.strip())
-            
-            # Combine chunk summaries with visual context
-            combined_content = "\n\n".join(chunk_summaries)
-            visual_context_str = "No visual descriptions provided."
-            if visual_descriptions:
-                visual_context_str = "\n".join(visual_descriptions[:10]) # Limit to 10 visual descriptions
-            
-            # Generate final structured summary
-            final_prompt = f'''Using the following extracted content and visual descriptions from a video, create a structured summary.
-Base your entire response ONLY on the provided content. Do NOT add any external information, opinions, or interpretations.
-Do NOT repeat any part of these instructions, section descriptions, or headers in your output.
-Generate content for the following sections, in this exact order. Start your response directly with the content for "### 📌 Detailed Summary".
-
-EXTRACTED CONTENT:
-{combined_content}
-
-VISUAL DESCRIPTIONS:
-{visual_context_str}
-
----
-STRUCTURED SUMMARY TO GENERATE:
-
-### 📌 Detailed Summary
-(Summarize the overall goal and main discussion of the video in 3–5 sentences. Focus on what the main topic, e.g., "Agentic AI", is and how it is demonstrated from the extracted content.)
-
-### 1. **Overview and Introduction**
-(Briefly describe the topic introduced and how it is set up, based on the extracted content. 2–3 sentences.)
-
-### 2. **Key Themes or Concepts**
-(List the main concepts or ideas from the extracted content. Be specific.)
-
-### 3. **Visual-Text Alignment**
-(Explain how the visual descriptions relate to the extracted content. If no visuals or no clear alignment, state that.)
-
-### 4. **Applications or Case Studies**
-(List any examples or use cases mentioned in the extracted content. If none, state that.)
-
-### 5. **Conclusion**
-(Summarize the main takeaway or conclusion from the extracted content.)
-
----
-Your response should ONLY contain the generated content for these sections, starting directly with "### 📌 Detailed Summary".
-Do not include the descriptions in parentheses above. They are for your guidance only.
-Do not include the "---" separators in your output.
-'''
-            
-            inputs = self.tokenizer(final_prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-            outputs = self.model.generate(
-                **inputs,
-                max_length=800,
-                min_length=350,
-                num_beams=4,
-                early_stopping=True,
-                do_sample=True,
-                temperature=0.3,
-                length_penalty=1.3
-            )
-            
-            summary = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            return self._validate_structured_summary(summary, combined_content, visual_descriptions)
-            
-        except Exception as e:
-            logger.error(f"Error in chunked structured summary: {e}")
-            return self._generate_content_based_fallback_summary(full_text, visual_descriptions)
-
-    def _validate_structured_summary(self, summary: str, original_content: str, visual_descriptions: List[str]) -> str:
-        """Validate and clean the structured summary."""
-        cleaned = summary
-        
-        # Remove prompt bleeding
-        instruction_patterns = [
-            "Analyze the following video transcript",
-            "Create a summary with these exact sections:",
-            "Using the following extracted content",
-            "TRANSCRIPT:", "VISUAL DESCRIPTIONS:", "EXTRACTED CONTENT:",
-            "Requirements:", "Begin the summary:",
-            "You are an AI assistant tasked with generating a structured summary",
-            "Base your entire response ONLY on the provided content",
-            "Do NOT add any external information, opinions, or interpretations.",
-            "Do NOT repeat any part of these instructions, section descriptions, or headers in your output.",
-            "Generate content for the following sections, in this exact order.",
-            'Start your response directly with the content for "### 📌 Detailed Summary".',
-            "STRUCTURED SUMMARY TO GENERATE:",
-            "Your response should ONLY contain the generated content for these sections",
-            "Do not include the descriptions in parentheses above. They are for your guidance only.",
-            'Do not include the "---" separators in your output.',
-            "(Summarize the overall goal and main discussion of the video in 3–5 sentences.)",
-            "(Focus on what the main topic, e.g., \"Agentic AI\", is and how it is demonstrated...)",
-            "(Briefly describe the topic introduced in the video and how it is set up. 2–3 sentences.)",
-            "(List the main concepts or ideas discussed...)",
-            "(Explain how visuals shown in the video support the verbal explanation...)",
-            "(List any examples, scenarios, or use cases shown...)",
-            "(Summarize the main takeaway or conclusion...)",
-            "--- (and any variations with spaces)"
-        ]
-        
-        for pattern in instruction_patterns:
-            # Escape special regex characters in the pattern before using re.sub
-            cleaned = re.sub(re.escape(pattern), "", cleaned, flags=re.IGNORECASE)
-            # Also try removing lines that are *exactly* the pattern, considering leading/trailing whitespace
-            cleaned_lines = []
-            for line in cleaned.split('\n'):
-                if line.strip().lower() != pattern.lower().strip():
-                    cleaned_lines.append(line)
-            cleaned = '\n'.join(cleaned_lines)
-
-        # Ensure proper structure and remove any leading/trailing junk before the first real header
-        if "### 📌 Detailed Summary" in cleaned:
-            cleaned = "### 📌 Detailed Summary" + cleaned.split("### 📌 Detailed Summary", 1)[1]
-        elif not cleaned.strip().startswith("###") and "###" in cleaned: # If a later header exists but not the first
-            # Try to find the first valid header if the primary one is missing
-            first_header_match = re.search(r"### (\d+\. \*\*|📌 Detailed Summary|1\. \*\*Overview and Introduction\*\*)", cleaned)
-            if first_header_match:
-                cleaned = cleaned[first_header_match.start():]
-            else: # If no headers at all, it's a problem, prefix with the expected start
-                 cleaned = "### 📌 Detailed Summary\n\n" + cleaned.strip()
-        elif not cleaned.strip().startswith("###"):
-             cleaned = "### 📌 Detailed Summary\n\n" + cleaned.strip()
-        
-        # CRITICAL: Check for severe hallucination - completely unrelated topics
-        severe_hallucination_indicators = [
-            # Medical/Biology topics when this should be programming
-            "anatomy", "brain", "medical", "physician", "doctor", "health care",
-            "nervous system", "biology", "physiology", "university of california",
-            "berkeley", "lecture", "professor", "human body", "digestive system",
-            "immune system", "heart", "lungs", "consultation",
-            
-            # Other common hallucination topics
-            "quantum physics", "chemistry", "mathematics", "literature",
-            "history", "geography", "economics", "psychology",
-            
-            # Template phrases that indicate AI confusion
-            "this lecture is intended", "this video is a summary of a lecture",
-            "given by a professor", "should not be considered a substitute",
-            "for educational purposes only and is not meant to substitute"
-        ]
-        
-        # Check if summary contains severe hallucination
-        summary_lower = cleaned.lower()
-        hallucination_count = sum(1 for indicator in severe_hallucination_indicators if indicator in summary_lower)
-        
-        if hallucination_count >= 3:  # If 3+ hallucination indicators found
-            logger.error(f"SEVERE HALLUCINATION DETECTED! Found {hallucination_count} unrelated topic indicators in summary. Content: {cleaned[:200]}...")
-            logger.error("Forcing fallback response to prevent incorrect content delivery.")
-            return self._generate_content_based_fallback_summary(original_content, visual_descriptions)
-        
-        # Check for template responses or insufficient content
-        template_indicators = [
-            "main ideas explained in the video",
-            "real-world examples mentioned explicitly",
-            "without adding new information",
-            "[visual elements to transcript content]"
-        ]
-        
-        if len(cleaned.strip()) < 200 or any(indicator in cleaned.lower() for indicator in template_indicators):
-            logger.warning("Generated summary appears to be template-based, using fallback")
-            return self._generate_content_based_fallback_summary(original_content, visual_descriptions)
-        
-        return cleaned.strip()
-
-    def _generate_content_based_fallback_summary(self, original_content: str, visual_descriptions: List[str]) -> str:
-        """Generate a safe fallback summary based strictly on available content without AI generation."""
-        try:
-            # Extract actual content from transcript to avoid hallucination
-            content_lines = [line.strip() for line in original_content.split('\n') if line.strip()]
-            
-            summary = "### 📚 Detailed Summary\n\n"
-            
-            # 1. Overview - Use actual first few lines of content
-            summary += "**1. Overview and Introduction**\n"
-            if content_lines:
-                first_content = ' '.join(content_lines[:2])[:200]
-                summary += f"- This video content begins with: {first_content}...\n"
-            else:
-                summary += "- This educational video contains instructional content for learning purposes.\n"
-            summary += "- The content is structured to provide clear learning outcomes.\n\n"
-            
-            # 2. Key Themes - Extract from middle content
-            summary += "**2. Key Themes or Concepts**\n"
-            if len(content_lines) > 4:
-                mid_start = len(content_lines) // 3
-                mid_content = ' '.join(content_lines[mid_start:mid_start+2])[:150]
-                summary += f"- Key themes include: {mid_content}...\n"
-            
-            # Look for programming-related keywords in the content
-            programming_keywords = ["python", "programming", "code", "function", "variable", "syntax", "algorithm", "development"]
-            found_keywords = [kw for kw in programming_keywords if kw.lower() in original_content.lower()]
-            
-            if found_keywords:
-                summary += f"- Programming concepts covered include: {', '.join(found_keywords[:5])}\n"
-            else:
-                summary += "- The content covers technical concepts and practical applications.\n"
-            summary += "\n"
-            
-            # 3. Visual-Text Alignment
-            summary += "**3. Visual-Text Alignment**\n"
-            if visual_descriptions:
-                summary += f"- The video includes {len(visual_descriptions)} visual elements synchronized with the content.\n"
-                # Include first visual description as example
-                if visual_descriptions[0]:
-                    summary += f"- Example visual element: {visual_descriptions[0]}\n"
-            else:
-                summary += "- Visual analysis data was not available for this content.\n"
-            summary += "\n"
-            
-            # 4. Applications
-            summary += "**4. Applications or Case Studies**\n"
-            if "example" in original_content.lower() or "project" in original_content.lower():
-                summary += "- The content includes practical examples and project applications.\n"
-            else:
-                summary += "- Specific application examples are embedded within the instructional content.\n"
-            summary += "\n"
-            
-            # 5. Conclusion
-            summary += "**5. Conclusion**\n"
-            if len(content_lines) > 2:
-                last_content = ' '.join(content_lines[-2:])[:150]
-                summary += f"- The content concludes with: {last_content}...\n"
-            summary += "- This educational material provides foundational knowledge for continued learning.\n"
-            
+            logger.info("Successfully generated summary using Gemini and applied post-processing for newlines.")
             return summary
-            
         except Exception as e:
-            logger.error(f"Error in content-based fallback summary: {e}")
-            return """### 📚 Detailed Summary
+            logger.error(f"Error during Gemini text summarization: {e}", exc_info=True)
+            # Check for specific Gemini API errors if available in `e`
+            # For example, if hasattr(e, 'reason') and e.reason == 'API_KEY_INVALID':
+            #    return "Error: Gemini API Key is invalid."
+            return f"Error: Could not summarize with Gemini. Details: {e}"
 
-**Content Analysis Note**: Due to processing limitations, a detailed summary could not be generated. The video contains educational content designed for learning purposes. Please refer to the actual video content for specific details and instructional material."""
+    async def summarize_video(self, video_url: str, max_summary_length: int = 700, min_summary_length: int = 150) -> str:
+        """Fetches transcript for a YouTube video and summarizes it using Gemini."""
+        if not self.is_ready():
+            logger.error("Summarizer (Gemini) not ready. Cannot summarize video.")
+            return "Error: Summarizer (Gemini) not ready."
 
-    def _generate_error_summary_for_content_mismatch(self) -> str:
-        """Generate error summary when transcript content doesn't match expected video type."""
-        return """### 📚 Detailed Summary
+        try:
+            video_id = get_video_id(video_url)
+            logger.info(f"Extracted video ID: {video_id} from URL: {video_url}")
+        except ValueError as e:
+            logger.error(f"{e}")
+            return f"Error: {e}"
+        except Exception as e:
+            logger.error(f"Unexpected error extracting video ID from URL {video_url}: {e}", exc_info=True)
+            return f"Error processing video URL: {e}"
 
-**⚠️ Content Processing Error Detected**
+        try:
+            logger.info(f"Fetching transcript for video ID: {video_id} using YouTubeTranscriptApi")
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
+            logger.info(f"Successfully fetched transcript for video ID: {video_id}. Segments: {len(transcript_list)}")
+        except Exception as e:
+            logger.error(f"Could not fetch transcript for video ID {video_id} via YouTubeTranscriptApi: {e}", exc_info=True)
+            # youtube_transcript_api.CouldNotRetrieveTranscript can be caught specifically
+            return f"Error: Could not fetch transcript. Details: {e}"
 
-**1. Overview and Introduction**
-- A content processing error has been detected during transcript analysis.
-- The extracted transcript content does not match the expected video subject matter.
+        if not transcript_list:
+            logger.warning(f"Transcript for video ID {video_id} is empty.")
+            return "Error: Transcript is empty or unavailable."
 
-**2. Issue Identification**  
-- The system detected content that appears to be from a different video source.
-- This suggests a transcript extraction failure or incorrect video content mapping.
-
-**3. Recommended Action**
-- Please verify that the correct video is being processed.
-- Manual review of the video content is recommended.
-- The transcript extraction process may need to be re-run.
-
-**4. Technical Details**
-- Content validation failed due to topic mismatch detection.
-- The anti-hallucination system prevented delivery of incorrect analysis.
-
-**5. Next Steps**
-- Check video URL and ensure correct source material.
-- Re-attempt processing with verified video content.
-- Contact support if the issue persists with confirmed correct videos."""
-
-    def _generate_simple_transcript_summary(self, full_text: str) -> str:
-        """Generate a simple, reliable summary from the provided transcript content."""
-        if not full_text or len(full_text.strip()) < 50:
-            return """### 📚 Detailed Summary
-
-**Section 1: Content Overview**
-- This video appears to cover educational or informational content.
-- A detailed breakdown is not available due to limited transcript data.
-
-**Section 2: General Themes**
-- The content likely aims to explain specific concepts or processes.
-- Practical examples or applications might be included."""
-
-        word_count = len(full_text.split())
-        summary = "### 📚 Detailed Summary\n\n"
+        transcript_text = " ".join([line['text'] for line in transcript_list])
+        if not transcript_text.strip():
+             logger.warning(f"Joined transcript for video ID {video_id} is empty after joining segments.")
+             return "Error: Transcript content is empty after processing."
         
-        summary += "**Section 1: Introduction & Main Points**\n"
-        summary += f"- The video transcript contains approximately {word_count} words.\n"
-        
-        key_topics_text_raw = full_text[:150]
-        key_topics_text_clean = key_topics_text_raw.replace('\n', ' ')
-        summary += f"- Key topics appear to include: {key_topics_text_clean}...\n\n"
-        
-        summary += "**Section 2: Content Highlights**\n"
-        mid_point = len(full_text) // 2
-        highlight_text_raw = full_text[mid_point : mid_point + 200]
-        highlight_text_clean = highlight_text_raw.replace('\n', ' ')
-        
-        if not highlight_text_clean.strip() and len(full_text) > 200:
-            highlight_text_raw = full_text[50:250]
-            highlight_text_clean = highlight_text_raw.replace('\n', ' ')
-        elif not highlight_text_clean.strip():
-            highlight_text_clean = "Further details discussed in the video."
+        return await self._summarize_text_with_gemini(transcript_text, max_summary_length, min_summary_length)
 
-        summary += f"- Central themes seem to revolve around: {highlight_text_clean}...\n\n"
+    async def generate_multimodal_summary(self, transcript_data: Dict[str, Any], visual_data: Dict[str, Any], video_id: str) -> Dict[str, Any]:
+        """Generates a structured summary using Gemini, prioritizing transcript from transcript_data."""
         
-        summary += f"**Note**: This is a simplified summary based on the available transcript content."
-        return summary
+        provided_full_text = transcript_data.get("full_text", "").strip()
+        min_meaningful_transcript_length = 50 # Characters
 
-    def _split_text_into_chunks(self, text: str, chunk_size: int) -> List[str]:
-        """Splits text into chunks of approximately chunk_size characters, trying to respect sentence boundaries."""
-        # This is a very basic chunker. A more sophisticated one would use token counts via tokenizer.
-        chunks = []
-        current_chunk = ""
-        sentences = text.split('.') # Simplistic sentence split
-        for sentence in sentences:
-            sentence = sentence.strip()
-            if not sentence:
-                continue
-            sentence += "." # Add back the period
-            if len(current_chunk) + len(sentence) <= chunk_size:
-                current_chunk += " " + sentence
+        is_valid_transcript = True
+        if not provided_full_text or len(provided_full_text) < min_meaningful_transcript_length:
+            is_valid_transcript = False
+            logger.warning(f"Provided transcript for video_id '{video_id}' is too short or empty. Length: {len(provided_full_text)}.")
+        elif "transcript extraction failed" in provided_full_text.lower() or \
+             "unable to download video data" in provided_full_text.lower() or \
+             "youtube restrictions" in provided_full_text.lower():
+            is_valid_transcript = False
+            logger.warning(f"Provided transcript for video_id '{video_id}' indicates a failure: '{provided_full_text[:150]}...'.")
+
+        summary_text = ""
+        if is_valid_transcript:
+            logger.info(f"Using provided transcript (from VideoProcessor) for video_id '{video_id}' with Gemini.")
+            summary_text = await self._summarize_text_with_gemini(provided_full_text)
+        else:
+            logger.warning(f"Invalid or error-indicating transcript from VideoProcessor for video_id '{video_id}'. Attempting fallback to summarize_video (Gemini with own transcript fetch) with URL if available.")
+            video_url = transcript_data.get("url")
+            if not video_url and video_id:
+                video_url = f"https://www.youtube.com/watch?v={video_id}"
+            
+            if video_url:
+                summary_text = await self.summarize_video(video_url)
             else:
-                if current_chunk:
-                    chunks.append(current_chunk.strip())
-                current_chunk = sentence
-        if current_chunk: # Add the last chunk
-            chunks.append(current_chunk.strip())
-        
-        if not chunks and text: # If splitting failed but text exists, return as one chunk
-            chunks.append(text)
-        return chunks
+                logger.error(f"No valid transcript from VideoProcessor and no URL/video_id to attempt independent fetch for video_id '{video_id}'.")
+                summary_text = "Error: No transcript source available for Gemini."
 
-    def _generate_react_flowchart(self, root_topic_title: str, full_text: str, segments: List[Dict], flowchart_title_override: Optional[str] = None) -> Dict[str, Any]:
-        """Generate React-compatible flowchart based on transcript content, with a dynamic title."""
+        if summary_text.startswith("Error:"):
+            logger.warning(f"Core Gemini summarization failed for video_id '{video_id}'. Summary attempt result: '{summary_text}'. Returning fallback response.")
+            return self._generate_fallback_response()
+        
         try:
-            flow_steps = self._extract_learning_flow_from_transcript(full_text) # This already uses full_text
+            # These helper methods will also be updated to use Gemini
+            learning_objectives = await self._generate_learning_objectives_with_gemini(summary_text)
+            key_concepts = await self._extract_key_concepts_with_gemini(summary_text)
+            root_topic = await self._extract_root_topic_with_gemini(summary_text)
             
-            flowchart = {
-                "title": flowchart_title_override if flowchart_title_override else (root_topic_title + " - Learning Flow" if root_topic_title else "Video Learning Flow"),
-                "nodes": [],
-                "edges": []
-            }
+            # Generate timestamp highlights with fallback
+            segments = transcript_data.get("segments", [])
+            timestamp_highlights = await self._generate_timestamp_highlights_with_gemini(segments)
+            if not timestamp_highlights:
+                logger.info("Gemini highlights failed or empty, trying simple highlights.")
+                timestamp_highlights = self._generate_timestamp_highlights_simple(segments)
+            if not timestamp_highlights:
+                logger.info("Simple highlights also failed or empty, using default highlights.")
+                timestamp_highlights = self._get_default_highlights()
             
-            if not flow_steps:
-                 flow_steps = ["Introduction", "Main Content", "Examples", "Conclusion"] # Generic fallback flow
-
-            for i, step_label in enumerate(flow_steps):
-                flowchart["nodes"].append({"id": f"step{i}", "label": step_label, "type": "educational" if i==0 else "instructional" })
-            
-            for i in range(len(flow_steps) - 1):
-                flowchart["edges"].append({"from": f"step{i}", "to": f"step{i+1}", "type": "sequential"})
-            
-            return flowchart
-        except Exception as e:
-            logger.error(f"Error generating React flowchart: {e}")
-            # Generic fallback flowchart
-            return {
-                "title": flowchart_title_override if flowchart_title_override else "Video Learning Flow",
-                "nodes": [
-                    {"id": "start", "label": "Start Video"},
-                    {"id": "content1", "label": "Key Topic 1"},
-                    {"id": "content2", "label": "Key Topic 2"},
-                    {"id": "end", "label": "Conclusion"}
-                ],
-                "edges": [
-                    {"from": "start", "to": "content1"}, {"from": "content1", "to": "content2"}, {"from": "content2", "to": "end"}
-                ]
-            }
-
-    def _extract_learning_flow_from_transcript(self, full_text: str) -> List[str]:
-        """Extract the learning progression/flow from complete transcript"""
-        try:
-            prompt = f"""From this COMPLETE educational transcript, identify the main learning steps or progression mentioned.
-            Extract the sequence of topics or steps that learners should follow.
-            
-            COMPLETE TRANSCRIPT:
-            {full_text}
-            
-            Learning flow/steps mentioned (in order):"""
-            
-            inputs = self.tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True).to(self.device)
-            outputs = self.model.generate(**inputs, max_length=200, num_beams=3, early_stopping=True)
-            flow_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            
-            # Parse flow steps
-            steps = []
-            for line in flow_text.split('\n'):
-                if line.strip() and len(line.strip()) > 5:
-                    step = line.strip().lstrip('-').lstrip('*').lstrip('1.').lstrip('2.').lstrip('3.').lstrip('4.').lstrip('5.').strip()
-                    if len(step) > 5 and len(step) < 80:
-                        steps.append(step)
-            
-            return steps[:6] if steps else [
-                "Introduction to Python",
-                "Basic Syntax and Variables", 
-                "Control Structures",
-                "Functions and Modules",
-                "Practice Projects",
-                "Advanced Applications"
-            ]
-            
-        except Exception as e:
-            logger.error(f"Error extracting learning flow: {e}")
-            return ["Start Learning", "Practice Coding", "Build Projects"]
-
-    def _generate_transcript_highlights(self, segments: List[Dict]) -> List[Dict[str, Any]]:
-        """Generate highlights from actual transcript segments"""
-        highlights = []
-        
-        for i, segment in enumerate(segments[:8]):  # More highlights from full transcript
-            start_time = segment.get("start", 0)
-            text = segment.get("text", "")
-            
-            if len(text.strip()) > 10:  # Only meaningful segments
-                highlights.append({
-                    "timestamp": int(start_time),
-                    "description": text[:100] + "..." if len(text) > 100 else text,
-                    "importance_score": 0.9 - (i * 0.1),
-                    "segment_type": "transcript_content"
-                })
-        
-        return highlights
-
-    def _generate_fallback_summary(self, full_text: str) -> str:
-        """Generate fallback summary when AI generation fails"""
-        return f"""### 📚 Detailed Summary
-
-**Section 1: Course Introduction**
-- Educational content covering Python programming
-- Structured learning approach for beginners
-- Focus on practical application and skill building
-
-**Section 2: Learning Content** 
-- Core programming concepts and fundamentals
-- Hands-on exercises and examples
-- Progressive skill development
-
-**Transcript Length**: {len(full_text)} characters processed
-**Note**: This is a fallback summary. For detailed analysis, the complete transcript content is: {full_text[:500]}..."""
-
-    def _enhance_short_summary(self, summary: str, full_text: str, segments: List[Dict], visual_context: str) -> str:
-        """
-        Enhance a short summary with more details if needed.
-        (Could be part of the new formatted summary logic)
-        """
-        enhanced = summary + "\n\n"
-        
-        enhanced += "## Additional Learning Context\n\n"
-        enhanced += "This educational video provides structured learning content designed to enhance understanding through multi-modal presentation. "
-        
-        if segments:
-            enhanced += f"The content is organized into {len(segments)} distinct segments, each focusing on specific learning objectives. "
-        
-        enhanced += "Visual elements support comprehension through demonstrations, examples, and structured presentation of information. "
-        enhanced += "Key concepts are introduced progressively, building upon foundational knowledge to achieve comprehensive understanding.\n\n"
-        
-        enhanced += "## Learning Outcomes\n\n"
-        enhanced += "Upon completion, learners will have gained practical knowledge applicable to real-world scenarios. "
-        enhanced += "The structured approach ensures retention of key concepts and terminology essential for continued learning in this domain."
-        
-        return enhanced
-
-    def _generate_fallback_detailed_summary(self, full_text: str, segments: List[Dict], visual_context: str, duration: float) -> str:
-        """
-        Fallback for detailed summary if primary methods fail.
-        (Could be part_of the new formatted summary logic's fallback)
-        """
-        summary = "## Educational Video Analysis\n\n"
-        summary += "### Learning Objectives\n"
-        summary += "This educational video is designed to provide comprehensive learning content that enhances understanding through structured presentation. "
-        summary += "The primary objective is to deliver key concepts and practical knowledge in an accessible format.\n\n"
-        
-        summary += "### Content Structure\n"
-        if segments:
-            summary += f"The video content is organized into {len(segments)} distinct segments, each targeting specific learning outcomes. "
-        summary += f"With a total duration of {duration:.1f} seconds, the content is paced to optimize comprehension and retention.\n\n"
-        
-        summary += "### Visual Learning Elements\n"
-        summary += visual_context + " These visual components are strategically integrated to support different learning styles and enhance overall comprehension.\n\n"
-        
-        summary += "### Key Concepts\n"
-        summary += "The video introduces fundamental concepts essential for understanding the subject matter. "
-        summary += "Each concept is presented with clear explanations and practical examples to facilitate learning.\n\n"
-        
-        summary += "### Practical Applications\n"
-        summary += "The knowledge presented in this video has direct applications in real-world scenarios. "
-        summary += "Learners can apply these concepts to solve practical problems and advance their understanding in the field.\n\n"
-        
-        summary += "### Learning Outcomes\n"
-        summary += "Upon completion, viewers will have gained valuable insights and practical knowledge. "
-        summary += "The structured approach ensures effective knowledge transfer and long-term retention of key concepts."
-        
-        return summary
-
-    def _extract_keywords_and_create_mindmap(self, detailed_summary: str, full_text: str, segments: List[Dict]) -> Dict[str, Any]:
-        """
-        Primarily used to extract a root_topic for the new structure. 
-        The mind map structure itself will be built by _build_mindmap_json.
-        Keywords extracted here might be used as a fallback or supplemental info if needed.
-        The 'detailed_summary' parameter is less relevant now; full_text is preferred for root topic.
-        """
-        # This function is now mostly a helper for _generate_root_topic_and_objectives to get a root_topic.
-        # The complex mind map generation logic here is deprecated in favor of _build_mindmap_json.
-
-        if not full_text and not detailed_summary:
-            return {"root_topic": "Educational Content", "keywords": ["learning", "education"]}
-
-        text_for_analysis = full_text if full_text else detailed_summary
-        
-        root_topic = "Educational Video Analysis" # Default
-        prompt_theme = f"""Identify the main theme or root topic of the following text. Output just the theme as a concise phrase.
-        Text: {text_for_analysis[:1500]}
-        Main Theme:"""
-        try:
-            inputs_theme = self.tokenizer(prompt_theme, return_tensors="pt", max_length=512, truncation=True).to(self.device)
-            outputs_theme = self.model.generate(**inputs_theme, max_length=30, num_beams=3, early_stopping=True)
-            extracted_theme = self.tokenizer.decode(outputs_theme[0], skip_special_tokens=True).strip()
-            if extracted_theme and len(extracted_theme) < 70 and extracted_theme != "Text:":
-                root_topic = extracted_theme
-        except Exception as e:
-            logger.error(f"Helper _extract_keywords_and_create_mindmap failed to extract root topic: {e}")
-            # root_topic remains default
-
-        # Extract some general keywords as a fallback, though not directly used in the new main structure
-        keywords = ["education", "learning"]
-        prompt_keywords = f"""Extract 3-5 general keywords from the text:
-        Text: {text_for_analysis[:1000]}
-        Keywords (comma-separated):"""
-        try:
-            inputs_kw = self.tokenizer(prompt_keywords, return_tensors="pt", max_length=512, truncation=True).to(self.device)
-            outputs_kw = self.model.generate(**inputs_kw, max_length=50, num_beams=3, early_stopping=True)
-            kw_text = self.tokenizer.decode(outputs_kw[0], skip_special_tokens=True)
-            extracted_keywords = [kw.strip() for kw in kw_text.split(',') if kw.strip()]
-            if extracted_keywords:
-                keywords = extracted_keywords[:5]
-        except Exception as e:
-            logger.error(f"Helper _extract_keywords_and_create_mindmap failed to extract keywords: {e}")
-            
-            return {
-                "root_topic": root_topic,
-            "keywords": keywords
-            # The "mind_map" dict previously returned here is no longer needed as _build_mindmap_json handles it.
-        }
-
-    # Ensure _parse_keyword_response and _create_mind_map_structure are marked/handled as deprecated
-    def _parse_keyword_response(self, generated_text: str, summary: str) -> Dict[str, Any]:
-        logger.warning("DEPRECATED: _parse_keyword_response was called.")
-        # ... (rest of original function or just a basic return)
-        return {"root_topic": "Deprecated Function", "keywords": [], "mind_map": {}}
-
-    def _create_mind_map_structure(self, keywords: List[str], root_topic: str) -> Dict[str, Any]:
-        logger.warning("DEPRECATED: _create_mind_map_structure was called. Use _build_mindmap_json instead.")
-        # ... (rest of original function or just a basic return)
-        return {"name": root_topic, "children": [{"name": kw} for kw in keywords]}
-
-    def _generate_enhanced_highlights(self, segments: List[Dict], combined_features: Dict[str, Any]) -> List[Dict[str, Any]]:
-        """
-        Generate enhanced timestamp highlights with importance scores.
-        """
-        try:
-            highlights = []
-            features = combined_features.get("combined_features", [])
-            
-            # Create highlights from segments with enhanced descriptions
-            for i, segment in enumerate(segments[:6]):  # Limit to 6 highlights
-                start_time = segment.get("start", 0)
-                text = segment.get("text", "")
-                
-                # Create more detailed description
-                if len(text) > 100:
-                    description = f"Key learning segment: {text[:80]}..."
-                else:
-                    description = f"Learning point: {text}"
-                
-                # Calculate importance based on segment length and position
-                importance = 0.9 - (i * 0.1) if i < 5 else 0.5
-                
-                highlights.append({
-                    "timestamp": int(start_time),
-                    "description": description,
-                    "importance_score": max(importance, 0.5),
-                    "segment_type": "educational_content",
-                    "learning_value": "high" if importance > 0.7 else "medium"
-                })
-            
-            # Add strategic highlights if we have fewer than 3
-            if len(highlights) < 3:
-                strategic_highlights = [
-                    {"timestamp": 30, "description": "Introduction and learning objectives overview", "importance_score": 0.8},
-                    {"timestamp": 120, "description": "Core concepts and fundamental principles", "importance_score": 0.9},
-                    {"timestamp": 300, "description": "Practical applications and examples", "importance_score": 0.85}
-                ]
-                highlights.extend(strategic_highlights)
-            
-            return highlights[:6]  # Return top 6 highlights
-            
-        except Exception as e:
-            logger.error(f"Error generating enhanced highlights: {str(e)}")
-            return [
-                {"timestamp": 30, "description": "Introduction and overview", "importance_score": 0.8},
-                {"timestamp": 120, "description": "Main learning content", "importance_score": 0.9},
-                {"timestamp": 300, "description": "Key concepts and examples", "importance_score": 0.85}
-            ]
-
-    def _calculate_alignment_score(self, combined_features: Dict[str, Any]) -> float:
-        """
-        Calculate an overall alignment score between text and visuals.
-        (Could inform visual_context or summary content)
-        """
-        try:
-            features = combined_features.get("combined_features", [])
-            if not features:
-                return 0.0
-            
-            alignment_scores = []
-            for feature in features:
-                visual_frames_count = feature.get("visual_frames_count", 0)
-                # Higher score if more visual frames align with text segments
-                score = min(visual_frames_count / 3.0, 1.0)  # Normalize to 0-1
-                alignment_scores.append(score)
-            
-            return np.mean(alignment_scores) if alignment_scores else 0.0
-            
-        except Exception as e:
-            logger.error(f"Error calculating alignment score: {str(e)}")
-            return 0.0
-    
-    def _parse_fallback_response(self, generated_text: str, combined_features: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Parses fallback response from FLAN-T5.
-        (Might be useful for general error handling in LLM calls)
-        """
-        try:
-            # Extract basic information from generated text
-            lines = generated_text.split('\n')
-            
-            summary = "AI-generated summary based on multi-modal analysis of the video content."
-            key_topics = ["Video Content Analysis", "Educational Material", "Multi-modal Processing"]
-            visual_insights = ["Visual content analyzed using CLIP embeddings", "Frame-level feature extraction completed"]
-            
-            # Try to extract some content from the generated text
-            for line in lines:
-                if len(line.strip()) > 50:  # Likely a summary line
-                    summary = line.strip()
-                    break
-            
-            timestamp_highlights = []
-            features = combined_features.get("combined_features", [])
-            
-            # Create highlights from features
-            for i, feature in enumerate(features[:5]):  # Top 5 segments
-                highlight = {
-                    "timestamp": feature.get("start_time", 0),
-                    "description": feature.get("text", "")[:100] + "..." if len(feature.get("text", "")) > 100 else feature.get("text", ""),
-                    "importance_score": 0.8 - (i * 0.1)  # Decreasing importance
-                }
-                timestamp_highlights.append(highlight)
-            
-            return {
-                "summary": summary,
-                "key_topics": key_topics,
-                "visual_insights": visual_insights,
+            result = {
+                "SUMMARY": summary_text,
+                "ROOT_TOPIC": root_topic,
+                "LEARNING_OBJECTIVES": learning_objectives,
+                "KEY_CONCEPTS": key_concepts,
+                "TERMINOLOGIES": {},
+                "MINDMAP_JSON": self._generate_mindmap_from_gemini_outputs(root_topic, key_concepts), # Updated to use Gemini outputs
+                "REACT_FLOWCHART": self._generate_flowchart_from_gemini_outputs(root_topic), # Updated to use Gemini outputs
+                "visual_insights": ["Visual analysis primarily based on transcript content summarized by Gemini"],
                 "timestamp_highlights": timestamp_highlights
             }
+            logger.info(f"Successfully generated structured summary using Gemini for video_id: {video_id}")
+            return result
+        except Exception as e:
+            logger.error(f"Error structuring final Gemini summary for video_id {video_id}: {e}", exc_info=True)
+            return self._generate_fallback_response()
+
+    async def _generate_learning_objectives_with_gemini(self, summary_text: str) -> List[str]:
+        if not self.is_ready() or not summary_text or summary_text.startswith("Error:"):
+            return ["Understand key concepts from the video content"]
+        try:
+            prompt = f"Based on the following video summary, generate 3-4 specific learning objectives that start with action verbs (e.g., Learn, Understand, Apply). Video Summary: {summary_text[:1000]}"
+            response = await self.gemini_model.generate_content_async(prompt)
+            objectives_text = response.text.strip()
+            objectives = []
+            for line in objectives_text.split('\n'):
+                clean_line = line.lstrip('-•').lstrip('0123456789.').strip()
+                if len(clean_line) > 10:
+                    objectives.append(clean_line)
+            return objectives[:4] if objectives else ["Understand main concepts", "Apply knowledge"]
+        except Exception as e:
+            logger.error(f"Error generating learning objectives with Gemini: {e}")
+            return ["Review video for learning objectives"]
+
+    async def _extract_key_concepts_with_gemini(self, summary_text: str) -> List[str]:
+        if not self.is_ready() or not summary_text or summary_text.startswith("Error:"):
+            return ["Core video themes"]
+        try:
+            prompt = f"From the following video summary, extract 4-5 key concepts or main topics as concise phrases. Video Summary: {summary_text[:1000]}"
+            response = await self.gemini_model.generate_content_async(prompt)
+            concepts_text = response.text.strip()
+            concepts = []
+            for line in concepts_text.split('\n'):
+                clean_line = line.lstrip('-•').lstrip('0123456789.').strip()
+                if clean_line and len(clean_line) > 3:
+                    concepts.append(clean_line)
+            return concepts[:5] if concepts else ["Main ideas", "Key discussions"]
+        except Exception as e:
+            logger.error(f"Error extracting key concepts with Gemini: {e}")
+            return ["Central video topics"]
+
+    async def _extract_root_topic_with_gemini(self, summary_text: str) -> str:
+        if not self.is_ready() or not summary_text or summary_text.startswith("Error:"):
+            return "Video Content Analysis"
+        try:
+            prompt = f"Identify the main overarching topic of this video summary in 2-5 words. Video Summary: {summary_text[:500]}"
+            response = await self.gemini_model.generate_content_async(prompt)
+            topic = response.text.strip()
+            return topic if topic and len(topic) < 70 else "Educational Video Overview"
+        except Exception as e:
+            logger.error(f"Error extracting root topic with Gemini: {e}")
+            return "General Video Analysis"
+
+    def _generate_mindmap_from_gemini_outputs(self, root_topic: str, key_concepts: List[str]) -> Dict[str, Any]:
+            return {
+            "title": root_topic,
+                "children": [
+                {"title": "Key Concepts", "children": [{"title": concept, "children": []} for concept in key_concepts[:3]]},
+                {"title": "Further Exploration", "children": [{"title": "Implications", "children": []}, {"title": "Applications", "children": []}]}
+            ]
+        }
+
+    def _generate_flowchart_from_gemini_outputs(self, root_topic: str) -> Dict[str, Any]:
+            return {
+            "title": f"{root_topic} - Conceptual Flow",
+                "nodes": [
+                {"id": "concept1", "label": root_topic or "Core Idea"},
+                {"id": "theme1", "label": "Key Theme 1"},
+                {"id": "theme2", "label": "Key Theme 2"},
+                {"id": "conclusion", "label": "Overall Insight"}
+                ],
+                "edges": [
+                {"from": "concept1", "to": "theme1"}, {"from": "concept1", "to": "theme2"}, 
+                {"from": "theme1", "to": "conclusion"}, {"from": "theme2", "to": "conclusion"}
+            ]
+        }
+            
+    def _get_default_highlights(self) -> List[Dict[str, Any]]:
+        """Provides a default set of highlights if all other methods fail."""
+        return [
+            {"timestamp": 30, "description": "Introduction and overview", "importance_score": 0.8, "segment_type": "generic_highlight"},
+            {"timestamp": 120, "description": "Main content discussion", "importance_score": 0.9, "segment_type": "generic_highlight"},
+            {"timestamp": 300, "description": "Key points and examples", "importance_score": 0.7, "segment_type": "generic_highlight"}
+        ]
+
+    def _generate_timestamp_highlights_simple(self, segments: List[Dict]) -> List[Dict[str, Any]]:
+        """Generates simple timestamp highlights from the first few transcript segments."""
+        highlights = []
+        if not segments:
+            return []
+            
+        for i, segment in enumerate(segments[:5]): 
+            if segment.get("text") and len(segment["text"].strip()) > 10:
+                highlights.append({
+                    "timestamp": int(segment.get("start", 0)),
+                    "description": segment["text"][:100] + "..." if len(segment["text"]) > 100 else segment["text"],
+                    "importance_score": 0.9 - (i * 0.15), # Simple decaying importance
+                    "segment_type": "transcript_segment"
+                })
+        return highlights
+
+    async def _generate_timestamp_highlights_with_gemini(self, segments: List[Dict]) -> List[Dict[str, Any]]:
+        """Generates timestamp highlights using Gemini by analyzing transcript segments."""
+        if not self.is_ready() or not segments:
+            logger.warning("Gemini not ready or no segments provided for highlight generation.")
+            return []
+
+        try:
+            # Prepare transcript with timestamps for the prompt
+            # Example format: "[0s] First sentence. [5s] Second sentence..."
+            transcript_for_prompt = "".join(
+                f"[{int(seg.get('start', 0))}s] {seg.get('text', '')} " for seg in segments if seg.get('text')
+            ).strip()
+
+            if not transcript_for_prompt:
+                logger.warning("Transcript for prompt is empty after processing segments.")
+                return []
+
+            # Limit prompt length to avoid exceeding token limits (approx first 15000 chars)
+            max_prompt_transcript_length = 15000
+            if len(transcript_for_prompt) > max_prompt_transcript_length:
+                transcript_for_prompt = transcript_for_prompt[:max_prompt_transcript_length] + "... (transcript truncated)"
+            
+            prompt = f"""Analyze the following video transcript, which includes timestamps in seconds (e.g., [123s]).
+Identify 3 to 5 key learning moments or impactful statements.
+For each moment, provide:
+1. The exact timestamp in seconds (as an integer).
+2. A concise description (10-20 words) summarizing that moment.
+
+Return your answer ONLY as a valid JSON array of objects. Each object should have 'timestamp' and 'description' keys.
+Example:
+[
+  {{"timestamp": 45, "description": "Explains the core concept of X."}},
+  {{"timestamp": 122, "description": "Demonstrates how to apply Y method."}},
+  {{"timestamp": 310, "description": "Highlights a critical warning about Z."}}
+]
+
+Transcript:
+{transcript_for_prompt}
+
+JSON Output:
+"""
+            logger.info(f"Attempting to generate timestamp highlights with Gemini. Transcript length for prompt: {len(transcript_for_prompt)}")
+            response = await self.gemini_model.generate_content_async(prompt)
+            
+            generated_text = response.text.strip()
+            
+            # Clean potential markdown ```json ... ```
+            if generated_text.startswith("```json"):
+                generated_text = generated_text[7:]
+            if generated_text.endswith("```"):
+                generated_text = generated_text[:-3]
+            generated_text = generated_text.strip()
+
+            if not generated_text:
+                logger.warning("Gemini returned empty text for timestamp highlights.")
+                return []
+
+            logger.debug(f"Raw Gemini output for highlights: {generated_text}")
+            
+            parsed_highlights = json.loads(generated_text)
+            
+            gemini_highlights = []
+            if isinstance(parsed_highlights, list):
+                for item in parsed_highlights:
+                    if isinstance(item, dict) and 'timestamp' in item and 'description' in item:
+                        try:
+                            ts = int(item['timestamp'])
+                            desc = str(item['description']).strip()
+                            if desc: # Ensure description is not empty
+                                gemini_highlights.append({
+                                    "timestamp": ts,
+                                    "description": desc,
+                                    "importance_score": 0.85, # Default score for Gemini highlights
+                                    "segment_type": "gemini_highlight"
+                                })
+                        except (ValueError, TypeError) as e:
+                            logger.warning(f"Skipping invalid highlight item from Gemini: {item}. Error: {e}")
+            
+            if gemini_highlights:
+                logger.info(f"Successfully generated {len(gemini_highlights)} highlights using Gemini.")
+                return gemini_highlights[:5] # Limit to max 5 highlights
+            else:
+                logger.warning("Gemini highlights parsing resulted in an empty list or invalid format.")
+                return []
+
+        except json.JSONDecodeError as e:
+            logger.error(f"JSONDecodeError parsing Gemini response for highlights: {e}. Response text: '{generated_text}'")
+            return []
+        except Exception as e:
+            logger.error(f"Error generating timestamp highlights with Gemini: {e}", exc_info=True)
+            return []
+
+    def _generate_fallback_response(self) -> Dict[str, Any]:
+        return {
+            "SUMMARY": "Video content analysis completed. Unable to generate detailed summary due to processing limitations or API issues.",
+            "ROOT_TOPIC": "Content Analysis Fallback",
+            "LEARNING_OBJECTIVES": ["Review video content directly"],
+            "KEY_CONCEPTS": ["Content unavailable for summarization"],
+            "TERMINOLOGIES": {},
+            "MINDMAP_JSON": {"title": "Analysis Fallback", "children": []},
+            "REACT_FLOWCHART": {"title": "Processing Fallback", "nodes": [], "edges": []},
+            "visual_insights": ["Processing completed with fallback due to limitations"],
+            "timestamp_highlights": self._get_default_highlights() # Use default here
+        }
+
+    async def answer_from_transcript(self, transcript_text: str, user_question: str) -> str:
+        """Answers a user's question based solely on the provided transcript text using Gemini."""
+        if not self.is_ready():
+            logger.error("Gemini model not ready for transcript-based QA.")
+            return "Error: QA model (Gemini) not ready."
+        
+        if not transcript_text.strip():
+            logger.warning("Cannot answer from transcript: Provided transcript text is empty.")
+            return "Error: Transcript text is empty, cannot answer question."
+        
+        if not user_question.strip():
+            logger.warning("Cannot answer from transcript: User question is empty.")
+            return "Error: User question is empty."
+
+        try:
+            logger.info(f"Attempting to answer question: '{user_question}' using provided transcript (first 100 chars: '{transcript_text[:100]}...')")
+            
+            prompt = f"""You are an AI assistant. Your task is to answer the user's question based ONLY on the provided video transcript. 
+Do not use any external knowledge or information outside of this transcript. 
+If the answer cannot be found in the transcript, clearly state that the information is not available in the provided text.
+
+Video Transcript:
+--- BEGIN TRANSCRIPT ---
+{transcript_text}
+--- END TRANSCRIPT ---
+
+User's Question: {user_question}
+
+Answer (based ONLY on the transcript):
+"""
+            
+            # Using a slightly different generation config for QA might be beneficial, but start with default/similar.
+            generation_config = genai.types.GenerationConfig(
+                temperature=0.5 # Slightly lower temperature for more factual QA
+            )
+
+            response = await self.gemini_model.generate_content_async(prompt, generation_config=generation_config)
+            
+            answer = response.text.strip()
+            
+            if not answer:
+                 logger.warning("Gemini QA produced an empty answer.")
+                 return "I could not generate an answer based on the transcript."
+            
+            logger.info(f"Generated QA answer: {answer[:150]}...")
+            return answer
             
         except Exception as e:
-            logger.error(f"Error in fallback parsing: {str(e)}")
-            return {
-                "summary": "Summary generation encountered an error but multi-modal processing completed successfully.",
-                "key_topics": ["Processing Completed", "Multi-modal Analysis"],
-                "visual_insights": ["Visual processing completed with CLIP embeddings"],
-                "timestamp_highlights": []
-            } 
+            logger.error(f"Error during Gemini transcript-based QA: {e}", exc_info=True)
+            return f"Error: Could not answer question from transcript. Details: {e}"
+
+# Alias for backward compatibility - main.py uses MultiModalSummarizer
+MultiModalSummarizer = TranscriptSummarizer
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s')
+    logger.info("TranscriptSummarizer (Gemini Version) script started.")
+    
+    summarizer = TranscriptSummarizer()
+    
+    if summarizer.is_ready():
+        default_test_video_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
+
+        try:
+            user_url_input = input(f"Enter a YouTube video URL for QA & Summary (or press Enter to use default '{default_test_video_url}'): ")
+            video_to_summarize_and_qa = user_url_input.strip() if user_url_input.strip() else default_test_video_url
+        except KeyboardInterrupt:
+            logger.info("User cancelled input. Exiting.")
+            exit()
+
+        logger.info(f"Processing video for QA & Summary: {video_to_summarize_and_qa}")
+        
+        async def main_test_flow():
+            # 1. Simulate fetching transcript (as VideoProcessor or summarizer.summarize_video would do)
+            transcript_text_for_qa = ""
+            segments_for_qa = []
+            video_id_for_qa = "test_video_id_qa"
+            try:
+                video_id_for_qa = get_video_id(video_to_summarize_and_qa)
+                transcript_list_qa = YouTubeTranscriptApi.get_transcript(video_id_for_qa)
+                transcript_text_for_qa = " ".join([entry['text'] for entry in transcript_list_qa])
+                segments_for_qa = transcript_list_qa
+                logger.info(f"Successfully fetched transcript for QA for video ID: {video_id_for_qa} ({len(transcript_text_for_qa)} chars)")
+                if not transcript_text_for_qa.strip():
+                    logger.error("Fetched transcript for QA is empty. QA test will likely fail or use limited context.")
+                    transcript_text_for_qa = "No transcript could be fetched for this video."
+            except Exception as e:
+                logger.error(f"Failed to fetch transcript for QA for {video_to_summarize_and_qa}: {e}", exc_info=True)
+                transcript_text_for_qa = f"Error fetching transcript: {e}. Cannot perform QA."
+
+            # 2. Test QA functionality if transcript is usable
+            if not transcript_text_for_qa.startswith("Error") and len(transcript_text_for_qa) > 50:
+                user_questions = [
+                    "What is the main topic of this video?",
+                    "What are three key points mentioned?",
+                    "Does this video talk about space travel?"
+                ]
+                for question in user_questions:
+                    print(f"\n--- Answering Question: '{question}' --- (Based on fetched transcript)")
+                    answer = await summarizer.answer_from_transcript(transcript_text_for_qa, question)
+                    print(f"Q: {question}\nA: {answer}")
+                    print("--------------------------------------------")
+            else:
+                print(f"\n--- QA SKIPPED due to transcript issue: {transcript_text_for_qa} ---")
+
+            # 3. Test the generate_multimodal_summary flow (which also uses Gemini now)
+            # This part is similar to the previous test, ensuring it still works
+            mock_transcript_data = {"full_text": transcript_text_for_qa, "segments": segments_for_qa, "url": video_to_summarize_and_qa}
+            mock_visual_data = {}
+
+            structured_summary_result = await summarizer.generate_multimodal_summary(
+                mock_transcript_data, 
+                mock_visual_data, 
+                video_id_for_qa
+            )
+            print("\n--- Structured Summary (using generate_multimodal_summary with Gemini) ---")
+            print(f"Root Topic: {structured_summary_result.get('ROOT_TOPIC')}")
+            print(f"Overall Summary: {structured_summary_result.get('SUMMARY')}")
+            print("--- Learning Objectives ---")
+            for obj in structured_summary_result.get("LEARNING_OBJECTIVES", []):
+                print(f"- {obj}")
+            print("--- Key Concepts ---")
+            for concept in structured_summary_result.get("KEY_CONCEPTS", []):
+                print(f"- {concept}")
+            print("---------------------------------------------------------------------\n")
+
+        asyncio.run(main_test_flow())
+            
+    else:
+        logger.error("Summarizer (Gemini) could not be initialized. Check GEMINI_API_KEY and logs. Exiting.")
+    logger.info("TranscriptSummarizer (Gemini Version) script finished.")
+
+# Notes:
+# 1. GEMINI_API_KEY must be set as an environment variable.
+# 2. Ensure `pip install google-generativeai` has been run.
+# 3. The prompts for sub-tasks (objectives, concepts) are basic; they can be further refined.
+# 4. Error handling for Gemini API calls can be more granular (e.g., specific error codes).
+# 5. Consider API rate limits if processing many videos rapidly.
+#
+# Notes on potential improvements:
+# 1. Advanced Punctuation: For better transcript quality before summarization,
+#    consider using a library like `deepmultilingualpunctuation`:
+#    `# from deepmultilingualpunctuation import PunctuationModel`
+#    `# punc_model = PunctuationModel()`
+#    `# transcript_punctuated = punc_model.restore_punctuation(transcript_text)`
+#    This requires installing the library: `pip install deepmultilingualpunctuation torch`
+#
+# 2. Chunking for Very Long Transcripts: FLAN-T5 has a token limit (e.g., 512 or 1024 for the prompt).
+#    For very long videos, the transcript might exceed this. A strategy would be to:
+#    a. Split the transcript into manageable chunks.
+#    b. Summarize each chunk.
+#    c. Combine the chunk summaries and then summarize them again (recursive summarization) or use a map-reduce style approach.
+#
+# 3. More Sophisticated Summarization Prompt: Experiment with the prompt for better results,
+#    e.g., asking for a summary of a certain length, or focusing on key takeaways.
+#    `prompt = f"Provide a concise summary of the key points in the following video transcript: {transcript_punctuated}"`
+#
+# 4. Asynchronous Operations: For use in a web server or application, consider making
+#    the `summarize_video` method asynchronous (`async def`) and running the blocking
+#    operations (API calls, model inference) in an executor (e.g., `asyncio.to_thread` in Python 3.9+).
+#
+# 5. Batching (if summarizing multiple videos): The tokenizer and model can handle batches
+#    which is more efficient than one-by-one processing if you have many URLs. 
