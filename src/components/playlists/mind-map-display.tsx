@@ -255,7 +255,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
   const [displayedEdges, setDisplayedEdges] = useState<Edge[]>([]);
   
   // Start with no nodes expanded, root will be added by getVisibleNodesAndEdges if needed
-  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set(['1'])); 
+  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set()); 
 
   const [isLoading, setIsLoading] = useState(true);
   const [generatedTitle, setGeneratedTitle] = useState('Generating Mind Map...');
