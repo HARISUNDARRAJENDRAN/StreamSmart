@@ -184,3 +184,57 @@
   background-size: 200% 200%;
   animation: wave 15s linear infinite;
 }
+
+/* Custom scrollbar hiding for genre sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: hidden; /* Prevent vertical scrolling */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Prevent horizontal overflow on the main container */
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+/* Smooth scrolling for genre cards */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Line clamping utility */
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Genre container specific styles */
+.genre-scroll-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.genre-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ensure genre cards don't break layout */
+.genre-cards-wrapper {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  min-width: 100%;
+  padding-bottom: 0.5rem;
+  padding-right: 1rem;
+}

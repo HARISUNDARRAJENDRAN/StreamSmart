@@ -23,7 +23,19 @@ import {
   ChevronRightIcon,
   Trophy,
   Bookmark,
-  CircleCheck
+  CircleCheck,
+  Code2,
+  BarChart3,
+  Palette,
+  Megaphone,
+  Clock,
+  DollarSign,
+  Users,
+  TrendingUp,
+  PenTool,
+  Mic,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -424,6 +436,344 @@ export default function DashboardPage() {
     };
   };
 
+  // Skill-Based Genres Data with actual videos
+  const skillBasedGenres = [
+    {
+      id: "coding-programming",
+      title: "Coding & Programming",
+      description: "Master programming languages and development skills",
+      icon: Code2,
+      gradient: "from-blue-500/20 to-cyan-500/20",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-500",
+      count: "120+ videos",
+      videos: [
+        {
+          id: "prog-1",
+          title: "JavaScript Fundamentals Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/PkZNo7MFNFg/hqdefault.jpg",
+          duration: "3h 26min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=PkZNo7MFNFg"
+        },
+        {
+          id: "prog-2", 
+          title: "React.js Full Course 2024",
+          thumbnail: "https://i.ytimg.com/vi/bMknfKXIFA8/hqdefault.jpg",
+          duration: "11h 55min",
+          creator: "Dave Gray",
+          url: "https://youtube.com/watch?v=bMknfKXIFA8"
+        },
+        {
+          id: "prog-3",
+          title: "Python for Beginners - Full Course",
+          thumbnail: "https://i.ytimg.com/vi/rfscVS0vtbw/hqdefault.jpg",
+          duration: "4h 26min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=rfscVS0vtbw"
+        },
+        {
+          id: "prog-4",
+          title: "Node.js and Express.js Full Course",
+          thumbnail: "https://i.ytimg.com/vi/Oe421EPjeBE/hqdefault.jpg",
+          duration: "8h 16min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=Oe421EPjeBE"
+        }
+      ]
+    },
+    {
+      id: "data-science-ai",
+      title: "Data Science & AI/ML",
+      description: "Learn data analysis, machine learning, and AI",
+      icon: BarChart3,
+      gradient: "from-purple-500/20 to-violet-500/20",
+      borderColor: "border-purple-500/30",
+      iconColor: "text-purple-500",
+      count: "85+ videos",
+      videos: [
+        {
+          id: "ds-1",
+          title: "Machine Learning Course - Building 12 AI Projects",
+          thumbnail: "https://i.ytimg.com/vi/tPYj3fFJGjk/hqdefault.jpg",
+          duration: "12h 45min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=tPYj3fFJGjk"
+        },
+        {
+          id: "ds-2",
+          title: "Data Analysis with Python Full Course",
+          thumbnail: "https://i.ytimg.com/vi/r-uOLxNrNk8/hqdefault.jpg",
+          duration: "10h 54min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=r-uOLxNrNk8"
+        },
+        {
+          id: "ds-3",
+          title: "TensorFlow 2.0 Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/tPYj3fFJGjk/hqdefault.jpg",
+          duration: "7h 2min",
+          creator: "TensorFlow",
+          url: "https://youtube.com/watch?v=tPYj3fFJGjk"
+        }
+      ]
+    },
+    {
+      id: "design",
+      title: "Design (UI/UX, Graphic, Product)",
+      description: "Creative design skills and visual thinking",
+      icon: Palette,
+      gradient: "from-pink-500/20 to-rose-500/20",
+      borderColor: "border-pink-500/30",
+      iconColor: "text-pink-500",
+      count: "95+ videos",
+      videos: [
+        {
+          id: "design-1",
+          title: "UI/UX Design Tutorial - Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/c9Wg6Cb_YlU/hqdefault.jpg",
+          duration: "2h 45min",
+          creator: "DesignCourse",
+          url: "https://youtube.com/watch?v=c9Wg6Cb_YlU"
+        },
+        {
+          id: "design-2",
+          title: "Figma UI Design Tutorial - Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/jwCmIBJ8Jtc/hqdefault.jpg",
+          duration: "3h 22min",
+          creator: "freeCodeCamp",
+          url: "https://youtube.com/watch?v=jwCmIBJ8Jtc"
+        },
+        {
+          id: "design-3",
+          title: "Adobe Photoshop Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/IyR_uYsRdPs/hqdefault.jpg",
+          duration: "5h 30min",
+          creator: "Photoshop Training",
+          url: "https://youtube.com/watch?v=IyR_uYsRdPs"
+        }
+      ]
+    },
+    {
+      id: "digital-marketing",
+      title: "Digital Marketing",
+      description: "Master online marketing and growth strategies",
+      icon: Megaphone,
+      gradient: "from-orange-500/20 to-yellow-500/20",
+      borderColor: "border-orange-500/30",
+      iconColor: "text-orange-500",
+      count: "70+ videos",
+      videos: [
+        {
+          id: "marketing-1",
+          title: "Digital Marketing Course 2024",
+          thumbnail: "https://i.ytimg.com/vi/nU-IIXBWlS4/hqdefault.jpg",
+          duration: "4h 15min",
+          creator: "Simplilearn",
+          url: "https://youtube.com/watch?v=nU-IIXBWlS4"
+        },
+        {
+          id: "marketing-2",
+          title: "Google Ads Complete Tutorial",
+          thumbnail: "https://i.ytimg.com/vi/EhhXEOk8kR0/hqdefault.jpg",
+          duration: "2h 30min",
+          creator: "Google Skillshop",
+          url: "https://youtube.com/watch?v=EhhXEOk8kR0"
+        },
+        {
+          id: "marketing-3",
+          title: "Social Media Marketing Strategy",
+          thumbnail: "https://i.ytimg.com/vi/ZNbd9pkJSLQ/hqdefault.jpg",
+          duration: "1h 45min",
+          creator: "HubSpot",
+          url: "https://youtube.com/watch?v=ZNbd9pkJSLQ"
+        }
+      ]
+    },
+    {
+      id: "productivity",
+      title: "Productivity & Time Management",
+      description: "Optimize your workflow and manage time effectively",
+      icon: Clock,
+      gradient: "from-green-500/20 to-emerald-500/20",
+      borderColor: "border-green-500/30",
+      iconColor: "text-green-500",
+      count: "45+ videos",
+      videos: [
+        {
+          id: "prod-1",
+          title: "Time Management Mastery Course",
+          thumbnail: "https://i.ytimg.com/vi/FOXM-7L9ol0/hqdefault.jpg",
+          duration: "1h 20min",
+          creator: "Thomas Frank",
+          url: "https://youtube.com/watch?v=FOXM-7L9ol0"
+        },
+        {
+          id: "prod-2",
+          title: "Getting Things Done (GTD) System",
+          thumbnail: "https://i.ytimg.com/vi/gCswMsONkwY/hqdefault.jpg",
+          duration: "45min",
+          creator: "David Allen",
+          url: "https://youtube.com/watch?v=gCswMsONkwY"
+        }
+      ]
+    },
+    {
+      id: "financial-literacy",
+      title: "Financial Literacy & Investing",
+      description: "Build wealth and understand personal finance",
+      icon: DollarSign,
+      gradient: "from-emerald-500/20 to-teal-500/20",
+      borderColor: "border-emerald-500/30",
+      iconColor: "text-emerald-500",
+      count: "60+ videos",
+      videos: [
+        {
+          id: "finance-1",
+          title: "Personal Finance for Beginners",
+          thumbnail: "https://i.ytimg.com/vi/HQzoZfc3GwQ/hqdefault.jpg",
+          duration: "2h 15min",
+          creator: "Ben Felix",
+          url: "https://youtube.com/watch?v=HQzoZfc3GwQ"
+        },
+        {
+          id: "finance-2",
+          title: "Stock Market Investing for Beginners",
+          thumbnail: "https://i.ytimg.com/vi/Jdgq4LS_TyI/hqdefault.jpg",
+          duration: "1h 55min",
+          creator: "Investing Simplified",
+          url: "https://youtube.com/watch?v=Jdgq4LS_TyI"
+        }
+      ]
+    },
+    {
+      id: "soft-skills",
+      title: "Soft Skills (Communication, Leadership)",
+      description: "Develop interpersonal and leadership abilities",
+      icon: Users,
+      gradient: "from-indigo-500/20 to-blue-500/20",
+      borderColor: "border-indigo-500/30",
+      iconColor: "text-indigo-500",
+      count: "55+ videos",
+      videos: [
+        {
+          id: "soft-1",
+          title: "Communication Skills Training",
+          thumbnail: "https://i.ytimg.com/vi/HAnw168huqA/hqdefault.jpg",
+          duration: "1h 30min",
+          creator: "Stanford Graduate School",
+          url: "https://youtube.com/watch?v=HAnw168huqA"
+        },
+        {
+          id: "soft-2",
+          title: "Leadership Skills Development",
+          thumbnail: "https://i.ytimg.com/vi/xlUDQjYlS44/hqdefault.jpg",
+          duration: "2h 10min",
+          creator: "Harvard Business Review",
+          url: "https://youtube.com/watch?v=xlUDQjYlS44"
+        }
+      ]
+    },
+    {
+      id: "entrepreneurship",
+      title: "Entrepreneurship & Startups",
+      description: "Launch and grow your own business",
+      icon: TrendingUp,
+      gradient: "from-violet-500/20 to-purple-500/20",
+      borderColor: "border-violet-500/30",
+      iconColor: "text-violet-500",
+      count: "40+ videos",
+      videos: [
+        {
+          id: "entre-1",
+          title: "How to Start a Startup - Complete Course",
+          thumbnail: "https://i.ytimg.com/vi/CBYhVcO4WgI/hqdefault.jpg",
+          duration: "3h 45min",
+          creator: "Y Combinator",
+          url: "https://youtube.com/watch?v=CBYhVcO4WgI"
+        },
+        {
+          id: "entre-2",
+          title: "Business Plan Creation Guide",
+          thumbnail: "https://i.ytimg.com/vi/bfB4pMC8tM0/hqdefault.jpg",
+          duration: "1h 15min",
+          creator: "Entrepreneur",
+          url: "https://youtube.com/watch?v=bfB4pMC8tM0"
+        }
+      ]
+    },
+    {
+      id: "writing-content",
+      title: "Writing & Content Creation",
+      description: "Craft compelling content and improve writing",
+      icon: PenTool,
+      gradient: "from-cyan-500/20 to-blue-500/20",
+      borderColor: "border-cyan-500/30",
+      iconColor: "text-cyan-500",
+      count: "65+ videos",
+      videos: [
+        {
+          id: "writing-1",
+          title: "Content Writing Masterclass",
+          thumbnail: "https://i.ytimg.com/vi/UnVb0qnHbDc/hqdefault.jpg",
+          duration: "2h 30min",
+          creator: "HubSpot Academy",
+          url: "https://youtube.com/watch?v=UnVb0qnHbDc"
+        },
+        {
+          id: "writing-2",
+          title: "Creative Writing Techniques",
+          thumbnail: "https://i.ytimg.com/vi/bCqZXtODbNw/hqdefault.jpg",
+          duration: "1h 45min",
+          creator: "MasterClass",
+          url: "https://youtube.com/watch?v=bCqZXtODbNw"
+        }
+      ]
+    },
+    {
+      id: "public-speaking",
+      title: "Public Speaking",
+      description: "Build confidence and speaking skills",
+      icon: Mic,
+      gradient: "from-red-500/20 to-orange-500/20",
+      borderColor: "border-red-500/30",
+      iconColor: "text-red-500",
+      count: "30+ videos",
+      videos: [
+        {
+          id: "speak-1",
+          title: "Public Speaking Masterclass",
+          thumbnail: "https://i.ytimg.com/vi/AykYRO5d_lI/hqdefault.jpg",
+          duration: "1h 20min",
+          creator: "TED-Ed",
+          url: "https://youtube.com/watch?v=AykYRO5d_lI"
+        },
+        {
+          id: "speak-2",
+          title: "Overcome Fear of Public Speaking",
+          thumbnail: "https://i.ytimg.com/vi/TF2p3G3n7X4/hqdefault.jpg",
+          duration: "55min",
+          creator: "Toastmasters",
+          url: "https://youtube.com/watch?v=TF2p3G3n7X4"
+        }
+      ]
+    }
+  ];
+
+  const handleGenreClick = (genreId: string) => {
+    // TODO: Navigate to genre-specific page or filter
+    toast({
+      title: "Genre Selected",
+      description: `Navigating to ${skillBasedGenres.find(g => g.id === genreId)?.title} content...`,
+    });
+    
+    recordActivity({
+      action: `Explored ${skillBasedGenres.find(g => g.id === genreId)?.title} genre`,
+      item: skillBasedGenres.find(g => g.id === genreId)?.title || 'Genre',
+      type: 'started'
+    });
+  };
+
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
     return (
@@ -453,7 +803,7 @@ export default function DashboardPage() {
       initial="hidden"
       animate="visible"
       variants={staggerContainer}
-      className="space-y-8"
+      className="space-y-8 w-full max-w-full overflow-x-hidden"
     >
       {/* Welcome Header */}
       <motion.section variants={fadeInUp} className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/90 to-accent p-8 text-primary-foreground">
@@ -492,6 +842,97 @@ export default function DashboardPage() {
               Create New Playlist
             </Button>
           </Link>
+        </div>
+      </motion.section>
+
+      {/* Skill-Based Genres Section - Netflix Style */}
+      <motion.section variants={fadeInUp} className="space-y-6 w-full">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            <ZapIcon className="h-6 w-6 text-primary" />
+            Skill-Based Genres
+          </h2>
+          <Button variant="ghost" className="text-primary hover:text-primary/80">
+            Explore All <ChevronRightIcon className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+        
+        {/* Large Horizontal Container for All Genre Cards */}
+        <div className="w-full max-w-full">
+          <div className="relative bg-card/50 rounded-lg p-4 border border-border/50 group overflow-hidden">
+            <div className="genre-scroll-container" style={{ maxWidth: '100%' }}>
+              <div className="genre-cards-wrapper">
+                {skillBasedGenres.map((genre, index) => {
+                  const IconComponent = genre.icon;
+                  return (
+                    <motion.div
+                      key={genre.id}
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex-shrink-0"
+                      style={{ width: '280px' }}
+                    >
+                      <Card 
+                        className={`w-full h-44 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 ${genre.borderColor} bg-gradient-to-br ${genre.gradient} backdrop-blur-sm group/card`}
+                        onClick={() => handleGenreClick(genre.id)}
+                      >
+                        <CardContent className="p-4 h-full flex flex-col justify-between relative overflow-hidden">
+                          {/* Background Pattern */}
+                          <div className="absolute inset-0 opacity-5">
+                            <div className="absolute top-2 right-2 transform rotate-12">
+                              <IconComponent className="h-20 w-20" />
+                            </div>
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="relative z-10">
+                            <div className="flex items-start justify-between mb-2">
+                              <div className={`p-2 rounded-lg bg-background/80 backdrop-blur-sm ${genre.iconColor} transition-transform duration-300 group-hover/card:scale-110`}>
+                                <IconComponent className="h-5 w-5" />
+                              </div>
+                              <Badge variant="secondary" className="bg-background/60 backdrop-blur-sm text-xs">
+                                {genre.count}
+                              </Badge>
+                            </div>
+                            
+                            <div className="space-y-1">
+                              <h3 className="font-bold text-base leading-tight group-hover/card:text-primary transition-colors">
+                                {genre.title}
+                              </h3>
+                              <p className="text-xs text-muted-foreground line-clamp-2">
+                                {genre.description}
+                              </p>
+                            </div>
+                          </div>
+                          
+                          {/* Hover Effect */}
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                          
+                          {/* Bottom Action */}
+                          <div className="relative z-10 flex items-center justify-between mt-auto">
+                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                              <CirclePlay className="h-3 w-3" />
+                              <span>Start Learning</span>
+                            </div>
+                            <ChevronRightIcon className="h-3 w-3 text-primary opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            {/* Scroll Indicators */}
+            <div className="absolute top-1/2 -translate-y-1/2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
+              <ChevronLeft className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            </div>
+          </div>
         </div>
       </motion.section>
 
