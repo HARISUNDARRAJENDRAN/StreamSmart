@@ -33,6 +33,10 @@ import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
 import { WeeklyGoalSettings } from '@/components/dashboard/weekly-goal-settings';
 import { AchievementsSystem } from '@/components/achievements/achievements-system';
+import { feedbackService } from '@/services/feedbackService';
+import { RecommendationCard } from '@/components/feedback/RecommendationCard';
+import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
+import { useToast } from "@/hooks/use-toast";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -52,7 +56,11 @@ const staggerContainer = {
 export default function DashboardPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [userFeedbackMap, setUserFeedbackMap] = useState<Record<string, any>>({});
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [selectedRecommendation, setSelectedRecommendation] = useState<any>(null);
   const { user, userStats, isAuthenticated, recordActivity } = useUser();
+  const { toast } = useToast();
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -85,24 +93,336 @@ export default function DashboardPage() {
     loadPlaylists();
   }, [user, isAuthenticated]);
 
-  // Remove the old achievements array - we'll use the new AchievementsSystem component
+  // Load user feedback for recommendations
+  useEffect(() => {
+    const loadUserFeedback = async () => {
+      if (!user) return;
 
+      try {
+        const result = await feedbackService.getUserFeedback(user.id);
+        if (result.success) {
+          // Create a map for quick lookup
+          const feedbackMap: Record<string, any> = {};
+          result.feedback.forEach((feedback: any) => {
+            if (!feedbackMap[feedback.itemId]) {
+              feedbackMap[feedback.itemId] = {};
+            }
+            feedbackMap[feedback.itemId][feedback.feedbackType] = feedback;
+          });
+          setUserFeedbackMap(feedbackMap);
+        }
+      } catch (error) {
+        console.error("Error loading user feedback:", error);
+      }
+    };
+
+    loadUserFeedback();
+  }, [user]);
+
+  // Enhanced recommendations with more variety
   const recommendations = [
     {
+      id: "rec-1",
       title: "Advanced React Patterns",
-      description: "Based on your React learning",
+      description: "Based on your React learning progress",
       thumbnail: "https://i.ytimg.com/vi/BcVAq3YFiuc/hqdefault.jpg",
       duration: "45 min",
-      difficulty: "Advanced"
+      difficulty: "Advanced",
+      creator: "Kent C. Dodds",
+      url: "https://youtube.com/watch?v=BcVAq3YFiuc"
     },
     {
+      id: "rec-2", 
       title: "TypeScript for Beginners",
-      description: "Next step in your journey",
+      description: "Next step in your learning journey",
       thumbnail: "https://i.ytimg.com/vi/BwuLxPH8IDs/hqdefault.jpg",
       duration: "2h 15min",
-      difficulty: "Beginner"
+      difficulty: "Beginner",
+      creator: "Traversy Media",
+      url: "https://youtube.com/watch?v=BwuLxPH8IDs"
+    },
+    {
+      id: "rec-3",
+      title: "Node.js Authentication",
+      description: "Complete authentication system tutorial",
+      thumbnail: "https://i.ytimg.com/vi/7nafaH9SddU/hqdefault.jpg",
+      duration: "1h 30min",
+      difficulty: "Intermediate", 
+      creator: "Dev Ed",
+      url: "https://youtube.com/watch?v=7nafaH9SddU"
+    },
+    {
+      id: "rec-4",
+      title: "Database Design Fundamentals",
+      description: "Based on your backend learning interest",
+      thumbnail: "https://i.ytimg.com/vi/ztHopE5Wnpc/hqdefault.jpg",
+      duration: "55 min",
+      difficulty: "Intermediate",
+      creator: "freeCodeCamp",
+      url: "https://youtube.com/watch?v=ztHopE5Wnpc"
     }
   ];
+
+  const handleRating = async (recommendationId: string, rating: number) => {
+    if (!user) return;
+
+    const recommendation = recommendations.find(r => r.id === recommendationId);
+    if (!recommendation) return;
+
+    const result = await feedbackService.submitFeedback({
+      userId: user.id,
+      itemId: recommendationId,
+      itemType: 'recommendation',
+      feedbackType: 'rating',
+      rating,
+      recommendationContext: {
+        source: 'dashboard',
+        algorithm: 'content_based',
+        position: recommendations.findIndex(r => r.id === recommendationId) + 1
+      }
+    });
+
+    if (result.success) {
+      // Update local feedback map
+      setUserFeedbackMap(prev => ({
+        ...prev,
+        [recommendationId]: {
+          ...prev[recommendationId],
+          rating: result.feedback
+        }
+      }));
+
+      toast({
+        title: "Rating Submitted",
+        description: `You rated "${recommendation.title}" ${rating} stars.`,
+      });
+
+      // Record activity
+      recordActivity({
+        action: `Rated "${recommendation.title}"`,
+        item: recommendation.title,
+        type: 'completed'
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to submit rating. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleThumbsRating = async (recommendationId: string, rating: number) => {
+    if (!user) return;
+
+    const recommendation = recommendations.find(r => r.id === recommendationId);
+    if (!recommendation) return;
+
+    const feedbackType = rating === 1 ? 'thumbs_up' : 'thumbs_down';
+
+    const result = await feedbackService.submitFeedback({
+      userId: user.id,
+      itemId: recommendationId,
+      itemType: 'recommendation',
+      feedbackType,
+      rating,
+      recommendationContext: {
+        source: 'dashboard',
+        algorithm: 'content_based',
+        position: recommendations.findIndex(r => r.id === recommendationId) + 1
+      }
+    });
+
+    if (result.success) {
+      setUserFeedbackMap(prev => ({
+        ...prev,
+        [recommendationId]: {
+          ...prev[recommendationId],
+          [feedbackType]: result.feedback
+        }
+      }));
+
+      toast({
+        title: "Feedback Submitted",
+        description: `Thank you for your feedback on "${recommendation.title}".`,
+      });
+    } else {
+      toast({
+        title: "Error", 
+        description: "Failed to submit feedback. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleWatchlistToggle = async (recommendationId: string) => {
+    if (!user) return;
+
+    const recommendation = recommendations.find(r => r.id === recommendationId);
+    if (!recommendation) return;
+
+    const isInWatchlist = await feedbackService.isInWatchlist(user.id, recommendationId);
+
+    if (isInWatchlist) {
+      // Remove from watchlist logic would require getting the watchlist ID first
+      toast({
+        title: "Info",
+        description: "Watchlist removal functionality needs watchlist ID. Please manage from watchlist page.",
+      });
+    } else {
+      // Extract the real YouTube video ID from the URL
+      const extractYouTubeVideoId = (url: string): string | null => {
+        const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+        const match = url.match(regExp);
+        return match && match[2].length === 11 ? match[2] : null;
+      };
+
+      const youtubeVideoId = extractYouTubeVideoId(recommendation.url);
+      const finalItemId = youtubeVideoId || recommendationId; // Fallback to recommendationId if extraction fails
+
+      console.log('🎯 [handleWatchlistToggle] Extracted video ID:', youtubeVideoId, 'from URL:', recommendation.url);
+      console.log('🎯 [handleWatchlistToggle] Using itemId:', finalItemId);
+
+      const result = await feedbackService.addToWatchlist({
+        userId: user.id,
+        itemId: finalItemId, // Use the real YouTube video ID
+        itemType: 'video',
+        itemDetails: {
+          title: recommendation.title,
+          thumbnail: recommendation.thumbnail,
+          duration: recommendation.duration,
+          description: `${recommendation.description}\n\nOriginal URL: ${recommendation.url}`, // Store the URL in description
+          creator: recommendation.creator
+        },
+        addedFrom: 'dashboard_recommendations'
+      });
+
+      if (result.success) {
+        toast({
+          title: "Added to Watchlist",
+          description: `"${recommendation.title}" has been added to your watchlist.`,
+        });
+
+        recordActivity({
+          action: `Added "${recommendation.title}" to watchlist`,
+          item: recommendation.title,
+          type: 'created'
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || "Failed to add to watchlist.",
+          variant: "destructive"
+        });
+      }
+    }
+  };
+
+  const handleNotInterested = async (recommendationId: string) => {
+    if (!user) return;
+
+    const recommendation = recommendations.find(r => r.id === recommendationId);
+    if (!recommendation) return;
+
+    const result = await feedbackService.submitFeedback({
+      userId: user.id,
+      itemId: recommendationId,
+      itemType: 'recommendation',
+      feedbackType: 'not_interested',
+      recommendationContext: {
+        source: 'dashboard',
+        algorithm: 'content_based', 
+        position: recommendations.findIndex(r => r.id === recommendationId) + 1
+      }
+    });
+
+    if (result.success) {
+      setUserFeedbackMap(prev => ({
+        ...prev,
+        [recommendationId]: {
+          ...prev[recommendationId],
+          not_interested: result.feedback
+        }
+      }));
+
+      toast({
+        title: "Feedback Recorded",
+        description: `We won't show similar content like "${recommendation.title}".`,
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to record feedback. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleWriteReview = (recommendationId: string) => {
+    const recommendation = recommendations.find(r => r.id === recommendationId);
+    if (recommendation) {
+      setSelectedRecommendation(recommendation);
+      setReviewDialogOpen(true);
+    }
+  };
+
+  const handleReviewSubmit = async (reviewData: ReviewData) => {
+    if (!user || !selectedRecommendation) return;
+
+    const result = await feedbackService.submitFeedback({
+      userId: user.id,
+      itemId: selectedRecommendation.id,
+      itemType: 'recommendation',
+      feedbackType: 'review',
+      rating: reviewData.rating,
+      reviewTitle: reviewData.reviewTitle,
+      reviewText: reviewData.reviewText,
+      recommendationContext: {
+        source: 'dashboard',
+        algorithm: 'content_based',
+        position: recommendations.findIndex(r => r.id === selectedRecommendation.id) + 1
+      }
+    });
+
+    if (result.success) {
+      setUserFeedbackMap(prev => ({
+        ...prev,
+        [selectedRecommendation.id]: {
+          ...prev[selectedRecommendation.id],
+          review: result.feedback
+        }
+      }));
+
+      toast({
+        title: "Review Submitted",
+        description: `Thank you for reviewing "${selectedRecommendation.title}".`,
+      });
+
+      recordActivity({
+        action: `Reviewed "${selectedRecommendation.title}"`,
+        item: selectedRecommendation.title,
+        type: 'completed'
+      });
+    } else {
+      toast({
+        title: "Error",
+        description: "Failed to submit review. Please try again.",
+        variant: "destructive"
+      });
+      throw new Error(result.error);
+    }
+  };
+
+  const getUserFeedbackForItem = (itemId: string) => {
+    const feedback = userFeedbackMap[itemId] || {};
+    return {
+      rating: feedback.rating?.rating,
+      thumbsRating: feedback.thumbs_up?.rating ?? (feedback.thumbs_down?.rating === 0 ? 0 : null),
+      inWatchlist: false, // Would need to check watchlist separately
+      notInterested: !!feedback.not_interested,
+      hasReview: !!feedback.review
+    };
+  };
 
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
@@ -334,37 +654,26 @@ export default function DashboardPage() {
               Recommended for You
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {recommendations.map((rec, index) => (
-                <Card key={index} className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
-                  <div className="relative">
-                    <Image 
-                      src={rec.thumbnail}
-                      alt={rec.title}
-                      width={400}
-                      height={200}
-                      className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-2 right-2 bg-black/70 text-white">
-                      {rec.difficulty}
-                    </Badge>
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold mb-1 group-hover:text-primary transition-colors">
-                      {rec.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground mb-2">{rec.description}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground flex items-center gap-1">
-                        <ClockIcon className="h-3 w-3" />
-                        {rec.duration}
-                      </span>
-                      <Button size="sm" variant="ghost" className="text-primary hover:text-primary/80">
-                        <Bookmark className="h-4 w-4 mr-1" />
-                        Save
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+              {recommendations
+                .filter(rec => !getUserFeedbackForItem(rec.id).notInterested)
+                .map((rec, index) => (
+                <RecommendationCard
+                  key={rec.id}
+                  recommendation={rec}
+                  userFeedback={getUserFeedbackForItem(rec.id)}
+                  onRating={(rating) => handleRating(rec.id, rating)}
+                  onThumbsRating={(rating) => handleThumbsRating(rec.id, rating)}
+                  onWatchlistToggle={() => handleWatchlistToggle(rec.id)}
+                  onNotInterested={() => handleNotInterested(rec.id)}
+                  onWriteReview={() => handleWriteReview(rec.id)}
+                  onPlay={() => window.open(rec.url, '_blank')}
+                  recommendationContext={{
+                    source: 'dashboard',
+                    algorithm: 'content_based',
+                    position: index + 1
+                  }}
+                  ratingType="stars"
+                />
               ))}
             </div>
           </motion.section>
@@ -452,6 +761,28 @@ export default function DashboardPage() {
           </motion.section>
         </div>
       </div>
+
+      {/* Review Dialog */}
+      <ReviewDialog
+        isOpen={reviewDialogOpen}
+        onClose={() => {
+          setReviewDialogOpen(false);
+          setSelectedRecommendation(null);
+        }}
+        onSubmit={handleReviewSubmit}
+        item={selectedRecommendation ? {
+          id: selectedRecommendation.id,
+          title: selectedRecommendation.title,
+          type: 'video' as const
+        } : { id: '', title: '', type: 'video' as const }}
+        existingReview={selectedRecommendation ? 
+          userFeedbackMap[selectedRecommendation.id]?.review ? {
+            rating: userFeedbackMap[selectedRecommendation.id].review.rating,
+            title: userFeedbackMap[selectedRecommendation.id].review.reviewTitle,
+            text: userFeedbackMap[selectedRecommendation.id].review.reviewText
+          } : undefined : undefined
+        }
+      />
     </motion.div>
   );
 }

@@ -13,12 +13,13 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy } from 'lucide-react';
+import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Bookmark } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
+  { href: '/watchlist', label: 'Watchlist', icon: Bookmark },
   { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
   { href: '/achievements', label: 'Achievements', icon: Trophy },
   { href: '/landing#about', label: 'About', icon: HelpCircleIcon },

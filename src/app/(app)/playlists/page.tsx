@@ -21,6 +21,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
+import { PlaylistRenameDialog } from '@/components/playlists/playlist-rename-dialog';
 
 export default function PlaylistsPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
@@ -28,55 +29,55 @@ export default function PlaylistsPage() {
   const { toast } = useToast();
   const { user, recordActivity, updateUserStats } = useUser();
 
-  useEffect(() => {
-    const loadPlaylists = async () => {
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const userPlaylists = await playlistService.getPlaylists(user.id);
-        
-        const processedPlaylists = userPlaylists.map((p: any) => ({
-          ...p,
-          id: p._id, // MongoDB uses _id
-          createdAt: new Date(p.createdAt),
-          lastModified: new Date(p.updatedAt || p.createdAt),
-          videos: (p.videos || []).map((video: any) => ({
-            id: video.id,
-            title: video.title || '',
-            youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
-            thumbnail: video.thumbnail || '',
-            duration: video.duration || '',
-            addedBy: video.addedBy || 'user',
-            summary: video.summary || '',
-            completionStatus: video.completionStatus || 0,
-            channelTitle: video.channelTitle || '',
-          })),
-          tags: p.tags || [],
-          userId: p.userId,
-          overallProgress: p.overallProgress || 0,
-          aiRecommended: p.aiRecommended || false,
-        }));
-        
-        // Sort by creation date, newest first
-        processedPlaylists.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-        setPlaylists(processedPlaylists);
-
-      } catch (error) {
-        console.error("Error loading playlists:", error);
-        setPlaylists([]); 
-        toast({
-          title: "Error",
-          description: "Could not load playlists.",
-          variant: "destructive",
-        });
-      }
+  const loadPlaylists = async () => {
+    if (!user) {
       setIsLoading(false);
-    };
+      return;
+    }
 
+    setIsLoading(true);
+    try {
+      const userPlaylists = await playlistService.getPlaylists(user.id);
+      
+      const processedPlaylists = userPlaylists.map((p: any) => ({
+        ...p,
+        id: p._id, // MongoDB uses _id
+        createdAt: new Date(p.createdAt),
+        lastModified: new Date(p.updatedAt || p.createdAt),
+        videos: (p.videos || []).map((video: any) => ({
+          id: video.id,
+          title: video.title || '',
+          youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
+          thumbnail: video.thumbnail || '',
+          duration: video.duration || '',
+          addedBy: video.addedBy || 'user',
+          summary: video.summary || '',
+          completionStatus: video.completionStatus || 0,
+          channelTitle: video.channelTitle || '',
+        })),
+        tags: p.tags || [],
+        userId: p.userId,
+        overallProgress: p.overallProgress || 0,
+        aiRecommended: p.aiRecommended || false,
+      }));
+      
+      // Sort by creation date, newest first
+      processedPlaylists.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setPlaylists(processedPlaylists);
+
+    } catch (error) {
+      console.error("Error loading playlists:", error);
+      setPlaylists([]); 
+      toast({
+        title: "Error",
+        description: "Could not load playlists.",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     loadPlaylists();
   }, [user, toast]);
 
@@ -114,6 +115,11 @@ export default function PlaylistsPage() {
         variant: "destructive",
       });
     }
+  };
+
+  const handlePlaylistRenamed = () => {
+    // Reload playlists after successful rename
+    loadPlaylists();
   };
 
   if (isLoading) {
@@ -206,12 +212,19 @@ export default function PlaylistsPage() {
                 </CardContent>
               </Link>
               <CardFooter className="p-4 border-t flex justify-end gap-2">
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary" asChild>
-                  {/* TODO: Implement Edit functionality for MongoDB items */}
-                  <Link href={`/playlists/edit/${playlist.id}`}>
-                    <Edit3Icon className="mr-1 h-4 w-4" /> Edit
-                  </Link>
-                </Button>
+                <PlaylistRenameDialog
+                  playlist={{
+                    id: playlist.id,
+                    title: playlist.title,
+                    description: playlist.description
+                  }}
+                  onSuccess={handlePlaylistRenamed}
+                  trigger={
+                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
+                      <Edit3Icon className="mr-1 h-4 w-4" /> Rename
+                    </Button>
+                  }
+                />
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10">

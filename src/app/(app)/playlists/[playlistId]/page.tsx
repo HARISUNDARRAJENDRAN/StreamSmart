@@ -6,6 +6,9 @@ import { VideoPlayer } from '@/components/playlists/video-player';
 import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
 import { MindMapDisplay } from '@/components/playlists/mind-map-display';
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
+import { VideoFeedback } from '@/components/playlists/video-feedback';
+import { PlaylistFeedback } from '@/components/playlists/playlist-feedback';
+import { PlaylistRenameDialog } from '@/components/playlists/playlist-rename-dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -13,7 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon } from 'lucide-react'; 
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon, Star, Edit3 } from 'lucide-react'; 
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
@@ -87,69 +90,92 @@ export default function PlaylistDetailPage() {
     setEnhancedSummaryData(newEnhancedData);
   };
 
-  useEffect(() => {
-    const loadPlaylist = async () => {
-      if (!playlistId || !user) {
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        // Fetch the specific playlist by ID from MongoDB
-        const foundPlaylist = await playlistService.getPlaylistById(playlistId);
-        
-        if (foundPlaylist) {
-          const processedPlaylist = {
-            ...foundPlaylist,
-            id: foundPlaylist._id, // MongoDB uses _id
-            createdAt: new Date(foundPlaylist.createdAt),
-            lastModified: new Date(foundPlaylist.updatedAt || foundPlaylist.createdAt),
-            videos: (foundPlaylist.videos || []).map((video: any) => ({
-              id: video.id,
-              title: video.title || '',
-              youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
-              thumbnail: video.thumbnail || '',
-              duration: video.duration || '',
-              addedBy: video.addedBy || 'user',
-              summary: video.summary || '',
-              completionStatus: video.completionStatus || 0,
-              channelTitle: video.channelTitle || '',
-            })),
-            tags: foundPlaylist.tags || [],
-            userId: foundPlaylist.userId,
-            overallProgress: foundPlaylist.overallProgress || 0,
-            aiRecommended: foundPlaylist.aiRecommended || false,
-          };
-          
-          setPlaylist(processedPlaylist);
-          if (processedPlaylist.videos.length > 0) {
-            setCurrentVideo(processedPlaylist.videos[0]);
-          }
-        } else {
-          setPlaylist(null);
-        }
-      } catch (error) {
-        console.error("Error loading playlist:", error);
-        setPlaylist(null);
-        toast({
-          title: "Error",
-          description: "Could not load playlist.",
-          variant: "destructive",
-        });
-      }
+  const loadPlaylist = async () => {
+    if (!playlistId || !user) {
       setIsLoading(false);
-    };
+      return;
+    }
 
+    setIsLoading(true);
+    try {
+      // Fetch the specific playlist by ID from MongoDB
+      const foundPlaylist = await playlistService.getPlaylistById(playlistId);
+      
+      if (foundPlaylist) {
+        const processedPlaylist = {
+          ...foundPlaylist,
+          id: foundPlaylist._id, // MongoDB uses _id
+          createdAt: new Date(foundPlaylist.createdAt),
+          lastModified: new Date(foundPlaylist.updatedAt || foundPlaylist.createdAt),
+          videos: (foundPlaylist.videos || []).map((video: any) => ({
+            id: video.id,
+            title: video.title || '',
+            youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
+            thumbnail: video.thumbnail || '',
+            duration: video.duration || '',
+            addedBy: video.addedBy || 'user',
+            summary: video.summary || '',
+            completionStatus: video.completionStatus || 0,
+            channelTitle: video.channelTitle || '',
+          })),
+          tags: foundPlaylist.tags || [],
+          userId: foundPlaylist.userId,
+          overallProgress: foundPlaylist.overallProgress || 0,
+          aiRecommended: foundPlaylist.aiRecommended || false,
+        };
+        
+        setPlaylist(processedPlaylist);
+        if (processedPlaylist.videos.length > 0) {
+          setCurrentVideo(processedPlaylist.videos[0]);
+          console.log('🎬 [PlaylistDetailPage] Set current video:', {
+            id: processedPlaylist.videos[0].id,
+            title: processedPlaylist.videos[0].title,
+            youtubeURL: processedPlaylist.videos[0].youtubeURL,
+            hasURL: !!processedPlaylist.videos[0].youtubeURL
+          });
+        }
+        
+        console.log('📋 [PlaylistDetailPage] Loaded playlist:', {
+          id: processedPlaylist.id,
+          title: processedPlaylist.title,
+          videosCount: processedPlaylist.videos.length,
+          firstVideoURL: processedPlaylist.videos[0]?.youtubeURL,
+          videos: processedPlaylist.videos.map((v: any) => ({
+            id: v.id,
+            title: v.title,
+            youtubeURL: v.youtubeURL
+          }))
+        });
+      } else {
+        setPlaylist(null);
+      }
+    } catch (error) {
+      console.error("Error loading playlist:", error);
+      setPlaylist(null);
+      toast({
+        title: "Error",
+        description: "Could not load playlist.",
+        variant: "destructive",
+      });
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
     loadPlaylist();
   }, [playlistId, user, toast]);
 
   const handleSelectVideo = (video: Video) => {
     setCurrentVideo(video);
   };
+
+  const handlePlaylistRenamed = () => {
+    // Reload playlist data after successful rename
+    loadPlaylist();
+  };
   
   const compiledPlaylistContentForRAG = playlist ? 
-    `Playlist: ${playlist.title}\nDescription: ${playlist.description}\nCategory: ${playlist.category || 'General'}\n\nVideos:\n` +
+    `Playlist: ${playlist.title}\nDescription: ${playlist.description}\n\nVideos:\n` +
     playlist.videos.map((video, index) => 
       `${index + 1}. ${video.title}\n   URL: ${video.youtubeURL}\n   Summary: ${video.summary || 'No summary available'}\n`
     ).join('\n') : '';
@@ -178,13 +204,9 @@ export default function PlaylistDetailPage() {
 
     // Record activity for the user
     recordActivity({
-      type: newCompletionStatus === 100 ? 'video_completed' : 'video_uncompleted',
-      description: `${newCompletionStatus === 100 ? 'Completed' : 'Marked incomplete'}: ${targetVideo.title}`,
-      metadata: {
-        videoId,
-        playlistId: playlist.id,
-        videoTitle: targetVideo.title,
-      },
+      action: newCompletionStatus === 100 ? 'Completed' : 'Marked incomplete',
+      item: targetVideo.title,
+      type: newCompletionStatus === 100 ? 'completed' : 'started',
     });
     
     try {
@@ -216,6 +238,72 @@ export default function PlaylistDetailPage() {
         description: "Could not save progress. Please try again.",
         variant: "destructive",
       });
+    }
+  };
+
+  const handleDeleteVideo = async (videoId: string) => {
+    if (!playlist || !playlist.videos) return;
+
+    const targetVideo = playlist.videos.find(v => v.id === videoId);
+    if (!targetVideo) return;
+
+    const updatedVideos = playlist.videos.filter(video => video.id !== videoId);
+
+    // Update the playlist state for immediate feedback
+    setPlaylist(prev => prev ? { ...prev, videos: updatedVideos } : null);
+    
+    // If the deleted video was currently playing, switch to first video or clear
+    if (currentVideo && currentVideo.id === videoId) {
+      setCurrentVideo(updatedVideos.length > 0 ? updatedVideos[0] : null);
+    }
+
+    // Record activity for the user
+    recordActivity({
+      action: 'Deleted video',
+      item: targetVideo.title,
+      type: 'started', // Use 'started' as a generic activity type
+    });
+    
+    try {
+      // Update playlist in MongoDB
+      const result = await playlistService.updatePlaylist(playlist.id, {
+        videos: updatedVideos.map(v => ({
+          id: v.id,
+          title: v.title || '',
+          channelTitle: v.channelTitle || '',
+          thumbnail: v.thumbnail || '',
+          duration: v.duration || '',
+          url: v.youtubeURL || '',
+          completionStatus: v.completionStatus || 0,
+        })),
+      });
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update playlist');
+      }
+      
+      toast({
+        title: "Video Deleted",
+        description: `"${targetVideo.title}" has been removed from the playlist.`,
+      });
+      
+      // Update user stats after saving
+      setTimeout(() => {
+        updateUserStats();
+      }, 100);
+    } catch (error) {
+      console.error("Error deleting video from playlist:", error);
+      toast({
+        title: "Error",
+        description: "Could not delete video. Please try again.",
+        variant: "destructive",
+      });
+      
+      // Revert the state change on error
+      setPlaylist(prev => prev ? { ...prev, videos: playlist.videos } : null);
+      if (targetVideo.id === currentVideo?.id) {
+        setCurrentVideo(targetVideo);
+      }
     }
   };
 
@@ -300,6 +388,20 @@ export default function PlaylistDetailPage() {
                 <p className="text-muted-foreground max-w-2xl">{playlist.description}</p>
               </div>
               <div className="flex items-center gap-2">
+                <PlaylistRenameDialog
+                  playlist={{
+                    id: playlist.id,
+                    title: playlist.title,
+                    description: playlist.description
+                  }}
+                  onSuccess={handlePlaylistRenamed}
+                  trigger={
+                    <Button variant="outline" size="sm">
+                      <Edit3 className="w-4 h-4 mr-2" />
+                      Rename
+                    </Button>
+                  }
+                />
                 <Button variant="outline" size="sm">
                   <ShareIcon className="w-4 h-4 mr-2" />
                   Share
@@ -378,10 +480,14 @@ export default function PlaylistDetailPage() {
           {/* Interactive Tabs */}
           <motion.div variants={fadeInUp}>
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-5 bg-muted/50 p-1 rounded-xl">
+              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 bg-muted/50 p-1 rounded-xl">
                 <TabsTrigger value="info" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <InfoIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Info</span>
+                </TabsTrigger>
+                <TabsTrigger value="feedback" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <Star className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">Feedback</span>
                 </TabsTrigger>
                 <TabsTrigger value="chatbot" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <MessageCircleIcon className="w-4 h-4 mr-2" />
@@ -451,6 +557,15 @@ export default function PlaylistDetailPage() {
                   </Card>
                 </TabsContent>
                 
+                <TabsContent value="feedback">
+                  {currentVideo && (
+                    <VideoFeedback 
+                      video={currentVideo}
+                      playlistId={playlist.id}
+                    />
+                  )}
+                </TabsContent>
+                
                 <TabsContent value="chatbot">
                    <PlaylistChatbot 
                      playlistId={playlist.id} 
@@ -518,8 +633,8 @@ export default function PlaylistDetailPage() {
         </div>
 
         {/* Playlist Videos Sidebar */}
-        <motion.div variants={fadeInUp} className="xl:col-span-1">
-          <Card className="shadow-lg h-fit max-h-[calc(100vh-12rem)] flex flex-col">
+        <motion.div variants={fadeInUp} className="xl:col-span-1 space-y-6">
+          <Card className="shadow-lg h-fit max-h-[calc(100vh-24rem)] flex flex-col">
             <CardHeader className="border-b bg-accent/20">
               <CardTitle className="flex items-center">
                 <ListIcon className="h-5 w-5 mr-2 text-primary" />
@@ -529,15 +644,16 @@ export default function PlaylistDetailPage() {
                 {playlist.videos.length} videos • {Math.round(overallProgress)}% complete
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-0 flex-1 min-h-0">
-              <ScrollArea className="h-full"> 
-                <div className="p-2 space-y-1">
+            <CardContent className="p-0 flex-1 min-h-0 overflow-visible">
+              <ScrollArea className="h-full overflow-visible"> 
+                <div className="p-2 space-y-1 overflow-visible">
                   {playlist.videos.map((video, index) => (
                     <VideoProgressItem
                       key={video.id}
                       video={video}
                       isActive={currentVideo?.id === video.id}
                       onSelectVideo={handleSelectVideo}
+                      onDeleteVideo={handleDeleteVideo}
                     />
                   ))}
                   {playlist.videos.length === 0 && (
@@ -550,6 +666,9 @@ export default function PlaylistDetailPage() {
               </ScrollArea>
             </CardContent>
           </Card>
+
+          {/* Playlist Feedback */}
+          <PlaylistFeedback playlist={playlist} />
         </motion.div>
       </div>
     </motion.div>
