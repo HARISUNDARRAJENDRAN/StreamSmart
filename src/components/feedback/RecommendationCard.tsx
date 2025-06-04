@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,6 +23,8 @@ import {
 import { StarRating } from './StarRating';
 import { ThumbsRating } from './ThumbsRating';
 import { cn } from '@/lib/utils';
+import { implicitTracker, trackNavigation } from '@/services/implicitTrackingService';
+import { useUser } from '@/contexts/UserContext';
 
 interface RecommendationCardProps {
   recommendation: {
@@ -73,16 +75,62 @@ export function RecommendationCard({
   isLoading = false
 }: RecommendationCardProps) {
   const [isActionsLoading, setIsActionsLoading] = useState<string | null>(null);
+  const { user } = useUser();
+
+  // Initialize tracking
+  useEffect(() => {
+    if (user) {
+      implicitTracker.setUserId(user.id);
+    }
+  }, [user]);
 
   const handleAction = async (action: string, callback?: () => void) => {
     if (!callback) return;
     
     setIsActionsLoading(action);
+    
+    // Track the interaction
+    if (user) {
+      await trackNavigation.click({
+        elementType: 'button',
+        elementId: `${action}-${recommendation.id}`,
+        elementText: action,
+        coordinates: { x: 0, y: 0 } // Would be filled by actual mouse event
+      });
+
+      await trackNavigation.content({
+        interactionType: 'click',
+        targetId: recommendation.id,
+        targetType: 'video',
+        duration: 0
+      });
+    }
+
     try {
       await callback();
     } finally {
       setIsActionsLoading(null);
     }
+  };
+
+  const handlePlayClick = async () => {
+    if (!onPlay || !user) return;
+
+    // Track content interaction
+    await trackNavigation.content({
+      interactionType: 'click',
+      targetId: recommendation.id,
+      targetType: 'video',
+    });
+
+    // Track the play action specifically
+    await trackNavigation.click({
+      elementType: 'play_button',
+      elementId: `play-${recommendation.id}`,
+      elementText: 'Play',
+    });
+
+    onPlay();
   };
 
   const getDifficultyColor = (difficulty: string) => {
@@ -103,11 +151,19 @@ export function RecommendationCard({
   }
 
   return (
-    <Card className={cn(
-      "overflow-hidden hover:shadow-lg transition-all duration-300 group",
-      isLoading && "opacity-50",
-      className
-    )}>
+    <Card 
+      className={cn(
+        "overflow-hidden hover:shadow-lg transition-all duration-300 group",
+        isLoading && "opacity-50",
+        className
+      )}
+      // Add implicit tracking attributes
+      data-track-hover={recommendation.id}
+      data-hover-type="recommendation_card"
+      data-container-type="recommendation_grid"
+      data-position={recommendationContext?.position || 1}
+      data-section-id="dashboard-recommendations"
+    >
       <div className="relative">
         <Image 
           src={recommendation.thumbnail}
@@ -128,9 +184,11 @@ export function RecommendationCard({
         {/* Play Button Overlay */}
         {onPlay && (
           <button
-            onClick={() => handleAction('play', onPlay)}
+            onClick={handlePlayClick}
             className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             disabled={isActionsLoading === 'play'}
+            data-track-hover={`${recommendation.id}-play`}
+            data-hover-type="play_button"
           >
             <div className="bg-white/90 rounded-full p-3 hover:bg-white transition-colors">
               <Play className="h-6 w-6 text-gray-900 fill-current" />
@@ -197,6 +255,8 @@ export function RecommendationCard({
                 "text-primary hover:text-primary/80",
                 userFeedback.inWatchlist && "bg-primary/10"
               )}
+              data-track-hover={`${recommendation.id}-watchlist`}
+              data-hover-type="button"
             >
               {userFeedback.inWatchlist ? (
                 <>
@@ -222,6 +282,8 @@ export function RecommendationCard({
                   "text-muted-foreground hover:text-foreground",
                   userFeedback.hasReview && "text-primary"
                 )}
+                data-track-hover={`${recommendation.id}-review`}
+                data-hover-type="button"
               >
                 <MessageSquare className="h-4 w-4 mr-1" />
                 {userFeedback.hasReview ? 'Edit Review' : 'Review'}
@@ -232,7 +294,13 @@ export function RecommendationCard({
           {/* More Actions */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost" className="text-muted-foreground">
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="text-muted-foreground"
+                data-track-hover={`${recommendation.id}-menu`}
+                data-hover-type="menu_button"
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>

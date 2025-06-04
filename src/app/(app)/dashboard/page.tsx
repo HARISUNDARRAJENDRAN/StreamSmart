@@ -49,6 +49,7 @@ import { feedbackService } from '@/services/feedbackService';
 import { RecommendationCard } from '@/components/feedback/RecommendationCard';
 import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
 import { useToast } from "@/hooks/use-toast";
+import { implicitTracker } from '@/services/implicitTrackingService';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -73,6 +74,13 @@ export default function DashboardPage() {
   const [selectedRecommendation, setSelectedRecommendation] = useState<any>(null);
   const { user, userStats, isAuthenticated, recordActivity } = useUser();
   const { toast } = useToast();
+
+  // Initialize implicit tracking
+  useEffect(() => {
+    if (user) {
+      implicitTracker.setUserId(user.id);
+    }
+  }, [user]);
 
   useEffect(() => {
     const loadPlaylists = async () => {
