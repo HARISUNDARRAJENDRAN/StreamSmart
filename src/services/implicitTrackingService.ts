@@ -13,6 +13,22 @@ export interface ViewingTrackingData {
   referrer?: string;
 }
 
+export interface ViewingSessionUpdateData {
+  itemId: string;
+  totalViewDuration: number;
+  completionPercentage: number;
+  pauseCount?: number;
+  seekCount?: number;
+  skipCount?: number;
+  replayCount?: number;
+  playbackSpeed?: number;
+  qualityChanges?: number;
+  bufferingEvents?: number;
+  fullScreenUsed?: boolean;
+  volumeAdjustments?: number;
+  captionsEnabled?: boolean;
+}
+
 export interface SearchTrackingData {
   userId: string;
   searchQuery: string;
@@ -44,10 +60,20 @@ export interface NavigationTrackingData {
   navigationSpeed?: number;
 }
 
+export interface RecommendationData {
+  algorithm: string;
+  confidence: number;
+  category: string;
+  tags: string[];
+  isPersonalized: boolean;
+  source: string;
+  position: number;
+}
+
 export interface HoverTrackingData {
   userId: string;
   targetId: string;
-  targetType: 'video' | 'playlist' | 'recommendation_card' | 'thumbnail' | 'creator' | 'category';
+  targetType: 'video' | 'playlist' | 'recommendation_card' | 'thumbnail' | 'creator' | 'category' | 'play_button';
   containerType?: string;
   position?: number;
   pageContext?: string;
@@ -59,11 +85,54 @@ export interface HoverTrackingData {
   elementPosition?: { x: number; y: number };
   elementSize?: { width: number; height: number };
   entryDirection?: string;
-  recommendationData?: any;
+  recommendationData?: RecommendationData;
   isFirstTimeSeeing?: boolean;
   previousInteractions?: number;
   timeOnCurrentPage?: number;
   totalPageInteractions?: number;
+}
+
+export interface ClickTrackingData {
+  elementType: string;
+  elementId?: string;
+  elementText?: string;
+  coordinates?: { x: number; y: number };
+}
+
+export interface ContentInteractionData {
+  interactionType: 'hover' | 'click' | 'bookmark' | 'share' | 'like' | 'dislike';
+  targetId: string;
+  targetType: 'video' | 'playlist' | 'creator' | 'category';
+  duration?: number;
+}
+
+export interface CategoryExplorationData {
+  categoryId: string;
+  categoryName: string;
+  timeSpent: number;
+  itemsViewed: number;
+}
+
+export interface ViewingSessionEndData {
+  itemId: string;
+  totalViewDuration: number;
+  completionPercentage: number;
+}
+
+export interface SearchResultClickData {
+  itemId: string;
+  itemType: 'video' | 'playlist' | 'creator';
+  position: number;
+}
+
+export interface SearchRefinementData {
+  refinementType: 'filter' | 'sort' | 'category' | 'duration';
+  refinementValue: string;
+}
+
+export interface SearchEndData {
+  resultsScrollDepth?: number;
+  abandoned?: boolean;
 }
 
 class ImplicitTrackingService {
@@ -73,16 +142,23 @@ class ImplicitTrackingService {
   private activeSearchSession: string | null = null;
   private activePageVisit: string | null = null;
   private activeHovers: Map<string, any> = new Map();
+  private activeMoveListeners: Map<string, (event: MouseEvent) => void> = new Map();
   private pageStartTime: number = Date.now();
   private pageInteractionCount: number = 0;
   private scrollDepth: number = 0;
   private scrollEvents: number = 0;
   private baseUrl: string = '';
+  private isClient: boolean = false;
 
   constructor() {
+    // Only initialize on client side
+    this.isClient = typeof window !== 'undefined';
     this.sessionId = this.generateSessionId();
     this.baseUrl = this.getBaseUrl();
-    this.initializeTracking();
+    
+    if (this.isClient) {
+      this.initializeTracking();
+    }
   }
 
   private getBaseUrl(): string {
@@ -95,10 +171,12 @@ class ImplicitTrackingService {
   }
 
   private generateSessionId(): string {
-    return `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    return `session_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
   }
 
   private getDeviceType(): string {
+    if (!this.isClient) return 'unknown';
+    
     const userAgent = navigator.userAgent.toLowerCase();
     if (/mobile|android|touch|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)) {
       return /ipad/i.test(userAgent) ? 'tablet' : 'mobile';
@@ -107,6 +185,8 @@ class ImplicitTrackingService {
   }
 
   private getViewportSize() {
+    if (!this.isClient) return { width: 1920, height: 1080 };
+    
     return {
       width: window.innerWidth,
       height: window.innerHeight,
@@ -181,9 +261,17 @@ class ImplicitTrackingService {
   // Initialize tracking for the session
   setUserId(userId: string) {
     this.userId = userId;
+    // Automatically track page visit when user is set
+    this.trackPageVisit();
   }
 
   private initializeTracking() {
+    // Only initialize if we're on the client side
+    if (!this.isClient) {
+      console.log('🚫 Skipping tracking initialization - not on client side');
+      return;
+    }
+
     // Track page navigation
     this.trackPageVisit();
 
@@ -233,21 +321,7 @@ class ImplicitTrackingService {
     }
   }
 
-  async updateViewingSession(data: {
-    itemId: string;
-    totalViewDuration: number;
-    completionPercentage: number;
-    pauseCount?: number;
-    seekCount?: number;
-    skipCount?: number;
-    replayCount?: number;
-    playbackSpeed?: number;
-    qualityChanges?: number;
-    bufferingEvents?: number;
-    fullScreenUsed?: boolean;
-    volumeAdjustments?: number;
-    captionsEnabled?: boolean;
-  }) {
+  async updateViewingSession(data: ViewingSessionUpdateData) {
     if (!this.userId || !this.activeViewingSession) return;
 
     await this.apiCall('/api/tracking/viewing-history', {
@@ -258,11 +332,7 @@ class ImplicitTrackingService {
     });
   }
 
-  async endViewingSession(data: {
-    itemId: string;
-    totalViewDuration: number;
-    completionPercentage: number;
-  }) {
+  async endViewingSession(data: ViewingSessionEndData) {
     if (!this.userId || !this.activeViewingSession) return;
 
     await this.apiCall('/api/tracking/viewing-history', {
@@ -289,7 +359,7 @@ class ImplicitTrackingService {
         source: data.source || 'header_search',
         sessionId: this.sessionId,
         device: this.getDeviceType(),
-        userAgent: navigator.userAgent,
+        userAgent: this.isClient ? navigator.userAgent : 'server',
         previousQuery: data.previousQuery,
         resultsFound: data.resultsFound || 0,
         resultsDisplayed: data.resultsDisplayed || 0,
@@ -301,11 +371,7 @@ class ImplicitTrackingService {
     }
   }
 
-  async trackSearchResultClick(data: {
-    itemId: string;
-    itemType: 'video' | 'playlist' | 'creator';
-    position: number;
-  }) {
+  async trackSearchResultClick(data: SearchResultClickData) {
     if (!this.userId || !this.activeSearchSession) return;
 
     await this.apiCall('/api/tracking/search-history', {
@@ -320,10 +386,7 @@ class ImplicitTrackingService {
     });
   }
 
-  async trackSearchRefinement(data: {
-    refinementType: 'filter' | 'sort' | 'category' | 'duration';
-    refinementValue: string;
-  }) {
+  async trackSearchRefinement(data: SearchRefinementData) {
     if (!this.userId || !this.activeSearchSession) return;
 
     await this.apiCall('/api/tracking/search-history', {
@@ -337,7 +400,7 @@ class ImplicitTrackingService {
     });
   }
 
-  async endSearchSession(data?: { resultsScrollDepth?: number; abandoned?: boolean }) {
+  async endSearchSession(data?: SearchEndData) {
     if (!this.userId || !this.activeSearchSession) return;
 
     await this.apiCall('/api/tracking/search-history', {
@@ -357,6 +420,11 @@ class ImplicitTrackingService {
   private async trackPageVisit() {
     if (!this.userId) {
       console.warn('Cannot track page visit: userId not set');
+      return;
+    }
+
+    if (!this.isClient) {
+      console.warn('Cannot track page visit: not on client side');
       return;
     }
 
@@ -409,7 +477,7 @@ class ImplicitTrackingService {
   }
 
   private determineReferrerType(referrer: string): 'internal' | 'external' | 'direct' | 'search_engine' {
-    if (!referrer) return 'direct';
+    if (!referrer || !this.isClient) return 'direct';
     if (referrer.includes(window.location.hostname)) return 'internal';
     if (referrer.includes('google.com') || referrer.includes('bing.com') || referrer.includes('yahoo.com')) {
       return 'search_engine';
@@ -418,6 +486,8 @@ class ImplicitTrackingService {
   }
 
   private determineEntryPoint(): string {
+    if (!this.isClient) return 'direct';
+    
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('utm_source')) return 'marketing';
     if (urlParams.get('ref')) return 'referral';
@@ -425,10 +495,10 @@ class ImplicitTrackingService {
     return 'direct';
   }
 
-  private handlePageLeave() {
-    if (!this.userId || !this.activePageVisit) return;
+  private async handlePageLeave() {
+    if (!this.userId || !this.activePageVisit || !this.isClient) return;
 
-    this.apiCall('/api/tracking/navigation', {
+    const navigationData = {
       userId: this.userId,
       action: 'page_leave',
       navigationData: {
@@ -438,7 +508,31 @@ class ImplicitTrackingService {
         isBouncePage: this.pageInteractionCount === 0,
         exitAction: document.hidden ? 'close_tab' : 'navigation',
       },
-    });
+    };
+
+    // Use sendBeacon for better reliability on page unload
+    if (navigator.sendBeacon) {
+      try {
+        const success = navigator.sendBeacon(
+          `${this.baseUrl}/api/tracking/navigation`,
+          JSON.stringify(navigationData)
+        );
+        if (!success) {
+          console.warn('sendBeacon failed, falling back to fetch');
+          // Fallback to regular API call
+          await this.apiCall('/api/tracking/navigation', navigationData);
+        }
+      } catch (error) {
+        console.error('Failed to track page leave:', error);
+      }
+    } else {
+      // Fallback for browsers that don't support sendBeacon
+      try {
+        await this.apiCall('/api/tracking/navigation', navigationData);
+      } catch (error) {
+        console.error('Failed to track page leave:', error);
+      }
+    }
 
     this.activePageVisit = null;
   }
@@ -448,12 +542,7 @@ class ImplicitTrackingService {
     this.trackPageVisit();
   }
 
-  async trackClick(data: {
-    elementType: string;
-    elementId?: string;
-    elementText?: string;
-    coordinates?: { x: number; y: number };
-  }) {
+  async trackClick(data: ClickTrackingData) {
     if (!this.userId) return;
 
     this.pageInteractionCount++;
@@ -471,12 +560,7 @@ class ImplicitTrackingService {
     });
   }
 
-  async trackContentInteraction(data: {
-    interactionType: 'hover' | 'click' | 'bookmark' | 'share' | 'like' | 'dislike';
-    targetId: string;
-    targetType: 'video' | 'playlist' | 'creator' | 'category';
-    duration?: number;
-  }) {
+  async trackContentInteraction(data: ContentInteractionData) {
     if (!this.userId) return;
 
     await this.apiCall('/api/tracking/navigation', {
@@ -492,12 +576,7 @@ class ImplicitTrackingService {
     });
   }
 
-  async trackCategoryExploration(data: {
-    categoryId: string;
-    categoryName: string;
-    timeSpent: number;
-    itemsViewed: number;
-  }) {
+  async trackCategoryExploration(data: CategoryExplorationData) {
     if (!this.userId) return;
 
     await this.apiCall('/api/tracking/navigation', {
@@ -516,6 +595,8 @@ class ImplicitTrackingService {
   // === SCROLL TRACKING ===
 
   private initializeScrollTracking() {
+    if (!this.isClient) return;
+    
     let scrollTimeout: NodeJS.Timeout;
 
     window.addEventListener('scroll', () => {
@@ -545,6 +626,8 @@ class ImplicitTrackingService {
   // === HOVER INTERACTION TRACKING ===
 
   private initializeHoverTracking() {
+    if (!this.isClient) return;
+    
     // We'll track hover on elements with data-track-hover attribute
     document.addEventListener('mouseover', (event) => {
       const target = event.target as HTMLElement;
@@ -634,12 +717,31 @@ class ImplicitTrackingService {
       });
 
       if (result?.success) {
-        this.activeHovers.set(targetId, {
+        const hoverInfo = {
           hoverId: result.hoverRecord.id,
           startTime: Date.now(),
           element,
           mousePositions: [{ x: event.clientX, y: event.clientY, time: Date.now() }],
-        });
+        };
+
+        this.activeHovers.set(targetId, hoverInfo);
+
+        // Add mouse movement tracking during hover
+        const moveListener = (moveEvent: MouseEvent) => {
+          if (this.activeHovers.has(targetId)) {
+            hoverInfo.mousePositions.push({
+              x: moveEvent.clientX,
+              y: moveEvent.clientY,
+              time: Date.now()
+            });
+          }
+        };
+
+        // Store the listener for cleanup
+        this.activeMoveListeners.set(targetId, moveListener);
+        
+        // Add the listener
+        document.addEventListener('mousemove', moveListener);
       }
     } catch (error) {
       console.error('Failed to start hover tracking:', error);
@@ -654,6 +756,15 @@ class ImplicitTrackingService {
     const endTime = Date.now();
     const duration = endTime - hoverInfo.startTime;
 
+    // Clean up mouse movement listener
+    if (this.activeMoveListeners.has(targetId)) {
+      const moveListener = this.activeMoveListeners.get(targetId);
+      if (moveListener) {
+        document.removeEventListener('mousemove', moveListener);
+      }
+      this.activeMoveListeners.delete(targetId);
+    }
+
     // Calculate mouse movement data
     const mousePositions = hoverInfo.mousePositions;
     let totalDistance = 0;
@@ -667,24 +778,28 @@ class ImplicitTrackingService {
 
     const rect = element.getBoundingClientRect();
     
-    await this.apiCall('/api/tracking/hover', {
-      userId: this.userId,
-      action: 'hover_end',
-      hoverData: {
-        targetId,
-        sessionId: this.sessionId,
-        mouseMovement: {
-          exitDirection: this.getMouseExitDirection(event, rect),
-          movementPattern: this.analyzeMovementPattern(mousePositions, duration),
-          totalMovementDistance: totalDistance,
+    try {
+      await this.apiCall('/api/tracking/hover', {
+        userId: this.userId,
+        action: 'hover_end',
+        hoverData: {
+          targetId,
+          sessionId: this.sessionId,
+          mouseMovement: {
+            exitDirection: this.getMouseExitDirection(event, rect),
+            movementPattern: this.analyzeMovementPattern(mousePositions, duration),
+            totalMovementDistance: totalDistance,
+          },
+          hoverOutcome: {
+            resultedInClick: false, // Will be updated if click follows
+            resultedInScroll: false,
+            resultedInNavigation: false,
+          },
         },
-        hoverOutcome: {
-          resultedInClick: false, // Will be updated if click follows
-          resultedInScroll: false,
-          resultedInNavigation: false,
-        },
-      },
-    });
+      });
+    } catch (error) {
+      console.error('Failed to end hover tracking:', error);
+    }
 
     this.activeHovers.delete(targetId);
   }
@@ -761,6 +876,12 @@ class ImplicitTrackingService {
   destroy() {
     this.handlePageLeave();
     this.activeHovers.clear();
+    
+    // Clean up all active mouse move listeners
+    this.activeMoveListeners.forEach((listener) => {
+      document.removeEventListener('mousemove', listener);
+    });
+    this.activeMoveListeners.clear();
   }
 }
 
@@ -770,21 +891,21 @@ export const implicitTracker = new ImplicitTrackingService();
 // Convenience functions for easy usage
 export const trackViewing = {
   start: (data: ViewingTrackingData) => implicitTracker.startViewingSession(data),
-  update: (data: any) => implicitTracker.updateViewingSession(data),
-  end: (data: any) => implicitTracker.endViewingSession(data),
+  update: (data: ViewingSessionUpdateData) => implicitTracker.updateViewingSession(data),
+  end: (data: ViewingSessionEndData) => implicitTracker.endViewingSession(data),
 };
 
 export const trackSearch = {
   search: (data: SearchTrackingData) => implicitTracker.trackSearch(data),
-  clickResult: (data: any) => implicitTracker.trackSearchResultClick(data),
-  refine: (data: any) => implicitTracker.trackSearchRefinement(data),
-  end: (data?: any) => implicitTracker.endSearchSession(data),
+  clickResult: (data: SearchResultClickData) => implicitTracker.trackSearchResultClick(data),
+  refine: (data: SearchRefinementData) => implicitTracker.trackSearchRefinement(data),
+  end: (data?: SearchEndData) => implicitTracker.endSearchSession(data),
 };
 
 export const trackNavigation = {
-  click: (data: any) => implicitTracker.trackClick(data),
-  content: (data: any) => implicitTracker.trackContentInteraction(data),
-  category: (data: any) => implicitTracker.trackCategoryExploration(data),
+  click: (data: ClickTrackingData) => implicitTracker.trackClick(data),
+  content: (data: ContentInteractionData) => implicitTracker.trackContentInteraction(data),
+  category: (data: CategoryExplorationData) => implicitTracker.trackCategoryExploration(data),
 };
 
 export default implicitTracker; 

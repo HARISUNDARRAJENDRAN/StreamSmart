@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segment-Aware Recommendations Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .test-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .recommendation-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .segment-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .loading { background: #fff3cd; color: #856404; }
+        .json-output {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Segment-Aware Recommendations Test</h1>
+        
+        <div class="test-section">
+            <h2>User Selection</h2>
+            <p>Select a user to test recommendations:</p>
+            <select id="userSelect" onchange="loadUserInfo()">
+                <option value="">Select a user...</option>
+                <option value="6832dbbf3a7609bd327ecf2e">hsundar080506@gmail.com</option>
+                <option value="684077cdccd9c037d0a51d40">eg1@gmail.com</option>
+                <option value="684078d9ccd9c037d0a51f3a">eg2@gmail.com</option>
+                <option value="684079ddccd9c037d0a51fe6">eg3@gmail.com</option>
+            </select>
+        </div>
+
+        <div class="test-section">
+            <h2>Test Actions</h2>
+            <button class="button" onclick="getBasicRecommendations()">Get Basic Recommendations</button>
+            <button class="button" onclick="getSegmentInfo()">Get Segment Information</button>
+            <button class="button" onclick="testDifferentContexts()">Test All Contexts</button>
+            <button class="button" onclick="testAdvancedClustering()">Test Advanced Clustering</button>
+        </div>
+
+        <div id="status"></div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000';
+        let currentUserId = '';
+
+        function loadUserInfo() {
+            currentUserId = document.getElementById('userSelect').value;
+            if (currentUserId) {
+                setStatus(`Selected user: ${currentUserId}`, 'success');
+                document.getElementById('results').innerHTML = '';
+            }
+        }
+
+        function setStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function displayResults(title, data) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML += `
+                <div class="container">
+                    <h3>${title}</h3>
+                    <div class="json-output">${JSON.stringify(data, null, 2)}</div>
+                </div>
+            `;
+        }
+
+        async function getBasicRecommendations() {
+            if (!currentUserId) {
+                setStatus('Please select a user first', 'error');
+                return;
+            }
+
+            setStatus('Getting basic recommendations...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/recommendations/segment-aware`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: currentUserId,
+                        count: 10,
+                        contextType: 'homepage'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    setStatus(`✅ Success! Got ${data.recommendations.length} recommendations`, 'success');
+                    
+                    // Display user segment info if available
+                    if (data.userSegment) {
+                        document.getElementById('results').innerHTML = `
+                            <div class="segment-info">
+                                <h3>🎯 Your User Segment</h3>
+                                <p><strong>Type:</strong> ${data.userSegment.userType}</p>
+                                <p><strong>Engagement:</strong> ${data.userSegment.engagementLevel}</p>
+                                <p><strong>Cluster Size:</strong> ${data.userSegment.clusterSize} users</p>
+                                <p><strong>Strategy:</strong> ${data.userSegment.recommendationStrategy}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    // Display recommendations
+                    if (data.recommendations.length > 0) {
+                        let recommendationsHTML = '<div class="container"><h3>📋 Recommendations</h3>';
+                        data.recommendations.forEach((rec, index) => {
+                            recommendationsHTML += `
+                                <div class="recommendation-card">
+                                    <h4>${rec.title}</h4>
+                                    <p><strong>Score:</strong> ${rec.score.toFixed(3)}</p>
+                                    <p><strong>Strategy:</strong> ${rec.segmentStrategy}</p>
+                                    <p><strong>Reason:</strong> ${rec.reasoning}</p>
+                                </div>
+                            `;
+                        });
+                        recommendationsHTML += '</div>';
+                        document.getElementById('results').innerHTML += recommendationsHTML;
+                    }
+                    
+                    displayResults('Full Response Data', data);
+                } else {
+                    setStatus(`❌ Error: ${data.error || 'Unknown error'}`, 'error');
+                    displayResults('Error Response', data);
+                }
+            } catch (error) {
+                setStatus(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function getSegmentInfo() {
+            if (!currentUserId) {
+                setStatus('Please select a user first', 'error');
+                return;
+            }
+
+            setStatus('Getting segment information...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/recommendations/segment-aware?userId=${currentUserId}&info=segment`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    setStatus('✅ Segment info retrieved', 'success');
+                    displayResults('Segment Information', data);
+                } else {
+                    setStatus(`❌ Error: ${data.error}`, 'error');
+                    displayResults('Error Response', data);
+                }
+            } catch (error) {
+                setStatus(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testDifferentContexts() {
+            if (!currentUserId) {
+                setStatus('Please select a user first', 'error');
+                return;
+            }
+
+            const contexts = ['homepage', 'category', 'search', 'video_page'];
+            setStatus('Testing different contexts...', 'loading');
+            
+            for (const context of contexts) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/recommendations/segment-aware`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            userId: currentUserId,
+                            count: 5,
+                            contextType: context
+                        })
+                    });
+
+                    const data = await response.json();
+                    displayResults(`Context: ${context}`, {
+                        status: response.status,
+                        success: data.success,
+                        recommendationsCount: data.recommendations?.length || 0,
+                        error: data.error
+                    });
+                } catch (error) {
+                    displayResults(`Context: ${context} (Error)`, { error: error.message });
+                }
+            }
+            
+            setStatus('✅ Context testing completed', 'success');
+        }
+
+        async function testAdvancedClustering() {
+            if (!currentUserId) {
+                setStatus('Please select a user first', 'error');
+                return;
+            }
+
+            setStatus('Testing advanced clustering configuration...', 'loading');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/recommendations/segment-aware`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: currentUserId,
+                        count: 8,
+                        refreshClusters: true,
+                        clusteringConfig: {
+                            numClusters: 3,
+                            linkageCriteria: 'ward',
+                            distanceMetric: 'euclidean'
+                        },
+                        includeExploration: true
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    setStatus('✅ Advanced clustering completed', 'success');
+                    displayResults('Advanced Clustering Results', {
+                        clusteringInfo: data.clusteringInfo,
+                        analytics: data.analytics,
+                        segmentInsights: data.segmentInsights
+                    });
+                } else {
+                    setStatus(`❌ Error: ${data.error}`, 'error');
+                    displayResults('Error Response', data);
+                }
+            } catch (error) {
+                setStatus(`❌ Network error: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-select first user on load
+        window.onload = function() {
+            document.getElementById('userSelect').value = '6832dbbf3a7609bd327ecf2e';
+            loadUserInfo();
+        };
+    </script>
+</body>
+</html> 

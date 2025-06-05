@@ -2,6 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import UserNavigationHistory from '@/models/UserNavigationHistory';
 
+// CORS headers
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
+// OPTIONS handler for CORS preflight
+export async function OPTIONS() {
+  return NextResponse.json({}, { status: 200, headers: corsHeaders });
+}
+
 // POST: Track navigation behavior
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +28,7 @@ export async function POST(request: NextRequest) {
     if (!userId || !action) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400, headers: corsHeaders }
       );
     }
 
@@ -107,10 +119,33 @@ export async function POST(request: NextRequest) {
         }).sort({ visitStartTime: -1 });
 
         if (!navigationRecord) {
-          return NextResponse.json(
-            { error: 'Active page visit not found' },
-            { status: 404 }
-          );
+          // If no active page visit, create one first
+          console.log('No active page visit found, creating one for click tracking');
+          
+          const newPageVisit = new UserNavigationHistory({
+            userId,
+            pageUrl: 'unknown',
+            pagePath: 'unknown',
+            pageTitle: 'Unknown',
+            pageType: 'other',
+            navigationContext: {
+              sessionId: navigationData.sessionId,
+              referrerType: 'direct',
+              entryPoint: 'direct',
+              device: 'desktop',
+              viewport: { width: 1920, height: 1080 },
+            },
+            visitStartTime: new Date(),
+            scrollDepth: 0,
+            scrollEvents: 0,
+            clickEvents: [],
+            contentInteractions: [],
+            categoryExploration: [],
+            isBouncePage: false,
+          });
+
+          await newPageVisit.save();
+          navigationRecord = newPageVisit;
         }
 
         navigationRecord.clickEvents.push({
@@ -220,13 +255,13 @@ export async function POST(request: NextRequest) {
         timeOnPage: navigationRecord.timeOnPage,
         isActive: !navigationRecord.visitEndTime,
       }
-    });
+    }, { headers: corsHeaders });
 
   } catch (error) {
     console.error('Error tracking navigation:', error);
     return NextResponse.json(
       { error: 'Failed to track navigation' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 }
@@ -280,13 +315,13 @@ export async function GET(request: NextRequest) {
         totalCount,
         hasMore: skip + limit < totalCount
       }
-    });
+    }, { headers: corsHeaders });
 
   } catch (error) {
     console.error('Error fetching navigation history:', error);
     return NextResponse.json(
       { error: 'Failed to fetch navigation history' },
-      { status: 500 }
+      { status: 500, headers: corsHeaders }
     );
   }
 } 

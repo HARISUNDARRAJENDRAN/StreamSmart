@@ -6,7 +6,7 @@ export interface IUserHoverInteraction extends Document {
   
   // Target information
   targetId: string; // ID of the item being hovered
-  targetType: 'video' | 'playlist' | 'recommendation_card' | 'thumbnail' | 'creator' | 'category';
+  targetType: 'video' | 'playlist' | 'recommendation_card' | 'thumbnail' | 'creator' | 'category' | 'play_button';
   targetContext: {
     containerType: string; // 'recommendation_grid', 'search_results', 'category_list', etc.
     position: number; // position in list/grid (1-based)
@@ -100,7 +100,7 @@ const UserHoverInteractionSchema: Schema = new Schema({
   },
   targetType: {
     type: String,
-    enum: ['video', 'playlist', 'recommendation_card', 'thumbnail', 'creator', 'category'],
+    enum: ['video', 'playlist', 'recommendation_card', 'thumbnail', 'creator', 'category', 'play_button'],
     required: true,
   },
   targetContext: {
