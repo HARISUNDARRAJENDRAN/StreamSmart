@@ -35,7 +35,28 @@ import {
   PenTool,
   Mic,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  GraduationCap,
+  Briefcase,
+  Newspaper,
+  Lightbulb,
+  Wrench,
+  Heart,
+  Settings,
+  Sparkles,
+  Calculator,
+  Microscope,
+  Atom,
+  Globe,
+  Languages,
+  FileText,
+  MessageSquare,
+  Rocket,
+  Shield,
+  Cpu,
+  Beaker,
+  Dumbbell,
+  Leaf
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -768,19 +789,430 @@ export default function DashboardPage() {
     }
   ];
 
+  // Academic Genres
+  const academicGenres = [
+    {
+      id: "mathematics",
+      title: "Mathematics",
+      description: "From algebra to calculus and beyond",
+      icon: Calculator,
+      gradient: "from-indigo-500/20 to-purple-500/20",
+      borderColor: "border-indigo-500/30",
+      iconColor: "text-indigo-500",
+      count: "8+ courses"
+    },
+    {
+      id: "physics",
+      title: "Physics",
+      description: "Understanding the universe through science",
+      icon: Atom,
+      gradient: "from-blue-500/20 to-teal-500/20",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-500",
+      count: "6+ courses"
+    },
+    {
+      id: "biology",
+      title: "Biology",
+      description: "Life sciences and biological systems",
+      icon: Microscope,
+      gradient: "from-green-500/20 to-emerald-500/20",
+      borderColor: "border-green-500/30",
+      iconColor: "text-green-500",
+      count: "8+ courses"
+    },
+    {
+      id: "chemistry",
+      title: "Chemistry",
+      description: "Molecular science and reactions",
+      icon: Beaker,
+      gradient: "from-orange-500/20 to-red-500/20",
+      borderColor: "border-orange-500/30",
+      iconColor: "text-orange-500",
+      count: "4+ courses"
+    },
+    {
+      id: "history-civics",
+      title: "History & Civics",
+      description: "Past events and government systems",
+      icon: Globe,
+      gradient: "from-amber-500/20 to-yellow-500/20",
+      borderColor: "border-amber-500/30",
+      iconColor: "text-amber-500",
+      count: "5+ courses"
+    },
+    {
+      id: "language-learning",
+      title: "Language Learning",
+      description: "Master new languages and communication",
+      icon: Languages,
+      gradient: "from-rose-500/20 to-pink-500/20",
+      borderColor: "border-rose-500/30",
+      iconColor: "text-rose-500",
+      count: "8+ courses"
+    }
+  ];
+
+  // Career & Professional Development
+  const careerGenres = [
+    {
+      id: "resume-job-hunting",
+      title: "Resume & Job Hunting",
+      description: "Land your dream job with confidence",
+      icon: FileText,
+      gradient: "from-slate-500/20 to-gray-500/20",
+      borderColor: "border-slate-500/30",
+      iconColor: "text-slate-500",
+      count: "8+ guides"
+    },
+    {
+      id: "interview-prep",
+      title: "Interview Preparation",
+      description: "Ace your interviews with proven strategies",
+      icon: MessageSquare,
+      gradient: "from-blue-500/20 to-cyan-500/20",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-500",
+      count: "4+ courses"
+    },
+    {
+      id: "freelancing-remote",
+      title: "Freelancing & Remote Work",
+      description: "Build a successful remote career",
+      icon: Briefcase,
+      gradient: "from-purple-500/20 to-violet-500/20",
+      borderColor: "border-purple-500/30",
+      iconColor: "text-purple-500",
+      count: "6+ courses"
+    },
+    {
+      id: "certifications",
+      title: "Certifications",
+      description: "AWS, Azure, PMP and more",
+      icon: GraduationCap,
+      gradient: "from-green-500/20 to-teal-500/20",
+      borderColor: "border-green-500/30",
+      iconColor: "text-green-500",
+      count: "12+ prep courses"
+    }
+  ];
+
+  // Tech News & Trends
+  const techTrendsGenres = [
+    {
+      id: "tech-news",
+      title: "Tech News & Product Launches",
+      description: "Stay updated with latest technology",
+      icon: Newspaper,
+      gradient: "from-blue-500/20 to-indigo-500/20",
+      borderColor: "border-blue-500/30",
+      iconColor: "text-blue-500",
+      count: "Daily updates"
+    },
+    {
+      id: "ai-innovation",
+      title: "AI & Innovation",
+      description: "Cutting-edge AI developments",
+      icon: Cpu,
+      gradient: "from-purple-500/20 to-pink-500/20",
+      borderColor: "border-purple-500/30",
+      iconColor: "text-purple-500",
+      count: "Weekly insights"
+    },
+    {
+      id: "startup-ecosystem",
+      title: "Startups & Ecosystem",
+      description: "Venture capital and startup news",
+      icon: Rocket,
+      gradient: "from-orange-500/20 to-red-500/20",
+      borderColor: "border-orange-500/30",
+      iconColor: "text-orange-500",
+      count: "Latest stories"
+    },
+    {
+      id: "cybersecurity",
+      title: "Cybersecurity",
+      description: "Digital security and privacy trends",
+      icon: Shield,
+      gradient: "from-red-500/20 to-pink-500/20",
+      borderColor: "border-red-500/30",
+      iconColor: "text-red-500",
+      count: "Security updates"
+    }
+  ];
+
+  // Mind-expanding & Curiosity
+  const curiosityGenres = [
+    {
+      id: "trivia-facts",
+      title: "Did You Know / Trivia",
+      description: "Amazing facts and surprising truths",
+      icon: Lightbulb,
+      gradient: "from-yellow-500/20 to-orange-500/20",
+      borderColor: "border-yellow-500/30",
+      iconColor: "text-yellow-500",
+      count: "8+ collections"
+    },
+    {
+      id: "science-experiments",
+      title: "Science Experiments",
+      description: "Hands-on learning through discovery",
+      icon: Beaker,
+      gradient: "from-teal-500/20 to-green-500/20",
+      borderColor: "border-teal-500/30",
+      iconColor: "text-teal-500",
+      count: "Interactive demos"
+    },
+    {
+      id: "psychology",
+      title: "Psychology",
+      description: "Understanding human behavior and mind",
+      icon: BrainIcon,
+      gradient: "from-violet-500/20 to-purple-500/20",
+      borderColor: "border-violet-500/30",
+      iconColor: "text-violet-500",
+      count: "Mind explorations"
+    },
+    {
+      id: "philosophy",
+      title: "Philosophy",
+      description: "Deep questions about existence and meaning",
+      icon: Lightbulb,
+      gradient: "from-indigo-500/20 to-blue-500/20",
+      borderColor: "border-indigo-500/30",
+      iconColor: "text-indigo-500",
+      count: "Thought-provoking"
+    }
+  ];
+
+  // DIY & Hands-on
+  const diyGenres = [
+    {
+      id: "robotics-iot",
+      title: "Robotics & IoT",
+      description: "Build connected devices and robots",
+      icon: Cpu,
+      gradient: "from-cyan-500/20 to-blue-500/20",
+      borderColor: "border-cyan-500/30",
+      iconColor: "text-cyan-500",
+      count: "Project tutorials"
+    },
+    {
+      id: "electronics-arduino",
+      title: "Electronics & Arduino",
+      description: "Circuit building and microcontrollers",
+      icon: Wrench,
+      gradient: "from-green-500/20 to-teal-500/20",
+      borderColor: "border-green-500/30",
+      iconColor: "text-green-500",
+      count: "Maker projects"
+    },
+    {
+      id: "diy-projects",
+      title: "DIY Projects",
+      description: "Creative making and building",
+      icon: Settings,
+      gradient: "from-orange-500/20 to-yellow-500/20",
+      borderColor: "border-orange-500/30",
+      iconColor: "text-orange-500",
+      count: "Step-by-step guides"
+    }
+  ];
+
+  // Lifestyle
+  const lifestyleGenres = [
+    {
+      id: "health-fitness",
+      title: "Health & Fitness",
+      description: "Physical wellness and exercise",
+      icon: Dumbbell,
+      gradient: "from-red-500/20 to-pink-500/20",
+      borderColor: "border-red-500/30",
+      iconColor: "text-red-500",
+      count: "8+ workout plans"
+    },
+    {
+      id: "mental-wellness",
+      title: "Mental Health & Wellness",
+      description: "Mindfulness and emotional well-being",
+      icon: Heart,
+      gradient: "from-pink-500/20 to-rose-500/20",
+      borderColor: "border-pink-500/30",
+      iconColor: "text-pink-500",
+      count: "Wellness guides"
+    },
+    {
+      id: "sustainable-living",
+      title: "Sustainable Living",
+      description: "Eco-friendly lifestyle choices",
+      icon: Leaf,
+      gradient: "from-green-500/20 to-emerald-500/20",
+      borderColor: "border-green-500/30",
+      iconColor: "text-green-500",
+      count: "Green living tips"
+    }
+  ];
+
+  // Personalized
+  const personalizedGenres = [
+    {
+      id: "trending-now",
+      title: "Trending Now",
+      description: "What's popular in learning today",
+      icon: TrendingUp,
+      gradient: "from-violet-500/20 to-purple-500/20",
+      borderColor: "border-violet-500/30",
+      iconColor: "text-violet-500",
+      count: "Hot topics"
+    },
+    {
+      id: "recommended-for-you",
+      title: "Recommended For You",
+      description: "Curated based on your interests",
+      icon: Sparkles,
+      gradient: "from-amber-500/20 to-orange-500/20",
+      borderColor: "border-amber-500/30",
+      iconColor: "text-amber-500",
+      count: "Personalized"
+    },
+    {
+      id: "based-on-interests",
+      title: "Based on Your Interests",
+      description: "More content you'll love",
+      icon: Heart,
+      gradient: "from-rose-500/20 to-pink-500/20",
+      borderColor: "border-rose-500/30",
+      iconColor: "text-rose-500",
+      count: "Tailored picks"
+    }
+  ];
+
   const handleGenreClick = (genreId: string) => {
+    // Find genre across all categories
+    const allGenres = [
+      ...skillBasedGenres,
+      ...academicGenres,
+      ...careerGenres,
+      ...techTrendsGenres,
+      ...curiosityGenres,
+      ...diyGenres,
+      ...lifestyleGenres,
+      ...personalizedGenres
+    ];
+    
+    const selectedGenre = allGenres.find(g => g.id === genreId);
+    
     // TODO: Navigate to genre-specific page or filter
     toast({
       title: "Genre Selected",
-      description: `Navigating to ${skillBasedGenres.find(g => g.id === genreId)?.title} content...`,
+      description: `Navigating to ${selectedGenre?.title} content...`,
     });
     
     recordActivity({
-      action: `Explored ${skillBasedGenres.find(g => g.id === genreId)?.title} genre`,
-      item: skillBasedGenres.find(g => g.id === genreId)?.title || 'Genre',
+      action: `Explored ${selectedGenre?.title} genre`,
+      item: selectedGenre?.title || 'Genre',
       type: 'started'
     });
   };
+
+  // Reusable genre section renderer
+  const renderGenreSection = (
+    sectionTitle: string,
+    genres: any[],
+    iconComponent: any,
+    showExploreAll = true
+  ) => (
+    <motion.section variants={fadeInUp} className="space-y-6 w-full">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-semibold flex items-center gap-2">
+          {iconComponent && iconComponent}
+          {sectionTitle}
+        </h2>
+        {showExploreAll && (
+          <Button variant="ghost" className="text-primary hover:text-primary/80">
+            Explore All <ChevronRightIcon className="ml-1 h-4 w-4" />
+          </Button>
+        )}
+      </div>
+      
+      <div className="w-full max-w-full">
+        <div className="relative bg-card/50 rounded-lg p-4 border border-border/50 group overflow-hidden">
+          <div className="genre-scroll-container" style={{ maxWidth: '100%' }}>
+            <div className="genre-cards-wrapper">
+              {genres.map((genre, index) => {
+                const IconComponent = genre.icon;
+                return (
+                  <motion.div
+                    key={genre.id}
+                    initial={{ opacity: 0, x: 50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex-shrink-0"
+                    style={{ width: '280px' }}
+                  >
+                    <Card 
+                      className={`w-full h-44 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 ${genre.borderColor} bg-gradient-to-br ${genre.gradient} backdrop-blur-sm group/card`}
+                      onClick={() => handleGenreClick(genre.id)}
+                    >
+                      <CardContent className="p-4 h-full flex flex-col justify-between relative overflow-hidden">
+                        {/* Background Pattern */}
+                        <div className="absolute inset-0 opacity-5">
+                          <div className="absolute top-2 right-2 transform rotate-12">
+                            <IconComponent className="h-20 w-20" />
+                          </div>
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="relative z-10">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className={`p-2 rounded-lg bg-background/80 backdrop-blur-sm ${genre.iconColor} transition-transform duration-300 group-hover/card:scale-110`}>
+                              <IconComponent className="h-5 w-5" />
+                            </div>
+                            <Badge variant="secondary" className="bg-background/60 backdrop-blur-sm text-xs">
+                              {genre.count}
+                            </Badge>
+                          </div>
+                          
+                          <div className="space-y-1">
+                            <h3 className="font-bold text-base leading-tight group-hover/card:text-primary transition-colors">
+                              {genre.title}
+                            </h3>
+                            <p className="text-xs text-muted-foreground line-clamp-2">
+                              {genre.description}
+                            </p>
+                          </div>
+                        </div>
+                        
+                        {/* Hover Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                        
+                        {/* Bottom Action */}
+                        <div className="relative z-10 flex items-center justify-between mt-auto">
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <CirclePlay className="h-3 w-3" />
+                            <span>Start Learning</span>
+                          </div>
+                          <ChevronRightIcon className="h-3 w-3 text-primary opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Scroll Indicators */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
+            <ChevronLeft className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
+            <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          </div>
+        </div>
+      </div>
+    </motion.section>
+  );
 
   // Redirect to login if not authenticated
   if (!isAuthenticated) {
@@ -943,6 +1375,55 @@ export default function DashboardPage() {
           </div>
         </div>
       </motion.section>
+
+      {/* Academic Genres */}
+      {renderGenreSection(
+        "Academic Subjects",
+        academicGenres,
+        <GraduationCap className="h-6 w-6 text-primary" />
+      )}
+
+      {/* Career & Professional Development */}
+      {renderGenreSection(
+        "Career & Professional Development",
+        careerGenres,
+        <Briefcase className="h-6 w-6 text-primary" />
+      )}
+
+      {/* Tech News & Trends */}
+      {renderGenreSection(
+        "Tech News & Trends",
+        techTrendsGenres,
+        <Newspaper className="h-6 w-6 text-primary" />
+      )}
+
+      {/* Mind-expanding & Curiosity */}
+      {renderGenreSection(
+        "Mind-Expanding & Curiosity",
+        curiosityGenres,
+        <Lightbulb className="h-6 w-6 text-primary" />
+      )}
+
+      {/* DIY & Hands-on */}
+      {renderGenreSection(
+        "DIY & Hands-on Learning",
+        diyGenres,
+        <Wrench className="h-6 w-6 text-primary" />
+      )}
+
+      {/* Lifestyle */}
+      {renderGenreSection(
+        "Lifestyle & Wellness",
+        lifestyleGenres,
+        <Heart className="h-6 w-6 text-primary" />
+      )}
+
+      {/* Personalized */}
+      {renderGenreSection(
+        "Personalized for You",
+        personalizedGenres,
+        <Sparkles className="h-6 w-6 text-primary" />
+      )}
 
       {/* Stats Overview */}
       <motion.section variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
