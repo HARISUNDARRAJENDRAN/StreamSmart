@@ -2,7 +2,14 @@ const mongoose = require('mongoose');
 
 async function checkUsers() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart');
+    const connectionString = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart';
+    await mongoose.connect(connectionString, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      retryWrites: true,
+      w: 'majority'
+    });
     console.log('Connected to MongoDB');
     
     const User = mongoose.model('User', new mongoose.Schema({

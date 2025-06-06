@@ -1,22 +1,45 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart';
+// MongoDB Atlas connection URI from environment variable
+const MONGO_URI = process.env.MONGO_URI;
 
-if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+// Fallback for development (optional)
+const DEVELOPMENT_URI = process.env.NODE_ENV === 'development' 
+  ? process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart'
+  : null;
+
+// Use Atlas URI for production, fallback for development
+const connectionString = MONGO_URI || DEVELOPMENT_URI;
+
+// Validate connection string
+if (!connectionString) {
+  throw new Error(
+    'Please define the MONGO_URI environment variable for MongoDB Atlas connection. ' +
+    'Format: mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority'
+  );
 }
 
+// Validate Atlas connection string format in production
+if (process.env.NODE_ENV === 'production' && !connectionString.startsWith('mongodb+srv://')) {
+  throw new Error(
+    'Production requires MongoDB Atlas connection string starting with mongodb+srv://'
+  );
+}
+
+// Log connection info (without credentials)
+const logUri = connectionString.replace(/\/\/[^:\/]+:[^@\/]+@/, '//***:***@');
+console.log(`🔗 MongoDB connecting to: ${logUri}`);
+console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+
 /**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
+ * Global mongoose cache for connection reuse
+ * Prevents connection growth during API route hot reloads in development
  */
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 }
 
-// Declare global type for mongoose cache
 declare global {
   var mongoose: MongooseCache | undefined;
 }
@@ -27,34 +50,92 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function connectDB() {
-  // Ensure cached is defined
-  if (!cached) {
-    cached = global.mongoose = { conn: null, promise: null };
-  }
-
-  if (cached.conn) {
-    return cached.conn;
-  }
-
-  if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose.connect(MONGODB_URI, opts);
-  }
-
+/**
+ * Connect to MongoDB Atlas
+ * Uses connection pooling and proper error handling for production
+ */
+async function connectDB(): Promise<typeof mongoose> {
   try {
-    cached.conn = await cached.promise;
-  } catch (e) {
-    cached.promise = null;
-    throw e;
-  }
+    // Return existing connection if available
+    if (cached.conn) {
+      console.log('📡 Using existing MongoDB connection');
+      return cached.conn;
+    }
 
-  return cached.conn;
+    // Return existing promise if connection is in progress
+    if (!cached.promise) {
+      const connectionOptions = {
+        // Connection pooling options for production
+        maxPoolSize: 10, // Maximum number of connections
+        serverSelectionTimeoutMS: 5000, // How long to try selecting a server
+        socketTimeoutMS: 45000, // How long a socket can be inactive
+        bufferCommands: false, // Disable mongoose buffering
+        
+        // Development vs Production timeouts
+        ...(process.env.NODE_ENV === 'production' ? {
+          connectTimeoutMS: 10000,
+          heartbeatFrequencyMS: 10000,
+        } : {
+          connectTimeoutMS: 30000,
+          heartbeatFrequencyMS: 30000,
+        })
+      };
+
+      console.log('🚀 Initiating MongoDB Atlas connection...');
+      cached.promise = mongoose.connect(connectionString, connectionOptions);
+    }
+
+    // Wait for connection to complete
+    cached.conn = await cached.promise;
+    
+    // Connection success logging
+    console.log('✅ MongoDB Atlas connected successfully');
+    console.log(`📊 Connection state: ${mongoose.connection.readyState}`);
+    console.log(`🏷️  Database name: ${mongoose.connection.name}`);
+    
+    return cached.conn;
+
+  } catch (error) {
+    // Reset promise on error to allow retry
+    cached.promise = null;
+    
+    // Enhanced error logging
+    console.error('❌ MongoDB Atlas connection failed:', error);
+    
+    // Provide helpful error messages
+    if (error instanceof Error) {
+      if (error.message.includes('authentication failed')) {
+        console.error('🔐 Authentication failed - check username/password in MONGO_URI');
+      } else if (error.message.includes('ENOTFOUND')) {
+        console.error('🌐 Network error - check cluster URL in MONGO_URI');
+      } else if (error.message.includes('serverSelectionTimeoutMS')) {
+        console.error('⏱️  Server selection timeout - check cluster accessibility');
+      }
+    }
+    
+    throw error;
+  }
 }
 
-// Export both names for compatibility
+/**
+ * Gracefully close the MongoDB connection
+ * Useful for cleanup in serverless environments
+ */
+async function disconnectDB(): Promise<void> {
+  try {
+    if (cached.conn) {
+      await mongoose.disconnect();
+      cached.conn = null;
+      cached.promise = null;
+      console.log('🔌 MongoDB connection closed');
+    }
+  } catch (error) {
+    console.error('❌ Error closing MongoDB connection:', error);
+    throw error;
+  }
+}
+
+// Export the connection functions
 export default connectDB;
-export const connectToDatabase = connectDB; 
+export { connectDB, disconnectDB };
+export const connectToDatabase = connectDB; // Legacy compatibility 

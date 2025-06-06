@@ -60,10 +60,29 @@ const userProfiles = {
   }
 };
 
+async function connectDB() {
+  try {
+    // Use Atlas URI (MONGO_URI) or fallback to legacy MONGODB_URI for development
+    const connectionString = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart';
+    
+    console.log('🔗 Connecting to MongoDB...');
+    await mongoose.connect(connectionString, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      retryWrites: true,
+      w: 'majority'
+    });
+    console.log('✅ Connected to MongoDB successfully');
+  } catch (error) {
+    console.error('❌ MongoDB connection failed:', error);
+    process.exit(1);
+  }
+}
+
 async function seedData() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart');
-    console.log('🔗 Connected to MongoDB');
+    await connectDB();
     
     // Define schemas
     const ContentSchema = new mongoose.Schema({
