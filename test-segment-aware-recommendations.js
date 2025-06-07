@@ -4,7 +4,7 @@ async function testSegmentAwareRecommendations() {
   console.log('🧪 Testing Segment-Aware Recommendation System\n');
   
   // Test user ID - updated with actual user ID from database
-  const testUserId = '6832dbbf3a7609bd327ecf2e';
+  const testUserId = '68432bd8b4a864a199978f66';
   
   try {
     // Test 1: Basic segment-aware recommendations
@@ -180,7 +180,7 @@ async function testSegmentAwareRecommendations() {
 // Performance test
 async function performanceTest() {
   console.log('\n⚡ Performance Test');
-  const testUserId = '6832dbbf3a7609bd327ecf2e';
+  const testUserId = '68432bd8b4a864a199978f66';
   const startTime = Date.now();
   
   try {

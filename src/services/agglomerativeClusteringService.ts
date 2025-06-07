@@ -107,6 +107,34 @@ class AgglomerativeClusteringService {
     const optimalClusters = config.numClusters ? undefined : 
       await this.findOptimalClusters(clusteringData, finalConfig);
     
+    // Step 6: If clustering quality is poor, try to optimize
+    if (evaluation.silhouetteScore < 0.3 && !config.numClusters) {
+      console.log('🔧 Poor clustering quality detected, attempting optimization...');
+      const optimizedResult = await this.optimizeClusteringConfiguration(
+        clusteringData,
+        finalConfig
+      );
+      
+      if (optimizedResult && optimizedResult.evaluation.silhouetteScore > evaluation.silhouetteScore) {
+        console.log(`✅ Optimization improved clustering quality: ${evaluation.silhouetteScore.toFixed(3)} → ${optimizedResult.evaluation.silhouetteScore.toFixed(3)}`);
+        return {
+          clusters: optimizedResult.clusters,
+          metadata: {
+            totalUsers: clusteringData.userIds.length,
+            numClusters: optimizedResult.clusters.length,
+            linkageCriteria: optimizedResult.config.linkageCriteria,
+            distanceMetric: optimizedResult.config.distanceMetric,
+            clusteringQuality: this.interpretClusteringQuality(optimizedResult.evaluation.silhouetteScore),
+            optimized: true,
+            originalScore: evaluation.silhouetteScore,
+            ...optimizedResult.evaluation
+          },
+          dendrogram,
+          optimalClusters: optimizedResult.clusters.length
+        };
+      }
+    }
+
     return {
       clusters,
       metadata: {
@@ -663,6 +691,89 @@ class AgglomerativeClusteringService {
     ).k;
     
     return optimalK;
+  }
+
+  // New method: Optimize clustering configuration
+  private async optimizeClusteringConfiguration(
+    clusteringData: ClusteringData,
+    baseConfig: ClusteringConfig
+  ): Promise<{
+    clusters: UserCluster[];
+    evaluation: any;
+    config: ClusteringConfig;
+  } | null> {
+    console.log('🔧 Optimizing clustering configuration...');
+    
+    const configurations = [
+      // Try different numbers of clusters
+      { ...baseConfig, numClusters: Math.max(2, Math.floor(clusteringData.userIds.length / 15)) },
+      { ...baseConfig, numClusters: Math.max(3, Math.floor(clusteringData.userIds.length / 20)) },
+      { ...baseConfig, numClusters: Math.max(4, Math.floor(clusteringData.userIds.length / 25)) },
+      
+      // Try different linkage criteria
+      { ...baseConfig, linkageCriteria: 'complete' as LinkageCriteria },
+      { ...baseConfig, linkageCriteria: 'average' as LinkageCriteria },
+      
+      // Try different distance metrics
+      { ...baseConfig, distanceMetric: 'manhattan' as DistanceMetric },
+      { ...baseConfig, distanceMetric: 'cosine' as DistanceMetric },
+      
+      // Combined optimizations
+      { 
+        ...baseConfig, 
+        numClusters: Math.max(3, Math.floor(clusteringData.userIds.length / 18)),
+        linkageCriteria: 'complete' as LinkageCriteria,
+        distanceMetric: 'cosine' as DistanceMetric
+      }
+    ];
+
+    let bestResult = null;
+    let bestScore = -1;
+
+    for (const config of configurations) {
+      try {
+        console.log(`Testing config: ${config.numClusters} clusters, ${config.linkageCriteria} linkage, ${config.distanceMetric} distance`);
+        
+        // Calculate distance matrix
+        const distanceMatrix = this.calculateDistanceMatrix(
+          clusteringData.features, 
+          config.distanceMetric
+        );
+        
+        // Perform clustering
+        const { clusterAssignments } = this.agglomerativeClustering(
+          distanceMatrix,
+          config.numClusters,
+          config.linkageCriteria
+        );
+        
+        // Create cluster objects
+        const clusters = await this.createClusterObjects(
+          clusterAssignments,
+          clusteringData,
+          config
+        );
+        
+        // Evaluate clustering
+        const evaluation = this.evaluateClustering(
+          clusteringData.features,
+          clusterAssignments,
+          clusters
+        );
+        
+        console.log(`  → Silhouette Score: ${evaluation.silhouetteScore.toFixed(3)}`);
+        
+        if (evaluation.silhouetteScore > bestScore) {
+          bestScore = evaluation.silhouetteScore;
+          bestResult = { clusters, evaluation, config };
+        }
+        
+      } catch (error) {
+        console.log(`  → Failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+    }
+
+    return bestResult;
   }
 }
 

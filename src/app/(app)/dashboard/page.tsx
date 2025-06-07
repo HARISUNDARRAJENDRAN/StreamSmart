@@ -60,6 +60,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import type { Playlist } from '@/types';
 import { useUser } from '@/contexts/UserContext';
@@ -95,6 +96,7 @@ export default function DashboardPage() {
   const [selectedRecommendation, setSelectedRecommendation] = useState<any>(null);
   const { user, userStats, isAuthenticated, recordActivity } = useUser();
   const { toast } = useToast();
+  const router = useRouter();
 
   // Initialize implicit tracking
   useEffect(() => {
@@ -1102,17 +1104,16 @@ export default function DashboardPage() {
     
     const selectedGenre = allGenres.find(g => g.id === genreId);
     
-    // TODO: Navigate to genre-specific page or filter
-    toast({
-      title: "Genre Selected",
-      description: `Navigating to ${selectedGenre?.title} content...`,
-    });
-    
-    recordActivity({
-      action: `Explored ${selectedGenre?.title} genre`,
-      item: selectedGenre?.title || 'Genre',
-      type: 'started'
-    });
+    if (selectedGenre) {
+      // Navigate to genre-specific page
+      router.push(`/genre/${genreId}`);
+      
+      recordActivity({
+        action: `Explored ${selectedGenre.title} genre`,
+        item: selectedGenre.title || 'Genre',
+        type: 'started'
+      });
+    }
   };
 
   // Reusable genre section renderer

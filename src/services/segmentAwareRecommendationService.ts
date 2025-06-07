@@ -117,52 +117,75 @@ class SegmentAwareRecommendationService {
       console.log(`First few user IDs: ${cluster.userIds?.slice(0, 3).join(', ') || 'none'}`);
     });
     
-    // Find user's cluster - try both string and ObjectId matching
+    // Find user's cluster - Enhanced matching logic
     const userCluster = userClusters.find(cluster => {
       if (!cluster.userIds || !Array.isArray(cluster.userIds)) {
         console.log(`⚠️ Cluster ${cluster.clusterId} has invalid userIds:`, cluster.userIds);
         return false;
       }
       
-      // Try exact string match first
-      if (cluster.userIds.includes(userId)) {
-        return true;
-      }
-      
-      // Try converting ObjectId to string - with comprehensive null checks
-      const userIdStringified = cluster.userIds.find(id => {
+      // Enhanced user matching with multiple strategies
+      return cluster.userIds.some(id => {
         if (!id) return false;
+        
         try {
-          // Handle both string and ObjectId types
-          if (typeof id === 'string') {
-            return id === userId;
+          // Strategy 1: Direct string comparison
+          if (String(id) === String(userId)) {
+            return true;
           }
-          // If it's an ObjectId or has toString method
-          if (id && typeof id.toString === 'function') {
-            return id.toString() === userId;
+          
+          // Strategy 2: ObjectId comparison (handle both directions)
+          if (typeof id === 'object' && id.toString && id.toString() === userId) {
+            return true;
           }
-          // Convert to string as fallback
-          const idStr = String(id);
-          return idStr === userId;
+          
+          // Strategy 3: Handle mongoose ObjectId comparison
+          if (id._id && String(id._id) === userId) {
+            return true;
+          }
+          
+          // Strategy 4: Loose string comparison (remove whitespace/special chars)
+          const cleanId = String(id).trim().replace(/[^a-zA-Z0-9]/g, '');
+          const cleanUserId = String(userId).trim().replace(/[^a-zA-Z0-9]/g, '');
+          if (cleanId === cleanUserId) {
+            return true;
+          }
+          
+          return false;
         } catch (error) {
-          console.log(`⚠️ Error converting ID to string:`, id, error);
+          console.log(`⚠️ Error matching user ID:`, id, error);
           return false;
         }
       });
-      
-      return !!userIdStringified;
     });
     
     if (!userCluster) {
-      console.log(`❌ User ${userId} not found in any cluster`);
+      console.log(`❌ User ${userId} not found in any cluster after enhanced matching`);
+      
+      // Enhanced debugging - check all user IDs
       const allUserIds = userClusters.flatMap(c => c.userIds || []).filter(Boolean);
-      console.log(`Available user IDs in clusters: ${allUserIds.slice(0, 10).join(', ')}`);
+      console.log(`📊 Total users in clusters: ${allUserIds.length}`);
+      console.log(`📋 Sample user IDs: ${allUserIds.slice(0, 10).map(id => String(id)).join(', ')}`);
+      console.log(`🔍 Looking for: ${userId} (type: ${typeof userId})`);
+      
+      // Try fuzzy matching as last resort
+      const fuzzyMatch = this.findFuzzyUserMatch(userId, userClusters);
+      if (fuzzyMatch) {
+        console.log(`✅ Found fuzzy match in cluster ${fuzzyMatch.clusterId}`);
+        return this.createSegmentProfile(userId, fuzzyMatch);
+      }
+      
       return null;
     }
     
     console.log(`✅ Found user ${userId} in cluster ${userCluster.clusterId} with ${userCluster.userIds?.length || 0} users`);
     console.log(`Cluster characteristics: ${JSON.stringify(userCluster.characteristics, null, 2)}`);
     
+    return this.createSegmentProfile(userId, userCluster);
+  }
+
+  // Helper method to create segment profile
+  private createSegmentProfile(userId: string, userCluster: UserCluster): UserSegmentProfile {
     // Create segment profile with safe filtering
     const segmentPeers = (userCluster.userIds || []).filter(id => {
       if (!id) return false;
@@ -188,6 +211,33 @@ class SegmentAwareRecommendationService {
     this.clusterCache.set(userCluster.clusterId, userCluster);
     
     return segmentProfile;
+  }
+
+  // Helper method for fuzzy user matching
+  private findFuzzyUserMatch(userId: string, userClusters: UserCluster[]): UserCluster | null {
+    const userIdStr = String(userId).toLowerCase();
+    
+    for (const cluster of userClusters) {
+      if (!cluster.userIds) continue;
+      
+      const match = cluster.userIds.find(id => {
+        if (!id) return false;
+        try {
+          const idStr = String(id).toLowerCase();
+          // Check if IDs are similar (allowing for slight variations)
+          return idStr.includes(userIdStr) || userIdStr.includes(idStr);
+        } catch (error) {
+          return false;
+        }
+      });
+      
+      if (match) {
+        console.log(`🔍 Fuzzy match found: ${match} ≈ ${userId}`);
+        return cluster;
+      }
+    }
+    
+    return null;
   }
 
   // Create recommendation engine configuration based on cluster characteristics
@@ -640,17 +690,241 @@ class SegmentAwareRecommendationService {
     this.clusterCache.clear();
   }
 
-  // Get segment analytics
+  // Enhanced segment analytics
   async getSegmentAnalytics(clusterId: number): Promise<any> {
     const cluster = this.clusterCache.get(clusterId);
-    if (!cluster) return null;
+    if (!cluster) {
+      return {
+        error: 'Cluster not found',
+        clusterId,
+        availableClusters: Array.from(this.clusterCache.keys())
+      };
+    }
+
+    try {
+      // Get detailed cluster analytics
+      const clusterUsers = cluster.userIds || [];
+      console.log(`📊 Analyzing cluster ${clusterId} with ${clusterUsers.length} users`);
+
+      // Get viewing patterns for cluster users
+      const viewingHistory = await UserViewingHistory.find({
+        userId: { $in: clusterUsers }
+      }).limit(1000);
+
+      // Calculate engagement metrics
+      const engagementMetrics = this.calculateEngagementMetrics(viewingHistory);
+      
+      // Get content preferences
+      const contentPreferences = this.analyzeContentPreferences(viewingHistory);
+      
+      // Calculate recommendation performance
+      const recommendationPerformance = await this.calculateRecommendationPerformance(clusterUsers);
+
+      return {
+        clusterId,
+        clusterSize: clusterUsers.length,
+        characteristics: cluster.characteristics,
+        engagementMetrics,
+        contentPreferences,
+        recommendationPerformance,
+        recommendationEngine: this.createRecommendationEngine(cluster.characteristics),
+        insights: this.generateClusterInsights(cluster, engagementMetrics, contentPreferences)
+      };
+    } catch (error) {
+      console.error(`Error analyzing cluster ${clusterId}:`, error);
+      return {
+        error: 'Analysis failed',
+        clusterId,
+        details: error instanceof Error ? error.message : 'Unknown error'
+      };
+    }
+  }
+
+  // Calculate detailed engagement metrics
+  private calculateEngagementMetrics(viewingHistory: any[]): any {
+    if (viewingHistory.length === 0) {
+      return {
+        avgViewDuration: 0,
+        avgCompletionRate: 0,
+        totalViews: 0,
+        activeUsers: 0,
+        avgSessionsPerUser: 0
+      };
+    }
+
+    const totalViews = viewingHistory.length;
+    const uniqueUsers = new Set(viewingHistory.map(v => v.userId)).size;
+    const totalDuration = viewingHistory.reduce((sum, v) => sum + (v.totalViewDuration || 0), 0);
+    const totalCompletion = viewingHistory.reduce((sum, v) => sum + (v.completionPercentage || 0), 0);
+
+    // Group by user to calculate sessions
+    const userSessions = new Map<string, number>();
+    viewingHistory.forEach(v => {
+      const userId = v.userId;
+      userSessions.set(userId, (userSessions.get(userId) || 0) + 1);
+    });
+
+    const avgSessionsPerUser = uniqueUsers > 0 ? 
+      Array.from(userSessions.values()).reduce((sum, sessions) => sum + sessions, 0) / uniqueUsers : 0;
+
+    return {
+      avgViewDuration: totalViews > 0 ? totalDuration / totalViews : 0,
+      avgCompletionRate: totalViews > 0 ? totalCompletion / totalViews : 0,
+      totalViews,
+      activeUsers: uniqueUsers,
+      avgSessionsPerUser,
+      engagementScore: this.calculateEngagementScore(totalViews, totalDuration, totalCompletion, uniqueUsers)
+    };
+  }
+
+  // Analyze content preferences for the cluster
+  private analyzeContentPreferences(viewingHistory: any[]): any {
+    const categoryCount = new Map<string, number>();
+    const categoryDuration = new Map<string, number>();
+    const categoryCompletion = new Map<string, number>();
+
+    viewingHistory.forEach(v => {
+      const category = v.category || 'Unknown';
+      categoryCount.set(category, (categoryCount.get(category) || 0) + 1);
+      categoryDuration.set(category, (categoryDuration.get(category) || 0) + (v.totalViewDuration || 0));
+      categoryCompletion.set(category, (categoryCompletion.get(category) || 0) + (v.completionPercentage || 0));
+    });
+
+    // Calculate preferences with scores
+    const preferences = Array.from(categoryCount.entries()).map(([category, count]) => {
+      const duration = categoryDuration.get(category) || 0;
+      const completion = categoryCompletion.get(category) || 0;
+      const avgCompletion = count > 0 ? completion / count : 0;
+      const score = (count * 0.4) + (duration * 0.0001) + (avgCompletion * 0.6);
+      
+      return {
+        category,
+        viewCount: count,
+        totalDuration: duration,
+        avgCompletion,
+        preferenceScore: score
+      };
+    }).sort((a, b) => b.preferenceScore - a.preferenceScore);
+
+    return {
+      topPreferences: preferences.slice(0, 5),
+      totalCategories: preferences.length,
+      diversityIndex: this.calculateDiversityIndex(preferences)
+    };
+  }
+
+  // Calculate recommendation performance for cluster users
+  private async calculateRecommendationPerformance(userIds: string[]): Promise<any> {
+    try {
+      // Get recent feedback for cluster users
+      const recentFeedback = await UserFeedback.find({
+        userId: { $in: userIds },
+        createdAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) } // Last 30 days
+      });
+
+      if (recentFeedback.length === 0) {
+        return {
+          totalFeedback: 0,
+          positiveRate: 0,
+          avgRating: 0,
+          engagementRate: 0
+        };
+      }
+
+      const positiveFeedback = recentFeedback.filter(f => 
+        (f.feedbackType === 'rating' && f.rating && f.rating >= 4) ||
+        f.feedbackType === 'like'
+      ).length;
+
+      const ratings = recentFeedback.filter(f => f.feedbackType === 'rating' && f.rating);
+      const avgRating = ratings.length > 0 ? 
+        ratings.reduce((sum, f) => sum + f.rating!, 0) / ratings.length : 0;
+
+      return {
+        totalFeedback: recentFeedback.length,
+        positiveFeedback,
+        positiveRate: positiveFeedback / recentFeedback.length,
+        avgRating,
+        engagementRate: recentFeedback.length / userIds.length
+      };
+    } catch (error) {
+      console.error('Error calculating recommendation performance:', error);
+      return {
+        totalFeedback: 0,
+        positiveRate: 0,
+        avgRating: 0,
+        engagementRate: 0,
+        error: 'Calculation failed'
+      };
+    }
+  }
+
+  // Generate cluster insights
+  private generateClusterInsights(cluster: UserCluster, engagementMetrics: any, contentPreferences: any): any {
+    const characteristics = cluster.characteristics;
     
     return {
-      clusterId,
-      userCount: cluster.clusterSize,
-      characteristics: cluster.characteristics,
-      recommendationEngine: this.createRecommendationEngine(cluster.characteristics)
+      segmentType: characteristics.userType,
+      engagementLevel: characteristics.engagementLevel,
+      keyBehaviors: characteristics.behaviorPatterns,
+      contentAffinities: contentPreferences.topPreferences.slice(0, 3).map((p: any) => p.category),
+      recommendationStrategy: characteristics.recommendationStrategy,
+      clusterHealth: {
+        size: cluster.clusterSize,
+        cohesion: cluster.intraClusterDistance,
+        engagement: engagementMetrics.engagementScore,
+        diversity: contentPreferences.diversityIndex
+      },
+      optimizationSuggestions: this.generateOptimizationSuggestions(cluster, engagementMetrics, contentPreferences)
     };
+  }
+
+  // Helper methods for calculations
+  private calculateEngagementScore(views: number, duration: number, completion: number, users: number): number {
+    const avgViewsPerUser = users > 0 ? views / users : 0;
+    const avgDurationPerView = views > 0 ? duration / views : 0;
+    const avgCompletionRate = views > 0 ? completion / views : 0;
+    
+    // Weighted engagement score (0-100)
+    return Math.min(100, 
+      (avgViewsPerUser * 10) + 
+      (avgDurationPerView * 0.01) + 
+      (avgCompletionRate * 0.5)
+    );
+  }
+
+  private calculateDiversityIndex(preferences: any[]): number {
+    if (preferences.length === 0) return 0;
+    
+    const totalScore = preferences.reduce((sum, p) => sum + p.preferenceScore, 0);
+    const entropy = preferences.reduce((sum, p) => {
+      const probability = p.preferenceScore / totalScore;
+      return sum - (probability * Math.log2(probability || 1));
+    }, 0);
+    
+    return entropy / Math.log2(preferences.length || 1); // Normalized entropy
+  }
+
+  private generateOptimizationSuggestions(cluster: UserCluster, engagementMetrics: any, contentPreferences: any): string[] {
+    const suggestions: string[] = [];
+    
+    if (engagementMetrics.engagementScore < 30) {
+      suggestions.push('Increase content variety to boost engagement');
+    }
+    
+    if (contentPreferences.diversityIndex < 0.3) {
+      suggestions.push('Introduce cross-category recommendations');
+    }
+    
+    if (cluster.clusterSize < 5) {
+      suggestions.push('Consider merging with similar clusters for better recommendations');
+    }
+    
+    if (engagementMetrics.avgCompletionRate < 50) {
+      suggestions.push('Focus on shorter content or better content matching');
+    }
+    
+    return suggestions;
   }
 }
 
