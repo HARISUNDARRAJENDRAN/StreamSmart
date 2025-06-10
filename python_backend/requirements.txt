@@ -1,55 +1,60 @@
-# Alternative requirements with more conservative versions
-# Use this if the main requirements.txt has dependency conflicts
+# Updated requirements with compatible versions for Python 3.11
 
-# Core ML libraries
-torch==1.13.1
-torchvision==0.14.1
-torchaudio==0.13.1
-transformers==4.35.0
+# Core ML libraries - Updated to compatible versions
+torch>=2.0.0,<2.2.0
+torchvision>=0.15.0,<0.17.0
+torchaudio>=2.0.0,<2.2.0
+transformers==4.36.2
 sentence-transformers==2.2.2
 
 # Audio processing
-openai-whisper==20231117
-librosa==0.10.1
-soundfile==0.12.1
+openai-whisper
+librosa>=0.10.1
+soundfile>=0.12.1
 
 # Video processing  
-opencv-python==4.8.1.78
-moviepy==1.0.3
-pillow==10.0.1
+opencv-python-headless==4.8.1.78
+moviepy>=1.0.3
+pillow>=10.0.1
 
-# CLIP model - manual installation method
-ftfy==6.1.1
-regex==2023.10.3
+# CLIP model dependencies
+ftfy>=6.1.1
+regex>=2023.10.3
 
 # API and web framework
 fastapi==0.104.1
-uvicorn==0.24.0
+uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
 # Utilities
-numpy==1.24.3
-scipy==1.11.4
-requests==2.31.0
-python-dotenv==1.0.0
-pydantic==2.5.2
+numpy>=1.24.0,<2.0.0
+scipy>=1.11.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+pydantic>=2.5.0,<3.0.0
 
-# YouTube video downloading
-yt-dlp==2023.12.30
-
-# YouTube transcript extraction
-youtube-transcript-api==0.6.1
+# YouTube processing
+yt-dlp>=2023.12.30
+youtube-transcript-api>=0.6.1
 
 # Data handling
-pandas==2.1.4
+pandas>=2.1.0
 
-# Additional dependencies
-scikit-learn==1.3.2
-psutil==5.9.6
+# ML utilities
+scikit-learn>=1.3.0
+psutil>=5.9.0
 
-google-generativeai==0.3.2
-langchain-core>=0.1.0,<0.2.0
-langchain>=0.1.0
-langchain-google-genai==0.0.6
-langchain-community==0.0.10
-faiss-cpu==1.7.4
+# AI integrations
+google-generativeai>=0.3.2
+langchain-core>=0.1.0,<0.3.0
+langchain>=0.1.0,<0.3.0
+langchain-google-genai>=0.0.6
+langchain-community>=0.0.10,<0.3.0
+faiss-cpu>=1.7.4
+
+# Database
+pymongo>=4.6.0
+motor>=3.3.0
+
+# Authentication
+python-jose[cryptography]>=3.3.0
