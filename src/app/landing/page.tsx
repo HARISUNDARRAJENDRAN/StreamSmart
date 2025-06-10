@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import Particles from '@tsparticles/react';
 import { Engine } from '@tsparticles/engine';
 import { loadLinksPreset } from '@tsparticles/preset-links';
+import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 const features = [
   {
@@ -247,48 +248,114 @@ const contactItemVariants = {
   },
 };
 
-// Custom hook for Intersection Observer
-const useIntersectionObserver = (threshold = 0.3) => {
-  const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-        }
-      },
-      { threshold }
-    );
-
-    const currentRef = ref.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [threshold]);
-
-  return [ref, isInView] as const;
+// Hero section specific animations
+const heroSectionVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      staggerChildren: 0.15,
+    },
+  },
 };
 
-
+const heroItemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 export default function LandingPage() {
-  const [currentSection, setCurrentSection] = useState(0);
-  const [showNavbar, setShowNavbar] = useState(false);
   const [pushTransitionComplete, setPushTransitionComplete] = useState(false);
-  
+  const [canNavbarAppear, setCanNavbarAppear] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(false);
+  const [currentSection, setCurrentSection] = useState(0);
+
   // Intersection observers for different sections
-  const [aboutRef, aboutInView] = useIntersectionObserver(0.2);
-  const [featuresRef, featuresInView] = useIntersectionObserver(0.15);
-  const [howItWorksRef, howItWorksInView] = useIntersectionObserver(0.2);
-  const [contactRef, contactInView] = useIntersectionObserver(0.3);
+  const aboutRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
+  const featuresRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
+  const testimonialsRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
+  const contactRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
+  const howItWorksRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
+
+  const aboutInView = aboutRef.inView;
+  const featuresInView = featuresRef.inView;
+  const testimonialsInView = testimonialsRef.inView;
+  const contactInView = contactRef.inView;
+  const howItWorksInView = howItWorksRef.inView;
+
+  // Simulate splash screen completion
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPushTransitionComplete(true);
+    }, 1500); // Duration of the splash screen push up
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Effect to determine if the navbar *can* appear (after splash and initial delay)
+  useEffect(() => {
+    if (pushTransitionComplete) {
+      const timer = setTimeout(() => {
+        setCanNavbarAppear(true);
+      }, 300); // Original delay for first appearance
+      return () => clearTimeout(timer);
+    } else {
+      setCanNavbarAppear(false); // Reset if splash isn't complete
+    }
+  }, [pushTransitionComplete]);
+
+  // Effect to handle scroll-based visibility *after* navbar is allowed to appear
+  useEffect(() => {
+    const handleScrollBasedNavbar = () => {
+      if (!canNavbarAppear) {
+        setShowNavbar(false); // Navbar stays hidden if it's not yet time for its first appearance
+        return;
+      }
+
+      // Navbar is eligible to appear; now check scroll position
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > 50) { // Scrolled down a bit
+        setShowNavbar(false); // Hide navbar
+      } else { // At the very top (or close to it)
+        setShowNavbar(true); // Show navbar
+      }
+    };
+
+    handleScrollBasedNavbar(); // Call once to set initial state based on current conditions
+
+    window.addEventListener('scroll', handleScrollBasedNavbar);
+    return () => {
+      window.removeEventListener('scroll', handleScrollBasedNavbar);
+    };
+  }, [canNavbarAppear]); // This effect depends on whether the navbar is ready for scroll-based logic
+
+  // Side navigation scroll detection (for dots) - remains separate
+  useEffect(() => {
+    const handleSideNavScroll = () => {
+      const sections = document.querySelectorAll('section[data-section]');
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+
+      sections.forEach((section, index) => {
+        const sectionTop = (section as HTMLElement).offsetTop;
+        const sectionHeight = (section as HTMLElement).offsetHeight;
+        
+        if (scrollTop >= sectionTop - windowHeight / 2 && 
+            scrollTop < sectionTop + sectionHeight - windowHeight / 2) {
+          setCurrentSection(index);
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleSideNavScroll);
+    return () => window.removeEventListener('scroll', handleSideNavScroll);
+  }, []);
 
   // Add scroll-snap to html/body and handle splash screen
   useEffect(() => {
@@ -317,8 +384,6 @@ export default function LandingPage() {
   
   const sections = [
     { id: 'hero', name: 'Hero' },
-    { id: 'problem', name: 'Problem' },
-    { id: 'stats', name: 'Stats' },
     { id: 'features', name: 'Features' },
     { id: 'about', name: 'About' },
     { id: 'testimonials', name: 'Testimonials' },
@@ -469,7 +534,7 @@ export default function LandingPage() {
 
       {/* Top Navigation */}
       <motion.nav 
-        className="fixed top-0 right-0 z-50 p-6"
+        className="fixed top-0 left-0 right-0 z-50 p-6"
         initial={{ opacity: 0, y: -20 }}
         animate={{ 
           opacity: showNavbar ? 1 : 0,
@@ -477,40 +542,52 @@ export default function LandingPage() {
         }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
+        <div className="container mx-auto flex items-center justify-between">
+          {/* Left side - Logo */}
+          <Link href="/" className="text-white font-bold text-2xl font-poppins">
+            <span style={{ color: '#D90429' }}>S</span>treamSmart
+          </Link>
+          
+          {/* Right side - Navigation & Buttons */}
         <div className="flex items-center gap-6">
           <Link 
             href="#about" 
-            className="text-white font-medium relative group transition-all duration-300 hover:text-white/90"
+              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
           >
             About
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link 
             href="#features" 
-            className="text-white font-medium relative group transition-all duration-300 hover:text-white/90"
+              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
           >
             Features
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link 
             href="/demo" 
-            className="text-white font-medium relative group transition-all duration-300 hover:text-white/90"
+              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
           >
             Demo
-            <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
+            </Link>
+            <Link href="/signup">
+              <Button 
+                variant="default"
+                className="bg-[#D90429] text-white font-medium px-5 py-2 text-sm transition-all duration-300 hover:bg-[#C80021] font-poppins rounded-md"
+              >
+                Get Started Free
+              </Button>
           </Link>
           <Link href="/login">
             <Button 
-              className="bg-white font-medium px-6 py-2 transition-all duration-300 hover:scale-105 font-poppins"
-              style={{ 
-                color: '#D90429',
-                borderRadius: '6px',
-                boxShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              Login/signup
+                variant="outline"
+                className="text-white border-white/50 font-medium px-5 py-2 text-sm transition-all duration-300 hover:bg-white/10 hover:text-white font-poppins rounded-md"
+              >
+                Login
             </Button>
           </Link>
+          </div>
         </div>
       </motion.nav>
 
@@ -545,788 +622,146 @@ export default function LandingPage() {
           className="relative h-screen flex items-center justify-center overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)' // Dark gradient to match the website theme
+            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
           }}
         >
-          {/* Dark Theme Background Elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            {/* Subtle gradient orbs for depth */}
-            <div 
-              className="absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl opacity-20"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.3) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-20 left-20 w-80 h-80 rounded-full blur-3xl opacity-15"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.2) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-3xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.15) 0%, transparent 70%)' }}
-            ></div>
-
-            {/* Floating Video Frame Elements with dark theme */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 0.1, scale: 1 }}
-              transition={{ delay: 5.0, duration: 2.0, ease: "easeOut" }}
-              className="absolute top-20 left-16 w-24 h-16 rounded-lg border border-white/10"
-              style={{
-                background: 'rgba(255,255,255,0.02)',
-                backdropFilter: 'blur(10px)'
-              }}
-            >
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-0 h-0 border-l-[8px] border-l-red-500/60 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent ml-1"></div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 0.08, scale: 1 }}
-              transition={{ delay: 5.5, duration: 2.0, ease: "easeOut" }}
-              className="absolute bottom-32 right-20 w-32 h-20 rounded-lg border border-white/8"
-              style={{
-                background: 'rgba(255,255,255,0.015)',
-                backdropFilter: 'blur(10px)'
-              }}
-            >
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                <div className="w-0 h-0 border-l-[10px] border-l-red-500/50 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent ml-1"></div>
-              </div>
-            </motion.div>
-
-            {/* Animated Progress Bars with red accents */}
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 0.15, scaleX: 1 }}
-              transition={{ delay: 5.8, duration: 1.5, ease: "easeOut" }}
-              className="absolute bottom-40 left-24 w-32 h-1 bg-white/10 rounded-full origin-left"
-            >
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 0.65 }}
-                transition={{ delay: 7.0, duration: 2.0, ease: "easeOut" }}
-                className="h-full rounded-full origin-left"
-                style={{ background: '#D90429' }}
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={{ opacity: 0.12, scaleX: 1 }}
-              transition={{ delay: 6.2, duration: 1.5, ease: "easeOut" }}
-              className="absolute top-36 right-32 w-24 h-1 bg-white/8 rounded-full origin-left"
-            >
-              <motion.div
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 0.45 }}
-                transition={{ delay: 7.5, duration: 2.0, ease: "easeOut" }}
-                className="h-full rounded-full origin-left"
-                style={{ background: '#D90429' }}
-              />
-            </motion.div>
-
-            {/* Subtle grid pattern overlay */}
-            <div 
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(217, 4, 41, 0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(217, 4, 41, 0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: '60px 60px'
-              }}
-            ></div>
-          </div>
-
           {/* Split Screen Content */}
           <div className="relative h-full w-full flex">
             
             {/* Left Half - Content */}
             <motion.div 
-              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:px-12"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: pushTransitionComplete ? 1 : 0 }}
-              transition={{ duration: 0.8, delay: 1.8 }}
+              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pl-16 xl:pl-32 py-12"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : -50 }}
+              transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
             >
-              <div 
-                className="flex flex-col items-center text-center space-y-8 max-w-2xl"
-              >
+              <div className="flex flex-col items-center text-center space-y-6 max-w-xl">
                 
                 {/* Main Heading */}
                 <motion.h1
-                  initial={{ opacity: 0, x: '-100%' }}
-                  animate={{ 
-                    opacity: pushTransitionComplete ? 1 : 0,
-                    x: pushTransitionComplete ? '0%' : '-100%'
-                  }}
-                  transition={{ 
-                    delay: 2.0, 
-                    duration: 1.0, 
-                    ease: [0.25, 0.46, 0.45, 0.94]
-                  }}
-                  className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight uppercase font-poppins"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: pushTransitionComplete ? 1 : 0 }}
+                  transition={{ delay: 2.0, duration: 0.8 }}
+                  className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-poppins text-white"
                   style={{
                     fontWeight: 700,
                     letterSpacing: '-0.02em',
-                    textShadow: '3px 3px 10px rgba(0, 0, 0, 0.25)',
-                    color: 'white'
                   }}
                 >
-                  STREAMSMART
+                  <span style={{ color: '#D90429' }}>S</span>TREAMSMART
                 </motion.h1>
 
-                {/* Subtitle - centered right below STREAMSMART */}
+                {/* Subtitle with red underline */}
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: pushTransitionComplete ? 1 : 0,
-                    y: pushTransitionComplete ? 0 : 20
-                  }}
-                  transition={{ delay: 2.3, duration: 0.8, ease: "easeOut" }}
-                  className="flex flex-col items-center mt-1"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 10 }}
+                  transition={{ delay: 2.2, duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-col items-center"
                 >
-                  <motion.p
-                    className="text-sm md:text-base lg:text-lg text-white font-normal lowercase tracking-wide"
+                  <p
+                    className="text-base md:text-lg text-white/90 font-normal lowercase tracking-wide"
                     style={{
                       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-                      fontWeight: 300,
-                      letterSpacing: '0.05em',
-                      textShadow: '0 2px 10px rgba(0, 0, 0, 0.4)'
+                      fontWeight: 400,
                     }}
                   >
-                    Your Simplified <span style={{ color: '#D90429' }}>Youtube learning</span>
-                  </motion.p>
+                    your simplified <span style={{ color: '#D90429', fontWeight: 500 }}>youtube learning</span>
+                  </p>
                   
-                  {/* Shining red line */}
-                  <motion.div
-                    initial={{ scaleX: 0, opacity: 0 }}
-                    animate={{ 
-                      scaleX: pushTransitionComplete ? 1 : 0,
-                      opacity: pushTransitionComplete ? 1 : 0
-                    }}
-                    transition={{ delay: 2.7, duration: 1.0, ease: "easeOut" }}
-                    className="relative mt-3 w-32 h-0.5 overflow-hidden"
+                  {/* Static red line */}
+                  <div
+                    className="mt-1 w-48 h-[2px]"
                     style={{
-                      background: 'linear-gradient(90deg, transparent 0%, #D90429 20%, #FF0040 50%, #D90429 80%, transparent 100%)',
-                      borderRadius: '2px'
+                      background: '#D90429'
                     }}
-                  >
-                    {/* Animated shine effect */}
-                    <motion.div
-                      className="absolute inset-0 w-full h-full"
-                      style={{
-                        background: 'linear-gradient(90deg, transparent 0%, transparent 30%, rgba(255, 255, 255, 0.8) 50%, transparent 70%, transparent 100%)',
-                        borderRadius: '2px'
-                      }}
-                      animate={{
-                        x: ['-100%', '100%']
-                      }}
-                      transition={{
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 3.2
-                      }}
-                    />
-                    
-                    {/* Center glow effect */}
-                    <motion.div
-                      className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full"
-                      style={{
-                        background: 'radial-gradient(circle, rgba(255, 0, 64, 0.8) 0%, transparent 70%)',
-                        filter: 'blur(2px)'
-                      }}
-                      animate={{
-                        scale: [1, 1.5, 1],
-                        opacity: [0.5, 1, 0.5]
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
-                  </motion.div>
+                  />
                 </motion.div>
 
                 {/* Main Description */}
                 <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: pushTransitionComplete ? 1 : 0,
-                    y: pushTransitionComplete ? 0 : 20
-                  }}
-                  transition={{ delay: 3.0, duration: 0.8, ease: "easeOut" }}
-                  className="max-w-3xl text-2xl md:text-3xl lg:text-4xl text-white leading-relaxed mt-10 font-normal"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 10 }}
+                  transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
+                  className="text-lg md:text-xl text-white/80 leading-relaxed mt-4 max-w-md"
                   style={{
                     fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
                     fontWeight: 400,
-                    textShadow: '0 2px 10px rgba(0, 0, 0, 0.4)',
-                    lineHeight: '1.6'
+                    lineHeight: '1.7'
                   }}
                 >
-                  Transform scattered YouTube content into structured learning paths with{' '}
+                  Turn disorganized YouTube videos into smart, structured learning journeys — powered by{' '}
                   <span 
-                    className="bg-gradient-to-r from-[#D90429] via-[#FF0040] to-[#A91D3A] bg-clip-text text-transparent font-semibold"
                     style={{
-                      fontWeight: 600,
-                      textShadow: 'none'
+                      color: '#D90429',
+                      fontWeight: 600 
                     }}
                   >
-                    AI-powered organization
+                    AI
                   </span>
-                  {' '}and intelligent progress tracking.
+                  {' '}and personalized tracking.
                 </motion.p>
 
-                {/* Premium CTA Button */}
+                {/* Simplified CTA Button */}
                 <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ 
-                    opacity: pushTransitionComplete ? 1 : 0,
-                    y: pushTransitionComplete ? 0 : 30
-                  }}
-                  transition={{ delay: 4.0, duration: 0.8, ease: "easeOut" }}
-                  className="mt-16"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 20 }}
+                  transition={{ delay: 2.6, duration: 0.8, ease: "easeOut" }}
+                  className="mt-6"
                 >
                   <Link href="/signup">
-                    <motion.button
-                      className="group relative overflow-hidden font-semibold px-12 py-4 text-lg flex items-center gap-3 border-0 cursor-pointer"
-                      style={{ 
-                        borderRadius: '16px',
-                        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-                        fontWeight: 600,
-                        background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-                        color: '#D90429',
-                        boxShadow: `
-                          0 8px 32px rgba(0, 0, 0, 0.15),
-                          inset 0 1px 0 rgba(255, 255, 255, 0.8),
-                          0 0 0 1px rgba(217, 4, 41, 0.1)
-                        `
-                      }}
-                      whileHover={{ 
-                        scale: 1.05,
-                        y: -2
-                      }}
-                      whileTap={{ 
-                        scale: 0.98,
-                        y: 0
-                      }}
-                      transition={{ 
-                        type: "spring", 
-                        stiffness: 300, 
-                        damping: 20 
-                      }}
+                    <Button
+                      variant="default"
+                      className="group bg-white text-[#D90429] font-poppins font-semibold px-7 py-3 text-base transition-all duration-300 hover:bg-gray-100 shadow-md hover:shadow-lg rounded-lg flex items-center gap-2.5"
                     >
-                      {/* Gradient overlay on hover */}
-                      <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: 'linear-gradient(135deg, #D90429, #FF0040, #A91D3A)',
-                          borderRadius: '16px'
-                        }}
-                        initial={{ opacity: 0 }}
-                        whileHover={{ 
-                          opacity: 1,
-                          transition: { duration: 0.3 }
-                        }}
-                      />
-                      
-                      {/* Animated glow effect */}
-                      <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: 'linear-gradient(135deg, #D90429, #FF0040)',
-                          filter: 'blur(20px)',
-                          borderRadius: '16px'
-                        }}
-                        animate={{
-                          scale: [1, 1.1, 1],
-                          opacity: [0, 0.3, 0]
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                      />
-
-                      {/* Button content */}
-                      <div className="relative z-10 flex items-center gap-3 group-hover:text-white transition-colors duration-300">
-                        {/* Icon that morphs from target to play */}
-                        <motion.div
-                          className="relative w-6 h-6"
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.6, ease: "easeInOut" }}
-                        >
-                          <Target 
-                            className="absolute inset-0 w-6 h-6 transition-all duration-300 group-hover:opacity-0 group-hover:scale-50" 
-                          />
-                          <PlayCircle 
-                            className="absolute inset-0 w-6 h-6 transition-all duration-300 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100" 
-                          />
-                        </motion.div>
-                        
-                        <span className="font-semibold">Start Learning Now</span>
-                        
-                        {/* Arrow that transforms */}
-                        <motion.div
-                          className="relative"
-                          whileHover={{ x: 4 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
+                      <Target className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
+                      <span>Start Learning Now</span>
                           <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                        </motion.div>
-                      </div>
-
-                      {/* Shimmer effect */}
-                      <motion.div
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100"
-                        style={{
-                          background: 'linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%)',
-                          transform: 'translateX(-100%)'
-                        }}
-                        animate={{
-                          transform: ['translateX(-100%)', 'translateX(100%)']
-                        }}
-                        transition={{
-                          duration: 1.5,
-                          repeat: Infinity,
-                          ease: "easeInOut",
-                          delay: 0.5
-                        }}
-                      />
-                    </motion.button>
+                    </Button>
                   </Link>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Curvy Divider */}
-            <div className="absolute left-1/2 top-0 bottom-0 w-32 z-20 hidden lg:block">
-              <svg
-                className="w-full h-full"
-                viewBox="0 0 128 1080"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M0 0 Q64 270 0 540 Q64 810 0 1080"
-                  stroke="rgba(217, 4, 41, 0.3)"
-                  strokeWidth="2"
-                  fill="none"
-                />
-                <path
-                  d="M0 0 Q64 270 0 540 Q64 810 0 1080 L128 1080 L128 0 Z"
-                  fill="url(#curveGradient)"
-                  opacity="0.1"
-                />
-                <defs>
-                  <linearGradient id="curveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#D90429" stopOpacity="0.2" />
-                    <stop offset="100%" stopColor="#D90429" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-
-            {/* Right Half - Demo Video */}
+            {/* Right Half - Preview */}
             <motion.div 
-              className="relative w-full lg:w-1/2 flex flex-col items-center justify-center overflow-hidden"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ 
-                opacity: pushTransitionComplete ? 1 : 0,
-                scale: pushTransitionComplete ? 1 : 0.8
-              }}
-              transition={{ duration: 1.2, delay: 2.5 }}
+              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pr-16 xl:pr-32 py-12"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : 50 }}
+              transition={{ duration: 0.8, delay: 2.0, ease: "easeOut" }}
             >
-              {/* "Watch how it works" Label */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: pushTransitionComplete ? 1 : 0,
-                  y: pushTransitionComplete ? 0 : 20
-                }}
-                transition={{ delay: 3.0, duration: 0.8 }}
-                className="mb-6 text-center"
-              >
+              <div className="flex flex-col items-center text-center space-y-4 w-full max-w-lg">
+                
+                {/* StreamSmart Preview text */}
                 <p 
-                  className="text-white/80 text-lg font-medium tracking-wide"
+                  className="text-base md:text-lg text-white/70 font-medium"
                   style={{
-                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-                    fontWeight: 500
+                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
                   }}
                 >
-                  Watch how it works
+                  StreamSmart Preview
                 </p>
-                <div 
-                  className="w-16 h-0.5 mx-auto mt-2"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent, #D90429, transparent)'
-                  }}
-                />
-              </motion.div>
 
-              {/* Video Container with Enhanced Glassmorphism */}
-              <div 
-                className="relative w-full max-w-2xl mx-8 rounded-3xl overflow-hidden group cursor-pointer transition-all duration-500 hover:scale-[1.02]"
+                {/* Video Preview Container - Simplified */}
+                <div 
+                  className="relative w-full aspect-[16/10] rounded-xl overflow-hidden group"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  backdropFilter: 'blur(25px)',
-                  border: '2px solid transparent',
-                  backgroundImage: `
-                    linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03)),
-                    linear-gradient(135deg, 
-                      rgba(217, 4, 41, 0.3) 0%, 
-                      rgba(255, 255, 255, 0.1) 25%, 
-                      rgba(217, 4, 41, 0.2) 50%, 
-                      rgba(255, 255, 255, 0.1) 75%, 
-                      rgba(217, 4, 41, 0.3) 100%
-                    )
-                  `,
-                  backgroundOrigin: 'border-box',
-                  backgroundClip: 'content-box, border-box',
-                  boxShadow: `
-                    0 25px 50px rgba(0, 0, 0, 0.4),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                    0 0 40px rgba(217, 4, 41, 0.1)
-                  `
-                }}
-              >
-                {/* Video Content */}
-                <div className="aspect-video bg-gradient-to-br from-gray-900 via-black to-gray-800 relative overflow-hidden">
-                  {/* Subtle grid pattern overlay */}
-                  <div 
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      backgroundImage: `
-                        linear-gradient(rgba(217, 4, 41, 0.1) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(217, 4, 41, 0.1) 1px, transparent 1px)
-                      `,
-                      backgroundSize: '20px 20px'
-                    }}
-                  />
-                  
-                  {/* Main content */}
+                    background: '#1C1C1E',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                  }}
+                >
+                  {/* Simple Play button icon */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center space-y-6">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        transition={{ type: "spring", stiffness: 300 }}
-                        className="relative"
-                      >
-                        <div 
-                          className="w-20 h-20 rounded-full flex items-center justify-center mx-auto"
-                          style={{
-                            background: 'linear-gradient(135deg, #D90429, #FF0040, #A91D3A)',
-                            boxShadow: '0 0 30px rgba(217, 4, 41, 0.4)'
-                          }}
-                        >
-                          <PlayCircle className="w-10 h-10 text-white" />
+                    <PlayCircle className="w-16 h-16 text-white/40 group-hover:text-white/60 transition-colors duration-300" />
                         </div>
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-[#D90429] to-[#A91D3A] opacity-20 animate-pulse" />
-                      </motion.div>
-                      
-                      <div className="space-y-2">
-                        <p 
-                          className="text-white text-xl font-medium"
-                          style={{
-                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
-                          }}
-                        >
-                          Demo Video
-                        </p>
-                        <p 
-                          className="text-gray-400 text-sm"
-                          style={{
-                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
-                          }}
-                        >
-                          See StreamSmart in action
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                   
-                  {/* Animated corner highlights */}
-                  <div className="absolute top-4 left-4 w-6 h-6 border-l-2 border-t-2 border-red-400/30 rounded-tl-lg" />
-                  <div className="absolute top-4 right-4 w-6 h-6 border-r-2 border-t-2 border-red-400/30 rounded-tr-lg" />
-                  <div className="absolute bottom-4 left-4 w-6 h-6 border-l-2 border-b-2 border-red-400/30 rounded-bl-lg" />
-                  <div className="absolute bottom-4 right-4 w-6 h-6 border-r-2 border-b-2 border-red-400/30 rounded-br-lg" />
-                </div>
-                
-                {/* Enhanced floating elements */}
-                <motion.div
-                  className="absolute -top-4 -right-4 w-8 h-8 rounded-full opacity-70"
-                  style={{
-                    background: 'linear-gradient(135deg, #D90429, #FF0040)',
-                    boxShadow: '0 0 20px rgba(217, 4, 41, 0.5)'
-                  }}
-                  animate={{ 
-                    y: [0, -12, 0],
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 180, 360]
-                  }}
-                  transition={{ 
-                    duration: 4,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                />
-                <motion.div
-                  className="absolute -bottom-3 -left-3 w-6 h-6 bg-white/20 rounded-full backdrop-blur-sm"
-                  animate={{ 
-                    y: [0, 8, 0],
-                    x: [0, 4, 0],
-                    opacity: [0.2, 0.6, 0.2]
-                  }}
-                  transition={{ 
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1.5
-                  }}
-                />
-                
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Corner brackets - Matched to target image */}
+                  <div className="absolute top-3 left-3 w-5 h-5 border-l-2 border-t-2 border-white/20 rounded-tl-sm" />
+                  <div className="absolute top-3 right-3 w-5 h-5 border-r-2 border-t-2 border-white/20 rounded-tr-sm" />
+                  <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/20 rounded-bl-sm" />
+                  <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/20 rounded-br-sm" />
+                      </div>
               </div>
             </motion.div>
-          </div>
-        </section>
-
-        {/* Problem/Solution Section */}
-        <section 
-          data-section="1"
-          className="min-h-screen flex items-center justify-center relative overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
-          }}
-        >
-          <div className="container mx-auto px-6 max-w-7xl relative z-10 py-20">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-              className="text-center mb-20"
-            >
-              <motion.h2 
-                variants={itemVariants}
-                className="text-5xl md:text-7xl font-bold mb-8 text-white font-poppins"
-              >
-                Are you{' '}
-                <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
-                >
-                  overwhelmed
-                </span>
-                {' '}by YouTube learning?
-              </motion.h2>
-              <motion.p 
-                variants={itemVariants}
-                className="text-xl md:text-2xl text-white/70 max-w-4xl mx-auto leading-relaxed font-poppins"
-              >
-                You're not alone. Most learners struggle with the same challenges.
-              </motion.p>
-            </motion.div>
-
-            {/* Problem Points */}
-            <motion.div 
-              variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
-            >
-              {[
-                {
-                  icon: <Clock className="h-8 w-8" />,
-                  problem: "Wasting Hours",
-                  description: "Searching for the next logical video in your learning journey"
-                },
-                {
-                  icon: <ListVideoIcon className="h-8 w-8" />,
-                  problem: "Disorganized Playlists",
-                  description: "Scattered content with no clear learning progression"
-                },
-                {
-                  icon: <BarChart3Icon className="h-8 w-8" />,
-                  problem: "No Progress Tracking",
-                  description: "Unable to measure your learning progress and retention"
-                }
-              ].map((item, index) => (
-                <motion.div
-                  key={item.problem}
-                  variants={itemVariants}
-                  className="relative p-8 rounded-2xl group"
-                  style={{
-                    background: 'rgba(217, 4, 41, 0.08)',
-                    border: '1px solid rgba(217, 4, 41, 0.2)',
-                    backdropFilter: 'blur(10px)'
-                  }}
-                >
-                  <div className="text-center">
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                      style={{
-                        background: 'rgba(217, 4, 41, 0.15)',
-                        border: '1px solid rgba(217, 4, 41, 0.3)'
-                      }}
-                    >
-                      <div style={{ color: '#D90429' }}>
-                        {item.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-4 font-poppins">{item.problem}</h3>
-                    <p className="text-white/70 leading-relaxed">{item.description}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {/* Solution */}
-            <motion.div 
-              variants={containerVariants}
-              className="text-center"
-            >
-              <motion.h3 
-                variants={itemVariants}
-                className="text-4xl md:text-6xl font-bold mb-8 text-white font-poppins"
-              >
-                Meet{' '}
-                <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
-                >
-                  StreamSmart
-                </span>
-              </motion.h3>
-              <motion.p 
-                variants={itemVariants}
-                className="text-xl md:text-2xl text-white/80 max-w-4xl mx-auto leading-relaxed font-poppins mb-12"
-              >
-                Your AI-powered learning companion that transforms chaotic YouTube content into structured, trackable learning paths.
-              </motion.p>
-              
-              <motion.div variants={itemVariants}>
-                <Link href="/signup">
-                  <Button 
-                    className="group bg-gradient-to-r from-[#D90429] to-[#A91D3A] text-white font-poppins font-semibold px-12 py-4 text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl flex items-center gap-3 mx-auto"
-                    style={{ 
-                      borderRadius: '12px',
-                      boxShadow: '0 8px 32px rgba(217, 4, 41, 0.4)',
-                    }}
-                  >
-                    <Sparkles className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" />
-                    Try StreamSmart Free
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* Background decorative elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-20 left-20 w-40 h-40 rounded-full blur-3xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.3) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-20 right-20 w-60 h-60 rounded-full blur-3xl opacity-8"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.25) 0%, transparent 70%)' }}
-            ></div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section 
-          data-section="2"
-          className="min-h-screen flex items-center justify-center relative"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 50%, #1a1a1a 100%)'
-          }}
-        >
-          <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={containerVariants}
-              className="text-center mb-16"
-            >
-              <motion.h2 
-                variants={itemVariants}
-                className="text-5xl md:text-7xl font-bold mb-8 text-white font-poppins"
-              >
-                Trusted by learners{' '}
-                <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
-                >
-                  worldwide
-                </span>
-              </motion.h2>
-              <motion.p 
-                variants={itemVariants}
-                className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed font-poppins"
-              >
-                Join thousands of learners who have transformed their YouTube learning experience
-              </motion.p>
-            </motion.div>
-
-            <motion.div 
-              variants={containerVariants}
-              className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto"
-            >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  variants={itemVariants}
-                  className="text-center group p-8 rounded-2xl transition-all duration-300 hover:scale-105"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(10px)'
-                  }}
-                >
-                  <div 
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110"
-                    style={{
-                      background: 'rgba(217, 4, 41, 0.15)',
-                      border: '1px solid rgba(217, 4, 41, 0.3)'
-                    }}
-                  >
-                    <stat.icon 
-                      className="h-8 w-8 transition-all duration-300"
-                      style={{ color: '#D90429' }}
-                    />
-                  </div>
-                  <div 
-                    className="text-4xl md:text-5xl font-bold mb-3 font-poppins"
-                    style={{ color: '#ffffff' }}
-                  >
-                    {stat.number}
-                  </div>
-                  <div 
-                    className="text-lg font-medium font-poppins"
-                    style={{ color: 'rgba(255, 255, 255, 0.7)' }}
-                  >
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Background decorative elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-1/4 right-1/4 w-32 h-32 rounded-full blur-3xl opacity-8"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.2) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-1/4 left-1/4 w-40 h-40 rounded-full blur-3xl opacity-6"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.15) 0%, transparent 70%)' }}
-            ></div>
           </div>
         </section>
 
@@ -1334,7 +769,7 @@ export default function LandingPage() {
         <motion.section 
           id="features"
           ref={featuresRef}
-          data-section="2"
+          data-section="1"
           className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
@@ -1345,274 +780,104 @@ export default function LandingPage() {
           variants={featuresSectionVariants}
         >
           <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            
             {/* Header */}
             <motion.div
               variants={featuresHeaderVariants}
-              className="text-center mb-20"
+              className="text-center mb-16 md:mb-20"
             >
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white font-poppins">
-                Everything you need to{' '}
+              <Badge 
+                variant="outline" 
+                className="mb-4 px-4 py-2 text-sm font-medium border-white/20 text-white/80 bg-white/5 backdrop-blur-sm"
+              >
+                Core Capabilities
+              </Badge>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white font-poppins">
+                Unlock Your Learning Potential with{' '}
                 <span 
                   className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
                 >
-                  learn smarter
+                  StreamSmart
                 </span>
               </h2>
-              <p className="text-xl text-white/70 max-w-4xl mx-auto leading-relaxed font-poppins">
-                StreamSmart combines cutting-edge AI with intuitive design to deliver the ultimate YouTube learning experience.
+              <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed font-poppins">
+                Discover a smarter way to learn from YouTube. Our AI-driven features transform scattered videos into structured knowledge.
               </p>
             </motion.div>
 
-            {/* Modern Framer-Style Grid */}
-            <div className="max-w-7xl mx-auto">
-              {/* First Row - Hero Feature */}
-              <motion.div
-                variants={featuresCardVariants}
-                className="mb-12"
-              >
-                <div className="group cursor-pointer">
-                  <motion.div
-                    whileHover={{ 
-                      scale: 1.01,
-                      y: -6,
-                      transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] }
-                    }}
-                    className="p-12 rounded-3xl transition-all duration-500 relative overflow-hidden"
-                    style={{
-                      background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.08) 0%, rgba(169, 29, 58, 0.04) 100%)',
-                      border: '1px solid rgba(217, 4, 41, 0.15)',
-                      backdropFilter: 'blur(20px)',
-                      boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    {/* Gradient overlay on hover */}
-                    <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
-                      style={{
-                        background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.12) 0%, rgba(169, 29, 58, 0.06) 100%)'
-                      }}
-                    />
-                    
-                    <div className="relative z-10 flex flex-col lg:flex-row items-center gap-12">
-                      {/* Icon */}
-                      <div 
-                        className="w-24 h-24 rounded-3xl flex items-center justify-center transition-all duration-400 group-hover:scale-110 group-hover:rotate-6"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.2) 0%, rgba(169, 29, 58, 0.15) 100%)',
-                          border: '2px solid rgba(217, 4, 41, 0.4)',
-                          boxShadow: '0 10px 30px rgba(217, 4, 41, 0.2)'
-                        }}
-                      >
-                        <BrainIcon 
-                          className="h-12 w-12 transition-all duration-300"
-                          style={{ color: '#D90429' }}
-                        />
-                      </div>
-                      
-                      {/* Content */}
-                      <div className="flex-1 text-center lg:text-left">
-                        <h3 className="text-4xl lg:text-5xl font-bold mb-6 font-poppins text-white leading-tight">
-                          AI-Powered Learning
-                        </h3>
-                        <p className="text-xl lg:text-2xl font-poppins leading-relaxed" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
-                          Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.
-                        </p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Second Row - 2x2 Grid */}
-              <motion.div
-                variants={featuresSectionVariants}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12"
-              >
-                {features.slice(1, 3).map((feature, index) => (
+            {/* Features Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
                   <motion.div
                     key={feature.title}
                     variants={featuresCardVariants}
-                    custom={index + 1}
-                    className="group cursor-pointer"
-                    whileHover={{ 
-                      scale: 1.02,
-                      y: -8,
-                      transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] }
-                    }}
+                  custom={index}
+                  className="group cursor-pointer h-full"
+                  whileHover={{ y: -8, scale: 1.03 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                   >
                     <div 
-                      className="h-full p-10 transition-all duration-400 rounded-2xl relative overflow-hidden"
+                    className="h-full p-8 rounded-2xl transition-all duration-300 relative overflow-hidden flex flex-col"
                       style={{
                         background: 'rgba(255, 255, 255, 0.04)',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '320px',
-                        boxShadow: '0 15px 45px rgba(0, 0, 0, 0.2)'
+                      boxShadow: '0 10px 35px rgba(0, 0, 0, 0.2)'
                       }}
                     >
                       {/* Hover glow effect */}
                       <div 
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-2xl"
                         style={{
-                          background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.06) 0%, rgba(169, 29, 58, 0.03) 100%)',
-                          boxShadow: 'inset 0 0 30px rgba(217, 4, 41, 0.1)'
+                        background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.08) 0%, rgba(169, 29, 58, 0.04) 100%)',
                         }}
                       />
-                      
-                      <div className="relative z-10">
+                    <div className="relative z-10 flex flex-col flex-grow">
                         {/* Icon */}
-                        <div className="mb-8">
+                      <div className="mb-6">
                           <div 
-                            className="w-20 h-20 rounded-2xl flex items-center justify-center transition-all duration-400 group-hover:scale-110 group-hover:-rotate-3"
+                          className="w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]"
                             style={{
                               background: 'rgba(217, 4, 41, 0.15)',
-                              border: '1px solid rgba(217, 4, 41, 0.3)',
-                              boxShadow: '0 8px 25px rgba(217, 4, 41, 0.15)'
+                            border: '1px solid rgba(217, 4, 41, 0.3)'
                             }}
                           >
-                            <div style={{ color: '#D90429' }}>
                               {React.cloneElement(feature.icon as React.ReactElement, {
-                                className: "h-10 w-10 transition-all duration-300"
+                            className: "h-8 w-8 transition-all duration-300",
+                            style: { color: '#D90429' }
                               })}
                             </div>
                           </div>
-                        </div>
-                        
                         {/* Content */}
-                        <div>
-                          <h3 className="text-3xl font-bold mb-6 font-poppins text-white leading-tight">
+                      <div className="flex flex-col flex-grow">
+                        <h3 className="text-2xl font-bold mb-3 font-poppins text-white">
                             {feature.title}
                           </h3>
-                          <p className="leading-relaxed text-lg font-poppins" style={{ color: 'rgba(255, 255, 255, 0.75)' }}>
+                        <p className="leading-relaxed text-base font-poppins text-white/70 flex-grow">
                             {feature.description}
                           </p>
+                        {feature.dataAiHint && (
+                          <p className="text-xs mt-4 text-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            AI Focus: {feature.dataAiHint}
+                          </p>
+                        )}
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 ))}
-              </motion.div>
-
-              {/* Third Row - 3 Column Grid */}
-              <motion.div
-                variants={featuresSectionVariants}
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {features.slice(3).map((feature, index) => (
-                  <motion.div
-                    key={feature.title}
-                    variants={featuresCardVariants}
-                    custom={index + 3}
-                    className="group cursor-pointer"
-                    whileHover={{ 
-                      scale: 1.03,
-                      y: -6,
-                      transition: { duration: 0.3, ease: "easeOut" }
-                    }}
-                  >
-                    <div 
-                      className="h-full p-8 transition-all duration-300 rounded-2xl relative"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        backdropFilter: 'blur(10px)',
-                        minHeight: '280px',
-                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)'
-                      }}
-                    >
-                      {/* Subtle hover effect */}
-                      <div 
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
-                        style={{
-                          background: 'rgba(217, 4, 41, 0.04)',
-                          border: '1px solid rgba(217, 4, 41, 0.1)'
-                        }}
-                      />
-                      
-                      <div className="relative z-10">
-                        {/* Icon */}
-                        <div className="mb-6">
-                          <div 
-                            className="w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                            style={{
-                              background: 'rgba(217, 4, 41, 0.12)',
-                              border: '1px solid rgba(217, 4, 41, 0.25)'
-                            }}
-                          >
-                            <div style={{ color: '#D90429' }}>
-                              {React.cloneElement(feature.icon as React.ReactElement, {
-                                className: "h-8 w-8 transition-all duration-300"
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Content */}
-                        <div>
-                          <h3 className="text-2xl font-bold mb-4 font-poppins text-white">
-                            {feature.title}
-                          </h3>
-                          <p className="leading-relaxed text-base font-poppins" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                            {feature.description}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
             </div>
           </div>
           
-          {/* Enhanced decorative background elements with crimson theme */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
             <div 
-              className="absolute top-16 right-20 w-32 h-32 rounded-full blur-3xl opacity-30"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.4) 0%, transparent 70%)' }}
+              className="absolute -top-1/4 -left-1/4 w-96 h-96 rounded-full blur-3xl opacity-[0.07]"
+              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 1) 0%, transparent 70%)' }}
             ></div>
             <div 
-              className="absolute bottom-20 left-16 w-40 h-40 rounded-full blur-3xl opacity-20"
-              style={{ background: 'radial-gradient(circle, rgba(199, 54, 80, 0.3) 0%, transparent 70%)' }}
+              className="absolute -bottom-1/4 -right-1/4 w-80 h-80 rounded-full blur-3xl opacity-[0.06]"
+              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 1) 0%, transparent 70%)' }}
             ></div>
-            <div 
-              className="absolute top-1/3 left-1/4 w-24 h-24 rounded-full blur-2xl opacity-25"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.35) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-1/3 right-1/3 w-28 h-28 rounded-full blur-2xl opacity-20"
-              style={{ background: 'radial-gradient(circle, rgba(199, 54, 80, 0.25) 0%, transparent 70%)' }}
-            ></div>
-            
-            {/* Subtle grid pattern overlay */}
-            <div 
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(169, 29, 58, 0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(169, 29, 58, 0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: '50px 50px'
-              }}
-            ></div>
-          </div>
-
-          {/* Floating particles effect */}
-          <div className="absolute inset-0 pointer-events-none">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 rounded-full animate-pulse"
-                style={{
-                  background: '#A91D3A',
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${i * 0.5}s`,
-                  animationDuration: `${2 + Math.random() * 2}s`,
-                  opacity: 0.3 + Math.random() * 0.4
-                }}
-              />
-            ))}
           </div>
         </motion.section>
 
@@ -1620,7 +885,7 @@ export default function LandingPage() {
         <motion.section 
           id="about"
           ref={aboutRef}
-          data-section="3"
+          data-section="2"
           className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
@@ -1799,7 +1064,7 @@ export default function LandingPage() {
 
         {/* Testimonials Section */}
         <section 
-          data-section="4"
+          data-section="3"
           className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
@@ -1906,7 +1171,7 @@ export default function LandingPage() {
         <motion.section 
           id="how-it-works"
           ref={howItWorksRef}
-          data-section="5"
+          data-section="4"
           className="h-screen flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
@@ -2121,7 +1386,7 @@ export default function LandingPage() {
         <motion.section 
           id="contact"
           ref={contactRef}
-          data-section="6"
+          data-section="5"
           className="h-screen flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',

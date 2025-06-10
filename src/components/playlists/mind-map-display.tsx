@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo, memo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
@@ -22,21 +22,380 @@ import ReactFlow, {
   Position,
   type NodeProps,
   MarkerType,
+  getBezierPath,
+  type EdgeProps,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Elk, { type ElkNode, type ElkExtendedEdge, type LayoutOptions } from 'elkjs/lib/elk.bundled.js';
+
+// Phase 4.1: Enhanced Visual Styling - Focus-Based CSS Classes
+const focusStyles = `
+  /* Focus-based node styling */
+  .node-container.focused {
+    transform: scale(1.05) !important;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3) !important;
+    border: 2px solid #4F46E5 !important;
+    z-index: 10 !important;
+  }
+
+  .node-container.in-focus-path {
+    opacity: 1 !important;
+    transform: scale(1.02) !important;
+  }
+
+  .node-container:not(.in-focus-path):not(.focused) {
+    opacity: 0.6 !important;
+    filter: grayscale(0.3) !important;
+  }
+
+  .node-container {
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+    cursor: pointer !important;
+  }
+
+  .node-container:hover:not(.focused) {
+    transform: scale(1.03) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Smooth edge transitions */
+  .react-flow__edge {
+    transition: opacity 0.4s ease !important;
+  }
+
+  .react-flow__edge.dimmed {
+    opacity: 0.3 !important;
+  }
+
+  /* Enhanced focus path highlighting */
+  .node-container.in-focus-path:not(.focused) {
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Smooth transitions for all interactive elements */
+  .expand-button {
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+  }
+
+  /* Enhanced hover states */
+  .node-container:hover .expand-button {
+    background: rgba(255, 255, 255, 0.2) !important;
+    transform: scale(1.1) !important;
+  }
+
+  /* Better visual hierarchy for different focus states */
+  .node-container.focused .expand-button {
+    border-color: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  /* Enhanced focus transitions */
+  .node-container.focused {
+    animation: focusPulse 0.6s ease-out;
+  }
+
+  @keyframes focusPulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+    }
+    50% {
+      transform: scale(1.08);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6), 0 0 0 4px rgba(79, 70, 229, 0.2);
+    }
+    100% {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3);
+    }
+  }
+
+  /* Enhanced edge focus styling */
+  .react-flow__edge.focus-edge path {
+    stroke-width: 3px !important;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)) !important;
+  }
+
+  /* Smooth dimming transition for non-focused elements */
+  .react-flow__edge.dimmed path {
+    stroke-opacity: 0.3 !important;
+    stroke-width: 1.5px !important;
+  }
+
+  /* Enhanced interaction feedback */
+  .node-container:active {
+    transform: scale(0.98) !important;
+  }
+
+  .node-container.focused:active {
+    transform: scale(1.03) !important;
+  }
+
+  /* Phase 6.1: Breadcrumb Navigation Styles */
+  .breadcrumb-nav {
+    max-width: 300px;
+  }
+
+  .breadcrumb-button {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .breadcrumb-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .breadcrumb-button:active {
+    transform: translateY(0);
+  }
+
+  .separator {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Compact breadcrumb mode */
+  .breadcrumb-nav.compact {
+    max-width: 200px;
+  }
+
+  .breadcrumb-nav.compact .breadcrumb-button {
+    padding: 2px 6px;
+    font-size: 10px;
+    max-width: 80px;
+  }
+`;
+
+// Inject styles into the document
+if (typeof document !== 'undefined') {
+  const styleElement = document.createElement('style');
+  styleElement.textContent = focusStyles;
+  if (!document.head.querySelector('#mind-map-focus-styles')) {
+    styleElement.id = 'mind-map-focus-styles';
+    document.head.appendChild(styleElement);
+  }
+}
+
+// Phase 4.2: Custom Edge Component for Curved Lines
+const CustomCurvedEdge: React.FC<EdgeProps> = ({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  sourcePosition,
+  targetPosition,
+  data,
+  markerEnd,
+  style
+}) => {
+  const [edgePath] = getBezierPath({
+    sourceX,
+    sourceY,
+    sourcePosition,
+    targetX,
+    targetY,
+    targetPosition,
+    curvature: 0.3, // Smooth curved lines for NotebookLM aesthetic
+  });
+
+  // Enhanced focus-based styling
+  const isInFocusPath = data?.isInFocusPath || false;
+  const isFocused = data?.isFocused || false;
+  
+  // Dynamic styling based on focus state
+  let strokeColor = '#6B7280'; // Default gray
+  let strokeWidth = 2;
+  let opacity = 1;
+  
+  if (isFocused) {
+    strokeColor = '#4F46E5'; // Indigo for focused
+    strokeWidth = 4;
+    opacity = 1;
+  } else if (isInFocusPath) {
+    strokeColor = '#059669'; // Emerald for focus path
+    strokeWidth = 3;
+    opacity = 0.9;
+  } else {
+    strokeColor = '#9CA3AF'; // Light gray for non-focused
+    strokeWidth = 2;
+    opacity = 0.4;
+  }
+
+  return (
+    <>
+      {/* Background path for glow effect on focused edges */}
+      {(isFocused || isInFocusPath) && (
+        <path
+          d={edgePath}
+          stroke={strokeColor}
+          strokeWidth={strokeWidth + 2}
+          fill="none"
+          opacity={0.3}
+          className="react-flow__edge-path-bg"
+          style={{
+            filter: 'blur(2px)',
+            transition: 'all 0.4s ease'
+          }}
+        />
+      )}
+      
+      {/* Main edge path */}
+      <path
+        d={edgePath}
+        stroke={strokeColor}
+        strokeWidth={strokeWidth}
+        fill="none"
+        opacity={opacity}
+        className="react-flow__edge-path"
+        markerEnd={markerEnd}
+        style={{
+          transition: 'stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease',
+          strokeLinecap: 'round',
+          strokeLinejoin: 'round',
+          ...style
+        }}
+      />
+    </>
+  );
+};
+
+// Register the custom edge types
+const edgeTypes = {
+  curved: CustomCurvedEdge,
+};
+
+// Phase 6.1: Breadcrumb Navigation Component
+interface BreadcrumbNavigationProps {
+  history: string[];
+  allNodes: Node<CollapsibleNodeData>[];
+  focusedNodeId: string | null;
+  onNavigate: (nodeId: string) => void;
+  className?: string;
+  compact?: boolean;
+  maxItems?: number;
+}
+
+const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
+  history,
+  allNodes,
+  focusedNodeId,
+  onNavigate,
+  className = "",
+  compact = false,
+  maxItems = 5
+}) => {
+  if (history.length === 0) return null;
+
+  // Smart truncation for long paths
+  const displayHistory = history.length > maxItems 
+    ? [...history.slice(0, 1), '...', ...history.slice(-maxItems + 2)]
+    : history;
+
+  return (
+    <div className={`breadcrumb-nav ${className} ${compact ? 'compact' : ''}`}>
+      {!compact && <div className="font-medium text-primary mb-2 text-xs">Focus Path</div>}
+      <div className="flex items-center space-x-2 flex-wrap">
+        {displayHistory.map((nodeId, index) => {
+          // Handle ellipsis separator
+          if (nodeId === '...') {
+            return (
+              <span key={`ellipsis-${index}`} className="text-neutral-500 text-xs">
+                ...
+              </span>
+            );
+          }
+          
+          const node = allNodes.find(n => n.id === nodeId);
+          const isLast = index === displayHistory.length - 1;
+          const isCurrent = nodeId === focusedNodeId;
+          
+          if (!node) return null;
+          
+          return (
+            <React.Fragment key={nodeId}>
+              <button
+                onClick={() => onNavigate(nodeId)}
+                className={`breadcrumb-button px-2 py-1 rounded text-xs transition-all duration-200 ${
+                  isCurrent 
+                    ? 'bg-primary text-primary-foreground font-medium shadow-sm' 
+                    : 'bg-neutral-700 hover:bg-neutral-600 text-neutral-300 hover:text-white hover:scale-105'
+                }`}
+                title={node.data.label}
+                aria-label={`Navigate to ${node.data.label}`}
+              >
+                <span className={`truncate block ${compact ? 'max-w-[80px]' : 'max-w-[120px]'}`}>
+                  {compact && node.data.label.length > 10 
+                    ? `${node.data.label.substring(0, 10)}...`
+                    : node.data.label.length > 15 
+                    ? `${node.data.label.substring(0, 15)}...` 
+                    : node.data.label
+                  }
+                </span>
+              </button>
+              {!isLast && (
+                <ChevronRightIcon 
+                  className="h-3 w-3 text-neutral-500 separator flex-shrink-0" 
+                  aria-hidden="true"
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
+      </div>
+      
+      {/* Quick actions for breadcrumb navigation */}
+      {!compact && (
+        <div className="mt-2 pt-2 border-t border-neutral-600 flex items-center justify-between text-xs">
+          <span className="text-neutral-400">
+            {history.length} step{history.length !== 1 ? 's' : ''} in path
+          </span>
+          <div className="flex items-center space-x-2">
+            {history.length > maxItems && (
+              <button
+                onClick={() => onNavigate(history[Math.floor(history.length / 2)])}
+                className="text-neutral-400 hover:text-white transition-colors"
+                title="Go to middle node"
+                aria-label="Navigate to middle node"
+              >
+                ↕ Mid
+              </button>
+            )}
+            <button
+              onClick={() => onNavigate(history[0])}
+              className="text-neutral-400 hover:text-white transition-colors"
+              title="Go to root"
+              aria-label="Navigate to root node"
+            >
+              ↑ Root
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface CollapsibleNodeData {
   label: string;
   description?: string;
   expanded?: boolean;
-  childrenIds?: string[]; 
+  childrenIds?: string[];
+  parentId?: string; // Add parent reference
   level?: number;
   width?: number; 
   height?: number; 
   // Dynamic properties added at runtime
   onToggleExpansion?: (nodeId: string) => void;
+  onNodeClick?: (nodeId: string) => void; // Add click handler
   isGloballyExpanded?: boolean;
+  isFocused?: boolean; // Add focus state
+  isInFocusPath?: boolean; // Add focus path state
 }
 
 const elk = new Elk();
@@ -125,6 +484,7 @@ const getLayoutedElements = async (
   };
 
   try {
+    const elk = new Elk();
     const layoutedGraph = await elk.layout(graphToLayout);
     const updatedNodes = nodesToLayout.map((node) => {
       const elkNode = layoutedGraph.children?.find((n) => n.id === node.id);
@@ -143,8 +503,8 @@ const getLayoutedElements = async (
   }
 };
 
-// Custom collapsible node component
-function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeData>) {
+// Performance: Memoized collapsible node component
+const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeData>) {
   // Enhanced dynamic dimensions calculation with better text handling
   const calculateOptimalDimensions = (label: string, description?: string, level: number = 0) => {
     // More sophisticated text measurement
@@ -308,6 +668,19 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
   const displayDescription = data.description ? 
     getTruncatedText(data.description, dimensions.width / 5) : undefined;
 
+  // Phase 2.2: Enhanced node click behavior with expand/collapse distinction
+  const handleNodeClick = useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    
+    // If it's the expand/collapse button, handle that separately
+    if ((event.target as HTMLElement).closest('.expand-button')) {
+      return; // Let expand/collapse handle normally
+    }
+    
+    // Otherwise, focus on this node
+    data.onNodeClick?.(id);
+  }, [data.onNodeClick, id]);
+
   return (
     <div 
       style={{ 
@@ -327,9 +700,21 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
         overflow: 'hidden',
         transition: 'all 0.3s ease',
         wordWrap: 'break-word',
-        wordBreak: 'break-word'
+        wordBreak: 'break-word',
+        // Phase 2.2: Enhanced focus styling
+        ...(data.isFocused && {
+          transform: 'scale(1.1)',
+          zIndex: 10,
+          boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5), 0 20px 40px rgba(0, 0, 0, 0.3)'
+        }),
+        ...(data.isInFocusPath && !data.isFocused && {
+          boxShadow: '0 0 0 2px rgba(34, 197, 94, 0.4), 0 8px 24px rgba(0, 0, 0, 0.2)'
+        })
       }}
-      className="hover:scale-105 hover:shadow-lg transition-all duration-300"
+      className={`node-container hover:scale-105 hover:shadow-lg transition-all duration-300 ${
+        data.isFocused ? 'focused' : ''
+      } ${data.isInFocusPath ? 'in-focus-path' : ''}`}
+      onClick={handleNodeClick}
     >
       <Handle 
         type="target" 
@@ -388,7 +773,7 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
                 (data as any).onToggleExpansion(id);
               }
             }}
-            className="absolute top-2 right-2 p-1.5 hover:bg-white/30 rounded-full transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
+            className="expand-button absolute top-2 right-2 p-1.5 hover:bg-white/30 rounded-full transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(4px)'
@@ -414,10 +799,20 @@ function CollapsibleNode({ id, data, isConnectable }: NodeProps<CollapsibleNodeD
           border: '2px solid white',
           bottom: -4
         }} 
-      />
+            /> 
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  // Performance: Custom comparison for memo optimization
+  return (
+    prevProps.id === nextProps.id &&
+    prevProps.data.label === nextProps.data.label &&
+    prevProps.data.expanded === nextProps.data.expanded &&
+    prevProps.data.isFocused === nextProps.data.isFocused &&
+    prevProps.data.isInFocusPath === nextProps.data.isInFocusPath &&
+    prevProps.data.isGloballyExpanded === nextProps.data.isGloballyExpanded
+  );
+});
 
 const nodeTypes = {
   // The actual onToggleExpansion function will be injected when rendering ReactFlow
@@ -555,17 +950,18 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               const detailNodeId = nodeIdCounter.toString();
               const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
               
-              nodes.push({
-                id: detailNodeId,
-                type: 'collapsible',
-                data: {
-                  label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
-                  description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
-                  childrenIds: [],
-                  level: currentLevel + 1
-                },
-                position: { x: 0, y: 0 }
-              });
+                          nodes.push({
+              id: detailNodeId,
+              type: 'collapsible',
+              data: {
+                label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
+                description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
+                childrenIds: [],
+                parentId: parentId,
+                level: currentLevel + 1
+              },
+              position: { x: 0, y: 0 }
+            });
 
               childIds.push(detailNodeId);
               maxLevel = Math.max(maxLevel, currentLevel + 1);
@@ -574,11 +970,16 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
                 id: `e${parentId}-${detailNodeId}`,
                 source: parentId,
                 target: detailNodeId,
+                type: 'curved', // Phase 4.2: Use custom curved edge
                 style: { 
                   stroke: '#14b8a6', 
                   strokeWidth: 2.5,
                   strokeLinecap: 'round',
                   opacity: 0.9
+                },
+                data: {
+                  isInFocusPath: false,
+                  isFocused: false
                 }
               });
 
@@ -616,6 +1017,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               data: {
                 label: point.concept.length > 50 ? point.concept.substring(0, 47) + '...' : point.concept,
                 description: point.detail !== point.concept ? point.detail : `Key aspect of ${parentLabel}`,
+                parentId: parentId,
                 level: currentLevel + 1
               },
               position: { x: 0, y: 0 }
@@ -628,11 +1030,16 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               id: `e${parentId}-${conceptNodeId}`,
               source: parentId,
               target: conceptNodeId,
+              type: 'curved', // Phase 4.2: Use custom curved edge
               style: { 
                 stroke: '#0d9488', 
                 strokeWidth: 3,
                 strokeLinecap: 'round',
                 opacity: 0.85
+              },
+              data: {
+                isInFocusPath: false,
+                isFocused: false
               }
             });
 
@@ -661,6 +1068,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               label: groupLabel,
               description: `Contains ${group.length} related items`,
               childrenIds: [],
+              parentId: parentId,
               level: currentLevel + 1
             },
             position: { x: 0, y: 0 }
@@ -736,6 +1144,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
                         value.substring(0, 80) + (value.length > 80 ? '...' : '') : 
                         `${formattedKey} details for ${parentLabel}`,
             childrenIds: [],
+            parentId: parentId,
             level: currentLevel + 1
           },
           position: { x: 0, y: 0 }
@@ -814,6 +1223,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
         description: category.description,
         expanded: true,
         childrenIds: [],
+        parentId: rootNodeId,
         level: 1
       },
       position: { x: 0, y: 0 }
@@ -830,6 +1240,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
       id: `e${rootNodeId}-${themeNodeId}`,
       source: rootNodeId,
       target: themeNodeId,
+      type: 'curved', // Phase 4.2: Use custom curved edge
       animated: true,
       style: { 
         stroke: category.color, 
@@ -843,6 +1254,10 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
         width: 12,
         height: 12,
         color: category.color
+      },
+      data: {
+        isInFocusPath: false,
+        isFocused: false
       }
     });
 
@@ -865,6 +1280,7 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
           description: typeof item === 'object' && item?.description ? item.description : 
                       itemLabel.length > 60 ? itemLabel : undefined,
           childrenIds: [],
+          parentId: themeNodeId,
           level: 2
         },
         position: { x: 0, y: 0 }
@@ -877,11 +1293,16 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
         id: `e${themeNodeId}-${conceptNodeId}`,
         source: themeNodeId,
         target: conceptNodeId,
+        type: 'curved', // Phase 4.2: Use custom curved edge
         style: { 
           stroke: '#0d9488', 
           strokeWidth: 3,
           strokeLinecap: 'round',
           opacity: 0.85
+        },
+        data: {
+          isInFocusPath: false,
+          isFocused: false
         }
       });
 
@@ -974,15 +1395,11 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
   return { nodes, edges };
 };
 
-export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
-  // DEBUG: Log component renders and props
-  console.log('🖼️ [MindMapDisplay] Rendering with props:', {
-    playlistTitle,
-    playlistId,
-    hasEnhancedSummaryData: !!enhancedSummaryData,
-    enhancedSummaryData
-  });
-
+export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
+  // Performance: Reduced debug logging
+  const renderCount = useRef(0);
+  renderCount.current++;
+  
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
   const { toast } = useToast();
   
@@ -998,14 +1415,264 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
   const [generatedTitle, setGeneratedTitle] = useState('Generating Mind Map...');
   const [lastInteractedNodeId, setLastInteractedNodeId] = useState<string | null>(null); // Initially no interaction
 
+  // Phase 1: Focus State Management - New state variables for NotebookLM-style navigation
+  const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [focusHistory, setFocusHistory] = useState<string[]>([]);
+  const [nodePositions, setNodePositions] = useState<Record<string, { x: number; y: number }>>({});
+  const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
+
+  // Performance: Use refs for heavy operations
   const mindMapContainerRef = useRef<HTMLDivElement>(null);
   const fullScreenContainerRef = useRef<HTMLDivElement>(null);
   const rfInstanceRef = useRef<any>(null);
+  const layoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastLayoutTime = useRef<number>(0);
+
+  // Performance: Memoize expensive calculations
+  const elkLayoutOptions = useMemo(() => ({
+    'elk.algorithm': 'layered',
+    'elk.direction': 'DOWN',
+    'elk.spacing.nodeNode': '60',
+    'elk.layered.spacing.nodeNodeBetweenLayers': '120',
+    'elk.spacing.componentComponent': '80',
+    'elk.alignment': 'CENTER',
+    'elk.edgeRouting': 'ORTHOGONAL',
+    'elk.padding': '[top=40,left=40,bottom=40,right=40]'
+  }), []);
 
   const setRfInstance = (instance: any) => {
     rfInstanceRef.current = instance;
   };
 
+  // Performance: Debounced layout application to prevent excessive calculations
+  const debouncedApplyELKLayout = useCallback(async (
+    nodes: Node<CollapsibleNodeData>[], 
+    edges: Edge[], 
+    customOptions?: Record<string, string>,
+    force: boolean = false
+  ) => {
+    const now = Date.now();
+    const minInterval = 100; // Minimum 100ms between layout calculations
+
+    // Clear existing timeout
+    if (layoutTimeoutRef.current) {
+      clearTimeout(layoutTimeoutRef.current);
+      layoutTimeoutRef.current = null;
+    }
+
+    // If forced or enough time has passed, apply immediately
+    if (force || (now - lastLayoutTime.current) > minInterval) {
+      lastLayoutTime.current = now;
+      return applyELKLayoutImmediate(nodes, edges, customOptions);
+    }
+
+    // Otherwise, debounce
+    return new Promise<void>((resolve) => {
+      layoutTimeoutRef.current = setTimeout(async () => {
+        lastLayoutTime.current = Date.now();
+        await applyELKLayoutImmediate(nodes, edges, customOptions);
+        resolve();
+      }, minInterval - (now - lastLayoutTime.current));
+    });
+  }, []);
+
+  // Phase 3.2: Enhanced ELK Layout Application with Focus Positioning
+  const applyELKLayoutImmediate = useCallback(async (
+    nodes: Node<CollapsibleNodeData>[], 
+    edges: Edge[], 
+    customOptions?: Record<string, string>
+  ) => {
+    try {
+      // Merge with custom options for focus layouts
+      const layoutOptions = {
+        ...elkLayoutOptions,
+        ...customOptions
+      };
+
+      // Performance: Skip layout if nodes array is empty
+      if (nodes.length === 0) {
+        setDisplayedNodes([]);
+        setDisplayedEdges([]);
+        return;
+      }
+
+      // Enhanced ELK node preparation with focus positioning (memoized calculations)
+      const elkNodes = nodes.map(node => {
+        // Calculate optimal dimensions based on content
+        const baseWidth = node.data.width || 200;
+        const baseHeight = node.data.height || 100;
+        
+        // Enhance focused node dimensions for better visibility
+        const focusedMultiplier = node.data.isFocused ? 1.2 : 1.0;
+        const pathMultiplier = node.data.isInFocusPath ? 1.1 : 1.0;
+        
+        const elkNode: any = {
+          id: node.id,
+          width: Math.round(baseWidth * focusedMultiplier * pathMultiplier),
+          height: Math.round(baseHeight * focusedMultiplier * pathMultiplier)
+        };
+
+        // Add special positioning hints for focused node (NotebookLM style)
+        if (node.data.isFocused) {
+          elkNode.layoutOptions = {
+            'elk.position': '[x=300,y=400]',
+            'elk.priority': '100' // High priority for focused node
+          };
+        } else if (node.data.isInFocusPath) {
+          elkNode.layoutOptions = {
+            'elk.priority': '50' // Medium priority for focus path
+          };
+        }
+        
+        return elkNode;
+      });
+
+      // Create ELK graph structure
+      const elkGraph = {
+        id: 'root',
+        layoutOptions,
+        children: elkNodes,
+        edges: edges.map(edge => ({
+          id: edge.id,
+          sources: [edge.source],
+          targets: [edge.target],
+          // Enhanced edge styling for focus paths
+          ...(edges.find(e => e.id === edge.id)?.style && {
+            layoutOptions: {
+              'elk.edgeThickness': edges.find(e => e.id === edge.id)?.style?.strokeWidth?.toString() || '2'
+            }
+          })
+        }))
+      };
+
+      // Apply ELK layout
+      const elk = new Elk();
+      const layout = await elk.layout(elkGraph);
+      
+      // Apply positions with smooth transitions and focus enhancements
+      const updatedNodes = nodes.map(node => {
+        const elkNode = layout.children?.find(n => n.id === node.id);
+        const basePosition = {
+          x: elkNode?.x || 0,
+          y: elkNode?.y || 0
+        };
+
+        // Apply focus-specific positioning adjustments
+        if (node.data.isFocused) {
+          // Ensure focused node is well-positioned for NotebookLM style
+          basePosition.x = Math.max(basePosition.x, 300);
+          basePosition.y = Math.max(basePosition.y, 200);
+        }
+
+        return {
+          ...node,
+          position: basePosition,
+          // Update dimensions to match ELK calculations
+          ...(elkNode && {
+            data: {
+              ...node.data,
+              width: elkNode.width,
+              height: elkNode.height
+            }
+          })
+        };
+      });
+
+      // Performance: Batch state updates
+      setDisplayedNodes(updatedNodes);
+      setDisplayedEdges(edges);
+      
+      // Performance: Optimized viewport transition with requestAnimationFrame
+      requestAnimationFrame(() => {
+        if (rfInstanceRef.current) {
+          const focusedNode = updatedNodes.find(n => n.data.isFocused);
+          
+          if (focusedNode) {
+            // Focus specifically on the focused node with optimal framing
+            rfInstanceRef.current.fitView({
+              nodes: [focusedNode],
+              duration: 300, // Reduced duration for snappier feel
+              padding: 0.3,
+              maxZoom: 1.5,
+              minZoom: 0.5
+            });
+          } else {
+            // Fallback to general view with focus path context
+            const focusPathNodes = updatedNodes.filter(n => n.data.isInFocusPath);
+            if (focusPathNodes.length > 0) {
+              rfInstanceRef.current.fitView({
+                nodes: focusPathNodes,
+                duration: 300,
+                padding: 0.25,
+                maxZoom: 1.2
+              });
+            } else {
+              // General layout view
+              rfInstanceRef.current.fitView({
+                padding: 0.2,
+                duration: 300,
+                maxZoom: 1.2
+              });
+            }
+          }
+        }
+      });
+
+    } catch (error) {
+      console.error('Error applying enhanced ELK layout:', error);
+      // Fallback to basic layout application
+      try {
+        const { nodes: layoutedNodes, edges: layoutedEdges } = await getLayoutedElements(nodes, edges, customOptions || {});
+        setDisplayedNodes(layoutedNodes);
+        setDisplayedEdges(layoutedEdges);
+      } catch (fallbackError) {
+        console.error('Fallback layout also failed:', fallbackError);
+      }
+    }
+  }, []);
+
+  // Phase 5.2: Helper function to get relevant node IDs for focus path
+  const getRelevantNodeIds = useCallback((focusNodeId: string | null): Set<string> => {
+    if (!focusNodeId) return new Set();
+    
+    const relevantIds = new Set<string>();
+    const focusedNode = allNodes.find(n => n.id === focusNodeId);
+    
+    if (!focusedNode) return relevantIds;
+    
+    // Add the focused node itself
+    relevantIds.add(focusNodeId);
+    
+    // Add immediate children
+    if (focusedNode.data.childrenIds) {
+      focusedNode.data.childrenIds.forEach(childId => {
+        relevantIds.add(childId);
+      });
+    }
+    
+    // Add parent
+    if (focusedNode.data.parentId) {
+      relevantIds.add(focusedNode.data.parentId);
+      
+      // Add siblings (children of the same parent)
+      const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
+      if (parentNode?.data.childrenIds) {
+        parentNode.data.childrenIds.forEach(siblingId => {
+          relevantIds.add(siblingId);
+        });
+      }
+    }
+    
+    // Add nodes from focus history for breadcrumb context
+    focusHistory.forEach(historyId => {
+      relevantIds.add(historyId);
+    });
+    
+    return relevantIds;
+  }, [allNodes, focusHistory]);
+
+  // Phase 2: Click-to-Focus Navigation - Handler functions defined first
   const handleToggleNodeExpansion = useCallback((nodeId: string) => {
     setExpandedNodeIds(prev => {
       const newSet = new Set(prev);
@@ -1033,6 +1700,119 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     setLastInteractedNodeId(nodeId); // Update last interacted node for focusing
   }, [allNodes]);
 
+  // Phase 2: Click-to-Focus Navigation - Focus handler for NotebookLM-style navigation
+  const handleNodeFocus = useCallback((nodeId: string) => {
+    if (focusedNodeId === nodeId) return; // Already focused
+    
+    setIsTransitioning(true);
+    setFocusedNodeId(nodeId);
+    
+    // Add to history for breadcrumb navigation
+    setFocusHistory(prev => [...prev.filter(id => id !== nodeId), nodeId]);
+    
+    setTimeout(() => setIsTransitioning(false), 600);
+  }, [focusedNodeId]);
+
+  // Phase 5.2: Enhanced node data creator for consistent focus state passing
+  const createEnhancedNodes = useCallback((nodes: Node<CollapsibleNodeData>[]): Node<CollapsibleNodeData>[] => {
+    const relevantNodeIds = getRelevantNodeIds(focusedNodeId);
+    
+    return nodes.map(node => ({
+      ...node,
+      data: {
+        ...node.data,
+        onNodeClick: handleNodeFocus,
+        onToggleExpansion: handleToggleNodeExpansion,
+        isFocused: node.id === focusedNodeId,
+        isInFocusPath: relevantNodeIds.has(node.id),
+        isGloballyExpanded: expandedNodeIds.has(node.id)
+      }
+    }));
+  }, [focusedNodeId, getRelevantNodeIds, handleNodeFocus, handleToggleNodeExpansion, expandedNodeIds]);
+
+  // Phase 3: Focus-Based Layout Algorithm - Calculate layout for focused node  
+  const calculateFocusedLayout = useCallback((focusedNodeId: string) => {
+    const focusedNode = allNodes.find(n => n.id === focusedNodeId);
+    if (!focusedNode) return;
+    
+    // Store current positions before transition
+    const currentPositions: Record<string, { x: number; y: number }> = {};
+    displayedNodes.forEach(node => {
+      currentPositions[node.id] = { x: node.position.x, y: node.position.y };
+    });
+    setNodePositions(currentPositions);
+    
+    // Create a new layout configuration for ELK - NotebookLM style
+    const focusedLayoutOptions = {
+      'elk.algorithm': 'layered',
+      'elk.direction': 'RIGHT', // Change to horizontal for NotebookLM style
+      'elk.spacing.nodeNode': '80',
+      'elk.layered.spacing.nodeNodeBetweenLayers': '200',
+      'elk.spacing.componentComponent': '100',
+      'elk.alignment': 'CENTER',
+      'elk.edgeRouting': 'POLYLINE',
+      'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
+      'elk.layered.nodePlacement.favorStraightEdges': 'true',
+      'elk.padding': '[top=60,left=60,bottom=60,right=60]'
+    };
+    
+    // Filter nodes to show focused node + its immediate connections
+    const relevantNodeIds = new Set([
+      focusedNodeId,
+      ...(focusedNode.data.childrenIds || []),
+      ...(focusedNode.data.parentId ? [focusedNode.data.parentId] : [])
+    ]);
+    
+    // Add siblings if we have a parent (for better context)
+    if (focusedNode.data.parentId) {
+      const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
+      if (parentNode?.data.childrenIds) {
+        parentNode.data.childrenIds.forEach(siblingId => {
+          relevantNodeIds.add(siblingId);
+        });
+      }
+    }
+    
+    // Update displayed nodes with focus context using enhanced node creator
+    const filteredNodes = allNodes.filter(node => relevantNodeIds.has(node.id));
+    const focusedNodes = createEnhancedNodes(filteredNodes);
+    
+    const focusedEdges = allEdges.filter(edge => 
+      relevantNodeIds.has(edge.source) && relevantNodeIds.has(edge.target)
+    ).map(edge => {
+      const sourceNode = allNodes.find(n => n.id === edge.source);
+      const targetNode = allNodes.find(n => n.id === edge.target);
+      const isSourceFocused = sourceNode?.id === focusedNodeId;
+      const isTargetFocused = targetNode?.id === focusedNodeId;
+      const isFocused = isSourceFocused || isTargetFocused;
+      const isInFocusPath = relevantNodeIds.has(edge.source) && relevantNodeIds.has(edge.target);
+      
+      return {
+        ...edge,
+        type: edge.type || 'curved', // Ensure curved type
+        className: `${edge.className || ''} focus-edge`.trim(),
+        data: {
+          ...edge.data,
+          isFocused,
+          isInFocusPath
+        }
+      };
+    });
+    
+    // Apply new layout with debouncing for better performance
+    debouncedApplyELKLayout(focusedNodes, focusedEdges, focusedLayoutOptions);
+    
+  }, [allNodes, allEdges, displayedNodes, createEnhancedNodes, debouncedApplyELKLayout]);
+
+  // Effect to handle layout calculation when focused node changes
+  useEffect(() => {
+    if (focusedNodeId && allNodes.length > 0) {
+      calculateFocusedLayout(focusedNodeId);
+    }
+  }, [focusedNodeId, calculateFocusedLayout, allNodes.length]);
+
+
+
   const getVisibleNodesAndEdges = useCallback(() => {
     if (allNodes.length === 0) {
       return { visibleNodes: [], visibleEdges: [] };
@@ -1055,14 +1835,7 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
       if (!node) return;
 
       // Add the node itself to visible list (root is always added here first)
-      visibleNodesAccumulator.push({
-        ...node,
-        data: {
-          ...node.data,
-          onToggleExpansion: handleToggleNodeExpansion,
-          isGloballyExpanded: expandedNodeIds.has(node.id)
-        }
-      });
+      visibleNodesAccumulator.push(node);
 
       // If this node is expanded, recursively process its children
       if (expandedNodeIds.has(nodeId) && node.data.childrenIds) {
@@ -1078,10 +1851,35 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     const visibleNodeIds = new Set(visibleNodesAccumulator.map(n => n.id));
     const visibleEdges = allEdges.filter(edge => 
       visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target)
-    );
+    ).map(edge => {
+      // Phase 4.1 & 4.2: Add focus-based edge styling and curved edge data
+      const sourceNode = visibleNodesAccumulator.find(n => n.id === edge.source);
+      const targetNode = visibleNodesAccumulator.find(n => n.id === edge.target);
+      const isSourceFocused = sourceNode?.data.isFocused || false;
+      const isTargetFocused = targetNode?.data.isFocused || false;
+      const isSourceInPath = sourceNode?.data.isInFocusPath || false;
+      const isTargetInPath = targetNode?.data.isInFocusPath || false;
+      
+      const isFocused = isSourceFocused && isTargetFocused;
+      const isInFocusPath = (isSourceInPath || isSourceFocused) && (isTargetInPath || isTargetFocused);
+      
+      return {
+        ...edge,
+        type: edge.type || 'curved', // Default to curved if no type specified
+        className: `${edge.className || ''} ${!isInFocusPath ? 'dimmed' : ''}`.trim(),
+        data: {
+          ...edge.data,
+          isFocused,
+          isInFocusPath
+        }
+      };
+    });
 
-    return { visibleNodes: visibleNodesAccumulator, visibleEdges };
-  }, [allNodes, allEdges, expandedNodeIds, handleToggleNodeExpansion]);
+    // Phase 5.2: Use enhanced node data creator for consistent focus state
+    const enhancedVisibleNodes = createEnhancedNodes(visibleNodesAccumulator);
+    
+    return { visibleNodes: enhancedVisibleNodes, visibleEdges };
+  }, [allNodes, allEdges, expandedNodeIds, createEnhancedNodes]);
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => setDisplayedNodes((nds) => applyNodeChanges(changes, nds)),
@@ -1138,81 +1936,295 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
     loadMindMapData();
   }, [loadMindMapData]);
 
-  // Effect to update layout when visible nodes/edges change (due to expansion)
+  // Performance: Cleanup layout timeouts on unmount
   useEffect(() => {
-    const performLayout = async () => {
-      if (allNodes.length === 0) return;
-      setIsLoading(true);
+    return () => {
+      if (layoutTimeoutRef.current) {
+        clearTimeout(layoutTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Phase 6.2: Enhanced Keyboard Navigation with Improved Key Mappings
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      if (event.target instanceof HTMLInputElement || 
+          event.target instanceof HTMLTextAreaElement ||
+          event.target instanceof HTMLSelectElement) {
+        return;
+      }
+
+      if (!focusedNodeId) {
+        // When no node is focused, allow basic navigation
+        if (event.key === '/' || event.key === 'f') {
+          // Focus on root node with '/' or 'f' key
+          const rootNode = allNodes.find(node => node.data.level === 0);
+          if (rootNode) {
+            handleNodeFocus(rootNode.id);
+            event.preventDefault();
+          }
+        }
+        return;
+      }
+      
+      const focusedNode = allNodes.find(n => n.id === focusedNodeId);
+      if (!focusedNode) return;
+
+      switch (event.key) {
+        case 'Escape':
+          // Clear focus and return to overview
+          setFocusedNodeId(null);
+          setFocusHistory([]);
+          event.preventDefault();
+          break;
+          
+        case 'ArrowRight':
+          // Navigate to first child (horizontal model: right = deeper)
+          if (focusedNode.data.childrenIds && focusedNode.data.childrenIds.length > 0) {
+            handleNodeFocus(focusedNode.data.childrenIds[0]);
+            event.preventDefault();
+          }
+          break;
+          
+        case 'ArrowLeft':
+          // Navigate to parent (horizontal model: left = shallower)
+          if (focusedNode.data.parentId) {
+            handleNodeFocus(focusedNode.data.parentId);
+            event.preventDefault();
+          }
+          break;
+          
+        case 'ArrowUp':
+        case 'ArrowDown':
+          // Navigate between siblings (vertical model: up/down = same level)
+          if (focusedNode.data.parentId) {
+            const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
+            if (parentNode?.data.childrenIds && parentNode.data.childrenIds.length > 1) {
+              const currentIndex = parentNode.data.childrenIds.indexOf(focusedNodeId);
+              if (currentIndex !== -1) {
+                const direction = event.key === 'ArrowUp' ? -1 : 1;
+                const newIndex = (currentIndex + direction + parentNode.data.childrenIds.length) % parentNode.data.childrenIds.length;
+                handleNodeFocus(parentNode.data.childrenIds[newIndex]);
+                event.preventDefault();
+              }
+            }
+          }
+          break;
+          
+        case 'Enter':
+        case ' ':
+          // Toggle expansion of focused node
+          if (focusedNode.data.childrenIds && focusedNode.data.childrenIds.length > 0) {
+            handleToggleNodeExpansion(focusedNodeId);
+            event.preventDefault();
+          }
+          break;
+
+        // Phase 6.2: Advanced keyboard shortcuts
+        case 'Home':
+          // Navigate to root node
+          const rootNode = allNodes.find(node => node.data.level === 0);
+          if (rootNode && rootNode.id !== focusedNodeId) {
+            handleNodeFocus(rootNode.id);
+            event.preventDefault();
+          }
+          break;
+
+        case 'End':
+          // Navigate to deepest child in current branch
+          let deepestNode = focusedNode;
+          while (deepestNode.data.childrenIds && deepestNode.data.childrenIds.length > 0) {
+            const nextNodeId = deepestNode.data.childrenIds[0];
+            const nextNode = allNodes.find(n => n.id === nextNodeId);
+            if (nextNode) {
+              deepestNode = nextNode;
+            } else {
+              break;
+            }
+          }
+          if (deepestNode.id !== focusedNodeId) {
+            handleNodeFocus(deepestNode.id);
+            event.preventDefault();
+          }
+          break;
+
+        case 'PageUp':
+          // Navigate to first sibling
+          if (focusedNode.data.parentId) {
+            const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
+            if (parentNode?.data.childrenIds && parentNode.data.childrenIds.length > 0) {
+              handleNodeFocus(parentNode.data.childrenIds[0]);
+              event.preventDefault();
+            }
+          }
+          break;
+
+        case 'PageDown':
+          // Navigate to last sibling
+          if (focusedNode.data.parentId) {
+            const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
+            if (parentNode?.data.childrenIds && parentNode.data.childrenIds.length > 0) {
+              const lastChildId = parentNode.data.childrenIds[parentNode.data.childrenIds.length - 1];
+              handleNodeFocus(lastChildId);
+              event.preventDefault();
+            }
+          }
+          break;
+
+        case 'Backspace':
+          // Navigate back in focus history
+          if (focusHistory.length > 1) {
+            const previousNodeId = focusHistory[focusHistory.length - 2];
+            handleNodeFocus(previousNodeId);
+            event.preventDefault();
+          }
+          break;
+
+        // Number keys for quick child selection
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          const childIndex = parseInt(event.key) - 1;
+          if (focusedNode.data.childrenIds && 
+              childIndex < focusedNode.data.childrenIds.length) {
+            handleNodeFocus(focusedNode.data.childrenIds[childIndex]);
+            event.preventDefault();
+          }
+          break;
+
+        // Letter shortcuts
+        case '+':
+        case '=':
+          // Expand all children
+          if (focusedNode.data.childrenIds && focusedNode.data.childrenIds.length > 0) {
+            if (!expandedNodeIds.has(focusedNodeId)) {
+              handleToggleNodeExpansion(focusedNodeId);
+            }
+            event.preventDefault();
+          }
+          break;
+
+        case '-':
+          // Collapse current node
+          if (expandedNodeIds.has(focusedNodeId)) {
+            handleToggleNodeExpansion(focusedNodeId);
+            event.preventDefault();
+          }
+          break;
+
+        case '*':
+          // Expand/collapse all children recursively
+          if (focusedNode.data.childrenIds && focusedNode.data.childrenIds.length > 0) {
+            const toggleRecursively = (nodeId: string) => {
+              const node = allNodes.find(n => n.id === nodeId);
+              if (node?.data.childrenIds && node.data.childrenIds.length > 0) {
+                if (!expandedNodeIds.has(nodeId)) {
+                  handleToggleNodeExpansion(nodeId);
+                }
+                node.data.childrenIds.forEach(childId => toggleRecursively(childId));
+              }
+            };
+            toggleRecursively(focusedNodeId);
+            event.preventDefault();
+          }
+          break;
+
+        case '?':
+        case 'h':
+          // Show/hide keyboard help
+          setShowKeyboardHelp(!showKeyboardHelp);
+          event.preventDefault();
+          break;
+      }
+    };
+
+    // Use 'keydown' for better responsiveness
+    window.addEventListener('keydown', handleKeyPress);
+    
+    // Cleanup
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [focusedNodeId, allNodes, handleNodeFocus, handleToggleNodeExpansion, expandedNodeIds, focusHistory]);
+
+  // Performance: Optimized layout effect with debouncing and better dependency management
+  const performLayoutDebounced = useCallback(async () => {
+    if (allNodes.length === 0) return;
+    
+    setIsLoading(true);
+    try {
       const { visibleNodes, visibleEdges } = getVisibleNodesAndEdges();
       
       if (visibleNodes.length > 0) {
-        const { nodes: layoutedNodes, edges: layoutedEdges } = await getLayoutedElements(visibleNodes, visibleEdges, elkLayoutOptions);
-        setDisplayedNodes(layoutedNodes);
-        setDisplayedEdges(layoutedEdges);
+        // Use debounced layout for better performance
+        await debouncedApplyELKLayout(visibleNodes, visibleEdges, elkLayoutOptions, false);
         
-        setTimeout(() => {
+        // Optimized viewport handling
+        requestAnimationFrame(() => {
           if (rfInstanceRef.current) {
             let focusIds: string[] = [];
-            let padding = 0.25; // Default padding for most focused views
+            let padding = 0.25;
 
             // Find the actual root node
-            const rootNode = layoutedNodes.find(node => node.data.level === 0);
+            const rootNode = visibleNodes.find(node => node.data.level === 0);
             const rootNodeId = rootNode?.id;
 
-            // Scenario 1: Initial load, only root node is visible (because expandedNodeIds is empty or has only root)
-            if (layoutedNodes.length === 1 && rootNodeId && layoutedNodes[0]?.id === rootNodeId && expandedNodeIds.size <= 1) {
+            // Performance: Simplified focus logic
+            if (visibleNodes.length === 1 && rootNodeId && expandedNodeIds.size <= 1) {
               focusIds = [rootNodeId];
-              padding = 0.8; // Very spacious padding for a single root node overview
-            } 
-            // Scenario 2: User has interacted, and we have a lastInteractedNodeId
-            else if (lastInteractedNodeId) {
-              const interactedNodeInLayout = layoutedNodes.find(n => n.id === lastInteractedNodeId);
+              padding = 0.8;
+            } else if (lastInteractedNodeId && visibleNodes.some(n => n.id === lastInteractedNodeId)) {
+              focusIds = [lastInteractedNodeId];
               
-              if (interactedNodeInLayout) {
-                focusIds.push(lastInteractedNodeId); 
-                const isInteractedNodeExpanded = expandedNodeIds.has(lastInteractedNodeId);
-
-                if (isInteractedNodeExpanded && interactedNodeInLayout.data.childrenIds) {
-                  interactedNodeInLayout.data.childrenIds.forEach(childId => {
-                    if (layoutedNodes.some(ln => ln.id === childId)) { 
-                      focusIds.push(childId);
-                    }
-                  });
-                }
-                
-                if (focusIds.length > 1) { // Parent + children visible
-                   padding = 0.2;
-                } else { // Single node focus (either collapsed or no children)
-                   padding = 0.4;
-                }
-              } else {
-                // Fallback if interacted node isn't in layout (should be rare)
-                // Do nothing, let the general fallback below handle it or keep current view
+              const interactedNode = visibleNodes.find(n => n.id === lastInteractedNodeId);
+              if (expandedNodeIds.has(lastInteractedNodeId) && interactedNode?.data.childrenIds) {
+                focusIds.push(...interactedNode.data.childrenIds.filter(childId => 
+                  visibleNodes.some(ln => ln.id === childId)
+                ));
               }
+              
+              padding = focusIds.length > 1 ? 0.2 : 0.4;
             }
 
-            // Apply fitView based on calculated focusIds and padding
+            // Apply fitView with reduced duration for snappier feel
             if (focusIds.length > 0) {
               rfInstanceRef.current.fitView({
                 nodes: focusIds.map(id => ({ id })),
                 padding: padding,
-                duration: 600
+                duration: 200 // Reduced from 600ms
               });
-            } else if (layoutedNodes.length > 0) { // General fallback if no specific focus determined
-              rfInstanceRef.current.fitView({ padding: 0.25, duration: 600 });
+            } else if (visibleNodes.length > 0) {
+              rfInstanceRef.current.fitView({ 
+                padding: 0.25, 
+                duration: 200 
+              });
             }
-            // No need to setLastInteractedNodeId(null) here, keep it for context
           }
-        }, 100);
+        });
       } else {
         setDisplayedNodes([]);
         setDisplayedEdges([]);
       }
+    } catch (error) {
+      console.error('Layout error:', error);
+    } finally {
       setIsLoading(false);
-    };
+    }
+  }, [allNodes.length, expandedNodeIds, lastInteractedNodeId, getVisibleNodesAndEdges, debouncedApplyELKLayout, elkLayoutOptions]);
 
-    performLayout();
-  }, [allNodes, allEdges, expandedNodeIds, getVisibleNodesAndEdges]);
+  // Effect to update layout when visible nodes/edges change (due to expansion)
+  useEffect(() => {
+    if (allNodes.length > 0) {
+      performLayoutDebounced();
+    }
+  }, [allNodes, allEdges, expandedNodeIds, performLayoutDebounced]);
 
   const downloadAsSVG = (containerRef: React.RefObject<HTMLDivElement>) => {
     const container = containerRef.current;
@@ -1339,11 +2351,40 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
         </div>
       ) : (
         <ReactFlow
-          nodes={displayedNodes}
-          edges={displayedEdges}
+          nodes={createEnhancedNodes(displayedNodes)} // Phase 5.2: Use enhanced node data
+          edges={displayedEdges.map(edge => ({
+            ...edge,
+            type: 'curved', // Phase 5.1: Ensure all edges use custom curved type
+            data: {
+              ...edge.data,
+              // Enhanced focus path detection
+              isInFocusPath: focusedNodeId ? (
+                edge.source === focusedNodeId || 
+                edge.target === focusedNodeId ||
+                focusHistory.includes(edge.source) ||
+                focusHistory.includes(edge.target)
+              ) : (edge.data?.isInFocusPath || false),
+              isFocused: focusedNodeId ? (
+                edge.source === focusedNodeId && edge.target === focusedNodeId
+              ) : (edge.data?.isFocused || false)
+            }
+          }))}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes} // Phase 4.2: Add custom curved edge types
+          onNodeClick={(event, node) => {
+            // Phase 5.1: Integrate focus behavior with node clicks
+            event.preventDefault();
+            handleNodeFocus(node.id);
+          }}
+          onPaneClick={(event) => {
+            // Phase 5.1: Clear focus when clicking on empty space
+            if (!event.defaultPrevented) {
+              setFocusedNodeId(null);
+              setFocusHistory([]);
+            }
+          }}
           onInit={setRfInstance}
           fitView
           fitViewOptions={{ padding: 0.2, duration: 800, maxZoom: 1.2 }}
@@ -1376,6 +2417,106 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
             maskColor="rgba(100, 100, 100, 0.15)"
             pannable zoomable
             />
+            
+            {/* Phase 5.1: Focus Status and Keyboard Shortcuts Panel */}
+            {focusedNodeId && (
+              <Panel position="top-right" className="bg-neutral-800/95 backdrop-blur-sm border border-neutral-600 rounded-lg p-3 text-white text-xs space-y-2 max-w-xs">
+                <div className="font-medium text-primary">Focus Mode Active</div>
+                <div className="text-neutral-300">
+                  Focused: <span className="text-white font-medium">
+                    {allNodes.find(n => n.id === focusedNodeId)?.data.label.substring(0, 30)}
+                    {(allNodes.find(n => n.id === focusedNodeId)?.data.label.length || 0) > 30 ? '...' : ''}
+                  </span>
+                </div>
+                                <div className="border-t border-neutral-600 pt-2 space-y-1">
+                  <div className="font-medium text-neutral-200">Keyboard Navigation:</div>
+                  <div className="space-y-0.5 text-neutral-400">
+                    <div><kbd className="bg-neutral-700 px-1 rounded">←</kbd> Parent <kbd className="bg-neutral-700 px-1 rounded">→</kbd> Child</div>
+                    <div><kbd className="bg-neutral-700 px-1 rounded">↑↓</kbd> Siblings</div>
+                    <div><kbd className="bg-neutral-700 px-1 rounded">1-9</kbd> Quick Child</div>
+                    <div><kbd className="bg-neutral-700 px-1 rounded">Home</kbd> Root <kbd className="bg-neutral-700 px-1 rounded">End</kbd> Deepest</div>
+                    <div><kbd className="bg-neutral-700 px-1 rounded">Enter</kbd> Expand <kbd className="bg-neutral-700 px-1 rounded">-</kbd> Collapse</div>
+                    <div><kbd className="bg-neutral-700 px-1 rounded">Esc</kbd> Clear Focus</div>
+                  </div>
+                  <div className="text-xs text-neutral-500 mt-1">
+                    <kbd className="bg-neutral-700 px-1 rounded text-xs">/ or f</kbd> to start navigation
+                  </div>
+                </div>
+               </Panel>
+             )}
+
+            {/* Phase 6.1: Enhanced Breadcrumb Navigation Component */}
+            {focusHistory.length > 0 && (
+              <Panel position="top-left" className="bg-neutral-800/95 backdrop-blur-sm border border-neutral-600 rounded-lg p-3 text-white">
+                <BreadcrumbNavigation
+                  history={focusHistory}
+                  allNodes={allNodes}
+                  focusedNodeId={focusedNodeId}
+                  onNavigate={handleNodeFocus}
+                />
+              </Panel>
+            )}
+
+            {/* Phase 6.2: Comprehensive Keyboard Help Panel */}
+            {showKeyboardHelp && (
+              <Panel position="top-center" className="bg-neutral-900/98 backdrop-blur-sm border border-neutral-600 rounded-lg p-4 text-white max-w-2xl">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-primary">Keyboard Navigation Guide</h3>
+                  <button
+                    onClick={() => setShowKeyboardHelp(false)}
+                    className="text-neutral-400 hover:text-white"
+                  >
+                    <XIcon className="h-4 w-4" />
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <h4 className="font-medium text-neutral-200 mb-2">Basic Navigation</h4>
+                    <div className="space-y-1 text-neutral-400">
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">← →</kbd>Parent / First Child</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">↑ ↓</kbd>Previous / Next Sibling</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">Enter</kbd>Toggle Expansion</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">Esc</kbd>Clear Focus</div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium text-neutral-200 mb-2">Quick Navigation</h4>
+                    <div className="space-y-1 text-neutral-400">
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">Home</kbd>Go to Root</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">End</kbd>Go to Deepest Child</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">PgUp</kbd>First Sibling</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">PgDn</kbd>Last Sibling</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">Backspace</kbd>Previous in History</div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium text-neutral-200 mb-2">Child Selection</h4>
+                    <div className="space-y-1 text-neutral-400">
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">1-9</kbd>Jump to Child by Number</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">/ or f</kbd>Start Navigation (Root)</div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h4 className="font-medium text-neutral-200 mb-2">Expansion Controls</h4>
+                    <div className="space-y-1 text-neutral-400">
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">+ =</kbd>Expand Current</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">-</kbd>Collapse Current</div>
+                      <div><kbd className="bg-neutral-700 px-2 py-1 rounded mr-2">*</kbd>Expand All Recursively</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-4 pt-3 border-t border-neutral-600 text-center">
+                  <div className="text-xs text-neutral-500">
+                    Press <kbd className="bg-neutral-700 px-1 rounded">?</kbd> or <kbd className="bg-neutral-700 px-1 rounded">h</kbd> to toggle this help
+                  </div>
+                </div>
+              </Panel>
+            )}
         </ReactFlow>
       )}
     </div>
@@ -1438,4 +2579,12 @@ export function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSumma
       </CardContent>
     </Card>
   );
-}
+}, (prevProps, nextProps) => {
+  // Performance: Memoization for expensive mind map re-renders
+  return (
+    prevProps.playlistTitle === nextProps.playlistTitle &&
+    prevProps.playlistId === nextProps.playlistId &&
+    JSON.stringify(prevProps.keyConceptsFromSummary) === JSON.stringify(nextProps.keyConceptsFromSummary) &&
+    JSON.stringify(prevProps.enhancedSummaryData) === JSON.stringify(nextProps.enhancedSummaryData)
+  );
+});

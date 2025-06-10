@@ -1,0 +1,34 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This rule provides project context for implementing an AI agent that delivers genre-based personalized video recommendations.
+
+
+## Purpose
+Use this rule when working on:
+- AI agent logic for real-time personalized recommendations.
+- Integrating reinforcement learning-inspired feedback loops.
+- Connecting genre-based APIs to frontend components.
+- Modeling user preferences and dynamic content updates.
+
+## Context
+This project uses an AI agent to recommend videos by:
+- Learning from explicit (likes, ratings) and implicit (watch time, hover) feedback.
+- Maintaining per-genre dynamic user profiles.
+- Using temporal decay and affinity scoring to update recommendations.
+- Balancing exploitation of known preferences with exploration of fresh content.
+
+Backend is Python-based for AI logic. Node.js is used for app logic. Data is stored in MongoDB Atlas and optionally cached in Redis.
+
+## Technologies
+- Python (Scikit-learn, Pandas)
+- Node.js backend
+- MongoDB, Redis
+- React frontend
+
+
+
+
+

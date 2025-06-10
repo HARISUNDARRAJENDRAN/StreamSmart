@@ -1241,50 +1241,94 @@ export default function DashboardPage() {
 
   return (
     <motion.div 
+      variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      variants={staggerContainer}
-      className="space-y-8 w-full max-w-full overflow-x-hidden"
+      className="space-y-8"
     >
-      {/* Welcome Header */}
-      <motion.section variants={fadeInUp} className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-primary/90 to-accent p-8 text-primary-foreground">
-        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12 border-2 border-white/20">
-                <AvatarImage src={user?.avatarUrl || "https://placehold.co/100x100.png"} alt={user?.name} />
-                <AvatarFallback className="bg-white/20 text-white font-semibold">
-                  {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <h1 className="text-3xl font-bold">Welcome back, {user?.name || 'Learner'}! 👋</h1>
-                <p className="text-lg text-primary-foreground/80">Ready to continue your learning journey?</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-1">
-                <Flame className="h-4 w-4 text-orange-300" />
-                <span>{userStats?.currentStreak || 0} day streak</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <ClockIcon className="h-4 w-4 text-blue-300" />
-                <span>{userStats?.totalLearningTime || '0h 0m'} total</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <TrendingUpIcon className="h-4 w-4 text-green-300" />
-                <span>{userStats?.overallProgress || 0}% complete</span>
-              </div>
+      {/* Welcome Section - Enhanced with landing page theme */}
+      <motion.div 
+        variants={fadeInUp}
+        className="relative overflow-hidden rounded-2xl p-8"
+        style={{
+          background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.15) 0%, rgba(169, 29, 58, 0.1) 100%)',
+          backdropFilter: 'blur(15px)',
+          border: '1px solid rgba(217, 4, 41, 0.2)'
+        }}
+      >
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div 
+            className="absolute -top-1/4 -right-1/4 w-96 h-96 rounded-full blur-3xl opacity-10"
+            style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.6) 0%, transparent 70%)' }}
+          />
+        </div>
+        
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-16 w-16 border-2" style={{ borderColor: '#D90429' }}>
+              <AvatarImage 
+                src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
+                alt={user?.name || "User Avatar"} 
+              />
+              <AvatarFallback 
+                className="text-2xl font-bold"
+                style={{ backgroundColor: '#D90429', color: 'white' }}
+              >
+                {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
+                Welcome back, {user?.name || 'Learner'}! 
+                <span className="animate-bounce">👋</span>
+              </h1>
+              <p className="text-lg text-white/80">
+                Ready to continue your learning journey?
+              </p>
             </div>
           </div>
-          <Link href="/playlists/create">
-            <Button size="lg" className="bg-white text-primary hover:bg-white/90 shadow-lg transition-all duration-300 hover:scale-105">
-              <PlusCircleIcon className="mr-2 h-5 w-5" />
+          <Link href="/playlists/new">
+            <Button 
+              className="bg-white text-[#D90429] hover:bg-gray-100 font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
+            >
+              <PlusCircleIcon className="h-5 w-5" />
               Create New Playlist
             </Button>
           </Link>
         </div>
-      </motion.section>
+        
+        {/* Stats Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
+            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
+              <Flame className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-white/70">Learning Streak</p>
+              <p className="text-xl font-bold text-white">{userStats?.currentStreak || 0} days</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
+            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
+              <ClockIcon className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-white/70">Total Watch Time</p>
+              <p className="text-xl font-bold text-white">{userStats?.totalWatchTime || '0h 0m'}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
+            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
+              <TrendingUpIcon className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <p className="text-sm text-white/70">Progress</p>
+              <p className="text-xl font-bold text-white">{userStats?.overallProgress || 0}% complete</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Skill-Based Genres Section - Netflix Style */}
       <motion.section variants={fadeInUp} className="space-y-6 w-full">

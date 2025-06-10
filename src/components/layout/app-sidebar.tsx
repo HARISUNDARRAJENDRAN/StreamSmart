@@ -13,18 +13,15 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Bookmark, SearchIcon } from 'lucide-react';
+import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Bookmark } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
-  { href: '/search', label: 'Search', icon: SearchIcon },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
   { href: '/watchlist', label: 'Watchlist', icon: Bookmark },
   { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
   { href: '/achievements', label: 'Achievements', icon: Trophy },
-  { href: '/landing#about', label: 'About', icon: HelpCircleIcon },
-  // Add more items as needed e.g. AI Chatbot global access if any
 ];
 
 export function AppSidebar() {
@@ -34,9 +31,8 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r">
       <SidebarHeader className="flex items-center justify-between p-4">
         <Link href="/dashboard" className="flex items-center gap-2">
-          {/* <BotMessageSquareIcon className="h-8 w-8 text-primary" /> */}
           <h1 className="text-xl font-semibold group-data-[collapsible=icon]:hidden">
-            StreamSmart
+            <span style={{ color: '#D90429' }}>S</span>treamSmart
           </h1>
         </Link>
         <div className="group-data-[collapsible=icon]:hidden">
