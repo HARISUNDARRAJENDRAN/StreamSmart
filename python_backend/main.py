@@ -201,10 +201,14 @@ async def process_videos(request: ProcessVideosRequest):
             logger.error(f"Error processing video {url}: {e}")
             failed_videos.append({"url": url, "error": str(e)})
     
+    # Extract video IDs for frontend compatibility
+    video_ids = [video["video_id"] for video in processed_videos]
+    
     return {
         "processed": processed_videos,
         "failed": failed_videos,
-        "total": len(request.urls)
+        "total": len(request.urls),
+        "video_ids": video_ids  # Add this field for frontend compatibility
     }
 
 @app.post("/rag-answer")
