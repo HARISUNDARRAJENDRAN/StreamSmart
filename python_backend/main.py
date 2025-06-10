@@ -208,17 +208,17 @@ async def enhance_video(request: VideoProcessRequest):
             except Exception as enhanced_error:
                 print(f"Enhanced transcript extraction also failed: {str(enhanced_error)}")
                 # Create educational mock transcript data for final fallback
-                transcript_data = {
+            transcript_data = {
                     "full_text": """This educational video provides comprehensive learning content designed to enhance understanding and knowledge acquisition. The content includes structured explanations, practical examples, and key concepts essential for learning. Educational videos like this one typically cover fundamental principles, advanced techniques, and real-world applications to give learners a complete understanding of the subject matter. The presentation includes visual elements that support comprehension and interactive examples that reinforce learning objectives.""",
-                    "segments": [
-                        {"start": 0, "end": 60, "text": "Introduction and overview of educational concepts"},
-                        {"start": 60, "end": 180, "text": "Main learning content and key principles"},
-                        {"start": 180, "end": 300, "text": "Practical applications and examples"}
-                    ],
-                    "language": "en",
+                "segments": [
+                    {"start": 0, "end": 60, "text": "Introduction and overview of educational concepts"},
+                    {"start": 60, "end": 180, "text": "Main learning content and key principles"},
+                    {"start": 180, "end": 300, "text": "Practical applications and examples"}
+                ],
+                "language": "en",
                     "duration": 300,
                     "source": "fallback_educational"
-                }
+            }
         
         # Stage 2: Extract key frames and get visual embeddings
         try:

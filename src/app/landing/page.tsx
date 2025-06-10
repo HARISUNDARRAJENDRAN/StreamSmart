@@ -583,7 +583,7 @@ export default function LandingPage() {
             <Button 
                 variant="outline"
                 className="text-white border-white/50 font-medium px-5 py-2 text-sm transition-all duration-300 hover:bg-white/10 hover:text-white font-poppins rounded-md"
-              >
+            >
                 Login
             </Button>
           </Link>
@@ -673,8 +673,8 @@ export default function LandingPage() {
                     className="mt-1 w-48 h-[2px]"
                     style={{
                       background: '#D90429'
-                    }}
-                  />
+                      }}
+                    />
                 </motion.div>
 
                 {/* Main Description */}
@@ -712,7 +712,7 @@ export default function LandingPage() {
                     <Button
                       variant="default"
                       className="group bg-white text-[#D90429] font-poppins font-semibold px-7 py-3 text-base transition-all duration-300 hover:bg-gray-100 shadow-md hover:shadow-lg rounded-lg flex items-center gap-2.5"
-                    >
+                        >
                       <Target className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
                       <span>Start Learning Now</span>
                           <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -734,33 +734,33 @@ export default function LandingPage() {
                 {/* StreamSmart Preview text */}
                 <p 
                   className="text-base md:text-lg text-white/70 font-medium"
-                  style={{
-                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
-                  }}
-                >
+                          style={{
+                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
+                          }}
+                        >
                   StreamSmart Preview
                 </p>
 
                 {/* Video Preview Container - Simplified */}
                 <div 
                   className="relative w-full aspect-[16/10] rounded-xl overflow-hidden group"
-                style={{
+                      style={{
                     background: '#1C1C1E',
                     border: '1px solid rgba(255, 255, 255, 0.08)'
-                  }}
-                >
+                      }}
+                    >
                   {/* Simple Play button icon */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <PlayCircle className="w-16 h-16 text-white/40 group-hover:text-white/60 transition-colors duration-300" />
-                        </div>
+                      </div>
                   
                   {/* Corner brackets - Matched to target image */}
                   <div className="absolute top-3 left-3 w-5 h-5 border-l-2 border-t-2 border-white/20 rounded-tl-sm" />
                   <div className="absolute top-3 right-3 w-5 h-5 border-r-2 border-t-2 border-white/20 rounded-tr-sm" />
                   <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/20 rounded-bl-sm" />
                   <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/20 rounded-br-sm" />
-                      </div>
-              </div>
+          </div>
+          </div>
             </motion.div>
           </div>
         </section>

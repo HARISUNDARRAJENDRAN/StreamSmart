@@ -385,7 +385,7 @@ interface CollapsibleNodeData {
   label: string;
   description?: string;
   expanded?: boolean;
-  childrenIds?: string[];
+  childrenIds?: string[]; 
   parentId?: string; // Add parent reference
   level?: number;
   width?: number; 
@@ -799,7 +799,7 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
           border: '2px solid white',
           bottom: -4
         }} 
-            /> 
+      />
     </div>
   );
 }, (prevProps, nextProps) => {
@@ -950,18 +950,18 @@ const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any
               const detailNodeId = nodeIdCounter.toString();
               const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
               
-                          nodes.push({
-              id: detailNodeId,
-              type: 'collapsible',
-              data: {
-                label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
-                description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
-                childrenIds: [],
+              nodes.push({
+                id: detailNodeId,
+                type: 'collapsible',
+                data: {
+                  label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
+                  description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
+                  childrenIds: [],
                 parentId: parentId,
-                level: currentLevel + 1
-              },
-              position: { x: 0, y: 0 }
-            });
+                  level: currentLevel + 1
+                },
+                position: { x: 0, y: 0 }
+              });
 
               childIds.push(detailNodeId);
               maxLevel = Math.max(maxLevel, currentLevel + 1);
@@ -1399,7 +1399,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
   // Performance: Reduced debug logging
   const renderCount = useRef(0);
   renderCount.current++;
-  
+
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
   const { toast } = useToast();
   
@@ -2156,9 +2156,9 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
 
   // Performance: Optimized layout effect with debouncing and better dependency management
   const performLayoutDebounced = useCallback(async () => {
-    if (allNodes.length === 0) return;
+      if (allNodes.length === 0) return;
     
-    setIsLoading(true);
+      setIsLoading(true);
     try {
       const { visibleNodes, visibleEdges } = getVisibleNodesAndEdges();
       
@@ -2188,10 +2188,10 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
                 focusIds.push(...interactedNode.data.childrenIds.filter(childId => 
                   visibleNodes.some(ln => ln.id === childId)
                 ));
-              }
-              
+                }
+                
               padding = focusIds.length > 1 ? 0.2 : 0.4;
-            }
+                }
 
             // Apply fitView with reduced duration for snappier feel
             if (focusIds.length > 0) {
