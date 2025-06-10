@@ -94,9 +94,8 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
       },
       body: JSON.stringify({
         question: input.question,
-        video_ids: videoIds,
-        top_k: 5,
-      } as RAGQuery),
+        userId: 'anonymous_user', // Add userId for backend compatibility
+      }),
       signal: controller.signal,
     });
 
@@ -202,8 +201,8 @@ export async function processVideosForRAG(videoUrls: string[], videoTitles?: str
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        video_urls: processedUrls,
-        video_titles: videoTitles,
+        urls: processedUrls,
+        userId: 'anonymous_user', // Add userId for backend compatibility
       }),
     });
 
