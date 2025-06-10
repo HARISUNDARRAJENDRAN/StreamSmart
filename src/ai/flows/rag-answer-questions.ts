@@ -61,7 +61,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
       const healthController = new AbortController();
       const healthTimeout = setTimeout(() => healthController.abort(), 5000);
       
-      const healthCheck = await fetch('http://localhost:8000/health', {
+      const healthCheck = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/health`, {
         method: 'GET',
         signal: healthController.signal,
       });
@@ -71,14 +71,14 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
       if (!healthCheck.ok) {
         console.error("Backend health check failed:", healthCheck.status);
         return {
-          answer: "The AI backend is currently unavailable. Please ensure the Python backend is running on localhost:8000. You can still ask general questions, but I won't have access to specific video transcripts.",
+          answer: "I encountered an error while processing the videos. I can still answer general questions, but may not have access to specific video transcripts.",
           sourceType: 'error',
         };
       }
     } catch (healthError) {
       console.error("Cannot reach backend for health check:", healthError);
       return {
-        answer: "I cannot connect to the AI backend service. Please make sure the Python backend server is running on localhost:8000. You can still ask general questions, but I won't have access to specific video transcripts.",
+        answer: "I encountered an error while processing the videos. I can still answer general questions, but may not have access to specific video transcripts.",
         sourceType: 'error',
       };
     }
@@ -87,7 +87,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
     
-    const response = await fetch('http://localhost:8000/rag-answer', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/rag-answer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
     
     if (error instanceof Error) {
         if (error.message.includes("Failed to fetch") || error.message.includes("fetch")) {
-            errorMessage = "I cannot connect to the AI backend. Please ensure the Python backend is running on localhost:8000 and try again.";
+            errorMessage = "I encountered an error while processing the videos. I can still answer general questions, but may not have access to specific video transcripts.";
         } else if (error.message.includes("timeout")) {
             errorMessage = "The request to the AI backend timed out. The backend might be processing or overloaded. Please try again.";
         } else if (error.message.includes("NetworkError")) {
@@ -196,7 +196,7 @@ export async function processVideosForRAG(videoUrls: string[], videoTitles?: str
     
     console.log("Processed URLs:", processedUrls);
 
-    const response = await fetch('http://localhost:8000/process-videos', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/process-videos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
