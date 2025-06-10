@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test StreamSmart Backend</title>
+</head>
+<body>
+    <h1>Testing https://streamsmart-backend1.onrender.com</h1>
+    <button onclick="testHealth()">Test Health Endpoint</button>
+    <button onclick="testRoot()">Test Root Endpoint</button>
+    <div id="results"></div>
+
+    <script>
+        const BACKEND_URL = 'https://streamsmart-backend1.onrender.com';
+        
+        async function testHealth() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing health endpoint...</p>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h3>✅ Health Check SUCCESS!</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                results.innerHTML = `
+                    <h3>❌ Health Check FAILED!</h3>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+        
+        async function testRoot() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing root endpoint...</p>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/`);
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h3>✅ Root Endpoint SUCCESS!</h3>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                results.innerHTML = `
+                    <h3>❌ Root Endpoint FAILED!</h3>
+                    <p>Error: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = function() {
+            testHealth();
+        };
+    </script>
+</body>
+</html> 

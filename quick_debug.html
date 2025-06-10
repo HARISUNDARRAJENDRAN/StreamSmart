@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quick Backend Test</title>
+</head>
+<body>
+    <h1>StreamSmart Backend Connection Test</h1>
+    <button onclick="testConnection()">Test Backend Connection</button>
+    <div id="results"></div>
+
+    <script>
+        async function testConnection() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<p>Testing...</p>';
+            
+            // Replace with your actual Render URL
+            const BACKEND_URL = 'YOUR_RENDER_URL_HERE';
+            
+            try {
+                console.log('Testing backend at:', BACKEND_URL);
+                
+                // Test health endpoint
+                const response = await fetch(`${BACKEND_URL}/health`);
+                const data = await response.json();
+                
+                results.innerHTML = `
+                    <h3>✅ SUCCESS!</h3>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong></p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+                
+            } catch (error) {
+                results.innerHTML = `
+                    <h3>❌ FAILED!</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Possible issues:</strong></p>
+                    <ul>
+                        <li>Backend URL is wrong</li>
+                        <li>Backend is not running</li>
+                        <li>CORS issue</li>
+                        <li>Network connectivity</li>
+                    </ul>
+                `;
+            }
+        }
+    </script>
+</body>
+</html> 

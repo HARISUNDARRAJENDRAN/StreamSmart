@@ -3,7 +3,7 @@
  * Communicates with Python ML backend for advanced video analysis.
  */
 
-const ML_BACKEND_URL = process.env.ML_BACKEND_URL || 'http://localhost:8000';
+const ML_BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface MultiModalSummaryRequest {
   youtube_url: string;
