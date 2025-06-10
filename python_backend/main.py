@@ -27,13 +27,8 @@ app = FastAPI(title="StreamSmart Backend", version="1.0.0")
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://*.vercel.app",
-        "https://vercel.app",
-        "*"  # Allow all origins for now to test
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],  # Allow all origins for now to fix CORS issue
+    allow_credentials=False,  # Set to False when using wildcard
     allow_methods=["*"],
     allow_headers=["*"],
 )
