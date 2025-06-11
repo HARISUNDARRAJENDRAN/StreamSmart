@@ -71,9 +71,6 @@ if GEMINI_API_KEY:
     except Exception as e:
         logger.error(f"Gemini AI configuration failed: {e}")
 
-# Initialize proxy system
-initialize_proxies()
-
 def initialize_proxies():
     """Initialize proxy list from environment variables"""
     global proxy_list
@@ -717,6 +714,9 @@ async def enhance_video(request: EnhanceVideoRequest):
     except Exception as e:
         logger.error(f"Error in enhance video: {e}")
         raise HTTPException(status_code=500, detail=f"Error enhancing video: {str(e)}")
+
+# Initialize proxy system when module loads
+initialize_proxies()
 
 if __name__ == "__main__":
     import uvicorn
