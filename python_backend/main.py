@@ -49,6 +49,31 @@ AUTO_FETCH_FREE_PROXIES = os.getenv("AUTO_FETCH_FREE_PROXIES", "false").lower() 
 current_proxy_index = 0
 proxy_list = []
 
+# MongoDB client initialization
+mongodb_client = None
+db = None
+if MONGODB_URI:
+    try:
+        mongodb_client = MongoClient(MONGODB_URI)
+        db = mongodb_client.streamsmart
+        logger.info("MongoDB connected successfully")
+    except Exception as e:
+        logger.error(f"MongoDB connection failed: {e}")
+        mongodb_client = None
+else:
+    logger.warning("MONGODB_URI not provided. Database features will be disabled.")
+
+# Initialize Gemini if available
+if GEMINI_API_KEY:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        logger.info("Gemini AI configured successfully")
+    except Exception as e:
+        logger.error(f"Gemini AI configuration failed: {e}")
+
+# Initialize proxy system
+initialize_proxies()
+
 def initialize_proxies():
     """Initialize proxy list from environment variables"""
     global proxy_list
@@ -400,9 +425,6 @@ def get_video_info(url: str) -> dict:
         return get_video_info_with_proxy(url)
     
     return result
-
-# Initialize proxies when the module loads
-initialize_proxies()
 
 # Update get_video_transcript to use proxy version
 def get_video_transcript(video_id: str) -> Optional[str]:
