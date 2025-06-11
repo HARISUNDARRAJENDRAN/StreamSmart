@@ -18,6 +18,7 @@ import re
 import yt_dlp
 import requests
 from urllib.parse import parse_qs, urlparse
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -42,6 +43,7 @@ YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
 PROXY_URL = os.getenv("PROXY_URL")  # Format: http://user:pass@proxy-server:port
 PROXY_LIST = os.getenv("PROXY_LIST")  # Comma-separated list of proxies
 ROTATING_PROXY_ENABLED = os.getenv("ROTATING_PROXY_ENABLED", "false").lower() == "true"
+AUTO_FETCH_FREE_PROXIES = os.getenv("AUTO_FETCH_FREE_PROXIES", "false").lower() == "true"
 
 # Global proxy configuration
 current_proxy_index = 0
@@ -58,7 +60,12 @@ def initialize_proxies():
         proxy_list = [PROXY_URL]
         logger.info(f"Using single proxy: {PROXY_URL}")
     else:
-        logger.warning("No proxy configuration found. YouTube may block requests from cloud IPs.")
+        logger.warning("No proxy configuration found.")
+        # Try auto-fetching if enabled
+        auto_update_proxy_list()
+    
+    if not proxy_list:
+        logger.warning("YouTube may block requests from cloud IPs.")
     
     return proxy_list
 
@@ -77,39 +84,68 @@ def get_next_proxy():
     else:
         return proxy_list[0] if proxy_list else None
 
-# Global proxy configuration
-current_proxy_index = 0
-proxy_list = []
+def fetch_free_proxies_simple() -> List[str]:
+    """Fetch a simple list of free proxies"""
+    free_proxies = [
+        "http://8.219.97.248:80",  # Currently working
+        "http://103.216.207.15:8080",
+        "http://47.74.152.29:8888",
+        "http://103.149.162.194:80",
+        "http://185.162.251.76:80",
+        "http://20.111.54.16:8123",
+        "http://103.127.1.130:80",
+        "http://189.240.60.164:9090",
+        "http://103.178.42.58:8181",
+        "http://103.155.54.26:83",
+        "http://172.67.187.199:80",
+        "http://23.82.137.161:80",
+        "http://47.91.65.23:3128"
+    ]
+    
+    # Try to fetch fresh ones from a simple API
+    try:
+        response = requests.get(
+            "https://proxylist.geonode.com/api/proxy-list?limit=10&page=1&sort_by=lastChecked&sort_type=desc&protocols=http",
+            timeout=5
+        )
+        if response.status_code == 200:
+            data = response.json()
+            for proxy in data.get('data', []):
+                proxy_url = f"http://{proxy['ip']}:{proxy['port']}"
+                free_proxies.append(proxy_url)
+    except:
+        pass
+    
+    return list(set(free_proxies))  # Remove duplicates
 
-def initialize_proxies():
-    """Initialize proxy list from environment variables"""
+def auto_update_proxy_list():
+    """Automatically update proxy list if enabled"""
     global proxy_list
     
-    if PROXY_LIST:
-        proxy_list = [proxy.strip() for proxy in PROXY_LIST.split(",") if proxy.strip()]
-        logger.info(f"Loaded {len(proxy_list)} proxies from PROXY_LIST")
-    elif PROXY_URL:
-        proxy_list = [PROXY_URL]
-        logger.info(f"Using single proxy: {PROXY_URL}")
-    else:
-        logger.warning("No proxy configuration found. YouTube may block requests from cloud IPs.")
-    
-    return proxy_list
-
-def get_next_proxy():
-    """Get next proxy in rotation"""
-    global current_proxy_index
-    
-    if not proxy_list:
-        return None
-    
-    if ROTATING_PROXY_ENABLED and len(proxy_list) > 1:
-        proxy = proxy_list[current_proxy_index]
-        current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
-        logger.info(f"Using proxy {current_proxy_index}: {proxy[:20]}...")
-        return proxy
-    else:
-        return proxy_list[0] if proxy_list else None
+    if AUTO_FETCH_FREE_PROXIES and not proxy_list:
+        logger.info("🔄 Auto-fetching free proxies...")
+        fresh_proxies = fetch_free_proxies_simple()
+        
+        # Quick test a few
+        working_proxies = []
+        for proxy in fresh_proxies[:5]:  # Test first 5
+            try:
+                test_response = requests.get(
+                    "https://httpbin.org/ip", 
+                    proxies={'http': proxy, 'https': proxy}, 
+                    timeout=10
+                )
+                if test_response.status_code == 200:
+                    working_proxies.append(proxy)
+                    logger.info(f"✅ Auto-found working proxy: {proxy}")
+                    if len(working_proxies) >= 2:  # Stop after finding 2
+                        break
+            except:
+                continue
+        
+        if working_proxies:
+            proxy_list.extend(working_proxies)
+            logger.info(f"🎉 Auto-loaded {len(working_proxies)} free proxies")
 
 def extract_video_id(url: str) -> Optional[str]:
     """Extract YouTube video ID from URL"""
@@ -124,10 +160,120 @@ def extract_video_id(url: str) -> Optional[str]:
             return match.group(1)
     return None
 
-def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
-    """Get transcript for a YouTube video using proxy"""
+def get_video_transcript_with_user_agent(video_id: str) -> Optional[str]:
+    """Get transcript for a YouTube video using browser-like User-Agent headers"""
     
-    # Method 1: Try YouTube Transcript API with proxy support
+    # Create a session with browser-like headers
+    session = requests.Session()
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'none',
+        'Cache-Control': 'max-age=0'
+    })
+    
+    # Monkey patch the requests module to use our session
+    original_get = requests.get
+    original_post = requests.post
+    
+    def patched_get(*args, **kwargs):
+        kwargs.setdefault('headers', {}).update(session.headers)
+        return original_get(*args, **kwargs)
+    
+    def patched_post(*args, **kwargs):
+        kwargs.setdefault('headers', {}).update(session.headers)
+        return original_post(*args, **kwargs)
+    
+    # Apply the patch
+    requests.get = patched_get
+    requests.post = patched_post
+    
+    try:
+        # Method 1: Try YouTube Transcript API with different language codes
+        transcript_methods = [
+            (['en'], 'English'),
+            (['en-US'], 'English (US)'),
+            (['en-GB'], 'English (UK)'),
+            (['auto'], 'Auto-generated'),
+            (['es', 'fr', 'de', 'it'], 'Other languages')
+        ]
+        
+        for languages, method_name in transcript_methods:
+            try:
+                logger.info(f"Trying transcript method: {method_name} for video {video_id} with browser User-Agent")
+                
+                # Add a small delay to mimic human behavior
+                time.sleep(0.5)
+                
+                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
+                transcript_text = ' '.join([item['text'] for item in transcript_list])
+                
+                if transcript_text and len(transcript_text.strip()) > 50:
+                    logger.info(f"✅ Successfully retrieved transcript using {method_name} with User-Agent: {len(transcript_text)} characters")
+                    return transcript_text
+                    
+            except Exception as e:
+                logger.warning(f"Transcript method {method_name} failed for {video_id}: {str(e)[:100]}...")
+                continue
+        
+        logger.error(f"All transcript methods failed for {video_id} even with browser User-Agent")
+        return None
+        
+    finally:
+        # Restore original requests methods
+        requests.get = original_get
+        requests.post = original_post
+
+def get_video_info_with_user_agent(url: str) -> dict:
+    """Get video information using yt-dlp with browser User-Agent headers"""
+    try:
+        ydl_opts = {
+            'quiet': True,
+            'no_warnings': True,
+            'extractaudio': False,
+            'extract_flat': False,
+            'retries': 3,
+            'fragment_retries': 3,
+            'extractor_retries': 3,
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'DNT': '1',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+                'Cache-Control': 'max-age=0'
+            }
+        }
+        
+        logger.info(f"Fetching video info with browser User-Agent for: {url}")
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            result = {
+                'title': info.get('title', 'Unknown Title'),
+                'duration': info.get('duration', 0),
+                'uploader': info.get('uploader', 'Unknown'),
+                'description': info.get('description', '')[:500]
+            }
+            logger.info(f"✅ Successfully retrieved video info with User-Agent for {url}")
+            return result
+            
+    except Exception as e:
+        logger.error(f"Error getting video info for {url} even with User-Agent: {e}")
+        return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
+
+def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
+    """Get transcript for a YouTube video using proxy (fallback method)"""
+    
     transcript_methods = [
         (['en'], 'English'),
         (['en-US'], 'English (US)'),
@@ -138,24 +284,22 @@ def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
     
     for languages, method_name in transcript_methods:
         try:
-            logger.info(f"Trying transcript method: {method_name} for video {video_id}")
+            logger.info(f"Trying transcript method: {method_name} for video {video_id} via proxy")
             
-            # Configure proxy for youtube-transcript-api
             proxy = get_next_proxy()
             if proxy:
                 logger.info(f"Using proxy for transcript: {proxy[:20]}...")
-                # Set proxy in session
-                import requests
-                from youtube_transcript_api._api import YouTubeTranscriptApi
-                
-                # Create custom session with proxy
+                # Configure session with proxy
                 session = requests.Session()
                 session.proxies = {
                     'http': proxy,
                     'https': proxy
                 }
+                session.headers.update({
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                })
                 
-                # Monkey patch the session (not ideal but works)
+                # Monkey patch requests temporarily
                 original_get = requests.get
                 requests.get = lambda *args, **kwargs: session.get(*args, **kwargs)
                 
@@ -164,29 +308,19 @@ def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
                     transcript_text = ' '.join([item['text'] for item in transcript_list])
                     
                     if transcript_text and len(transcript_text.strip()) > 50:
-                        logger.info(f"Successfully retrieved transcript using {method_name} via proxy: {len(transcript_text)} characters")
+                        logger.info(f"✅ Successfully retrieved transcript using {method_name} via proxy: {len(transcript_text)} characters")
                         return transcript_text
                 finally:
-                    # Restore original requests.get
                     requests.get = original_get
-            else:
-                # No proxy available, try direct
-                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
-                transcript_text = ' '.join([item['text'] for item in transcript_list])
-                
-                if transcript_text and len(transcript_text.strip()) > 50:
-                    logger.info(f"Successfully retrieved transcript using {method_name} (direct): {len(transcript_text)} characters")
-                    return transcript_text
-                
+            
         except Exception as e:
-            logger.warning(f"Transcript method {method_name} failed for {video_id}: {str(e)[:100]}...")
+            logger.warning(f"Proxy transcript method {method_name} failed for {video_id}: {str(e)[:100]}...")
             continue
     
-    logger.error(f"All transcript methods failed for {video_id}")
     return None
 
 def get_video_info_with_proxy(url: str) -> dict:
-    """Get video information using yt-dlp with proxy support"""
+    """Get video information using yt-dlp with proxy support (fallback method)"""
     try:
         proxy = get_next_proxy()
         
@@ -199,11 +333,10 @@ def get_video_info_with_proxy(url: str) -> dict:
             'fragment_retries': 3,
             'extractor_retries': 3,
             'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             }
         }
         
-        # Add proxy configuration if available
         if proxy:
             logger.info(f"Using proxy for video info: {proxy[:20]}...")
             ydl_opts['proxy'] = proxy
@@ -216,11 +349,11 @@ def get_video_info_with_proxy(url: str) -> dict:
                 'uploader': info.get('uploader', 'Unknown'),
                 'description': info.get('description', '')[:500]
             }
-            logger.info(f"Successfully retrieved video info for {url}")
+            logger.info(f"✅ Successfully retrieved video info via proxy for {url}")
             return result
             
     except Exception as e:
-        logger.error(f"Error getting video info for {url}: {e}")
+        logger.error(f"Error getting video info via proxy for {url}: {e}")
         return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
 
 def get_video_transcript_with_summary_fallback(video_id: str, video_info: dict) -> Optional[str]:
@@ -251,16 +384,43 @@ def get_video_transcript_with_summary_fallback(video_id: str, video_info: dict) 
     return fallback_content.strip()
 
 def get_video_info(url: str) -> dict:
-    """Get video information - tries proxy-enabled yt-dlp"""
-    return get_video_info_with_proxy(url)
+    """Get video info - tries User-Agent first, then proxy as fallback"""
+    
+    # Method 1: Try with browser User-Agent headers (free and simple)
+    logger.info(f"🔍 Attempting video info fetch with browser User-Agent for {url}")
+    result = get_video_info_with_user_agent(url)
+    
+    # Check if we got meaningful data
+    if result.get('title') != 'Unknown Title':
+        return result
+    
+    # Method 2: Fallback to proxy method if available
+    if proxy_list:
+        logger.info(f"🔄 Fallback to proxy method for {url}")
+        return get_video_info_with_proxy(url)
+    
+    return result
 
 # Initialize proxies when the module loads
 initialize_proxies()
 
 # Update get_video_transcript to use proxy version
 def get_video_transcript(video_id: str) -> Optional[str]:
-    """Get transcript for a YouTube video with proxy support"""
-    return get_video_transcript_with_proxy(video_id)
+    """Get transcript - tries User-Agent first, then proxy as fallback"""
+    
+    # Method 1: Try with browser User-Agent headers (free and simple)
+    logger.info(f"🔍 Attempting transcript fetch with browser User-Agent for {video_id}")
+    transcript = get_video_transcript_with_user_agent(video_id)
+    if transcript:
+        return transcript
+    
+    # Method 2: Fallback to proxy method if available
+    if proxy_list:
+        logger.info(f"🔄 Fallback to proxy method for {video_id}")
+        return get_video_transcript_with_proxy(video_id)
+    
+    logger.warning(f"❌ All transcript methods failed for {video_id}")
+    return None
 
 # Pydantic models
 class ProcessVideosRequest(BaseModel):
