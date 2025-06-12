@@ -605,7 +605,7 @@ async def rag_answer(request: RAGAnswerRequest):
         context = "\n\n".join(context_parts)
         
         # Generate answer using Gemini
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-1.5-flash')
         
         prompt = f"""
         Based on the following video transcripts, answer the user's question. Be specific and cite which video(s) you're referencing.
@@ -665,7 +665,7 @@ async def enhance_video(request: EnhanceVideoRequest):
         
         # Generate enhanced summary using Gemini
         if GEMINI_API_KEY:
-            model = genai.GenerativeModel('gemini-pro')
+            model = genai.GenerativeModel('gemini-1.5-flash')
             
             prompt = f"""
             Analyze this educational video and create a comprehensive summary:
