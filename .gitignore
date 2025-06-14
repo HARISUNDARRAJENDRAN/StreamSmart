@@ -42,6 +42,14 @@ python_backend/credentials/
 !vercel.json
 kaggle.json
 
+# Google Cloud credentials (specific patterns)
+*-k8-*.json
+lustrous-bus-*.json
+service-account-*.json
+gcp-*.json
+google-cloud-*.json
+python_backend/credentials/*.json
+
 # vercel
 .vercel
 

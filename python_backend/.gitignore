@@ -42,9 +42,17 @@ credentials/
 !package-lock.json
 !tsconfig.json
 !components.json
+!vercel.json
 kaggle.json
 .env
 .env.*
+
+# Google Cloud credentials
+*-k8-*.json
+lustrous-bus-*.json
+service-account-*.json
+gcp-*.json
+google-cloud-*.json
 
 # Test files
 test_*.py
