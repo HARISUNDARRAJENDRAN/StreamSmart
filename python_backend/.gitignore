@@ -35,6 +35,17 @@ Thumbs.db
 # Embeddings cache (large files)
 embeddings_cache.pkl
 
+# Credentials and API keys
+credentials/
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!components.json
+kaggle.json
+.env
+.env.*
+
 # Test files
 test_*.py
 *_test.py

@@ -31,6 +31,17 @@ yarn-error.log*
 .env*.local
 .env
 
+# Credentials and API keys
+python_backend/credentials/
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!components.json
+!next.config.json
+!vercel.json
+kaggle.json
+
 # vercel
 .vercel
 
