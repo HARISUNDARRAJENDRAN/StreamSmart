@@ -23,7 +23,7 @@ import {
 import { StarRating } from './StarRating';
 import { ThumbsRating } from './ThumbsRating';
 import { cn } from '@/lib/utils';
-import { implicitTracker, trackNavigation } from '@/services/implicitTrackingService';
+// Note: Implicit tracking service removed - will be implemented in new recommendation system
 import { useUser } from '@/contexts/UserContext';
 
 interface RecommendationCardProps {
@@ -77,10 +77,10 @@ export function RecommendationCard({
   const [isActionsLoading, setIsActionsLoading] = useState<string | null>(null);
   const { user } = useUser();
 
-  // Initialize tracking
+  // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
     if (user) {
-      implicitTracker.setUserId(user.id);
+      console.log('User ID available for tracking:', user.id);
     }
   }, [user]);
 

@@ -1,0 +1,3403 @@
+{
+  "genre": "mathematics",
+  "target_count": 150,
+  "actual_count": 147,
+  "success": true,
+  "duration_seconds": 41.22,
+  "videos": [
+    {
+      "video_id": "sxQaBpKfDRk",
+      "title": "What Is Statistics: Crash Course Statistics #1",
+      "description": "Welcome to Crash Course ",
+      "duration": "13:00",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 2026618,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sxQaBpKfDRk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDreN2_BR2meVE6BVzlKmB_DtubjQ",
+      "youtube_url": "https://www.youtube.com/watch?v=sxQaBpKfDRk",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 780
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "p_di4Zn4wz4",
+      "title": "Differential equations, a tourist's guide | DE1",
+      "description": "Error correction: At 6:27, the upper ",
+      "duration": "27:16",
+      "channel_name": "3Blue1Brown",
+      "channel_id": "UCYO_jab_esuFRV4b17AJtAw",
+      "view_count": 4698234,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/p_di4Zn4wz4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_7iwJYrBKKUnt26p5z0YoFJ3XmQ",
+      "youtube_url": "https://www.youtube.com/watch?v=p_di4Zn4wz4",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1636
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "I4pQbo5MQOs",
+      "title": "The paradox at the heart of mathematics: Gödel's Incompleteness Theorem - Marcus du Sautoy",
+      "description": "Explore Gödel's Incompleteness Theorem, a discovery which changed what we know about ",
+      "duration": "5:20",
+      "channel_name": "TED-Ed",
+      "channel_id": "UCsooa4yRKGN_zEE8iknghZA",
+      "view_count": 3917787,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I4pQbo5MQOs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhGv5c1uOgtuCMmuKI9uk4ySxTZg",
+      "youtube_url": "https://www.youtube.com/watch?v=I4pQbo5MQOs",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 320
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "J7DzL2_Na80",
+      "title": "1. The Geometry of Linear Equations",
+      "description": "1. The Geometry of ",
+      "duration": "39:49",
+      "channel_name": "MIT OpenCourseWare",
+      "channel_id": "UCEBb1b_L6zDS3xTUrIALZOw",
+      "view_count": 2002101,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J7DzL2_Na80/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBVcF2srXZTzM9eURUFHDCNk9FwIw",
+      "youtube_url": "https://www.youtube.com/watch?v=J7DzL2_Na80",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2389
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "kjBOesZCoqc",
+      "title": "Essence of linear algebra preview",
+      "description": "------------------ 3blue1brown is a channel about animating math, in all senses of the word animate. And you know the drill with ...",
+      "duration": "5:09",
+      "channel_name": "3Blue1Brown",
+      "channel_id": "UCYO_jab_esuFRV4b17AJtAw",
+      "view_count": 2571341,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kjBOesZCoqc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBsqUHlz-1RMD0epvB8zd3nJR8yFw",
+      "youtube_url": "https://www.youtube.com/watch?v=kjBOesZCoqc",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 309
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "NybHckSEQBI",
+      "title": "Algebra Basics: What Is Algebra? - Math Antics",
+      "description": "This video gives an overview of ",
+      "duration": "12:07",
+      "channel_name": "mathantics",
+      "channel_id": "UCBuMwlP7kHkNxdPAqtFSJTw",
+      "view_count": 9228273,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NybHckSEQBI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDz-DhwGSlqL0BrIrQMBlNrqlM4tA",
+      "youtube_url": "https://www.youtube.com/watch?v=NybHckSEQBI",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 727
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "52tpYl2tTqk",
+      "title": "Algebra Basics: What Are Functions? - Math Antics",
+      "description": "Learn More at mathantics.com Visit http://www.mathantics.com for more Free math videos and additional subscription based ...",
+      "duration": "11:34",
+      "channel_name": "mathantics",
+      "channel_id": "UCBuMwlP7kHkNxdPAqtFSJTw",
+      "view_count": 3355454,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/52tpYl2tTqk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAkqw_8Q2DEENHmnhhTF7RQnu8X-w",
+      "youtube_url": "https://www.youtube.com/watch?v=52tpYl2tTqk",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 694
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "YompsDlEdtc",
+      "title": "How many ways are there to prove the Pythagorean theorem? - Betty Fei",
+      "description": "What do Euclid, 12-year-old Einstein, and American President James Garfield have in common? They all came up with elegant ...",
+      "duration": "5:17",
+      "channel_name": "TED-Ed",
+      "channel_id": "UCsooa4yRKGN_zEE8iknghZA",
+      "view_count": 3804753,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YompsDlEdtc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCam3jb-vEjKn6vMnjBF3YCwm9HNQ",
+      "youtube_url": "https://www.youtube.com/watch?v=YompsDlEdtc",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 317
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "bOCHTHkBoAs",
+      "title": "10 Math Concepts for Programmers",
+      "description": "Math tutorial",
+      "duration": "9:32",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 2129205,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bOCHTHkBoAs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA2-icSV7cEUZYrCNrYgNfFiOKAPA",
+      "youtube_url": "https://www.youtube.com/watch?v=bOCHTHkBoAs",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 572
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "KzfWUEJjG18",
+      "title": "Math Antics - Basic Probability",
+      "description": "This is a re-upload to correct some terminology. In the previous version we suggested that the terms “odds” and “",
+      "duration": "11:28",
+      "channel_name": "mathantics",
+      "channel_id": "UCBuMwlP7kHkNxdPAqtFSJTw",
+      "view_count": 4071800,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KzfWUEJjG18/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBSXvi6OlGwwVLrdwgWZtc1jZxStQ",
+      "youtube_url": "https://www.youtube.com/watch?v=KzfWUEJjG18",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 688
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "mH0oCDa74tE",
+      "title": "Group theory, abstraction, and the 196,883-dimensional monster",
+      "description": "Timestamps: 0:00 - The size of the monster 0:50 - What is a group? 7:06 - What is an ",
+      "duration": "21:58",
+      "channel_name": "3Blue1Brown",
+      "channel_id": "UCYO_jab_esuFRV4b17AJtAw",
+      "view_count": 3304695,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mH0oCDa74tE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBgO64bVxJB13_S8r_nWTIVCJjo-A",
+      "youtube_url": "https://www.youtube.com/watch?v=mH0oCDa74tE",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1318
+      },
+      "search_query": "abstract algebra introduction",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "HeQX2HjkcNo",
+      "title": "Math's Fundamental Flaw",
+      "description": "Asaf Karagila for consultation on ",
+      "duration": "34:00",
+      "channel_name": "Veritasium",
+      "channel_id": "UCHnyfMqiRRG1u-2MsSQLbXA",
+      "view_count": 29146924,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HeQX2HjkcNo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLANvRKEXPTSUWxkT6crZMKdf3ffig",
+      "youtube_url": "https://www.youtube.com/watch?v=HeQX2HjkcNo",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2040
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "NuyzuNBFWxQ",
+      "title": "7 Cryptography Concepts EVERY Developer Should Know",
+      "description": "🔗 Resources Full Tutorial https://fireship.io/lessons/node-",
+      "duration": "11:55",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1520277,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NuyzuNBFWxQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCTyrRHXyXUageXxbaKQcW-fg6vcA",
+      "youtube_url": "https://www.youtube.com/watch?v=NuyzuNBFWxQ",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 715
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "jhXCTbFnK8o",
+      "title": "Cryptography: Crash Course Computer Science #33",
+      "description": "Today we're going to talk about how to keep information secret, and this isn't a new goal. From as early as Julius Caesar's Caesar ...",
+      "duration": "12:33",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 900426,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jhXCTbFnK8o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAYax2t6X6RWbg_Wct5uLaFvPAnnw",
+      "youtube_url": "https://www.youtube.com/watch?v=jhXCTbFnK8o",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 753
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "JnTa9XtvmfI",
+      "title": "Linear Algebra - Full College Course",
+      "description": "⭐️ ",
+      "duration": "11:39:45",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 2288210,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JnTa9XtvmfI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzIucHpKpbNgbM4SpP2Wj5PALImw",
+      "youtube_url": "https://www.youtube.com/watch?v=JnTa9XtvmfI",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 41985
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "LZzq1zSL1bs",
+      "title": "Complete Statistics For Data Science In 6 hours By Krish Naik",
+      "description": "Statistics",
+      "duration": "5:28:32",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 1431025,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LZzq1zSL1bs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBakcSnb_v5T_Fc5IZ7VHy7rbqRZQ",
+      "youtube_url": "https://www.youtube.com/watch?v=LZzq1zSL1bs",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 19712
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "xxpc-HPKN28",
+      "title": "Statistics - A Full University Course on Data Science Basics",
+      "description": "Learn the essentials of ",
+      "duration": "8:15:04",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 3364646,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xxpc-HPKN28/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBbhs6v30lm8MPuBi-PMyZIY8MAA",
+      "youtube_url": "https://www.youtube.com/watch?v=xxpc-HPKN28",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 29704
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "eI4an8aSsgw",
+      "title": "Precalculus Course",
+      "description": "Learn ",
+      "duration": "5:22:02",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 2028983,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eI4an8aSsgw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCE-3qTfqJePoifof8pRfAYTPFFpQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eI4an8aSsgw",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 19322
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "rSjt1E9WHaQ",
+      "title": "Linear Algebra Course – Mathematics for Machine Learning and Generative AI",
+      "description": "Learn ",
+      "duration": "6:05:12",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 306879,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rSjt1E9WHaQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6IiHJ9zQOAVC3hgB6siBKwywueA",
+      "youtube_url": "https://www.youtube.com/watch?v=rSjt1E9WHaQ",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 21912
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "qNfa7S9jdt4",
+      "title": "How To Learn Maths For Data Science By Self Study And For Free",
+      "description": "Connect with me here: Twitter: https://twitter.com/Krishnaik06 Facebook: https://www.facebook.com/krishnaik06 instagram: ...",
+      "duration": "12:26",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 46308,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qNfa7S9jdt4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBd39EQ1psG6kEzukpMDim5Rre2OA",
+      "youtube_url": "https://www.youtube.com/watch?v=qNfa7S9jdt4",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 746
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "yBw67Fb31Cs",
+      "title": "Trigonometry fundamentals | Ep. 2 Lockdown live math",
+      "description": "Thanks to these viewers for their contributions to translations Hebrew: Omer Tuchfeld ----------------- Contents: Introduction- 0:00 Q1 ...",
+      "duration": "1:13:17",
+      "channel_name": "3Blue1Brown",
+      "channel_id": "UCYO_jab_esuFRV4b17AJtAw",
+      "view_count": 1874305,
+      "upload_date": "Streamed 5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yBw67Fb31Cs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBIm-KGM93G-QVUSBX8TFSBoin_Hg",
+      "youtube_url": "https://www.youtube.com/watch?v=yBw67Fb31Cs",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4397
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "wvXDB9dMdEo",
+      "title": "1. Introduction, Financial Terms and Concepts",
+      "description": "In the first lecture of this course, the instructors introduce key terms and ",
+      "duration": "1:00:30",
+      "channel_name": "MIT OpenCourseWare",
+      "channel_id": "UCEBb1b_L6zDS3xTUrIALZOw",
+      "view_count": 7608395,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wvXDB9dMdEo/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhbIFsoWzAP&rs=AOn4CLBJWQd34nOvS9hFgqYJNrtDXbmR8Q",
+      "youtube_url": "https://www.youtube.com/watch?v=wvXDB9dMdEo",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "lecture"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 3630
+      },
+      "search_query": "financial mathematics concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "6JkCmZAQaio",
+      "title": "Set Theory: Types of Sets, Unions and Intersections",
+      "description": "We've already learned a little bit about ",
+      "duration": "6:22",
+      "channel_name": "Professor Dave Explains",
+      "channel_id": "UC0cd_-e49hZpWLH3UIwoWRA",
+      "view_count": 63432,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6JkCmZAQaio/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLByCwAY47GLpBebwY0i_r8TqTWNOg",
+      "youtube_url": "https://www.youtube.com/watch?v=6JkCmZAQaio",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 382
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "byNaO_zn2fI",
+      "title": "How to self study pure math - a step-by-step guide",
+      "description": "This video has a list of books, videos, and exercises that goes through the undergrad pure mathematics curriculum from start to ...",
+      "duration": "9:53",
+      "channel_name": "Aleph 0",
+      "channel_id": "UCzBjutX2PmitNF4avysL-vg",
+      "view_count": 2044961,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/byNaO_zn2fI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATiKFdrvHMhFr2YDLFXW_hxJbcQA",
+      "youtube_url": "https://www.youtube.com/watch?v=byNaO_zn2fI",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 593
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "I3GWzXRectE",
+      "title": "Introductory Calculus: Oxford Mathematics 1st Year Student Lecture",
+      "description": "In our latest student ",
+      "duration": "58:03",
+      "channel_name": "Oxford Mathematics",
+      "channel_id": "UCLnGGRG__uGSPLBLzyhg8dQ",
+      "view_count": 11016879,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I3GWzXRectE/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBYWL58QoHFu10TUrAZds_lFx2yJw",
+      "youtube_url": "https://www.youtube.com/watch?v=I3GWzXRectE",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3483
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "I10q6fjPxJ0",
+      "title": "Statistics made easy ! ! !   Learn about the t-test, the chi square test, the p value and more",
+      "description": "Learning ",
+      "duration": "12:50",
+      "channel_name": "Global Health with Greg Martin",
+      "channel_id": "UCig0KhrB5NClMvX9QrbXcrw",
+      "view_count": 2290870,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I10q6fjPxJ0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDH92WDSdBWx0wd3liDf3GfRnLTGA",
+      "youtube_url": "https://www.youtube.com/watch?v=I10q6fjPxJ0",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 770
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "1f6N2UrCK6o",
+      "title": "Unlocking Your Intuition: How to Solve Hard Problems Easily",
+      "description": "Intuition. It's one of your brain's most powerful processes, and yet, so few people know how to really make use of it. So here's a bit ...",
+      "duration": "17:34",
+      "channel_name": "Colin Galen",
+      "channel_id": "UCpvS3EykHW--l0ogUhMEjEw",
+      "view_count": 1555795,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1f6N2UrCK6o/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDx5R5cf7Lm_QZLpeHufZ9G0fD9Qw",
+      "youtube_url": "https://www.youtube.com/watch?v=1f6N2UrCK6o",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1054
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "V3dFHt9p5W8",
+      "title": "Algebra - Basic Algebra Lessons for Beginners / Dummies (P1) - Pass any Math Test Easily",
+      "description": "Algebra",
+      "duration": "15:18",
+      "channel_name": "UltimateAlgebra",
+      "channel_id": "UCS1YNEY54RYgt9ObzGW2mfg",
+      "view_count": 3482342,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/V3dFHt9p5W8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAwMxit7vgcTbemXqLcwxlQ8VHMxA",
+      "youtube_url": "https://www.youtube.com/watch?v=V3dFHt9p5W8",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "series",
+        "estimated_learning_time": 918
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "tTomwopxKFE",
+      "title": "Algebra 1  Basics for Beginners",
+      "description": "Master the ",
+      "duration": "23:05",
+      "channel_name": "UltimateAlgebra",
+      "channel_id": "UCS1YNEY54RYgt9ObzGW2mfg",
+      "view_count": 1070155,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tTomwopxKFE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlxtCtnkYAExYaLP5dAXIz7ileMA",
+      "youtube_url": "https://www.youtube.com/watch?v=tTomwopxKFE",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1385
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "PUB0TaZ7bhA",
+      "title": "Trigonometry For Beginners!",
+      "description": "This math video tutorial provides a basic introduction into ",
+      "duration": "21:52",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 7530852,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PUB0TaZ7bhA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCnc8p8odWMH0Uj8-sQglMbW3A7Yg",
+      "youtube_url": "https://www.youtube.com/watch?v=PUB0TaZ7bhA",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1312
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "ifbaAqfqpc4",
+      "title": "This is why you're learning differential equations",
+      "description": "Sign up with brilliant and get 20% off your annual subscription: https://brilliant.org/ZachStar/ STEMerch Store: ...",
+      "duration": "18:36",
+      "channel_name": "Zach Star",
+      "channel_id": "UCpCSAcbqs-sjEVfk_hMfY9w",
+      "view_count": 3779951,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ifbaAqfqpc4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD0U4fJb9hxH43Y96_o8JCSPLQpXQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ifbaAqfqpc4",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1116
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "wRMC-ttjhwM",
+      "title": "Truth Table Tutorial - Discrete Mathematics Logic",
+      "description": "Here is a quick ",
+      "duration": "7:51",
+      "channel_name": "Best Friends Farm",
+      "channel_id": "UCv_Kg-uosiF7FRGMXZBrKyg",
+      "view_count": 2359567,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wRMC-ttjhwM/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIFUoSzAP&rs=AOn4CLDAox_Wb5HOxvaH3_93BPVb7cHw6A",
+      "youtube_url": "https://www.youtube.com/watch?v=wRMC-ttjhwM",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 471
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "WsQQvHm4lSw",
+      "title": "Understand Calculus in 35 Minutes",
+      "description": "This video makes an attempt to teach the fundamentals of ",
+      "duration": "36:22",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 4412485,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WsQQvHm4lSw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCu1OjI0iae3H5SZlvtrlhN8f7uEA",
+      "youtube_url": "https://www.youtube.com/watch?v=WsQQvHm4lSw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2182
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "TzDhdvVg9_c",
+      "title": "Calculus at a Fifth Grade Level",
+      "description": "The foreign concepts of ",
+      "duration": "19:06",
+      "channel_name": "Lukey B. The Physics G",
+      "channel_id": "UC3cRUKVHL5tk44KzyXbV7Cg",
+      "view_count": 8795099,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TzDhdvVg9_c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC82b5mUYlaQUZ4ZWHwjdQcitjeZw",
+      "youtube_url": "https://www.youtube.com/watch?v=TzDhdvVg9_c",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1146
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "osEADxaIKIc",
+      "title": "Gilbert Strang: Linear Algebra vs Calculus",
+      "description": "For now, new full episodes are released once or twice a week and 1-2 new clips or a new non-podcast video is released on all ...",
+      "duration": "2:14",
+      "channel_name": "Lex Fridman",
+      "channel_id": "UCSHZKyawb77ixDdsGog4iWA",
+      "view_count": 528092,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/osEADxaIKIc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC6KEJx0ZOt3x1eBl_EPLbP9kJxYA",
+      "youtube_url": "https://www.youtube.com/watch?v=osEADxaIKIc",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 134
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "kyjlxsLW1Is",
+      "title": "Teach me STATISTICS in half an hour! Seriously.",
+      "description": "THE CHALLENGE: \"teach me ",
+      "duration": "42:09",
+      "channel_name": "zedstatistics",
+      "channel_id": "UC6AVa0vSrCpuskzGDDKz_EQ",
+      "view_count": 3100339,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kyjlxsLW1Is/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDWNK4EWoHCmlT2A5hC8457brOLQg",
+      "youtube_url": "https://www.youtube.com/watch?v=kyjlxsLW1Is",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2529
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "kWOTmyoaWJg",
+      "title": "Algebra Basics - Solving Basic Equations - Quick Review!",
+      "description": "This pre-",
+      "duration": "11:24",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 1200265,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kWOTmyoaWJg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDRd7bdEkzQM2gUOUDy7oIJm7TNvA",
+      "youtube_url": "https://www.youtube.com/watch?v=kWOTmyoaWJg",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 684
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "jWHOF6cFbpw",
+      "title": "Triangle Congruence Theorems, Two Column Proofs, SSS, SAS, ASA, AAS Postulates, Geometry  Problems",
+      "description": "This ",
+      "duration": "50:27",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 1652567,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jWHOF6cFbpw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDjGt8nTTzn51oG8wvNB63SphWb7w",
+      "youtube_url": "https://www.youtube.com/watch?v=jWHOF6cFbpw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3027
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "mhd9FXYdf4s",
+      "title": "Trigonometry Concepts - Don't Memorize! Visualize!",
+      "description": "A ",
+      "duration": "32:35",
+      "channel_name": "Dennis Davis",
+      "channel_id": "UCflg8pIElTb9qdFVaDC7gMQ",
+      "view_count": 3238868,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mhd9FXYdf4s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD8Z0Yp5CAOOialFNSs3CPQdnBaIQ",
+      "youtube_url": "https://www.youtube.com/watch?v=mhd9FXYdf4s",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1955
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "k_MzQjLA9fA",
+      "title": "Trigonometry Basics",
+      "description": "Trigonometry Basics",
+      "duration": "52:26",
+      "channel_name": "Manocha Academy",
+      "channel_id": "UCeAnrUKcxFGrMXfHgj0eMjg",
+      "view_count": 1465381,
+      "upload_date": "Streamed 5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/k_MzQjLA9fA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA6DTisn7kthmeMsKZ8K-YLsyxQ7Q",
+      "youtube_url": "https://www.youtube.com/watch?v=k_MzQjLA9fA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 3146
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "A3Ffwsnad0k",
+      "title": "Discrete Math - 1.1.1 Propositions, Negations, Conjunctions and Disjunctions",
+      "description": "This is the first video in the new ",
+      "duration": "19:32",
+      "channel_name": "Kimberly Brehm",
+      "channel_id": "UCcbu9qaBn3MNFYr96mbg72w",
+      "view_count": 1205675,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/A3Ffwsnad0k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbSw6Ut1coR1lOxfxB-2V6vSFpdA",
+      "youtube_url": "https://www.youtube.com/watch?v=A3Ffwsnad0k",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1172
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "p2b2Vb-cYCs",
+      "title": "Introduction to Discrete Mathematics",
+      "description": "Discrete Mathematics",
+      "duration": "9:37",
+      "channel_name": "Neso Academy",
+      "channel_id": "UCQYMhOMi_Cdj1CEAU-fv80A",
+      "view_count": 1410714,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/p2b2Vb-cYCs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC4XjjWA4Pa08sZuLHJdQGTjG91tg",
+      "youtube_url": "https://www.youtube.com/watch?v=p2b2Vb-cYCs",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 577
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "SkidyDQuupA",
+      "title": "Introduction to Probability, Basic Overview - Sample Space, & Tree Diagrams",
+      "description": "This video provides an introduction to ",
+      "duration": "16:59",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 3230094,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SkidyDQuupA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBQX6-tvPTt1B6AXgfNpuTz62e1LA",
+      "youtube_url": "https://www.youtube.com/watch?v=SkidyDQuupA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1019
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "OmJ-4B-mS-Y",
+      "title": "The Map of Mathematics",
+      "description": "The entire field of mathematics summarised in a single map! This shows how pure mathematics and applied mathematics relate to ...",
+      "duration": "11:06",
+      "channel_name": "Domain of Science",
+      "channel_id": "UCxqAWLTk1CmBvZFPzeZMd9A",
+      "view_count": 14707802,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OmJ-4B-mS-Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDhj_kw_Q6Wu4EAAAU2AZUvzCoeRw",
+      "youtube_url": "https://www.youtube.com/watch?v=OmJ-4B-mS-Y",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 666
+      },
+      "search_query": "real analysis fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "yQhTtdq_y9M",
+      "title": "What is a (mathematical) model?",
+      "description": "\"",
+      "duration": "3:45",
+      "channel_name": "StatQuest with Josh Starmer",
+      "channel_id": "UCtYLUTtgS3k1Fg4y5tAhLbw",
+      "view_count": 246297,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yQhTtdq_y9M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3QUQ2z7Vz9Ght82blQD4DZd2GWQ",
+      "youtube_url": "https://www.youtube.com/watch?v=yQhTtdq_y9M",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 225
+      },
+      "search_query": "mathematical modeling techniques",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "5ZhNmKb-dqk",
+      "title": "Set Theory | All-in-One Video",
+      "description": "In this video we'll give an overview of everything you need to know about ",
+      "duration": "29:24",
+      "channel_name": "Dr. Will Wood",
+      "channel_id": "UCipYk6snJe0IaOvzSCWwTrw",
+      "view_count": 1280937,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5ZhNmKb-dqk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCh1kjx71wgA0JzTUbTOCrpoMTTJQ",
+      "youtube_url": "https://www.youtube.com/watch?v=5ZhNmKb-dqk",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1764
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "ymGt7I4Yn3k",
+      "title": "Russell's Paradox - a simple explanation of a profound problem",
+      "description": "In this talk, Professor Jeffrey Kaplan teaches you the basics of ",
+      "duration": "28:28",
+      "channel_name": "Jeffrey Kaplan",
+      "channel_id": "UC_hukbByJP7OZ3Xm2tszacQ",
+      "view_count": 8772186,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ymGt7I4Yn3k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWFQxnuTLhd-3B60w4NrSq-at5WQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ymGt7I4Yn3k",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1708
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "tyDKR4FG3Yw",
+      "title": "INTRODUCTION to SET THEORY - DISCRETE MATHEMATICS",
+      "description": "We introduce the basics of ",
+      "duration": "16:38",
+      "channel_name": "TrevTutor",
+      "channel_id": "UCGYSfZbPp3BiAFs531PBY7g",
+      "view_count": 2587263,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tyDKR4FG3Yw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC4oLLBynBrorWX-Ag8B7AlR_tNPQ",
+      "youtube_url": "https://www.youtube.com/watch?v=tyDKR4FG3Yw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 998
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "oxx-EuXWP-Q",
+      "title": "Don't become a Data Scientist if...! #codebasics #datascience #datascientist #shorts",
+      "description": "Don't become a ",
+      "duration": "0:42",
+      "channel_name": "codebasics",
+      "channel_id": "UCh9nVJoWXmFb7sLApWGcLPQ",
+      "view_count": 125165,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/oxx-EuXWP-Q/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARh_IDAoUTAP&rs=AOn4CLCPAM_ClPrP_VUxFrKmWA6zfjCtaA",
+      "youtube_url": "https://www.youtube.com/watch?v=oxx-EuXWP-Q",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 42
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "LJa4_yGOmwo",
+      "title": "Statistics Full Course For Beginners | Statistics For Data Science | Machine Learning @SCALER",
+      "description": "Topics Covered 00:00:00 - Introduction 00:14:25 - Measures of Central Tendency 00:25:35 - Measures of Dispersion 00:41:57 ...",
+      "duration": "7:38:24",
+      "channel_name": "SCALER",
+      "channel_id": "UC9JWnvl5ZjZv09F5RqiLptw",
+      "view_count": 189251,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LJa4_yGOmwo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDuPllHd6-ERMHNMNUiuxcLT3jInw",
+      "youtube_url": "https://www.youtube.com/watch?v=LJa4_yGOmwo",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 27504
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "aS6R3epK3ms",
+      "title": "Introduction to University Mathematics: Lecture 1 - Oxford Mathematics 1st Year Student Lecture",
+      "description": "This course is taken in the first two weeks of the first year of the Oxford ",
+      "duration": "47:48",
+      "channel_name": "Oxford Mathematics",
+      "channel_id": "UCLnGGRG__uGSPLBLzyhg8dQ",
+      "view_count": 172172,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aS6R3epK3ms/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDUwTBwLxrZSsTd4v9pbaRl_R4sig",
+      "youtube_url": "https://www.youtube.com/watch?v=aS6R3epK3ms",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "lecture"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2868
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "ScX2aBFyrVU",
+      "title": "Information Theory, Lecture 1: Defining Entropy and Information - Oxford Mathematics 3rd Yr Lecture",
+      "description": "In this ",
+      "duration": "53:46",
+      "channel_name": "Oxford Mathematics",
+      "channel_id": "UCLnGGRG__uGSPLBLzyhg8dQ",
+      "view_count": 119706,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ScX2aBFyrVU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALntz1Pir4wi7tmWL-A5jIp6aDcg",
+      "youtube_url": "https://www.youtube.com/watch?v=ScX2aBFyrVU",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3226
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "-VwN2I8A8X0",
+      "title": "Calculus explained with a real life application. | Tamil | LMES",
+      "description": "Calculus",
+      "duration": "7:15",
+      "channel_name": "Let's Make Education Simple",
+      "channel_id": "UCNwcxhfBVDgwx9Lv3CBpu6A",
+      "view_count": 288294,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-VwN2I8A8X0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBSNWA570KqnheBPDs5rTnU1WsdKw",
+      "youtube_url": "https://www.youtube.com/watch?v=-VwN2I8A8X0",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 435
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "mza6QYH3oEw",
+      "title": "All Of Algebra Explained In 15 Minutes",
+      "description": "THIS VIDEO IS SPONSORED BY BRILLIANT.ORG The entirety of ",
+      "duration": "15:23",
+      "channel_name": "Find Y",
+      "channel_id": "UC_kKcjcQmAbIFulGV3twxiw",
+      "view_count": 779511,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mza6QYH3oEw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCJVmbM6iWal1ih97Wayp2RMrUkvw",
+      "youtube_url": "https://www.youtube.com/watch?v=mza6QYH3oEw",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 923
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "6saYBeHzArE",
+      "title": "Geometry Proofs Explained! Triangle Congruence",
+      "description": "On this lesson, we will work through several triangle congruence ",
+      "duration": "9:43",
+      "channel_name": "Mashup Math",
+      "channel_id": "UCtBtcQJ8_jsrjPzb8i1tOsA",
+      "view_count": 902200,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6saYBeHzArE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDc0GrJ8kZCv4we8q08d2RGol0_bw",
+      "youtube_url": "https://www.youtube.com/watch?v=6saYBeHzArE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 583
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "K80YEHQpx9g",
+      "title": "01 - What Is A Differential Equation in Calculus?  Learn to Solve Ordinary Differential Equations.",
+      "description": "In this lesson the student will learn what a ",
+      "duration": "41:03",
+      "channel_name": "Math and Science",
+      "channel_id": "UCYgL81lc7DOLNhnel1_J6Vg",
+      "view_count": 609287,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/K80YEHQpx9g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBl3QIz9OQuh59AbuF6MUNH60d7HA",
+      "youtube_url": "https://www.youtube.com/watch?v=K80YEHQpx9g",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2463
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "B5IjsTONKkw",
+      "title": "What is a DIFFERENTIAL EQUATION??   **Intro to my full ODE course**",
+      "description": "In this video I'm giving an introduction to ODEs or Ordinary ",
+      "duration": "11:26",
+      "channel_name": "Dr. Trefor Bazett",
+      "channel_id": "UC9rTsvTxJnx1DNrDA3Rqa6A",
+      "view_count": 322493,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/B5IjsTONKkw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDNRsBFZpc0yviMmP3XX86e--sMVg",
+      "youtube_url": "https://www.youtube.com/watch?v=B5IjsTONKkw",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 686
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "3zOtLEeHygg",
+      "title": "Complete DM Discrete Maths in one shot | Semester Exam | Hindi",
+      "description": "... https://youtu.be/9kuynHcM3UA ▷ Compiler: https://youtu.be/OQCjakjCJu4 ▷ ",
+      "duration": "6:47:25",
+      "channel_name": "KnowledgeGATE by Sanchit Sir",
+      "channel_id": "UCA6yfpYhy5sWMjRGOT-OAIQ",
+      "view_count": 1264142,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3zOtLEeHygg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBe2aaDyVYyPzsozcgBIOcK7SmS5A",
+      "youtube_url": "https://www.youtube.com/watch?v=3zOtLEeHygg",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 24445
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "LgLgexX7iTs",
+      "title": "Probability Top 10 Must Knows (ultimate study guide)",
+      "description": "Thanks for 100k subs! Please consider subscribing if you enjoy the channel :) Here are the top 10 most important things to know ...",
+      "duration": "50:51",
+      "channel_name": "JensenMath",
+      "channel_id": "UCZovC61jTNT1aQ_JDFoeZwQ",
+      "view_count": 682540,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LgLgexX7iTs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAxDQ45cHTKc6Oix13rUvhbppeYpQ",
+      "youtube_url": "https://www.youtube.com/watch?v=LgLgexX7iTs",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3051
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "eGDtW3BZyyE",
+      "title": "Teaching myself an upper level pure math course (we almost died)",
+      "description": "00:00 Intro 2:41 What is ",
+      "duration": "19:28",
+      "channel_name": "Zach Star",
+      "channel_id": "UCpCSAcbqs-sjEVfk_hMfY9w",
+      "view_count": 937599,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eGDtW3BZyyE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJgclNAhCmMKW_DnLdzaR_tsbwoQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eGDtW3BZyyE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1168
+      },
+      "search_query": "real analysis fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "df5EK1P6Ph0",
+      "title": "Lecture 1: Basics of Mathematical Modeling",
+      "description": "In this video. let us understand the terminology and basic concepts of ",
+      "duration": "25:44",
+      "channel_name": "Dr. Maths",
+      "channel_id": "UCogyKlfP7CtVtu0ar33BMcw",
+      "view_count": 241226,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/df5EK1P6Ph0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyqJ2Uh8E00BXWrg2CwvmqNbgo4w",
+      "youtube_url": "https://www.youtube.com/watch?v=df5EK1P6Ph0",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1544
+      },
+      "search_query": "mathematical modeling techniques",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "1bH_ukYn81c",
+      "title": "Calculus Is Overrated – It is Just Basic Math",
+      "description": "BASIC Math ",
+      "duration": "11:08",
+      "channel_name": "Brain Station Advanced",
+      "channel_id": "UCGPUOBWuUVm6l28mOlUMfxg",
+      "view_count": 336019,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1bH_ukYn81c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDJWhlvxHeF-e_M896_Xe5xNKm5eg",
+      "youtube_url": "https://www.youtube.com/watch?v=1bH_ukYn81c",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 668
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "t5ckUuSsWe4",
+      "title": "Linear Algebra Full Course for Beginners to Experts",
+      "description": "Linear algebra",
+      "duration": "7:56:19",
+      "channel_name": "Geek's Lesson",
+      "channel_id": "UCKXx22vOENUyHrVAADq7Z_g",
+      "view_count": 466858,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/t5ckUuSsWe4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAPGwZmQEdLLmea_8X5Eky41IwDCg",
+      "youtube_url": "https://www.youtube.com/watch?v=t5ckUuSsWe4",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 28579
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "Gi4GxE4obAc",
+      "title": "What is Statistics? A Beginner's Guide to Statistics (Data Analytics)!",
+      "description": "If you want to finally understand ",
+      "duration": "20:21",
+      "channel_name": "DATAtab",
+      "channel_id": "UC3UwrWtAFlAkFl_3Nia756g",
+      "view_count": 97016,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Gi4GxE4obAc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBHB6jDYU8nNmdADmQGu1-X8hEQqA",
+      "youtube_url": "https://www.youtube.com/watch?v=Gi4GxE4obAc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1221
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "yoFBiyg_ulg",
+      "title": "The Ultimate Problem–Solving Strategy | My Secret to Winning Physics, Math, and Coding Competitions",
+      "description": "The Feynman technique for solving complex problems. ",
+      "duration": "16:19",
+      "channel_name": "Samuel Bosch",
+      "channel_id": "UCecz89-vtEcYJ4F0jdAYJ2A",
+      "view_count": 341065,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yoFBiyg_ulg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZypUlS2eshF3njg2TfWztFePqdw",
+      "youtube_url": "https://www.youtube.com/watch?v=yoFBiyg_ulg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 979
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "p_ANRNgKTc8",
+      "title": "Top 3 Problem Solving Strategies",
+      "description": "These are my top 3 ",
+      "duration": "10:56",
+      "channel_name": "Anywhere Math",
+      "channel_id": "UCRkeyHV2bANRrFjesu_wdLQ",
+      "view_count": 199472,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/p_ANRNgKTc8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDM2AXYoM4pRa0TXQ926quX0wKv8Q",
+      "youtube_url": "https://www.youtube.com/watch?v=p_ANRNgKTc8",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 656
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "pByDJDUEbUA",
+      "title": "The HACK to ACE MATH no matter what - Caltech study tip",
+      "description": "You ARE smart and have the potential to be good at ",
+      "duration": "11:51",
+      "channel_name": "Amy Wang",
+      "channel_id": "UCb9fs9s67BXlX7rXVzRf5cQ",
+      "view_count": 990191,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/pByDJDUEbUA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCCUCCDVagrVrHYElsGxn15nF5jow",
+      "youtube_url": "https://www.youtube.com/watch?v=pByDJDUEbUA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 711
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "0OobMub0bAg",
+      "title": "PROBLEM SOLVING STRATEGIES || MATHEMATICS IN THE MODERN WORLD",
+      "description": "MATH",
+      "duration": "26:14",
+      "channel_name": "WOW MATH",
+      "channel_id": "UCJhnuTiKL2KmhrOTh3KsU0g",
+      "view_count": 111421,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0OobMub0bAg/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCr95bUFGvwGp5IwX3Z1fs587bdOQ",
+      "youtube_url": "https://www.youtube.com/watch?v=0OobMub0bAg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1574
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "FEO4FYdXpIA",
+      "title": "Geometry Lesson: Postulates, Theorems and Proofs (Simplifying Math)",
+      "description": "Short video about Some ",
+      "duration": "10:16",
+      "channel_name": "Buffington",
+      "channel_id": "UCUsg0kX7FPatpsmtRI1G6Aw",
+      "view_count": 148163,
+      "upload_date": "13 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FEO4FYdXpIA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-4UHiBUUxObV1x9-HzdTxfT3WTQ",
+      "youtube_url": "https://www.youtube.com/watch?v=FEO4FYdXpIA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 616
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "Bq1QyT-HZrU",
+      "title": "ANGLE THEOREMS - Top 10 Must Know",
+      "description": "Here are the top 10 most important angle ",
+      "duration": "20:47",
+      "channel_name": "JensenMath",
+      "channel_id": "UCZovC61jTNT1aQ_JDFoeZwQ",
+      "view_count": 665451,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Bq1QyT-HZrU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBK2Sz0FSSS6LvHqRQGaYqtou3ElQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Bq1QyT-HZrU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1247
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "gam_RKwZQfg",
+      "title": "Every Theorem on Circle with Proofs.| Theorem on Circles.| Class 9 |NCERT.",
+      "description": "In this video I have explained 8 most important ",
+      "duration": "8:20",
+      "channel_name": "PHYMICS",
+      "channel_id": "UCpa-XfjzL6AzS9Ydo_oOStQ",
+      "view_count": 484216,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gam_RKwZQfg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCcdNpN-l4A640mNje-0cSSk9d50g",
+      "youtube_url": "https://www.youtube.com/watch?v=gam_RKwZQfg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 500
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "v4eUxyMip0c",
+      "title": "All of TRIGONOMETRY in 36 minutes! (top 10 must knows)",
+      "description": "Learn everything you need to know about ",
+      "duration": "36:50",
+      "channel_name": "JensenMath",
+      "channel_id": "UCZovC61jTNT1aQ_JDFoeZwQ",
+      "view_count": 692195,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/v4eUxyMip0c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBAcEYl_iaLaAD-o4DrCJvbjnSRHg",
+      "youtube_url": "https://www.youtube.com/watch?v=v4eUxyMip0c",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2210
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "Tj-V6KnwM5w",
+      "title": "Precalculus Final Exam Review",
+      "description": "This ",
+      "duration": "56:11",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 461004,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Tj-V6KnwM5w/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-INTCf0nJ1bnUVpri4ud1AogQoQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Tj-V6KnwM5w",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3371
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "AKmuk0OM-DM",
+      "title": "Calculus made EASY! 5 Concepts you MUST KNOW before taking calculus!",
+      "description": "CORRECTION - At 22:35 of the video the exponent of 1/2 should be negative once we moved it up! Be sure to check out this video ...",
+      "duration": "23:44",
+      "channel_name": "Dr Ji Tutoring",
+      "channel_id": "UCFpIiwuiN95tSQps87Omndg",
+      "view_count": 669144,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/AKmuk0OM-DM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC9dmCFBKapcftqKoAcXXm8bjRODA",
+      "youtube_url": "https://www.youtube.com/watch?v=AKmuk0OM-DM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1424
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "JrWJnwCMlP0",
+      "title": "Precalculus Introduction, Basic Overview, Graphing Parent Functions, Transformations, Domain & Range",
+      "description": "This ",
+      "duration": "59:02",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 849571,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JrWJnwCMlP0/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB19GDzs-4ChZsdhR6v1Fm0pMEyYQ",
+      "youtube_url": "https://www.youtube.com/watch?v=JrWJnwCMlP0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 3542
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "lxGArmr4moI",
+      "title": "Differential Equations - Full Review Course | Online Crash Course",
+      "description": "About this video: This will be important for anyone studying ",
+      "duration": "9:59:49",
+      "channel_name": "The Math Tutor",
+      "channel_id": "UCN7gB3yQ6hNsVHdPnSNl4Nw",
+      "view_count": 193665,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lxGArmr4moI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAw2hmNURgglPi6EEH41_iy1C4spw",
+      "youtube_url": "https://www.youtube.com/watch?v=lxGArmr4moI",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 35989
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "papVRQqtrgc",
+      "title": "Complete Discrete Mathematics in One Shot (4 Hours) Explained in Hindi",
+      "description": "Topics👇 0:00 Sets, Operations & Relations 39:01 POSET, Hasse Diagram & Lattices 59:30 Venn Diagram & Multiset 1:12:27 ...",
+      "duration": "4:36:06",
+      "channel_name": "5 Minutes Engineering",
+      "channel_id": "UCyHta2dyCTkf29AB67AYn7A",
+      "view_count": 348987,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/papVRQqtrgc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBUmyijc6iXRYCMLhgCoSP0uA6VmQ",
+      "youtube_url": "https://www.youtube.com/watch?v=papVRQqtrgc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 16566
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "lZSL7Tm5ViA",
+      "title": "Probability",
+      "description": "What is ",
+      "duration": "19:01",
+      "channel_name": "Manocha Academy",
+      "channel_id": "UCeAnrUKcxFGrMXfHgj0eMjg",
+      "view_count": 761295,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lZSL7Tm5ViA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA8wBFb47dSmM96nUQNCLF781crBw",
+      "youtube_url": "https://www.youtube.com/watch?v=lZSL7Tm5ViA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1141
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "iLaSpfgVmCA",
+      "title": "What is Probability? (GMAT/GRE/CAT/Bank PO/SSC CGL) | Don't Memorise",
+      "description": "The basics of ",
+      "duration": "5:03",
+      "channel_name": "Infinity Learn NEET",
+      "channel_id": "UCiTjCIT_9EXV1Wp1cY0zaUA",
+      "view_count": 851351,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iLaSpfgVmCA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDC9BX9fwDWvNdqBSbftYmhKLQo4g",
+      "youtube_url": "https://www.youtube.com/watch?v=iLaSpfgVmCA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 303
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "q_kap_FL9NM",
+      "title": "Teaching myself abstract algebra",
+      "description": "Sign up with brilliant and get 20% off your annual subscription: https://brilliant.org/ZachStar/ STEMerch Store (for floating globe, ...",
+      "duration": "14:41",
+      "channel_name": "Zach Star",
+      "channel_id": "UCpCSAcbqs-sjEVfk_hMfY9w",
+      "view_count": 299864,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/q_kap_FL9NM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC9FT-3VOYFwoNQLHb8at3KZukmDQ",
+      "youtube_url": "https://www.youtube.com/watch?v=q_kap_FL9NM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 881
+      },
+      "search_query": "abstract algebra introduction",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "g7L_r6zw4-c",
+      "title": "Group Definition (expanded) - Abstract Algebra",
+      "description": "The group is the most fundamental object you will study in ",
+      "duration": "11:15",
+      "channel_name": "Socratica",
+      "channel_id": "UCW6TXMZ5Pq6yL6_k5NZ2e0Q",
+      "view_count": 936059,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/g7L_r6zw4-c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBJfIJ6vEz7dnqyO8uxkbo9qZquiA",
+      "youtube_url": "https://www.youtube.com/watch?v=g7L_r6zw4-c",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 675
+      },
+      "search_query": "abstract algebra introduction",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "FQYOpD7tv30",
+      "title": "The Mathematician's Weapon | An Intro to Category Theory, Abstraction and Algebra",
+      "description": "A gentle ",
+      "duration": "22:06",
+      "channel_name": "Eyesomorphic",
+      "channel_id": "UCkgKbO073CuS1ZZFKoOgTVw",
+      "view_count": 362147,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FQYOpD7tv30/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCjIqUrBAYXw30J80PkpZsJbucLeg",
+      "youtube_url": "https://www.youtube.com/watch?v=FQYOpD7tv30",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1326
+      },
+      "search_query": "abstract algebra introduction",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "j_f7O-4Rb9U",
+      "title": "Ring Definition (expanded) - Abstract Algebra",
+      "description": "A ring is a commutative group under addition that has a second operation: multiplication. These generalize a wide variety of ...",
+      "duration": "6:51",
+      "channel_name": "Socratica",
+      "channel_id": "UCW6TXMZ5Pq6yL6_k5NZ2e0Q",
+      "view_count": 314544,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/j_f7O-4Rb9U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBp5TgP6vzi4S_622FKjbnCBKB5NQ",
+      "youtube_url": "https://www.youtube.com/watch?v=j_f7O-4Rb9U",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 411
+      },
+      "search_query": "abstract algebra introduction",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "PgrRt9PpaxI",
+      "title": "6 Things I Wish I Knew Before Taking Real Analysis (Math Major)",
+      "description": "Disclaimer: This video is for entertainment purposes only and should not be considered academic. Though all information is ...",
+      "duration": "8:32",
+      "channel_name": "BriTheMathGuy",
+      "channel_id": "UChVUSXFzV8QCOKNWGfE56YQ",
+      "view_count": 178710,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PgrRt9PpaxI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCYKJ3Jq3bq5CYnPYj8Ub58zM0ong",
+      "youtube_url": "https://www.youtube.com/watch?v=PgrRt9PpaxI",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 512
+      },
+      "search_query": "real analysis fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "qXWRL6NHlWc",
+      "title": "Complex analysis: Introduction",
+      "description": "This lecture is part of an online undergraduate ",
+      "duration": "18:25",
+      "channel_name": "Richard E Borcherds",
+      "channel_id": "UCIyDqfi_cbkp-RU20aBF-MQ",
+      "view_count": 101261,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qXWRL6NHlWc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDXrrP-V0M6q1kcmfFDalAwpWdwaw",
+      "youtube_url": "https://www.youtube.com/watch?v=qXWRL6NHlWc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1105
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "dEu5ie25U0Y",
+      "title": "Complex Analysis 1 | Introduction",
+      "description": "🙏 Thanks to all supporters! They are mentioned in the credits of the video :) Thanks to all supporters who made this video ...",
+      "duration": "9:47",
+      "channel_name": "The Bright Side of Mathematics",
+      "channel_id": "UCdwo4k1RQHTcq_-WS7Cazqg",
+      "view_count": 212454,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dEu5ie25U0Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAr8CwUQiKhGVzlIf7V70ezhgIoIw",
+      "youtube_url": "https://www.youtube.com/watch?v=dEu5ie25U0Y",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 587
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "77UZR8n6I4E",
+      "title": "Numerical Method|NUMERICAL SOLUTION | One Shot |Engineering Mathematics|Pradeep GIRI SIR",
+      "description": "Numerical Method",
+      "duration": "35:02",
+      "channel_name": "Pradeep Giri Academy",
+      "channel_id": "UCOgMBTdFTSCtr8p7yVzSHkw",
+      "view_count": 204020,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/77UZR8n6I4E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6-AJfSSkpDVOgUDORn3Ce6qQMDA",
+      "youtube_url": "https://www.youtube.com/watch?v=77UZR8n6I4E",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2102
+      },
+      "search_query": "numerical methods in mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "gyA68tD7oO4",
+      "title": "NUMERICAL  METHOD|BISECTION METHOD|MATHEMATICS|PRADEEP GIRI SIR",
+      "description": "NUMERICAL METHOD",
+      "duration": "10:13",
+      "channel_name": "Pradeep Giri Academy",
+      "channel_id": "UCOgMBTdFTSCtr8p7yVzSHkw",
+      "view_count": 203163,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gyA68tD7oO4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAgo2VhqZqYhJU6AhDo3X4f288Wiw",
+      "youtube_url": "https://www.youtube.com/watch?v=gyA68tD7oO4",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 613
+      },
+      "search_query": "numerical methods in mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "neYulXSt7Tc",
+      "title": "The unsolvable problem that launched a revolution in set theory",
+      "description": "An introduction to the Continuum Hypothesis - a problem in ",
+      "duration": "7:13",
+      "channel_name": "Aleph 0",
+      "channel_id": "UCzBjutX2PmitNF4avysL-vg",
+      "view_count": 189233,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/neYulXSt7Tc/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLACvsQFOpIpuB9hmdjIH9XoN2r2iA",
+      "youtube_url": "https://www.youtube.com/watch?v=neYulXSt7Tc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 433
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "05Z_dudVav0",
+      "title": "Introduction to Sets for Roster Method & Set Builder Form | Algebra |  Math | Letstute",
+      "description": "... #roster form and set builder form #roster form and set builder notation #sets class 11 #class 11 maths #",
+      "duration": "7:29",
+      "channel_name": "Let'stute",
+      "channel_id": "UCT2OYGLtOyyui_9MGrnfyzA",
+      "view_count": 607040,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/05Z_dudVav0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALMtHQuTDcAWTPkRzwfd-vAXNBRw",
+      "youtube_url": "https://www.youtube.com/watch?v=05Z_dudVav0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 449
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "YYgepDY3rHw",
+      "title": "An Introduction to Mathematical Proofs",
+      "description": "This video will give you a basic understanding of how ",
+      "duration": "9:41",
+      "channel_name": "zeropercent",
+      "channel_id": "UCz0YrnB1WaRu4GVHh0lzDFQ",
+      "view_count": 148482,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YYgepDY3rHw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDSqHuGenOkHU7kSP8EKw2Lhjqxgg",
+      "youtube_url": "https://www.youtube.com/watch?v=YYgepDY3rHw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 581
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "TCBu8PD4Lls",
+      "title": "Converse, Inverse, & Contrapositive - Conditional & Biconditional Statements, Logic, Geometry",
+      "description": "This geometry video tutorial explains how to write the converse, inverse, and contrapositive of a conditional statement - if p, then q.",
+      "duration": "11:54",
+      "channel_name": "The Organic Chemistry Tutor",
+      "channel_id": "UCEWpbFLzoYGPfuWUMFPSaoA",
+      "view_count": 711725,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TCBu8PD4Lls/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzdvjTFGrrWnmye98iAmt5sTNDBg",
+      "youtube_url": "https://www.youtube.com/watch?v=TCBu8PD4Lls",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 714
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "V5tUc-J124s",
+      "title": "❖ Four Basic Proof Techniques Used in Mathematics ❖",
+      "description": "Part 1: https://youtu.be/KRLBya7x5ZQ Extra ",
+      "duration": "22:38",
+      "channel_name": "Patrick J",
+      "channel_id": "UCFe6jenM1Bc54qtBsIJGRZQ",
+      "view_count": 623760,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/V5tUc-J124s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyo5UXSP70pMEoMmeB98fJK_Krxg",
+      "youtube_url": "https://www.youtube.com/watch?v=V5tUc-J124s",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1358
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "-6b-tQEBUT8",
+      "title": "9 tips to help you PROVE MATH THEOREMS",
+      "description": "How can you ",
+      "duration": "15:07",
+      "channel_name": "Dr. Trefor Bazett",
+      "channel_id": "UC9rTsvTxJnx1DNrDA3Rqa6A",
+      "view_count": 136054,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-6b-tQEBUT8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDt7l60butgSMi10YtGQO4Wwm_Wdg",
+      "youtube_url": "https://www.youtube.com/watch?v=-6b-tQEBUT8",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 907
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "YcgFT4iNTUA",
+      "title": "YOU NEED MATHEMATICAL LOGIC!",
+      "description": "A new series starts on this channel: ",
+      "duration": "29:23",
+      "channel_name": "citytutoringmath",
+      "channel_id": "UCVMU3pfn0lFklwdl8Njm2KA",
+      "view_count": 413968,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YcgFT4iNTUA/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIFQoTDAP&rs=AOn4CLA_WJEXnkpH7NozcNSS2rAvxouIqw",
+      "youtube_url": "https://www.youtube.com/watch?v=YcgFT4iNTUA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1763
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "uNzaMrcuTM0",
+      "title": "The Mathematics of Cryptography",
+      "description": "Click here to enroll in Coursera's \"",
+      "duration": "13:03",
+      "channel_name": "Zach Star",
+      "channel_id": "UCpCSAcbqs-sjEVfk_hMfY9w",
+      "view_count": 424724,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uNzaMrcuTM0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDqZM2vC3-HTGQUpXhrrExQQIw1w",
+      "youtube_url": "https://www.youtube.com/watch?v=uNzaMrcuTM0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 783
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "QDdOoYdb748",
+      "title": "Lattice-based cryptography: The tricky math of dots",
+      "description": "Lattices are seemingly simple patterns of dots. But they are the basis for some seriously hard ",
+      "duration": "8:39",
+      "channel_name": "Chalk Talk",
+      "channel_id": "UCUv35okF8MSo2dFQx5LrNmA",
+      "view_count": 208865,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/QDdOoYdb748/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD6JukjIW7omUia83DjGEqQZALbgg",
+      "youtube_url": "https://www.youtube.com/watch?v=QDdOoYdb748",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 519
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "XSJLyK9LlnY",
+      "title": "The Simple Brilliance of Modern Encryption",
+      "description": "Diffie-Hellman Key Exchange is the first ever public-key ",
+      "duration": "20:41",
+      "channel_name": "PurpleMind",
+      "channel_id": "UCumGsYL8Tv_ldtUqHrjkRCQ",
+      "view_count": 158314,
+      "upload_date": "2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XSJLyK9LlnY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBJd8NvGNlWHXTEmofYFPmjz4JbVA",
+      "youtube_url": "https://www.youtube.com/watch?v=XSJLyK9LlnY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1241
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "xmwxDHX6xUc",
+      "title": "Cryptography | The Mathematics of RSA and the Diffie-Hellman Protocol",
+      "description": "Click here to enroll in Coursera's \"",
+      "duration": "9:19",
+      "channel_name": "Zach Star",
+      "channel_id": "UCpCSAcbqs-sjEVfk_hMfY9w",
+      "view_count": 112883,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xmwxDHX6xUc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA7FTMf6P1tcCq6e3TrFI5veXL4Vw",
+      "youtube_url": "https://www.youtube.com/watch?v=xmwxDHX6xUc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 559
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "rRgW04Sxe6Q",
+      "title": "Business Math - Finance Math (2 of 30) Compound Interest - The Concept",
+      "description": "In this video I will define and compare the differences between simple and compounded interest. Next video in this series can be ...",
+      "duration": "5:51",
+      "channel_name": "Michel van Biezen",
+      "channel_id": "UCiGxYawhEp4QyFcX0R60YdQ",
+      "view_count": 216151,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rRgW04Sxe6Q/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBV-thG7JhjNrndUmv4JVWXe750Sw",
+      "youtube_url": "https://www.youtube.com/watch?v=rRgW04Sxe6Q",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 351
+      },
+      "search_query": "financial mathematics concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "JIbfzmt2LuY",
+      "title": "How to learn Data Science? In Short",
+      "description": "shorts.",
+      "duration": "0:47",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 1042245,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JIbfzmt2LuY/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgwICIofzAP&rs=AOn4CLD36VNy96jq4J3v70Eq3ItJjHb7pg",
+      "youtube_url": "https://www.youtube.com/watch?v=JIbfzmt2LuY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 47
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "lbVfbMJOGGY",
+      "title": "How to Explain Calculus to a 6th Grader?",
+      "description": "Here is the Challenge: Can you ",
+      "duration": "13:31",
+      "channel_name": "Learn Math By Doing",
+      "channel_id": "UC3b-OgZLEXmcV6iaqJIIBbQ",
+      "view_count": 81131,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lbVfbMJOGGY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD5n-wUxNwtwbPUHWEboPt_yI0R6A",
+      "youtube_url": "https://www.youtube.com/watch?v=lbVfbMJOGGY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 811
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "2RDrcR7urdA",
+      "title": "The Best Way To Learn Linear Algebra",
+      "description": "If you enjoyed this video please consider liking, sharing, and subscribing. Udemy ",
+      "duration": "10:32",
+      "channel_name": "The Math Sorcerer",
+      "channel_id": "UCr7lmzIk63PZnBw3bezl-Mg",
+      "view_count": 94144,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2RDrcR7urdA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6xdAofiInpecHaiYRIMuGSHcktw",
+      "youtube_url": "https://www.youtube.com/watch?v=2RDrcR7urdA",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 632
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "E8YQPBHLUrY",
+      "title": "All Of Linear Algebra Explained In 10 Minutes",
+      "description": "THIS VIDEO IS SPONSORED BY BRILLIANT.ORG Get your friends out of the doom scrolling and support a guy: Share the video ...",
+      "duration": "10:15",
+      "channel_name": "Find Y",
+      "channel_id": "UC_kKcjcQmAbIFulGV3twxiw",
+      "view_count": 57372,
+      "upload_date": "2 weeks ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/E8YQPBHLUrY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAgl03II9jM9EUBBVWuggStwMlXjA",
+      "youtube_url": "https://www.youtube.com/watch?v=E8YQPBHLUrY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 615
+      },
+      "search_query": "linear algebra course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "hjZJIVWHnPE",
+      "title": "Statistic for beginners | Statistics for Data Science",
+      "description": "In this comprehensive #",
+      "duration": "9:15:58",
+      "channel_name": "Geek's Lesson",
+      "channel_id": "UCKXx22vOENUyHrVAADq7Z_g",
+      "view_count": 809053,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hjZJIVWHnPE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAW2PsxmLzlEcYLQVQWTevyFAfgnA",
+      "youtube_url": "https://www.youtube.com/watch?v=hjZJIVWHnPE",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 33358
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "fDjLmYlweUA",
+      "title": "All of Trigonometry Explained in 5 Minutes",
+      "description": "As a corollary to Everything You Need To Know About Math, here's all of ",
+      "duration": "5:00",
+      "channel_name": "1red2blue4",
+      "channel_id": "UCQZffb1Oa4FLf5Tqydv51qw",
+      "view_count": 93187,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fDjLmYlweUA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAPu-VrwBKydLnVRzEgAgSBWaCSvw",
+      "youtube_url": "https://www.youtube.com/watch?v=fDjLmYlweUA",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 300
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "-18qSbIbVNw",
+      "title": "AP Precalculus ENTIRE Course Review — Everything You MUST Know!",
+      "description": "Subscribe to my second channel: www.youtube.com/@MaxAllen1 AP ",
+      "duration": "1:08:15",
+      "channel_name": "Maximum Insight",
+      "channel_id": "UCrDhlCEZWiKV4IlVxKyEgNQ",
+      "view_count": 102381,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-18qSbIbVNw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBxfd80vE6TFhW7wwiXeE5gmHQgfA",
+      "youtube_url": "https://www.youtube.com/watch?v=-18qSbIbVNw",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4095
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "j-cVJhn6A-Q",
+      "title": "Differential Equations Class 12 | One Shot | JEE Main & Advanced | Arvind Kalia Sir",
+      "description": "TIMESTAMPS 0:00 Introduction & Nature of chapter 2:54 Index and critical topics 5:45 Order and degree of ",
+      "duration": "3:25:44",
+      "channel_name": "JEE Nexus by Unacademy ",
+      "channel_id": "UCcMU5NE1Lmf4Fqpx7n9F3Sw",
+      "view_count": 373508,
+      "upload_date": "Streamed 1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/j-cVJhn6A-Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCuTRWo2PQCpCgebyJwww96aHV4cQ",
+      "youtube_url": "https://www.youtube.com/watch?v=j-cVJhn6A-Q",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 12344
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "R2QtleY5asQ",
+      "title": "DIFFERENTIAL EQUATIONS explained in 21 Minutes",
+      "description": "This video aims to provide what I think are the most important details that are usually discussed in an elementary ordinary ...",
+      "duration": "21:21",
+      "channel_name": "Two Squared",
+      "channel_id": "UClM4xAwltVI4Bg2RvpEcvbw",
+      "view_count": 72061,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/R2QtleY5asQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCUo12VQqjfyI8HtaZOTB11wNIU9w",
+      "youtube_url": "https://www.youtube.com/watch?v=R2QtleY5asQ",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1281
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "UwYJUKVc-Hs",
+      "title": "Discrete Mathematics (Full Course)",
+      "description": "Discrete mathematics",
+      "duration": "6:08:01",
+      "channel_name": "My Lesson",
+      "channel_id": "UCTHAIlSOqquwOKnd_nCJgAQ",
+      "view_count": 365655,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UwYJUKVc-Hs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDeAz_xlBMz9KzydbO1oNtnVvus2g",
+      "youtube_url": "https://www.youtube.com/watch?v=UwYJUKVc-Hs",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 22081
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "3czgfHULZCs",
+      "title": "Intro To Math Proofs (Full Course)",
+      "description": "This is my full introductory ",
+      "duration": "2:20:51",
+      "channel_name": "BriTheMathGuy",
+      "channel_id": "UChVUSXFzV8QCOKNWGfE56YQ",
+      "view_count": 370070,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3czgfHULZCs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAH66t56OK3TI7t9rOQYHa69qMeqA",
+      "youtube_url": "https://www.youtube.com/watch?v=3czgfHULZCs",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 8451
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "j_8PLI_wCVU",
+      "title": "Cryptography Full Course Part 1",
+      "description": "ABOUT THIS COURSE💠💠 ",
+      "duration": "8:17:38",
+      "channel_name": "Nerd's lesson",
+      "channel_id": "UCyFWoLmPTgZ3BkHIKMRSV1g",
+      "view_count": 262790,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/j_8PLI_wCVU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLASwtqdC4C8ilNg1wKSGA983WyL7Q",
+      "youtube_url": "https://www.youtube.com/watch?v=j_8PLI_wCVU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 29858
+      },
+      "search_query": "cryptography mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "sDlH-YPXd0A",
+      "title": "How to become a Data Scientist in 2025",
+      "description": "How to actually learn ",
+      "duration": "8:15",
+      "channel_name": "Sahil & Sarra",
+      "channel_id": "UCkcqmxjMXaBb0kDWqqSEU1g",
+      "view_count": 94163,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sDlH-YPXd0A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBUJTgyYukLScc5iR2YEfnSsY1rVw",
+      "youtube_url": "https://www.youtube.com/watch?v=sDlH-YPXd0A",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 495
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "T9lt6MZKLck",
+      "title": "What is Trigonometry? | Introduction to Trigonometry | Infinity Learn",
+      "description": "In this video, we will learn: 0:00 What is ",
+      "duration": "3:18",
+      "channel_name": "Infinity Learn NEET",
+      "channel_id": "UCiTjCIT_9EXV1Wp1cY0zaUA",
+      "view_count": 1388436,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/T9lt6MZKLck/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB2fEor49lVZPYMq-Ioh9GUavEgYw",
+      "youtube_url": "https://www.youtube.com/watch?v=T9lt6MZKLck",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 198
+      },
+      "search_query": "trigonometry fundamentals",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "3BaknPM5l5s",
+      "title": "Math Book for Complete Beginners",
+      "description": "If you enjoyed this video please consider liking, sharing, and subscribing. Udemy Courses Via My Website: ...",
+      "duration": "0:21",
+      "channel_name": "The Math Sorcerer",
+      "channel_id": "UCr7lmzIk63PZnBw3bezl-Mg",
+      "view_count": 388993,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3BaknPM5l5s/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhyIEkoIDAP&rs=AOn4CLBkEVa_arsaG9sgUR5g8Qi9-g4yKQ",
+      "youtube_url": "https://www.youtube.com/watch?v=3BaknPM5l5s",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 21
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "MO-AExWdl4Q",
+      "title": "Calculus Visualized - by Dennis F  Davis",
+      "description": "This 3-hour video covers most concepts in the first two semesters of ",
+      "duration": "3:00:44",
+      "channel_name": "Dennis Davis",
+      "channel_id": "UCflg8pIElTb9qdFVaDC7gMQ",
+      "view_count": 817484,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/MO-AExWdl4Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3PijVaDOO5FU2Nnn0bRdhpEOwWg",
+      "youtube_url": "https://www.youtube.com/watch?v=MO-AExWdl4Q",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 10844
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "tPdQHSPNs9Q",
+      "title": "OLS Regression, R-Square & Least Squares  | Lecture 06 | Machine Learning and AI",
+      "description": "Timecode: 00:00 - Introduction 04:59 - What is Ordinary Least Square Regression? 07:15 - What is R-square? 09:22 - What is ...",
+      "duration": "10:43",
+      "channel_name": "ANALYST AYUSH",
+      "channel_id": "UCQlABZ9q2UR1CwmCafHrhfA",
+      "view_count": 83,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tPdQHSPNs9Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSEAll1OOJK8t1WwnFJF05fc2wZw",
+      "youtube_url": "https://www.youtube.com/watch?v=tPdQHSPNs9Q",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 643
+      },
+      "search_query": "statistics for beginners",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "82pUuLgGtJo",
+      "title": "AP Precalculus Unit 1 REVIEW: Polynomial and Rational Functions",
+      "description": "In this comprehensive ",
+      "duration": "20:35",
+      "channel_name": "Maximum Insight",
+      "channel_id": "UCrDhlCEZWiKV4IlVxKyEgNQ",
+      "view_count": 49504,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/82pUuLgGtJo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBjLefbyyC5ft7k9xboX9RL4vtdkQ",
+      "youtube_url": "https://www.youtube.com/watch?v=82pUuLgGtJo",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1235
+      },
+      "search_query": "pre-calculus review",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "FrF1QBP8ejo",
+      "title": "Differential Equations Introduction  | Differential Calculus Basics #differentialequation",
+      "description": "Video teaches about the basics of ",
+      "duration": "18:50",
+      "channel_name": "Excellence Academy",
+      "channel_id": "UCETMXtWTOl0M27EYE07EJFQ",
+      "view_count": 61246,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FrF1QBP8ejo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBUVYuD6fShSKFeQ0TQXfFnt01y2A",
+      "youtube_url": "https://www.youtube.com/watch?v=FrF1QBP8ejo",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1130
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "e1UXSwmPJlg",
+      "title": "Differential Equations | One Shot Marathon | Class 12 | Chapter 9 | CBSE 2024 🔥 Shimon Sir",
+      "description": "📚 Chapter Overview: Get ready to conquer the intricate world of ",
+      "duration": "3:49:16",
+      "channel_name": "Vedantu Master Tamil",
+      "channel_id": "UCo7S5qgzt1H66Qlepl90c1g",
+      "view_count": 103938,
+      "upload_date": "Streamed 1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/e1UXSwmPJlg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBcXVOCXfji7Acrg-YpEDnqNytEaQ",
+      "youtube_url": "https://www.youtube.com/watch?v=e1UXSwmPJlg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 13756
+      },
+      "search_query": "differential equations course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "LgXovk6qWyY",
+      "title": "5 Tips to Crush Discrete Math (From a TA)",
+      "description": "Discrete Math",
+      "duration": "11:57",
+      "channel_name": "Logan Cope",
+      "channel_id": "UClwDjN7I1v1AqlWsmUh3MCA",
+      "view_count": 26237,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LgXovk6qWyY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCP2Z6Bd-YDb1eHVfJFjh_K6Sq6vA",
+      "youtube_url": "https://www.youtube.com/watch?v=LgXovk6qWyY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 717
+      },
+      "search_query": "discrete mathematics tutorial",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "wB-kbwPPiGs",
+      "title": "Probability Basics part-1 /Probability Concept part-1 / Probability Theory part-1 #Probability #GATE",
+      "description": "Probability",
+      "duration": "8:21",
+      "channel_name": "JAYA VINEETHA RAM",
+      "channel_id": "UCyqzDNFUVEaYCVUq1OGB4tg",
+      "view_count": 55219,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wB-kbwPPiGs/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARhlIGUoZTAP&rs=AOn4CLAUYuyQuMG1bm-UFpK9kPeUUxhAzQ",
+      "youtube_url": "https://www.youtube.com/watch?v=wB-kbwPPiGs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "series",
+        "estimated_learning_time": 501
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "PELbVJargDs",
+      "title": "The 3 Best Books on Complex Analysis",
+      "description": "I describe my three favorite books for an introduction to ",
+      "duration": "16:24",
+      "channel_name": "Daniel Rubin",
+      "channel_id": "UCYLOc-m8WuQaBHJ56lEw4VQ",
+      "view_count": 33073,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PELbVJargDs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBSETMPXtDrWUcK5t8PyB7LBubBFg",
+      "youtube_url": "https://www.youtube.com/watch?v=PELbVJargDs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 984
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "ZAy3o5uo8rY",
+      "title": "🔥😅Tips and Tricks of M2 Exam | 10th June 2025 | Statistics and Numerical Methods in Tamil | MA3251",
+      "description": "https://youtu.be/NQPwhUy60aU?feature=shared.",
+      "duration": "8:10",
+      "channel_name": "4G Silver Academy தமிழ்",
+      "channel_id": "UCrx-FlNM6BWOJvu3re6HH7w",
+      "view_count": 61031,
+      "upload_date": "4 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZAy3o5uo8rY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCD-k4uk7htqgpmfUhSyaKYbDZuyQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ZAy3o5uo8rY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 490
+      },
+      "search_query": "numerical methods in mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "qRzppbJyqfU",
+      "title": "Lagrange's Interpolation Formula in Tamil | Statistics and Numerical Methods in Tamil | MA3251",
+      "description": "",
+      "duration": "17:36",
+      "channel_name": "4G Silver Academy தமிழ்",
+      "channel_id": "UCrx-FlNM6BWOJvu3re6HH7w",
+      "view_count": 29653,
+      "upload_date": "5 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qRzppbJyqfU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhfF0q2wy0bB5tXkQIflYCyQIhOQ",
+      "youtube_url": "https://www.youtube.com/watch?v=qRzppbJyqfU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1056
+      },
+      "search_query": "numerical methods in mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "vOU_HTGXt8Q",
+      "title": "What is Mathematical Modeling?",
+      "description": "An introduction to the key ideas for creating and using ",
+      "duration": "11:03",
+      "channel_name": "Brenda Edmonds",
+      "channel_id": "UCUjk4HXdv_4mc6BKT3cp45A",
+      "view_count": 53417,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vOU_HTGXt8Q/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAft7DjsZuqQewrYouIC1fXvGQoTg",
+      "youtube_url": "https://www.youtube.com/watch?v=vOU_HTGXt8Q",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 663
+      },
+      "search_query": "mathematical modeling techniques",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "tnd7LKGid80",
+      "title": "Pure vs Applied Maths | MathsForUni",
+      "description": "Hi everyone! This is a video discussing the difference between 'Pure' maths and '",
+      "duration": "5:02",
+      "channel_name": "MathsForUni",
+      "channel_id": "UCfvIgPFzGx7R38qy2v1dwkA",
+      "view_count": 81803,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tnd7LKGid80/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3WHNic1cj5D82Uwz0LyF-OdewKw",
+      "youtube_url": "https://www.youtube.com/watch?v=tnd7LKGid80",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 302
+      },
+      "search_query": "applied mathematics examples",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "qfurPpCSmcM",
+      "title": "Open Days 2019 Part 3: Applied Mathematics at Oxford",
+      "description": "Our Open Days are intended to give an insight in to ",
+      "duration": "28:43",
+      "channel_name": "Oxford Mathematics",
+      "channel_id": "UCLnGGRG__uGSPLBLzyhg8dQ",
+      "view_count": 55600,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qfurPpCSmcM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1c98wqwjZjRWIoB9cbInpVXuDqQ",
+      "youtube_url": "https://www.youtube.com/watch?v=qfurPpCSmcM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 1723
+      },
+      "search_query": "applied mathematics examples",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "E9pAmOJs-i4",
+      "title": "Elementary Set Theory in 49 minutes",
+      "description": "Introduction to ",
+      "duration": "48:59",
+      "channel_name": "Dennis Davis",
+      "channel_id": "UCflg8pIElTb9qdFVaDC7gMQ",
+      "view_count": 53543,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/E9pAmOJs-i4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfbQliRzOp0i6N8SpZsLg4na5SCA",
+      "youtube_url": "https://www.youtube.com/watch?v=E9pAmOJs-i4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2939
+      },
+      "search_query": "set theory explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "S1AEWuCFq6A",
+      "title": "The story of mathematical proof – with John Stillwell",
+      "description": "Discover the surprising history of ",
+      "duration": "44:04",
+      "channel_name": "The Royal Institution",
+      "channel_id": "UCYeF244yNGuFefuFKqxIAXw",
+      "view_count": 66591,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/S1AEWuCFq6A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyrznQNT1fAy2Npm3pQmxGmMRNpg",
+      "youtube_url": "https://www.youtube.com/watch?v=S1AEWuCFq6A",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2644
+      },
+      "search_query": "logic and proofs mathematics",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "752RHIXDHUY",
+      "title": "Introduction to Financial Mathematics",
+      "description": "Introduction to ",
+      "duration": "36:34",
+      "channel_name": "IIT Roorkee July 2018",
+      "channel_id": "UCY-ANi3wxkUSGhAel7T0TGw",
+      "view_count": 30972,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/752RHIXDHUY/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCfg6zXAGwD8jDsPMAeWABfqlThrw",
+      "youtube_url": "https://www.youtube.com/watch?v=752RHIXDHUY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2194
+      },
+      "search_query": "financial mathematics concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "UukVP7Mg3TU",
+      "title": "Calculus - Introduction to Calculus",
+      "description": "This video will give you a brief introduction to ",
+      "duration": "4:11",
+      "channel_name": "MySecretMathTutor",
+      "channel_id": "UCcBOg_7QmpJFlIVMYDyUhaw",
+      "view_count": 1068241,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UukVP7Mg3TU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC89XnR8ZLD34O5DH7TjyPxgm412g",
+      "youtube_url": "https://www.youtube.com/watch?v=UukVP7Mg3TU",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 251
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "TOm9aeCWsSI",
+      "title": "How this math genius solved this problem",
+      "description": "The next ",
+      "duration": "0:33",
+      "channel_name": "Your Math Bestie",
+      "channel_id": "UChZLc_8cf3bZiBKdiLPl1VQ",
+      "view_count": 51722153,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TOm9aeCWsSI/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgTIBcofzAP&rs=AOn4CLCBYiNjYwz07J2xsqNa2UqDhs8bUQ",
+      "youtube_url": "https://www.youtube.com/watch?v=TOm9aeCWsSI",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 33
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "k8mdltWUWWY",
+      "title": "Mental Math Tricks",
+      "description": "Join my Discord server: https://discord.gg/gohar 📝 I'll edit your college essay: https://nextadmit.com/services/essay/ 🎓 Get into ...",
+      "duration": "0:27",
+      "channel_name": "Gohar Khan",
+      "channel_id": "UCPk2s5c4R_d-EUUNvFFODoA",
+      "view_count": 12031616,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/k8mdltWUWWY/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhyIFAoPDAP&rs=AOn4CLDHbYHoeUsb2royxbOvrrZSRkiYcg",
+      "youtube_url": "https://www.youtube.com/watch?v=k8mdltWUWWY",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 27
+      },
+      "search_query": "math problem solving strategies",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "XUus6-9E9sQ",
+      "title": "Everything About Circle Theorems - In 3 minutes!",
+      "description": "This is a graphic, simple and memorable way to remember the difference from a chord or a tangent or a segments and sectors!",
+      "duration": "4:11",
+      "channel_name": "EasiAsPi",
+      "channel_id": "UCLV0RBVVhw1U1nctk9Z7lgQ",
+      "view_count": 3136341,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XUus6-9E9sQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLClDexhHagQR-JJBwsjfPYw4xMSRA",
+      "youtube_url": "https://www.youtube.com/watch?v=XUus6-9E9sQ",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 251
+      },
+      "search_query": "geometry theorems and proofs",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "m6ltzaOpPl8",
+      "title": "Be Lazy",
+      "description": "Here's a top tip for aspiring mathematicians from Oxford Mathematician Philip Maini. Be lazy. #shorts #science #",
+      "duration": "0:44",
+      "channel_name": "Oxford Mathematics",
+      "channel_id": "UCLnGGRG__uGSPLBLzyhg8dQ",
+      "view_count": 9375468,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/m6ltzaOpPl8/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoZTAP&rs=AOn4CLCyR-7ae_b42J6KVwFUHuYssUF5fw",
+      "youtube_url": "https://www.youtube.com/watch?v=m6ltzaOpPl8",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 44
+      },
+      "search_query": "applied mathematics examples",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "KSlO9pNPSLo",
+      "title": "'This is my job' - A wholesome moment during an Oxford University lecture 🥰",
+      "description": "We love this moment during Prof Andrew Wathen's Complex Numbers ",
+      "duration": "0:14",
+      "channel_name": "University of Oxford",
+      "channel_id": "UCK8f1CUe8y403u3b0gCINww",
+      "view_count": 310007,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KSlO9pNPSLo/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhlIGUoZTAP&rs=AOn4CLCwTb5Hd9vbDkLiyhyIqsAAO3EmWw",
+      "youtube_url": "https://www.youtube.com/watch?v=KSlO9pNPSLo",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 14
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "SgtOzuADxK8",
+      "title": "The real secret to learning Math",
+      "description": "----------------------------------------- If you're new to the channel and want to know a little bit more about my story and what I do, then ...",
+      "duration": "0:38",
+      "channel_name": "Justin Sung",
+      "channel_id": "UC2Zs9v2hL2qZZ7vsAENsg4w",
+      "view_count": 127673,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SgtOzuADxK8/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoZTAP&rs=AOn4CLDOWVCmkHJopNp5QFIIJ3FxcNJJeA",
+      "youtube_url": "https://www.youtube.com/watch?v=SgtOzuADxK8",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 38
+      },
+      "search_query": "mathematics lecture university",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "uJ-5PD_su2M",
+      "title": "Calculus Explained In 30 Seconds",
+      "description": "Calculus Explained",
+      "duration": "0:45",
+      "channel_name": "CleereLearn",
+      "channel_id": "UCnIK9-ZwjfBYop5rDtvrTJw",
+      "view_count": 119968,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uJ-5PD_su2M/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoZTAP&rs=AOn4CLDxUN29H0fWDferkrWAW8ICXpPcSA",
+      "youtube_url": "https://www.youtube.com/watch?v=uJ-5PD_su2M",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 45
+      },
+      "search_query": "calculus tutorial explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "8DlrqgOo1qc",
+      "title": "Algebra: FOIL Method #Shorts #algebra #math #maths #mathematics #education #learn",
+      "description": "",
+      "duration": "0:18",
+      "channel_name": "markiedoesmath",
+      "channel_id": "UCZhsAU2BvmRe11K2N2_CENg",
+      "view_count": 811023,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8DlrqgOo1qc/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBlAOAAtAFigIMCAAQARhlIE0oRDAP&rs=AOn4CLB_DVahJEkofC2KVFB6bsMDEjNKUA",
+      "youtube_url": "https://www.youtube.com/watch?v=8DlrqgOo1qc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 18
+      },
+      "search_query": "algebra basics explained",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "N4z9g_EEVZM",
+      "title": "Probabiliy | JEE 2025 | JEE Mains + Advanced Maths | All Concepts And Questions | Namrata Ma'am",
+      "description": "Probability",
+      "duration": "2:44:43",
+      "channel_name": "Vedantu JEE English",
+      "channel_id": "UCwBfgxcxKUzlhpEMJxWEmdg",
+      "view_count": 11905,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N4z9g_EEVZM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCT5XaChbxk0anxlD9986HitMc4EQ",
+      "youtube_url": "https://www.youtube.com/watch?v=N4z9g_EEVZM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 9883
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "YTWM4aOqVwM",
+      "title": "Probability: The Basics EXPLAINED with Examples",
+      "description": "Learn the basics of ",
+      "duration": "4:00",
+      "channel_name": "Ace Tutors",
+      "channel_id": "UCq0s6dTna0C6b0vKkg3mexg",
+      "view_count": 128436,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YTWM4aOqVwM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKmlreeuW2SmgDUtUJ0rYyjRG_Vw",
+      "youtube_url": "https://www.youtube.com/watch?v=YTWM4aOqVwM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 240
+      },
+      "search_query": "probability theory concepts",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "RRhwSiN-qZk",
+      "title": "Complex Analysis (MTH-CA) Lecture 1",
+      "description": "MATHEMATICS MTH-CA-L01-Sjöström.mp4 ",
+      "duration": "1:35:22",
+      "channel_name": "ICTP Postgraduate Diploma Programme",
+      "channel_id": "UCBlqfZZYQWKyr6qLAB7LINw",
+      "view_count": 71966,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/RRhwSiN-qZk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBGVEmMLR4z6hVjgXhjvvlbKZIiww",
+      "youtube_url": "https://www.youtube.com/watch?v=RRhwSiN-qZk",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 5722
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "zkn_bRM1LOQ",
+      "title": "Hitler Learns Complex Analysis",
+      "description": "Hitler struggles with ",
+      "duration": "3:50",
+      "channel_name": "Nick Watson",
+      "channel_id": "UChz_sYoO2AFWsxvM9YeY2GQ",
+      "view_count": 139874,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zkn_bRM1LOQ/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBot83-gsyMG5xy-HlcCLIILUXUmw",
+      "youtube_url": "https://www.youtube.com/watch?v=zkn_bRM1LOQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 230
+      },
+      "search_query": "complex analysis course",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "gOrzsfUh-KY",
+      "title": "Class 10 Maths | Arithmetic Progression Chapter 5 | LECTURE : 7 | Live with Sagar Sir | CGA 10th",
+      "description": "Live Now: Mastering Arithmetic Progression (AP) – Chapter 5 | LECTURE : 7 | Class 10 CBSE Join Sagar Sir in this ...",
+      "duration": "22:03",
+      "channel_name": "CGA 9th & 10th ",
+      "channel_id": "UCNmgxH67vsG-vlrweVNERyA",
+      "view_count": 74,
+      "upload_date": "Streamed 2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gOrzsfUh-KY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB5XV8YQFXmBDmynRrertWsvI_bQQ",
+      "youtube_url": "https://www.youtube.com/watch?v=gOrzsfUh-KY",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1323
+      },
+      "search_query": "applied mathematics examples",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "2G5GfFHTiWQ",
+      "title": "Math Order for Machine Learning & Data Science",
+      "description": "If you are new to ",
+      "duration": "16:20",
+      "channel_name": "Lazy Programmer",
+      "channel_id": "UCdROkkPGHy6uVpUrIB4n3YQ",
+      "view_count": 2054,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2G5GfFHTiWQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7wQoxYiF2UsYmaZS14YhqpFEfCg",
+      "youtube_url": "https://www.youtube.com/watch?v=2G5GfFHTiWQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 980
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    },
+    {
+      "video_id": "wjX7NrslukE",
+      "title": "Data Science Course Eligibility ✅❎ #datascience",
+      "description": "Best ",
+      "duration": "1:00",
+      "channel_name": "BEPEC by Kanth",
+      "channel_id": "UCn1USB9-5UqKJTSHd1JGcVw",
+      "view_count": 211680,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wjX7NrslukE/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhaIF0oZTAP&rs=AOn4CLC2JPDdW__6ZnDD-D4C0QVt76l01Q",
+      "youtube_url": "https://www.youtube.com/watch?v=wjX7NrslukE",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 60
+      },
+      "search_query": "data science math prerequisites",
+      "genre": "mathematics"
+    }
+  ],
+  "timestamp": "2025-06-14T09:02:51.059832",
+  "quality_stats": {
+    "avg_quality_score": 0.453,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.9,
+    "avg_view_count": 1994304,
+    "total_view_count": 293162660,
+    "high_quality_count": 49,
+    "medium_quality_count": 87,
+    "basic_quality_count": 11
+  }
+}

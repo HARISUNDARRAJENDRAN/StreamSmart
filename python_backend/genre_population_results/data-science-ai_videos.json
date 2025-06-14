@@ -1,0 +1,3483 @@
+{
+  "genre": "data-science-ai",
+  "target_count": 150,
+  "actual_count": 144,
+  "success": true,
+  "duration_seconds": 42.86,
+  "videos": [
+    {
+      "video_id": "7eh4d6sabA0",
+      "title": "Python Machine Learning Tutorial (Data Science)",
+      "description": "Build your first AI project with Python! This beginner-friendly machine learning ",
+      "duration": "49:43",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 3257230,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7eh4d6sabA0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCPWI1rL7i47fjCbqRl-XSqR5rIhw",
+      "youtube_url": "https://www.youtube.com/watch?v=7eh4d6sabA0",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2983
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "bAyrObl7TYE",
+      "title": "Big Data In 5 Minutes | What Is Big Data?| Big Data Analytics | Big Data Tutorial | Simplilearn",
+      "description": "This video, ",
+      "duration": "5:12",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 2001246,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bAyrObl7TYE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDk2UI2fNCBXuKwcV64pyWqu84vAg",
+      "youtube_url": "https://www.youtube.com/watch?v=bAyrObl7TYE",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 312
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ua-CiDNNj30",
+      "title": "Learn Data Science Tutorial - Full Course for Beginners",
+      "description": "Learn ",
+      "duration": "5:52:09",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 3974082,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ua-CiDNNj30/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCiXC6_dj3Y0Pqql9gPhLYX0G6cXg",
+      "youtube_url": "https://www.youtube.com/watch?v=ua-CiDNNj30",
+      "quality_score": 0.8999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 21129
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ukzFI9rgwfU",
+      "title": "Machine Learning | What Is Machine Learning? | Introduction To Machine Learning | 2024 | Simplilearn",
+      "description": "This ",
+      "duration": "7:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 5060077,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ukzFI9rgwfU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCOAzod0f7eiMdsA_gq3n0Meyk5eA",
+      "youtube_url": "https://www.youtube.com/watch?v=ukzFI9rgwfU",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 472
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "jNeUBWrrRsQ",
+      "title": "Data Science Tutorial | Data Science for Beginners | Data Science with Python Tutorial | Simplilearn",
+      "description": "This ",
+      "duration": "43:55",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 176557,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jNeUBWrrRsQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBztYQzYGZHfQ12BQVGumoo9RqJSQ",
+      "youtube_url": "https://www.youtube.com/watch?v=jNeUBWrrRsQ",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2635
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "TPMlZxRRaBQ",
+      "title": "Tableau for Data Science and Data Visualization - Crash Course Tutorial",
+      "description": "Learn to use Tableau to produce high quality, interactive ",
+      "duration": "28:42",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 898776,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TPMlZxRRaBQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAofU-8TWwNhL5ZbwLNdgtz6fx0ag",
+      "youtube_url": "https://www.youtube.com/watch?v=TPMlZxRRaBQ",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 1722
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "MiiANxRHSv4",
+      "title": "Data Visualization Tutorial For Beginners | Big Data Analytics Tutorial | Simplilearn",
+      "description": "00:00:00 Introduction to ",
+      "duration": "27:21",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 293401,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/MiiANxRHSv4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBw1RcscfdehbaEG_To8DyxKUnn-g",
+      "youtube_url": "https://www.youtube.com/watch?v=MiiANxRHSv4",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1641
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "NWONeJKn6kc",
+      "title": "Machine Learning Course for Beginners",
+      "description": "Learn the theory and practical application of ",
+      "duration": "9:52:19",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1831741,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NWONeJKn6kc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCs6nO_KPZNMus-Lw6VdoGOCrsd1g",
+      "youtube_url": "https://www.youtube.com/watch?v=NWONeJKn6kc",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 35539
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "lgCNTuLBMK4",
+      "title": "A Beginners Guide To The Data Analysis Process",
+      "description": "What is the ",
+      "duration": "10:20",
+      "channel_name": "CareerFoundry",
+      "channel_id": "UCzAF54cHk1ZO82af-8E3qOQ",
+      "view_count": 865420,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lgCNTuLBMK4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCvWCxpVBX4S2jM72NS9YMfnDidGg",
+      "youtube_url": "https://www.youtube.com/watch?v=lgCNTuLBMK4",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 620
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "_8V5o2UHG0E",
+      "title": "Data Visualization with D3.js - Full Tutorial Course",
+      "description": "In this ",
+      "duration": "12:57:37",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1151570,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_8V5o2UHG0E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCk7AJgeRkn8WVTvIXk2hidkSxZyA",
+      "youtube_url": "https://www.youtube.com/watch?v=_8V5o2UHG0E",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 46657
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "bY6ZzQmtOzk",
+      "title": "Big Data Analytics | What Is Big Data Analytics? | Big Data Analytics For Beginners | Simplilearn",
+      "description": "In this ",
+      "duration": "28:30",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 189694,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bY6ZzQmtOzk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkWkolLAUngx9HlZ-KO2GWad2hzQ",
+      "youtube_url": "https://www.youtube.com/watch?v=bY6ZzQmtOzk",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1710
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "i_LwzRVP7bg",
+      "title": "Machine Learning for Everybody – Full Course",
+      "description": "Learn ",
+      "duration": "3:53:53",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 8769447,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/i_LwzRVP7bg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC5gPfHa7NUFEhJ5oMVIyDG3zjJtg",
+      "youtube_url": "https://www.youtube.com/watch?v=i_LwzRVP7bg",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14033
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "JxgmHe2NyeY",
+      "title": "Complete Machine Learning In 6 Hours| Krish Naik",
+      "description": "00:00:00 Introduction 00:01:25 AI Vs ML vs DL vs Data Science 00:07:56 ",
+      "duration": "6:37:52",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 1307918,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JxgmHe2NyeY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCCEdzIou_EEoE65fcEdBW36ShlBA",
+      "youtube_url": "https://www.youtube.com/watch?v=JxgmHe2NyeY",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 23872
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "V_xro1bcAuA",
+      "title": "PyTorch for Deep Learning & Machine Learning – Full Course",
+      "description": "Learn PyTorch for deep learning in this comprehensive ",
+      "duration": "25:37:26",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 2526490,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/V_xro1bcAuA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC8D2s8Zh8YMEdaLTh7V-an3pTcng",
+      "youtube_url": "https://www.youtube.com/watch?v=V_xro1bcAuA",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 92246
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "OP8BsGnqi9c",
+      "title": "Big Data Analytics Full Course In 10 Hours | Big Data Hadoop Tutorial | Hadoop | Great Learning",
+      "description": "With Digital Data Consumption at its peak, the world has turned to ",
+      "duration": "9:53:00",
+      "channel_name": "Great Learning",
+      "channel_id": "UCObs0kLIrDjX2LLSybqNaEA",
+      "view_count": 149552,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OP8BsGnqi9c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDepuB1okPIE7bMSKtrr7IAgI8Q-A",
+      "youtube_url": "https://www.youtube.com/watch?v=OP8BsGnqi9c",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 35580
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "h78258SRS9Y",
+      "title": "Big Data Analytics Explained | What Is Big Data Analytics? | Big Data Tutorial | Simplilearn",
+      "description": "In this video we aregoing to cover many important topics on ",
+      "duration": "16:28",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 20641,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/h78258SRS9Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJtHr09Fm6D7fz07lSM5Z8qrjkYA",
+      "youtube_url": "https://www.youtube.com/watch?v=h78258SRS9Y",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 988
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "bmmQA8A-yUA",
+      "title": "Machine Learning in 2024 – Beginner's Course",
+      "description": "This ",
+      "duration": "4:19:33",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 373086,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bmmQA8A-yUA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCCP0vTqJzTJFe2PdVigyjIADLnEw",
+      "youtube_url": "https://www.youtube.com/watch?v=bmmQA8A-yUA",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 15573
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Vfo5le26IhY",
+      "title": "Statistics for Data Science | Probability and Statistics | Statistics Tutorial | Ph.D. (Stanford)",
+      "description": "Great Learning offers a range of extensive ",
+      "duration": "7:12:51",
+      "channel_name": "Great Learning",
+      "channel_id": "UCObs0kLIrDjX2LLSybqNaEA",
+      "view_count": 2011553,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Vfo5le26IhY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB62BnknKLAHAutn43ofIf8MiPshg",
+      "youtube_url": "https://www.youtube.com/watch?v=Vfo5le26IhY",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 25971
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "GPVsHOlRBBI",
+      "title": "Data Analysis with Python Course - Numpy, Pandas, Data Visualization",
+      "description": "Learn the basics of Python, Numpy, Pandas, ",
+      "duration": "9:56:23",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 2952919,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GPVsHOlRBBI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDSkw0c8G8osIuDUOOeuNMLjJS58w",
+      "youtube_url": "https://www.youtube.com/watch?v=GPVsHOlRBBI",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 35783
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "LZzq1zSL1bs",
+      "title": "Complete Statistics For Data Science In 6 hours By Krish Naik",
+      "description": "Statistics",
+      "duration": "5:28:32",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 1431015,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LZzq1zSL1bs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBakcSnb_v5T_Fc5IZ7VHy7rbqRZQ",
+      "youtube_url": "https://www.youtube.com/watch?v=LZzq1zSL1bs",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 19712
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "SUsfmh2BSbg",
+      "title": "Data Science With Python | Data Science Tutorial | Simplilearn",
+      "description": "The ",
+      "duration": "7:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 37330,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SUsfmh2BSbg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLArFC4is72I9s-N-719DXcSQFFDrQ",
+      "youtube_url": "https://www.youtube.com/watch?v=SUsfmh2BSbg",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 472
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "xkBheRZTkaw",
+      "title": "Data Visualization with D3 – Full Course for Beginners",
+      "description": "Learn ",
+      "duration": "19:32:37",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 350047,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xkBheRZTkaw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBeTImKOoe3AhRL7LQfazS0EvKPAg",
+      "youtube_url": "https://www.youtube.com/watch?v=xkBheRZTkaw",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 70357
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "PHsC_t0j1dU",
+      "title": "Data Engineering Course for Beginners",
+      "description": "Learn the essentials of ",
+      "duration": "3:03:43",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 849176,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PHsC_t0j1dU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDksoAx7wvY5oNW8J_DgoxPYiu_VA",
+      "youtube_url": "https://www.youtube.com/watch?v=PHsC_t0j1dU",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 11023
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "YvaddgkneEg",
+      "title": "🔥SQL For Data Analytics 2023 | Skills Needed For Data Analysis In SQL | SQL Tutorial | Simplilearn",
+      "description": "This video on ",
+      "duration": "7:55:59",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 280015,
+      "upload_date": "Streamed 2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YvaddgkneEg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCM2xqse2b2hVqqXaqJ6uFD48Pzyg",
+      "youtube_url": "https://www.youtube.com/watch?v=YvaddgkneEg",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 28559
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "_WyUme_H2ZQ",
+      "title": "Data Visualization In R | Data Science Tutorial | Simplilearn",
+      "description": "This video will teach you how to visualise your ",
+      "duration": "33:54",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 56943,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_WyUme_H2ZQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABPrC-VfdUWQGTky4iOeic35Kovw",
+      "youtube_url": "https://www.youtube.com/watch?v=_WyUme_H2ZQ",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2034
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "2YeG7UEr814",
+      "title": "What Is Data Modelling | What Is A Data Model | Data Modelling & Analysis For Beginners |Simplilearn",
+      "description": "Learn All About ",
+      "duration": "11:57",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 12289,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2YeG7UEr814/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJeicszZoNyG5wzs5YdRo6rn__lw",
+      "youtube_url": "https://www.youtube.com/watch?v=2YeG7UEr814",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 717
+      },
+      "search_query": "data modeling for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "hDKCxebp88A",
+      "title": "Machine Learning with Python and Scikit-Learn – Full Course",
+      "description": "This ",
+      "duration": "18:00:35",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 658460,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hDKCxebp88A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCk4UUeRLKnRf_qNCuDeuvNtWw3Cg",
+      "youtube_url": "https://www.youtube.com/watch?v=hDKCxebp88A",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 64835
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "7kPqESo1vRw",
+      "title": "Data Visualization Course | Data Visualization Tutorial | Data Visualization Explained | Simplilearn",
+      "description": "This ",
+      "duration": "8:25:44",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 70968,
+      "upload_date": "Streamed 4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7kPqESo1vRw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDeLH60IxKl0mrql8L26npPGqXzRQ",
+      "youtube_url": "https://www.youtube.com/watch?v=7kPqESo1vRw",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 30344
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "oF_2uDb7DvQ",
+      "title": "What is ETL | What is Data Warehouse | OLTP vs OLAP",
+      "description": "In this video, we will discuss what is ETL (Extract, transform, load), what is ",
+      "duration": "8:07",
+      "channel_name": "codebasics",
+      "channel_id": "UCh9nVJoWXmFb7sLApWGcLPQ",
+      "view_count": 461364,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/oF_2uDb7DvQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlH-N4RxUQPXSKi9gz28Usy1e5zw",
+      "youtube_url": "https://www.youtube.com/watch?v=oF_2uDb7DvQ",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 487
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "2iPDpV8ojHA",
+      "title": "Data Privacy and Consent | Fred Cate | TEDxIndianaUniversity",
+      "description": "Dr. Fred Cate's talk revolves around the current approach to ",
+      "duration": "13:23",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 179463,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2iPDpV8ojHA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBwD_OFL8odz39wdM6aAhRF_iQ0ZA",
+      "youtube_url": "https://www.youtube.com/watch?v=2iPDpV8ojHA",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 803
+      },
+      "search_query": "data ethics and privacy",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "2LhoCfjm8R4",
+      "title": "Data Visualization with D3, JavaScript, React - Full Course",
+      "description": "Created by @currankelleher . ❤️ Try interactive JavaScript ",
+      "duration": "11:37:16",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 509717,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2LhoCfjm8R4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCG1_r7hU5C0B3RUFmrLRby5sdGFg",
+      "youtube_url": "https://www.youtube.com/watch?v=2LhoCfjm8R4",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 41836
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "kEN-YsAkEMs",
+      "title": "Statistical Analysis And Business Applications | Data Science With Python Tutorial",
+      "description": "The ",
+      "duration": "24:05",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 18083,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kEN-YsAkEMs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC6Zy3Y4WhfvQ_exFhfikWkcs3klA",
+      "youtube_url": "https://www.youtube.com/watch?v=kEN-YsAkEMs",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1445
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "fHFOANOHwh8",
+      "title": "Complete Exploratory Data Analysis And Feature Engineering In 3 Hours| Krish Naik",
+      "description": "Join the community session https://courses.ineuron.ai/Mega-Community-Live . Here All the materials will be uploaded. Download ...",
+      "duration": "2:48:55",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 257005,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fHFOANOHwh8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLADcld5SHNCvKY_K8DFsrajA3hrDA",
+      "youtube_url": "https://www.youtube.com/watch?v=fHFOANOHwh8",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 10135
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "mXW7JHJM34k",
+      "title": "Intuitive SQL For Data Analytics - Tutorial",
+      "description": "Learn ",
+      "duration": "11:00:16",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 317154,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mXW7JHJM34k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpTakb4xj1ZLmtNNJHghKCHu3Qlw",
+      "youtube_url": "https://www.youtube.com/watch?v=mXW7JHJM34k",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 39616
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "jQ5_DfX6CZg",
+      "title": "Tutorial 1- What is Data Visualization and Its Importance?",
+      "description": "Hello all here we are starting a new playlist on ",
+      "duration": "9:01",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 39892,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jQ5_DfX6CZg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAen96ASqijUZ-3-fKe7RrSAGDbQQ",
+      "youtube_url": "https://www.youtube.com/watch?v=jQ5_DfX6CZg",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 541
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "zT0JIVHzV9M",
+      "title": "Data Science or Cyber Security: Which Should I Choose? 🤔🤔 | Simplilearn",
+      "description": "This video, ",
+      "duration": "8:36",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 64277,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zT0JIVHzV9M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpdTz47omzlpity0-VA2Cihdbjfw",
+      "youtube_url": "https://www.youtube.com/watch?v=zT0JIVHzV9M",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 516
+      },
+      "search_query": "data security for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "a4KiExvYJKo",
+      "title": "What is Exploratory Data Analysis (EDA)? | Techcanvass",
+      "description": "Learn more about ",
+      "duration": "8:20",
+      "channel_name": "Techcanvass",
+      "channel_id": "UCDHsj-2kb_bGk_Dr3ktSSbg",
+      "view_count": 78662,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/a4KiExvYJKo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBR0ZpzeEvNdDpCfWrjJYR8HKi6zA",
+      "youtube_url": "https://www.youtube.com/watch?v=a4KiExvYJKo",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 500
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "0e52QfQngrM",
+      "title": "The Power in Effective Data Storytelling | Malavica Sridhar | TEDxUIUC",
+      "description": "Through the process of ",
+      "duration": "15:22",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 97929,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0e52QfQngrM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZsq_orQz4ROaub4tSDHl-Kn23Zw",
+      "youtube_url": "https://www.youtube.com/watch?v=0e52QfQngrM",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 922
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "r8KZGpVns3o",
+      "title": "Crafting Stories with Data | Google Data Analytics Certificate",
+      "description": "The ",
+      "duration": "39:01",
+      "channel_name": "Google Career Certificates",
+      "channel_id": "UC_fyAp919RnkKmBrMXGwnUQ",
+      "view_count": 62456,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/r8KZGpVns3o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCMrtxmm2icNqkMkDl6xVA3Yc-Xrg",
+      "youtube_url": "https://www.youtube.com/watch?v=r8KZGpVns3o",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2341
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Hws-aaCFh5A",
+      "title": "Importance Of Cybersecurity For Data Scientist",
+      "description": "Saksham Youtube Channel: https://www.youtube.com/c/SakshamTheComputerGuy Cybersecurity is the ",
+      "duration": "14:45",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 23780,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Hws-aaCFh5A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCMXC5ptJpq6nQk_Xj7tw16MG7Fug",
+      "youtube_url": "https://www.youtube.com/watch?v=Hws-aaCFh5A",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 885
+      },
+      "search_query": "data security for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "1ivfEYGNZKg",
+      "title": "Data Science In Cyber Security In 2020",
+      "description": "Please join as a member in my channel to get additional benefits like materials in ",
+      "duration": "7:47",
+      "channel_name": "Krish Naik",
+      "channel_id": "UCNU_lfiiWBdtULKOw6X0Dig",
+      "view_count": 17652,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1ivfEYGNZKg/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA3C8uUqonj3_7p13LXTUE030py2A",
+      "youtube_url": "https://www.youtube.com/watch?v=1ivfEYGNZKg",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 467
+      },
+      "search_query": "data security for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "v2oNWja7M2E",
+      "title": "Beginner to Pro FREE Excel Data Analysis Course",
+      "description": "You asked for it. Here is my free course to help you kick start your ",
+      "duration": "49:16",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 2248309,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/v2oNWja7M2E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCi3W7X4mn8gqNhMi-nuFaiINZBwQ",
+      "youtube_url": "https://www.youtube.com/watch?v=v2oNWja7M2E",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2956
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "VV8iRJ-DS0A",
+      "title": "Excel Data Visualization Course – Guide to Charts & Dashboards",
+      "description": "This comprehensive tutorial will teach you everything you need to know about Excel chart types, chart customization, and creating ...",
+      "duration": "1:10:23",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 84483,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VV8iRJ-DS0A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDWYMFg4feKrHW6vUEb_PR0h54jug",
+      "youtube_url": "https://www.youtube.com/watch?v=VV8iRJ-DS0A",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4223
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "yN7ypxC7838",
+      "title": "All Machine Learning Models Explained in 5 Minutes | Types of ML Models Basics",
+      "description": "Confused about understanding ",
+      "duration": "5:01",
+      "channel_name": "Learn with Whiteboard",
+      "channel_id": "UCF-uUxo43IPpnEwnR62WGlA",
+      "view_count": 1412678,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yN7ypxC7838/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA16Gi5E6pr9yaXMDC6DAew3kVlCA",
+      "youtube_url": "https://www.youtube.com/watch?v=yN7ypxC7838",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 301
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "PeMlggyqz0Y",
+      "title": "Machine Learning Explained in 100 Seconds",
+      "description": "Machine Learning",
+      "duration": "2:35",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 812247,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PeMlggyqz0Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvzXWKFvqGE1f7hOd6YGuMxuL0Tw",
+      "youtube_url": "https://www.youtube.com/watch?v=PeMlggyqz0Y",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 155
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ANMuuq502rE",
+      "title": "R programming for beginners – statistic with R (t-test and linear regression) and dplyr and ggplot",
+      "description": "This channel focusses on global health and public health - so please consider subscribing if you're someone wanting to make the ...",
+      "duration": "15:49",
+      "channel_name": "Global Health with Greg Martin",
+      "channel_id": "UCig0KhrB5NClMvX9QrbXcrw",
+      "view_count": 1399302,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ANMuuq502rE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBYVIllJM0jxqrtasd6aPATXGT1SQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ANMuuq502rE",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 949
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "T23Bs75F7ZQ",
+      "title": "Data Engineering with Python and AI/LLMs – Data Loading Tutorial",
+      "description": "Master data ingestion for ",
+      "duration": "3:48:41",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 73325,
+      "upload_date": "1 month ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/T23Bs75F7ZQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDaOFJwbiCba3Fz2SowHXUXp6eo5w",
+      "youtube_url": "https://www.youtube.com/watch?v=T23Bs75F7ZQ",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 13721
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "l8DCPaHc5TQ",
+      "title": "Learn SQL for Data Analysis in one hour (with sample dataset + 50 queries)",
+      "description": "SQL",
+      "duration": "58:22",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 1298226,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/l8DCPaHc5TQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXjeaHMh7eYn1HvRSI7_lTuTx5ZA",
+      "youtube_url": "https://www.youtube.com/watch?v=l8DCPaHc5TQ",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3502
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "0buKQHokLK8",
+      "title": "How do NoSQL databases work? Simply Explained!",
+      "description": "NoSQL databases",
+      "duration": "7:38",
+      "channel_name": "Simply Explained",
+      "channel_id": "UCnxrdFPXJMeHru_b4Q_vTPQ",
+      "view_count": 1262693,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0buKQHokLK8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCNoupsuhabwapFh8E78wxgBa0Pxw",
+      "youtube_url": "https://www.youtube.com/watch?v=0buKQHokLK8",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 458
+      },
+      "search_query": "NoSQL databases for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "qrbf9DtR3_c",
+      "title": "Excel Data Analysis Full Course Tutorial (7+ Hours)",
+      "description": "Excel ",
+      "duration": "7:11:45",
+      "channel_name": "Learnit Training",
+      "channel_id": "UCqyBfm_H9ugGirk1ufYA2YA",
+      "view_count": 1296455,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qrbf9DtR3_c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBrsTB77ktgVjrjKYni8gzZ9vrlLg",
+      "youtube_url": "https://www.youtube.com/watch?v=qrbf9DtR3_c",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 25905
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "vqZ1C2elmac",
+      "title": "Data Analytics Tutorial For Beginners Complete Course | Foundations: Data, Data, Everywhere, Google",
+      "description": "---------- TIME STAMP ---------------- INTRODUCTION ",
+      "duration": "2:35:41",
+      "channel_name": "My Lesson",
+      "channel_id": "UCTHAIlSOqquwOKnd_nCJgAQ",
+      "view_count": 574847,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vqZ1C2elmac/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBWt2-qstFNuLklST94P0X00FumbQ",
+      "youtube_url": "https://www.youtube.com/watch?v=vqZ1C2elmac",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 9341
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "_g5roKHj95o",
+      "title": "Master Data Analysis on Excel in Just 10 Minutes",
+      "description": "#coursera #courserapartner @coursera This video will teach you all the fundamentals of ",
+      "duration": "11:32",
+      "channel_name": "Kenji Explains",
+      "channel_id": "UCkHdBeQ4DuvBXTahMYZVlMA",
+      "view_count": 2681643,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_g5roKHj95o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDhi-HRnw86T2fOSY5A4xWa3NFn-w",
+      "youtube_url": "https://www.youtube.com/watch?v=_g5roKHj95o",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 692
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ZUeWXNK-9yA",
+      "title": "Data Visualization Crash Course | Consulting Best Practices",
+      "description": "Links mentioned in this video ⬇️ Exercise File ...",
+      "duration": "25:57",
+      "channel_name": "Analyst Academy",
+      "channel_id": "UCr7EYWaQzs2nsZUN_9_ydSQ",
+      "view_count": 221990,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZUeWXNK-9yA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD3ERgjnQdefi5etui3C334JiQIKQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ZUeWXNK-9yA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 1557
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "qxpKCBV60U4",
+      "title": "How to Do Data Cleaning (step-by-step tutorial on real-life dataset)",
+      "description": "00:00 Welcome and some words on ",
+      "duration": "23:41",
+      "channel_name": "Mısra Turp",
+      "channel_id": "UCpNUYWW0kiqyh0j5Qy3aU7w",
+      "view_count": 186748,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qxpKCBV60U4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDRkrKsLGlgIYV4qYbnHy2uN2IJEg",
+      "youtube_url": "https://www.youtube.com/watch?v=qxpKCBV60U4",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1421
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "J326LIUrZM8",
+      "title": "Data Warehouse Tutorial For Beginners | Data Warehouse Concepts | Data Warehousing | Edureka",
+      "description": "1. What Is The Need For BI? 2. What Is ",
+      "duration": "1:38:50",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 1051228,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J326LIUrZM8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC58xvbTd4hbNRRWRmTQQGJ1WwBxQ",
+      "youtube_url": "https://www.youtube.com/watch?v=J326LIUrZM8",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 5930
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "wNbq6DxFcwU",
+      "title": "15 Design Rules for BI Dashboard! 📊🌟 #codebasics #shorts #dataanalysis #data",
+      "description": "Are you in the process of building a ",
+      "duration": "0:28",
+      "channel_name": "codebasics",
+      "channel_id": "UCh9nVJoWXmFb7sLApWGcLPQ",
+      "view_count": 106161,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wNbq6DxFcwU/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhyIF8oETAP&rs=AOn4CLAwb2d8F97Z1S7taluuPb1kV2R-Yg",
+      "youtube_url": "https://www.youtube.com/watch?v=wNbq6DxFcwU",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 28
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "CUR6rKrIEGc",
+      "title": "What is Data Modelling? Beginner's Guide to Data Models and Data Modelling",
+      "description": "In this video I'll give you a full introduction to what ",
+      "duration": "18:59",
+      "channel_name": "The Data Guy",
+      "channel_id": "UCQq79zHGZJNzm3SPOfLNmrw",
+      "view_count": 181417,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/CUR6rKrIEGc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBE-mfBJ0ifxi_3lYrPtsQ4uJ3loQ",
+      "youtube_url": "https://www.youtube.com/watch?v=CUR6rKrIEGc",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1139
+      },
+      "search_query": "data modeling for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "xiEC5oFsq2s",
+      "title": "Data Science Full Course - 12 Hours | Data Science For Beginners | Data Science Tutorial | Edureka",
+      "description": "Below are the topics covered in this ",
+      "duration": "11:22:18",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 523358,
+      "upload_date": "Streamed 2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xiEC5oFsq2s/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD-7c-pKxxHHNALZJt6o0ksuWlUUg",
+      "youtube_url": "https://www.youtube.com/watch?v=xiEC5oFsq2s",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 40938
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "OT1RErkfLNQ",
+      "title": "Learn SQL Beginner to Advanced in Under 4 Hours",
+      "description": "... Python for Data Science - https://bit.ly/3Z4A5K6 Statistics for Data Science - https://bit.ly/37jqDbq ",
+      "duration": "4:04:58",
+      "channel_name": "Alex The Analyst",
+      "channel_id": "UC7cs8q-gJRlGwj4A8OmCmXg",
+      "view_count": 667453,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OT1RErkfLNQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDAH8B8UTliq-LT2JdzMw_AvE9koA",
+      "youtube_url": "https://www.youtube.com/watch?v=OT1RErkfLNQ",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 14698
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "LcWFedjaR4Q",
+      "title": "Complete Machine Learning Course in 60 Hours - Part 1 | Full Machine Learning Course with Python",
+      "description": "This Complete ",
+      "duration": "11:35:42",
+      "channel_name": "Siddhardhan",
+      "channel_id": "UCG04dVOTmbRYPY1wvshBVDQ",
+      "view_count": 558160,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LcWFedjaR4Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALF9UoH7WOn0R2Qe171-BfZZ0xNg",
+      "youtube_url": "https://www.youtube.com/watch?v=LcWFedjaR4Q",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 41742
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "tNLp_JVipoQ",
+      "title": "Learn Tableau in 15 minutes and create your first report (FREE Sample Files)",
+      "description": "Do you want to learn Tableau? In this video, learn all the basics you need to start using Tableau straightaway. We are going to ...",
+      "duration": "16:11",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 576458,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tNLp_JVipoQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC84QIx7bRxoaP2lDfofmqRY-ukvA",
+      "youtube_url": "https://www.youtube.com/watch?v=tNLp_JVipoQ",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 971
+      },
+      "search_query": "data visualization course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "GP-2634exqA",
+      "title": "🚀 Data Cleaning/Data Preprocessing Before Building a Model - A Comprehensive Guide",
+      "description": "Welcome to Learn_with_Ankith! In this tutorial, we'll delve into the crucial steps of ",
+      "duration": "58:18",
+      "channel_name": "Learn with Ankith",
+      "channel_id": "UCCNTHSoPugHTUqhg4HL6C_g",
+      "view_count": 161624,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GP-2634exqA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlfMNmmBmrw6I9T2zRLgwqKHIVVg",
+      "youtube_url": "https://www.youtube.com/watch?v=GP-2634exqA",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "guide",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3498
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "bDhvCp3_lYw",
+      "title": "Data Cleaning in Pandas | Python Pandas Tutorials",
+      "description": "In this series we will be walking through everything you need to know to get started in Pandas! In this video, we learn about ",
+      "duration": "38:37",
+      "channel_name": "Alex The Analyst",
+      "channel_id": "UC7cs8q-gJRlGwj4A8OmCmXg",
+      "view_count": 427688,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bDhvCp3_lYw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXM6Ll853SY0bZMU53yo4IfqbtMQ",
+      "youtube_url": "https://www.youtube.com/watch?v=bDhvCp3_lYw",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2317
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "k7zu3NXEiGY",
+      "title": "Big Data Analytics | Big Data Explained | Big Data Tools & Trends | Big Data Training | Edureka",
+      "description": "1) Why ",
+      "duration": "36:04",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 147026,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/k7zu3NXEiGY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAUw_GOelsR-mLYKESLlE44LEu6wA",
+      "youtube_url": "https://www.youtube.com/watch?v=k7zu3NXEiGY",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2164
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "CHYPF7jxlik",
+      "title": "Data Warehouse Concepts | Data Warehouse Tutorial | Data Warehouse Architecture | Edureka",
+      "description": "1. What Is Data Warehousing? 2. ",
+      "duration": "52:30",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 485414,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/CHYPF7jxlik/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3P0APXVHZ67t65YuIZhICkbLKyw",
+      "youtube_url": "https://www.youtube.com/watch?v=CHYPF7jxlik",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3150
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "wZATWjV4scg",
+      "title": "How to create Power BI Dashboard (Report) in 7 Minutes | @PavanLalwani",
+      "description": "How to create Power ",
+      "duration": "12:55",
+      "channel_name": "Pavan Lalwani",
+      "channel_id": "UC5fs7PookxGfDPTo-RU0ReQ",
+      "view_count": 530898,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wZATWjV4scg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDnIF5t4xW4pwraO4NTdlTIAil75A",
+      "youtube_url": "https://www.youtube.com/watch?v=wZATWjV4scg",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 775
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Hfx1X9WSGYQ",
+      "title": "How to turn data into stories",
+      "description": "Watch this mini-workshop delivered by best-selling author Cole Nussbaumer Knaflic. Cole demonstrates how to transform graphs ...",
+      "duration": "50:43",
+      "channel_name": "storytelling with data",
+      "channel_id": "UCjhGlILWNloXJdR2NTCBMlA",
+      "view_count": 299516,
+      "upload_date": "Streamed 1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Hfx1X9WSGYQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA0bnxYVqDw80aQXoLAMETDpC59Qg",
+      "youtube_url": "https://www.youtube.com/watch?v=Hfx1X9WSGYQ",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3043
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "dUm3ptTQr0Q",
+      "title": "All Major Data Mining Techniques Explained With Examples",
+      "description": "In this video, we will discuss and explain an in-depth overview of all major ",
+      "duration": "13:04",
+      "channel_name": "Learn with Whiteboard",
+      "channel_id": "UCF-uUxo43IPpnEwnR62WGlA",
+      "view_count": 113995,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dUm3ptTQr0Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDg2o9pf8YgL1pu8E81MJCBZvsWzw",
+      "youtube_url": "https://www.youtube.com/watch?v=dUm3ptTQr0Q",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 784
+      },
+      "search_query": "data mining techniques",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "24Ki4Ck4Y2E",
+      "title": "Data Governance Explained",
+      "description": "Data governance",
+      "duration": "7:47",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 107051,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/24Ki4Ck4Y2E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWu9DH6fgn_cOcS-uRr1M1XI2kww",
+      "youtube_url": "https://www.youtube.com/watch?v=24Ki4Ck4Y2E",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 467
+      },
+      "search_query": "data governance for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "cRmI_Kkrb8E",
+      "title": "Data Governance Tutorial",
+      "description": "DATA GOVERNANCE",
+      "duration": "26:31",
+      "channel_name": "The Career Force",
+      "channel_id": "UCwXJEwaFT5i3MKKMGdneYUA",
+      "view_count": 105522,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/cRmI_Kkrb8E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCe59yPl3WGdvawFqK3rGFrtUgt9A",
+      "youtube_url": "https://www.youtube.com/watch?v=cRmI_Kkrb8E",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1591
+      },
+      "search_query": "data governance for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "-8YosiAzvx8",
+      "title": "Data Science Tutorial for Beginners | Edureka",
+      "description": "Data science",
+      "duration": "28:29",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 10130,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-8YosiAzvx8/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBvh36jKmqD98gkECbGxspsJbxtQA",
+      "youtube_url": "https://www.youtube.com/watch?v=-8YosiAzvx8",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1709
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "pCJ15nGFgVg",
+      "title": "Excel for Data Analytics - Full Course for Beginners",
+      "description": "... 6️⃣ Advanced ",
+      "duration": "10:59:43",
+      "channel_name": "Luke Barousse",
+      "channel_id": "UCLLw7jmFsvfIVaUFsLs8mlQ",
+      "view_count": 851243,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/pCJ15nGFgVg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCJBnnvHuWjJqJ6ZZ7HRdiib4eSKA",
+      "youtube_url": "https://www.youtube.com/watch?v=pCJ15nGFgVg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 39583
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "7QNgqq154gE",
+      "title": "Complete Excel Tutorial for Data Analysis in 4 Hours (with FREE Files)",
+      "description": "Power Query → Tables → Formulas → Pivots → Charts → Dashboard All in one video. Learn everything, practice the concepts ...",
+      "duration": "3:56:43",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 230543,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7QNgqq154gE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC4NZdklqsYGu12lCCvbI9F4EvZhQ",
+      "youtube_url": "https://www.youtube.com/watch?v=7QNgqq154gE",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14203
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "dcXqhMqhZUo",
+      "title": "Data Analytics vs Data Science",
+      "description": "Are you interested in ",
+      "duration": "6:30",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 663071,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dcXqhMqhZUo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBMesqrb2EQVBZIKjIEuBN8N968xQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dcXqhMqhZUo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 390
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "K9teElePNkk",
+      "title": "Statistics - A Full Lecture to learn Data Science (2025 Version)",
+      "description": "Welcome to our comprehensive and free ",
+      "duration": "4:55:09",
+      "channel_name": "DATAtab",
+      "channel_id": "UC3UwrWtAFlAkFl_3Nia756g",
+      "view_count": 133714,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/K9teElePNkk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKasm-crKpCv95J_tmnzkcZbZNFA",
+      "youtube_url": "https://www.youtube.com/watch?v=K9teElePNkk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 17709
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "JIbfzmt2LuY",
+      "title": "How to learn Data Science? In Short",
+      "description": "shorts.",
+      "duration": "0:47",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 1042228,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JIbfzmt2LuY/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgwICIofzAP&rs=AOn4CLD36VNy96jq4J3v70Eq3ItJjHb7pg",
+      "youtube_url": "https://www.youtube.com/watch?v=JIbfzmt2LuY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 47
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Gi4GxE4obAc",
+      "title": "What is Statistics? A Beginner's Guide to Statistics (Data Analytics)!",
+      "description": "If you want to finally understand ",
+      "duration": "20:21",
+      "channel_name": "DATAtab",
+      "channel_id": "UC3UwrWtAFlAkFl_3Nia756g",
+      "view_count": 97015,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Gi4GxE4obAc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBHB6jDYU8nNmdADmQGu1-X8hEQqA",
+      "youtube_url": "https://www.youtube.com/watch?v=Gi4GxE4obAc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1221
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "-o3AxdVcUtQ",
+      "title": "Exploratory Data Analysis (EDA) Using Python | Python Data Analysis | Python Training | Edureka",
+      "description": "#Edureka #PythonEdureka #",
+      "duration": "29:59",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 416004,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-o3AxdVcUtQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-4tV8DqJIncTOCMmmbqEjo_stcw",
+      "youtube_url": "https://www.youtube.com/watch?v=-o3AxdVcUtQ",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1799
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "xi0vhXFPegw",
+      "title": "Exploratory Data Analysis with Pandas Python",
+      "description": "In this video about ",
+      "duration": "40:22",
+      "channel_name": "Rob Mulla",
+      "channel_id": "UCxladMszXan-jfgzyeIMyvw",
+      "view_count": 576179,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xi0vhXFPegw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBW5VyDOgfVJCKTafHbGR8IKix-fQ",
+      "youtube_url": "https://www.youtube.com/watch?v=xi0vhXFPegw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2422
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "tDu_KIlXaB0",
+      "title": "What is Data Preprocessing & Data Cleaning | Various Techniques with Example",
+      "description": "Subscribe to our new channel:https://www.youtube.com/@varunainashots Subject wise playlist Link: ...",
+      "duration": "5:53",
+      "channel_name": "Gate Smashers",
+      "channel_id": "UCJihyK0A38SZ6SdJirEdIOw",
+      "view_count": 121802,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tDu_KIlXaB0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBtcoEk1GFpD9aLiqM0vOH8Y_U96w",
+      "youtube_url": "https://www.youtube.com/watch?v=tDu_KIlXaB0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 353
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "jxq4-KSB_OA",
+      "title": "Master Data Cleaning Essentials on Excel in Just 10 Minutes",
+      "description": "In this video you'll learn 10 ",
+      "duration": "10:16",
+      "channel_name": "Kenji Explains",
+      "channel_id": "UCkHdBeQ4DuvBXTahMYZVlMA",
+      "view_count": 888099,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jxq4-KSB_OA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBggWqQgHcASfu90XY6N2QUdEuwaA",
+      "youtube_url": "https://www.youtube.com/watch?v=jxq4-KSB_OA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 616
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "j0tqUBhs-Nc",
+      "title": "#8 Data Preprocessing In Data Mining - 4 Steps |DM|",
+      "description": "Company Specific HR Mock Interview : A seasoned professional with over 18 years of experience with Product, IT Services and ...",
+      "duration": "18:01",
+      "channel_name": "Trouble- Free",
+      "channel_id": "UCHNO_Y3DskuKiw9VTvo8AMw",
+      "view_count": 320737,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/j0tqUBhs-Nc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDMBA1BIZfYPKV1lIY70MqiRhIKsQ",
+      "youtube_url": "https://www.youtube.com/watch?v=j0tqUBhs-Nc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1081
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ITy8R4278sk",
+      "title": "Data Cleaning Full Course for Data Science, Data Analysis, Machine Learning [FREE] - 2024 Edition",
+      "description": "Data Cleaning",
+      "duration": "3:29:35",
+      "channel_name": "WsCube Tech",
+      "channel_id": "UC0T6MVd3wQDB5ICAe45OxaQ",
+      "view_count": 138395,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ITy8R4278sk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-OrX9mxML5tLWpFv0HKcQ1NEC9A",
+      "youtube_url": "https://www.youtube.com/watch?v=ITy8R4278sk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 12575
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "qU7u9wGB0JA",
+      "title": "All about [ What is Big Data ? in தமிழ்]",
+      "description": "Big Data",
+      "duration": "46:56",
+      "channel_name": "Data Engineering",
+      "channel_id": "UC9xghV-TcBwGvK-aEMhpt5w",
+      "view_count": 125992,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qU7u9wGB0JA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCaj1BGAWAS_UYIDK_F2oH4oA-DaA",
+      "youtube_url": "https://www.youtube.com/watch?v=qU7u9wGB0JA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2816
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "k4tK2ttdSDg",
+      "title": "What is a Data Warehouse?",
+      "description": "Data Warehouse",
+      "duration": "8:21",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 127030,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/k4tK2ttdSDg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6bVZNKrGL3sj74u0lstCfcVKhYw",
+      "youtube_url": "https://www.youtube.com/watch?v=k4tK2ttdSDg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 501
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "NphMcnU8ymU",
+      "title": "Lec - 1: Introduction to Data Warehouse🏺 with Examples",
+      "description": "What a ",
+      "duration": "5:42",
+      "channel_name": "Gate Smashers",
+      "channel_id": "UCJihyK0A38SZ6SdJirEdIOw",
+      "view_count": 498790,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NphMcnU8ymU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDif-biyZmdFyRMRzLw8GVxtIAG5A",
+      "youtube_url": "https://www.youtube.com/watch?v=NphMcnU8ymU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 342
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "-bSkREem8dM",
+      "title": "Database vs Data Warehouse vs Data Lake | What is the Difference?",
+      "description": "Database vs ",
+      "duration": "5:22",
+      "channel_name": "Alex The Analyst",
+      "channel_id": "UC7cs8q-gJRlGwj4A8OmCmXg",
+      "view_count": 928184,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-bSkREem8dM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBtIdFRIEVB2iLmTHGo7D6jpEoWpg",
+      "youtube_url": "https://www.youtube.com/watch?v=-bSkREem8dM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 322
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "5pCdw-PV0Js",
+      "title": "🚨 YOU'RE VISUALIZING YOUR DATA WRONG. And Here's Why...",
+      "description": "In this video, I break down some of the 'science' behind effective data visualization and how you can build better ",
+      "duration": "17:11",
+      "channel_name": "Adam Finer - Learn BI Online",
+      "channel_id": "UC1bhYMFuSFREIQ5bgclLDkQ",
+      "view_count": 351045,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5pCdw-PV0Js/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlu0DlI-_EV8G_VIl8Yftpm8C3Dw",
+      "youtube_url": "https://www.youtube.com/watch?v=5pCdw-PV0Js",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1031
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "v6fP8gyCLLc",
+      "title": "5 DESIGN TRICKS that Make EVERY Power BI Report Look GREAT!",
+      "description": "These are my 5 ",
+      "duration": "20:22",
+      "channel_name": "How to Power BI",
+      "channel_id": "UCcfngi7_ASuo5jdWX0bNauQ",
+      "view_count": 749679,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/v6fP8gyCLLc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBCOUf6rZPE1YYzP-yT8AGNGKD3IA",
+      "youtube_url": "https://www.youtube.com/watch?v=v6fP8gyCLLc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1222
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "OYbPOhK0wPo",
+      "title": "Telling a Story with Data | Dashboard Build Demo",
+      "description": "In this video, Chris Dutton explains the framework for telling clear and effective stories with data, an important topic for anyone ...",
+      "duration": "13:41",
+      "channel_name": "Maven Analytics",
+      "channel_id": "UCFqInmJykuVFKzi6uQl_ySg",
+      "view_count": 233361,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OYbPOhK0wPo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBR9p-3GdRWpMa5nTNVPlx1XoTKmg",
+      "youtube_url": "https://www.youtube.com/watch?v=OYbPOhK0wPo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 821
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "SSKVgrwhzus",
+      "title": "SQL Full Course for Beginners (30 Hours) – From Zero to Hero",
+      "description": "I've spent 2 years creating this *high-quality SQL course* so you can master ",
+      "duration": "29:48:28",
+      "channel_name": "Data with Baraa",
+      "channel_id": "UC8_RSKwbU1OmZWNEoLV1tQg",
+      "view_count": 425588,
+      "upload_date": "2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SSKVgrwhzus/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDHJYou_jXAxF3EoXjfHupX5BgUqQ",
+      "youtube_url": "https://www.youtube.com/watch?v=SSKVgrwhzus",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 107308
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "7rs0i-9nOjo",
+      "title": "What is Data Mining?",
+      "description": "You may not have a crystal ball for predicting your business's future, but you may gain an advantage when you know how to mine ...",
+      "duration": "6:53",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 159747,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7rs0i-9nOjo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAh03L6zjlo-jfAMakj4oj4OwFPJQ",
+      "youtube_url": "https://www.youtube.com/watch?v=7rs0i-9nOjo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 413
+      },
+      "search_query": "data mining techniques",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "81bm2OsEzbg",
+      "title": "What is Data Mining",
+      "description": "When we think of ",
+      "duration": "6:05",
+      "channel_name": "Cubeware GmbH",
+      "channel_id": "UCyBAjYjJfuH_yRfyhv0bEBA",
+      "view_count": 149479,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/81bm2OsEzbg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBDGO9f7rCPByujaAEI85RTp3xPcg",
+      "youtube_url": "https://www.youtube.com/watch?v=81bm2OsEzbg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 365
+      },
+      "search_query": "data mining techniques",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "QnFGiKfMSOQ",
+      "title": "Introduction of Data mining and functionalities in Hindi",
+      "description": "Is video mai aapko ",
+      "duration": "5:19",
+      "channel_name": "Unbeaten Learning",
+      "channel_id": "UCtUlERhEWy6_g4voTKOBkVw",
+      "view_count": 175294,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/QnFGiKfMSOQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDMb0yfConFZZ9des_v2n99RtSZg",
+      "youtube_url": "https://www.youtube.com/watch?v=QnFGiKfMSOQ",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 319
+      },
+      "search_query": "data mining techniques",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "OwQoj3GJfNY",
+      "title": "Introduction to Data Models",
+      "description": "DBMS: Introduction to ",
+      "duration": "16:24",
+      "channel_name": "Neso Academy",
+      "channel_id": "UCQYMhOMi_Cdj1CEAU-fv80A",
+      "view_count": 395722,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OwQoj3GJfNY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCv_1MsSDD2ebBnr4lLCiaKnkZAfg",
+      "youtube_url": "https://www.youtube.com/watch?v=OwQoj3GJfNY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 984
+      },
+      "search_query": "data modeling for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "N8xEgSe5RwE",
+      "title": "Data Security: Protect your critical data (or else)",
+      "description": "Data",
+      "duration": "7:22",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 126534,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N8xEgSe5RwE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDiqFsS3lpRdP1qY7d6D2ciO9omvA",
+      "youtube_url": "https://www.youtube.com/watch?v=N8xEgSe5RwE",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 442
+      },
+      "search_query": "data security for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "N5fSpaaxoZc",
+      "title": "Machine Learning Full Course - 12 Hours | Machine Learning Roadmap [2024] | Edureka",
+      "description": "Edureka Online Training and Certifications DevOps Online Training: ...",
+      "duration": "11:55:00",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 280601,
+      "upload_date": "Streamed 2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N5fSpaaxoZc/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCD3-kneCWnvcBEduxTClJgQsCdww",
+      "youtube_url": "https://www.youtube.com/watch?v=N5fSpaaxoZc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 42900
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "6ASEiYHVZpc",
+      "title": "Data Scientist Roadmap (2025) : Beginner to Expert (தமிழில்)",
+      "description": "Complete ",
+      "duration": "24:36",
+      "channel_name": "Data Science with Keerthi (தமிழில்)",
+      "channel_id": "UCvAFuyx9Fg0U10W7dTOnADg",
+      "view_count": 11612,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6ASEiYHVZpc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCarcY3CxcIU-8jbwKndI7ApPMExA",
+      "youtube_url": "https://www.youtube.com/watch?v=6ASEiYHVZpc",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1476
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "kghcAk7l6eA",
+      "title": "Introduction to Data Analysis with Excel: 2-Hour Training Tutorial",
+      "description": "In this Introduction to ",
+      "duration": "1:53:40",
+      "channel_name": "Simon Sez IT",
+      "channel_id": "UC-3e3hAUhDV2lwcoQGD2grg",
+      "view_count": 611397,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kghcAk7l6eA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAHNuy3Ozgg3hXN8IIm5Q6mgGUwzg",
+      "youtube_url": "https://www.youtube.com/watch?v=kghcAk7l6eA",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 6820
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "YE1HBEY2upg",
+      "title": "Excel Intro to Data Analysis Tutorial",
+      "description": "Excel Intro to ",
+      "duration": "1:23:19",
+      "channel_name": "Learnit Training",
+      "channel_id": "UCqyBfm_H9ugGirk1ufYA2YA",
+      "view_count": 138232,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YE1HBEY2upg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCttEwBYo3lL_x8-ihbsDnxMHVJXw",
+      "youtube_url": "https://www.youtube.com/watch?v=YE1HBEY2upg",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4999
+      },
+      "search_query": "data analysis tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "FNLLxYcUnow",
+      "title": "Learn Exploratory Data Analysis (EDA) from Scratch | EDA in 5 hours | Satyajit Pattnaik",
+      "description": "Are you ready to unleash the power of ",
+      "duration": "5:09:57",
+      "channel_name": "Satyajit Pattnaik",
+      "channel_id": "UC-HLXw5cFC-7zqaXqTIlj-g",
+      "view_count": 162459,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FNLLxYcUnow/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCwqOiWG9wNRaoPmr63aIjBEyml8g",
+      "youtube_url": "https://www.youtube.com/watch?v=FNLLxYcUnow",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 18597
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "wyZuLPruNsU",
+      "title": "Data Cleaning and Pre-processing | Data Analytics Tamil Full Course | Data Analytics Course in Tamil",
+      "description": "In This Video About ",
+      "duration": "57:32",
+      "channel_name": "BTree Systems",
+      "channel_id": "UC3CWkAYRbqUFLq6wQF-VyPw",
+      "view_count": 12893,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wyZuLPruNsU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfhAJrcRJ4hFyqnpk-LhCLaB8ojw",
+      "youtube_url": "https://www.youtube.com/watch?v=wyZuLPruNsU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 3452
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "hf2go3E2m8g",
+      "title": "Fundamentals Of Data Engineering Masterclass",
+      "description": "One shot video for Fundamentals of ",
+      "duration": "3:02:26",
+      "channel_name": "Darshil Parmar",
+      "channel_id": "UCChmJrVa8kDg05JfCmxpLRw",
+      "view_count": 270285,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hf2go3E2m8g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAe0ZCnf8QJ-_zlDZpd9j389Y9BuA",
+      "youtube_url": "https://www.youtube.com/watch?v=hf2go3E2m8g",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "masterclass"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 10946
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "HRfR4dJoKDc",
+      "title": "Big Data Explained",
+      "description": "Big data",
+      "duration": "7:03",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 44605,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HRfR4dJoKDc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhvlX4kDUgNvP8swiV05gnucvfkw",
+      "youtube_url": "https://www.youtube.com/watch?v=HRfR4dJoKDc",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 423
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ooJO7NW4uJU",
+      "title": "FREE Adv. Masterclass on Power BI - Create a Sales Analytics Dashboard (with files 📁)",
+      "description": "The best way to learn Power ",
+      "duration": "1:54:47",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 145089,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ooJO7NW4uJU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBcW_bzTCJTVUeqxM7HWC_PXs9GQw",
+      "youtube_url": "https://www.youtube.com/watch?v=ooJO7NW4uJU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "masterclass"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 6887
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "nCrD5g8d3ow",
+      "title": "7 Top Tips for Better Business Dashboard Design Data Visualization | BI For Beginners",
+      "description": "In this ",
+      "duration": "11:13",
+      "channel_name": "Adam Finer - Learn BI Online",
+      "channel_id": "UC1bhYMFuSFREIQ5bgclLDkQ",
+      "view_count": 98558,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/nCrD5g8d3ow/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDC21mV6toYn05rXgxZ5Z6q1LFOzg",
+      "youtube_url": "https://www.youtube.com/watch?v=nCrD5g8d3ow",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 673
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "I0vQ_VLZTWg",
+      "title": "Learn Power BI in Under 3 Hours | Formatting, Visualizations, Dashboards + Full Project",
+      "description": "RESOURCES: Analyst Builder - https://www.analystbuilder.com/ Take my Full MySQL Course Here: https://bit.ly/3tqOipr ...",
+      "duration": "2:05:18",
+      "channel_name": "Alex The Analyst",
+      "channel_id": "UC7cs8q-gJRlGwj4A8OmCmXg",
+      "view_count": 295115,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I0vQ_VLZTWg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBNoG-GlNUOQyhMKwLDqv7xd_DrIQ",
+      "youtube_url": "https://www.youtube.com/watch?v=I0vQ_VLZTWg",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7518
+      },
+      "search_query": "business intelligence (BI) dashboard design",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "zklM_KnNloI",
+      "title": "Data Storytelling Basics (in 3 Steps): How to Communicate Data and Numbers",
+      "description": "Data Storytelling",
+      "duration": "5:43",
+      "channel_name": "Word Cortex with Anita",
+      "channel_id": "UCT9R8S_iGyyGtIed9dRuDQQ",
+      "view_count": 57550,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zklM_KnNloI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDXuuUy2_TL22R9lyJuuQUuxibDIw",
+      "youtube_url": "https://www.youtube.com/watch?v=zklM_KnNloI",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 343
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "YJn7Zicrg_0",
+      "title": "Why Data Storytelling is the #1 Skill Employers Want in 2025 (+ HOW TO MASTER IT)",
+      "description": "ABOUT ME I'm Mo and I work as a ",
+      "duration": "11:45",
+      "channel_name": "Mo Chen",
+      "channel_id": "UCDybamfye5An6p-j1t2YMsg",
+      "view_count": 12238,
+      "upload_date": "3 weeks ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YJn7Zicrg_0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBjZAIGXjk-p5ueXR7CAmQrhp1rA",
+      "youtube_url": "https://www.youtube.com/watch?v=YJn7Zicrg_0",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 705
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "7mz73uXD9DA",
+      "title": "SQL for Data Analytics - Learn SQL in 4 Hours",
+      "description": "Ch 1️⃣ - Basics ▔▔▔▔▔▔▔ 0:00:00 - Welcome 0:03:43 - What is ",
+      "duration": "4:08:41",
+      "channel_name": "Luke Barousse",
+      "channel_id": "UCLLw7jmFsvfIVaUFsLs8mlQ",
+      "view_count": 815683,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7mz73uXD9DA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBVnhKf5YBLmq8cb8pPmFq2PPxS7g",
+      "youtube_url": "https://www.youtube.com/watch?v=7mz73uXD9DA",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 14921
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Ejxam_CBY9U",
+      "title": "Advanced SQL for Data Analysis - 10 Powerful Examples in 40 minutes 🕗",
+      "description": "You will be learning: How to use WHERE clause in ",
+      "duration": "43:42",
+      "channel_name": "Chandoo",
+      "channel_id": "UC8uU_wruBMHeeRma49dtZKA",
+      "view_count": 84777,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Ejxam_CBY9U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB4Oe4TlTB9rE4U1_Bhpwpq8t9P1Q",
+      "youtube_url": "https://www.youtube.com/watch?v=Ejxam_CBY9U",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 2622
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "gG7upg6QaBI",
+      "title": "Data Modeling - Walking Through How To Data Model As A Data Engineer - Dimensional Modeling 101",
+      "description": "Data modeling",
+      "duration": "20:43",
+      "channel_name": "Seattle Data Guy",
+      "channel_id": "UCmLGJ3VYBcfRaWbP6JLJcpA",
+      "view_count": 58476,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gG7upg6QaBI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAxNPCs98v0abuJ8T9ehlHMP0tAcQ",
+      "youtube_url": "https://www.youtube.com/watch?v=gG7upg6QaBI",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1243
+      },
+      "search_query": "data modeling for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "m2AgYbbXz8k",
+      "title": "Applied Data Science and Machine Learning for Cybersecurity - SANS Tactical Detection Summit 2018",
+      "description": "Presenter: Austin Taylor, IronNet Cybersecurity; Community Instructor, SANS Institute Determining which machine learning ...",
+      "duration": "34:53",
+      "channel_name": "SANS Institute",
+      "channel_id": "UC2uPNhGken-ogEpJDi4ly6w",
+      "view_count": 34747,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/m2AgYbbXz8k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAFXNTSfXpHVRHJnlTMhZt4h4A87g",
+      "youtube_url": "https://www.youtube.com/watch?v=m2AgYbbXz8k",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2093
+      },
+      "search_query": "data security for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "rn8Yp6otAh8",
+      "title": "Learn Machine Learning for FREE in Tamil | Ultimate Course for Beginners",
+      "description": "machine learning",
+      "duration": "4:12:56",
+      "channel_name": "Chill and Grow",
+      "channel_id": "UCos_WjZSSpb2YH9M3YLoVug",
+      "view_count": 96776,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rn8Yp6otAh8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3mxnXiUVajGN2ocOUHitab4i3gw",
+      "youtube_url": "https://www.youtube.com/watch?v=rn8Yp6otAh8",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 15176
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "3cyV4xbY6G0",
+      "title": "Shocking🚀Become Data Analyst in 45Days - Get Job Easily 2025🔴",
+      "description": "Whether you're a student, working professional, or career switcher, this is the only ",
+      "duration": "16:25",
+      "channel_name": "Curious Freaks",
+      "channel_id": "UCvhU9qF1xtUsFXdKrcJxbFA",
+      "view_count": 48327,
+      "upload_date": "2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3cyV4xbY6G0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAigbmLKN-ZooFxBD8_E7FHW6pv6g",
+      "youtube_url": "https://www.youtube.com/watch?v=3cyV4xbY6G0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 985
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "QiqZliDXCCg",
+      "title": "Exploratory Data Analysis",
+      "description": "Exploratory data analysis",
+      "duration": "5:02",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 84801,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/QiqZliDXCCg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCPu0B0yr5_bvy94_Ilse31Je0suw",
+      "youtube_url": "https://www.youtube.com/watch?v=QiqZliDXCCg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 302
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "j15-OYLGp3Q",
+      "title": "Exploratory Data Analysis (EDA) Using Python | Python Data Analysis | Python Training | Edureka",
+      "description": "#Edureka #PythonEdureka #",
+      "duration": "30:45",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 13310,
+      "upload_date": "Streamed 3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/j15-OYLGp3Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQl63iIfSiU97ivgfRqq6CctPsjQ",
+      "youtube_url": "https://www.youtube.com/watch?v=j15-OYLGp3Q",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1845
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "eKxVTKzOt3s",
+      "title": "Fundamentals of Data Science and Analytics: A Beginner’s Guide",
+      "description": "In today's digital world, ",
+      "duration": "12:52",
+      "channel_name": "Learning Science",
+      "channel_id": "UCtHSfHSiCtmcvVcPlepk_Bw",
+      "view_count": 33,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eKxVTKzOt3s/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBt5DqFm6WsGleuPn09B_7Ewayw4Q",
+      "youtube_url": "https://www.youtube.com/watch?v=eKxVTKzOt3s",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 772
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "6cJ5Ji8zSDg",
+      "title": "SQL Exploratory Data Analysis (EDA) Project | Full Hands-On Portfolio Project",
+      "description": "SQL Full (30-Hours) Course* https://youtu.be/SSKVgrwhzus *Full ",
+      "duration": "51:14",
+      "channel_name": "Data with Baraa",
+      "channel_id": "UC8_RSKwbU1OmZWNEoLV1tQg",
+      "view_count": 31733,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6cJ5Ji8zSDg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDoyOXKEzxAdlb-cbptWg-ZJgBb6A",
+      "youtube_url": "https://www.youtube.com/watch?v=6cJ5Ji8zSDg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3074
+      },
+      "search_query": "exploratory data analysis (EDA)",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "dBo7nadIr3g",
+      "title": "Data  Preprocessing in Data Mining - Data Cleaning (Tamil) - Part 1",
+      "description": "Data ",
+      "duration": "24:41",
+      "channel_name": "Learn infinity at Home",
+      "channel_id": "UCyYGm4X8xIZtx5XXd6BxIHA",
+      "view_count": 26972,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dBo7nadIr3g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDH5_Kq2NXxs2PY8D0XDLngOgkXLQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dBo7nadIr3g",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 1481
+      },
+      "search_query": "data cleaning and preprocessing",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "HAxm8n9QY50",
+      "title": "𝟏𝟐 𝐇𝐨𝐮𝐫𝐬 𝐏𝐲𝐭𝐡𝐨𝐧 𝐌𝐚𝐬𝐭𝐞𝐫𝐜𝐥𝐚𝐬𝐬 in Tamil | For Freshers, Data Engineers, Analysts & Scientists!",
+      "description": "Welcome to the Ultimate 12-Hour Python Masterclass in Tamil – designed for freshers, ",
+      "duration": "11:59:56",
+      "channel_name": "Data Engineering",
+      "channel_id": "UC9xghV-TcBwGvK-aEMhpt5w",
+      "view_count": 102741,
+      "upload_date": "3 weeks ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HAxm8n9QY50/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBeueIeJYRcRssgtWnOV6FP3IVnA",
+      "youtube_url": "https://www.youtube.com/watch?v=HAxm8n9QY50",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "masterclass"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 43196
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "JtaOmwnR6AM",
+      "title": "9 Hours | 𝗦𝗤𝗟 𝗠𝗮𝘀𝘁𝗲𝗿 𝗖𝗹𝗮𝘀𝘀 For 𝗗𝗮𝘁𝗮 Engineers | 𝗗𝗮𝘁𝗮 Analyst | 𝗗𝗮𝘁𝗮 Scientist | 𝗙𝗿𝗲𝘀𝗵𝗲𝗿𝘀 in Tamil",
+      "description": "In this comprehensive Tamil SQL Master Class, you'll learn essential database concepts and query techniques. We start from the ...",
+      "duration": "8:30:04",
+      "channel_name": "Data Engineering",
+      "channel_id": "UC9xghV-TcBwGvK-aEMhpt5w",
+      "view_count": 216779,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JtaOmwnR6AM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB-bXzu7fsOtq_FaWUs9UEBH1aG7A",
+      "youtube_url": "https://www.youtube.com/watch?v=JtaOmwnR6AM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 30604
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "6f0kORJQMdI",
+      "title": "🚀 Databricks Free Edition Tutorial | FULL Setup Guide (Zero Cost Data Engineering!)",
+      "description": "Start your Databricks journey for FREE! In this step-by-step ",
+      "duration": "10:50",
+      "channel_name": "The Data Master",
+      "channel_id": "UCMyZRaugxhkqt3LKg9GwIRA",
+      "view_count": 474,
+      "upload_date": "1 day ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6f0kORJQMdI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDjFG1jjwZlwfrCHf82KjtvMgm_sA",
+      "youtube_url": "https://www.youtube.com/watch?v=6f0kORJQMdI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 650
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "uKwm6NXTJq4",
+      "title": "What is Big Data in Tamil | Is Big Data Good or Bad? | Karthik's Show",
+      "description": "This video explains what is ",
+      "duration": "8:14",
+      "channel_name": "Karthik's Show",
+      "channel_id": "UCBF5i6PogoMwnoAP0LFiCmQ",
+      "view_count": 91971,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uKwm6NXTJq4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWlgvHA2oR5XtDe9NO6uu5l-sxvQ",
+      "youtube_url": "https://www.youtube.com/watch?v=uKwm6NXTJq4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 494
+      },
+      "search_query": "big data analytics",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "fGaJru-1fjI",
+      "title": "Data Warehouse Tutorial For Beginners | Data Warehouse Concepts | Intellipaat",
+      "description": "#DataWarehouseTutorialForBeginners #DataWarehouseConcepts #DataWarehouseTutorial #DataWarehouse ...",
+      "duration": "2:32:36",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 69983,
+      "upload_date": "Streamed 3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fGaJru-1fjI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALcfqmiM1iCLZ8wE5SqwxK3eoWSQ",
+      "youtube_url": "https://www.youtube.com/watch?v=fGaJru-1fjI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 9156
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "IM-r9lEZciM",
+      "title": "My Top 8 Data Storytelling Tips as a Data Analyst",
+      "description": "ABOUT ME I'm Mo and I work as a ",
+      "duration": "10:19",
+      "channel_name": "Mo Chen",
+      "channel_id": "UCDybamfye5An6p-j1t2YMsg",
+      "view_count": 40321,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IM-r9lEZciM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAzTtpNG1lyOYTxhSIdDhsYj57URw",
+      "youtube_url": "https://www.youtube.com/watch?v=IM-r9lEZciM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 619
+      },
+      "search_query": "data storytelling",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "iDBznYIMuw4",
+      "title": "SQL for Data Analysis in 2 hours (with dataset + 50 queries)",
+      "description": "Learn how to think like ",
+      "duration": "1:56:40",
+      "channel_name": "Ankit Bansal",
+      "channel_id": "UCk7NcgnqCmui1AV7MTXZwOw",
+      "view_count": 104134,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iDBznYIMuw4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCreYtNak-tgJ-EZzTq1TcmYrN3Tw",
+      "youtube_url": "https://www.youtube.com/watch?v=iDBznYIMuw4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7000
+      },
+      "search_query": "SQL for data analysis",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "7arnJLH2nIc",
+      "title": "How NoSQL Databases Work | Introduction To NoSQL Databases | Big Data & Hadoop Training | Edureka",
+      "description": "------------------------------------------------- Checkout our complete \"Big ",
+      "duration": "14:23",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 20462,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7arnJLH2nIc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLACe2o5SiaHbSMHoELEqCJLY4dIKA",
+      "youtube_url": "https://www.youtube.com/watch?v=7arnJLH2nIc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 863
+      },
+      "search_query": "NoSQL databases for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "_YWwU-gJI5U",
+      "title": "Data Visualization | Data Visualization Python | Intellipaat",
+      "description": "Why should you watch this Python tutorial? You can learn Python much faster than any other programming language and this ...",
+      "duration": "47:14",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 91516,
+      "upload_date": "Streamed 5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_YWwU-gJI5U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB23iX1hSX4fLUTjkvpNcvtg-CGbA",
+      "youtube_url": "https://www.youtube.com/watch?v=_YWwU-gJI5U",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2834
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "eFByJkA3ti4",
+      "title": "#19 Data Visualization | Part | | Python for Data Science",
+      "description": "Welcome to 'Python for ",
+      "duration": "18:03",
+      "channel_name": "NPTEL-NOC IITM",
+      "channel_id": "UCYa1WtI-vb_bx-anHdmpNfA",
+      "view_count": 95036,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eFByJkA3ti4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDH97YafDmqr28zCHHndTEz7FMwWA",
+      "youtube_url": "https://www.youtube.com/watch?v=eFByJkA3ti4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 1083
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "KBI_Mf5FlHs",
+      "title": "What Is Data Integration? Simplified",
+      "description": "What is ",
+      "duration": "6:18",
+      "channel_name": "Hurree",
+      "channel_id": "UCHRymnlhFit7ZjndaEbjAHQ",
+      "view_count": 14047,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KBI_Mf5FlHs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCsi_2hLkklFvYMaFediu7qZohxog",
+      "youtube_url": "https://www.youtube.com/watch?v=KBI_Mf5FlHs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 378
+      },
+      "search_query": "data integration for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "azaRL_RRLV0",
+      "title": "Machine Learning in Production | New Course Launch at Vizuara",
+      "description": "Hello everyone, in this video, we introduced our new lecture series on ",
+      "duration": "11:01",
+      "channel_name": "Vizuara",
+      "channel_id": "UCdEov4L0bpJ_h6W3sJxkfUA",
+      "view_count": 391,
+      "upload_date": "3 hours ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/azaRL_RRLV0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCF2LCtY8yOQWzf5huFMHJ9XAgz6w",
+      "youtube_url": "https://www.youtube.com/watch?v=azaRL_RRLV0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "lecture",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 661
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "01MT7P6a-lM",
+      "title": "Machine Learning Basics | Machine Learning Fundamentals For Beginners | MindMajix",
+      "description": "Join hands-on ",
+      "duration": "24:15",
+      "channel_name": "MindMajix",
+      "channel_id": "UCkKemMaRnFPlNLHZ0zOYfpA",
+      "view_count": 8,
+      "upload_date": "26 minutes ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/01MT7P6a-lM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBbtRNIcZ1-YjyYiY07MaZKgR8RcA",
+      "youtube_url": "https://www.youtube.com/watch?v=01MT7P6a-lM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1455
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "oqSP-df-jU0",
+      "title": "Complete Machine Learning Course in Hindi | Day 2 🔴 Live Class | Beginner to Advanced",
+      "description": "Welcome to the **Complete ",
+      "duration": "1:12:33",
+      "channel_name": "Outlier",
+      "channel_id": "UCyXiJH72ruQREuti8vI0V7g",
+      "view_count": 112,
+      "upload_date": "Streamed 2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/oqSP-df-jU0/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBv6LblGJRePH9ib_LRurfaMiEGhQ",
+      "youtube_url": "https://www.youtube.com/watch?v=oqSP-df-jU0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 4353
+      },
+      "search_query": "machine learning for beginners",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "o1OkB7nCOYU",
+      "title": "Can I Learn Data Science for Free? | Free Data Science Courses For Beginners | Intellipaat #Shorts",
+      "description": "Looking to kickstart your journey in ",
+      "duration": "0:41",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 42791,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/o1OkB7nCOYU/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhhIFQoZTAP&rs=AOn4CLCIVHP26hiKD7fBbvL5x48ekDnC7w",
+      "youtube_url": "https://www.youtube.com/watch?v=o1OkB7nCOYU",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 41
+      },
+      "search_query": "data science tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "GP85eW7Uxdc",
+      "title": "Hypothesis Testing 🔥 Explained in 60 Seconds",
+      "description": "What is Hypothesis Testing? - Hypothesis Testing is a type of ",
+      "duration": "0:51",
+      "channel_name": "Analytics Vidhya",
+      "channel_id": "UCH6gDteHtH4hg3o2343iObA",
+      "view_count": 136436,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GP85eW7Uxdc/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgZIDkofzAP&rs=AOn4CLCwxF2Df4xTZzqIrEevL4I2LRyd7w",
+      "youtube_url": "https://www.youtube.com/watch?v=GP85eW7Uxdc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 51
+      },
+      "search_query": "statistical analysis for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "ZRz-7E-7X7c",
+      "title": "Fundamentals of Data Engineering Masterclass (From SCRATCH!)",
+      "description": "Fundamentals of ",
+      "duration": "2:56:26",
+      "channel_name": "Ansh Lamba",
+      "channel_id": "UCu7lQE-L5gzt8aD7zuuufjw",
+      "view_count": 54156,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZRz-7E-7X7c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDHE6X1lQQ7SwBsIxDWSVnfX_3MoQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ZRz-7E-7X7c",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "masterclass"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 10586
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "Apbr9znjebw",
+      "title": "The 2025 learn Data Engineering roadmap from scratch!",
+      "description": "Learning ",
+      "duration": "0:58",
+      "channel_name": "Data with Zach",
+      "channel_id": "UCAq9f7jFEA7Mtl3qOZy2h1A",
+      "view_count": 220556,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Apbr9znjebw/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARglIGMocjAP&rs=AOn4CLAVMp2Yp94mQDUMFTvEumuwcktgQg",
+      "youtube_url": "https://www.youtube.com/watch?v=Apbr9znjebw",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 58
+      },
+      "search_query": "data engineering tutorial",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "HKcEyHF1U00",
+      "title": "Data Warehouse - The Ultimate Guide [2025] | Master Data Modeling",
+      "description": "... warehouse | Data Modeling | Databricks | PySpark | SparkSQL In this video, I walk you through key ",
+      "duration": "3:16:44",
+      "channel_name": "Ansh Lamba",
+      "channel_id": "UCu7lQE-L5gzt8aD7zuuufjw",
+      "view_count": 38089,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HKcEyHF1U00/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCV3kkD_cowITPeXnT6cqvMeniJqg",
+      "youtube_url": "https://www.youtube.com/watch?v=HKcEyHF1U00",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 11804
+      },
+      "search_query": "data warehousing concepts",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "_Ss42Vb1SU4",
+      "title": "SQL vs. NoSQL Explained (in 4 Minutes)",
+      "description": "Trying to decide between SQL and ",
+      "duration": "4:01",
+      "channel_name": "Exponent",
+      "channel_id": "UCjm_qVkCPjOVDz9BWjNqO9A",
+      "view_count": 311157,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_Ss42Vb1SU4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAgK5FxrBNQGKHFiNt3BHN-dHe_Hg",
+      "youtube_url": "https://www.youtube.com/watch?v=_Ss42Vb1SU4",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 241
+      },
+      "search_query": "NoSQL databases for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "YgNvOFSuSG4",
+      "title": "SQL vs. NoSQL Databases Explained | Difference between SQL and NoSQL | Which is better?",
+      "description": "In this SQL & NoSQL tutorial, we explain the key differences between SQL and ",
+      "duration": "5:42",
+      "channel_name": "Analytics Vidhya",
+      "channel_id": "UCH6gDteHtH4hg3o2343iObA",
+      "view_count": 6988,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YgNvOFSuSG4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBuItFWrKlML6SsO85DvKR-0FFdjA",
+      "youtube_url": "https://www.youtube.com/watch?v=YgNvOFSuSG4",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 342
+      },
+      "search_query": "NoSQL databases for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "5LESkiqobbc",
+      "title": "What Is NoSQL Database | How Do NoSQL Database Works | NoSQL Explained | Intellipaat",
+      "description": "#WhatIsNoSQLDatabase #HowDoNoSQLDatabaseWorks #NoSQLExplained #WhatIsNoSQL #WhenToUseNoSQL ...",
+      "duration": "10:01",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 4779,
+      "upload_date": "Streamed 3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5LESkiqobbc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC5HzQEUMU2BdI49_LcVe-BZ1jeDg",
+      "youtube_url": "https://www.youtube.com/watch?v=5LESkiqobbc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 601
+      },
+      "search_query": "NoSQL databases for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "5gpnZvMSTZs",
+      "title": "What is Data Visualization | Data Visualization Tools Tutorial | The Beauty of Data Visualization",
+      "description": "This what is ",
+      "duration": "8:30",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 7816,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5gpnZvMSTZs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_ue_RYUoKwzS4XbyNzaSm4J5Bsg",
+      "youtube_url": "https://www.youtube.com/watch?v=5gpnZvMSTZs",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 510
+      },
+      "search_query": "data visualization for data science",
+      "genre": "data-science-ai"
+    },
+    {
+      "video_id": "vdRp_w9f-qM",
+      "title": "I can't STOP reading these Machine Learning Books!",
+      "description": "Happy coding! Nick P.s. Let me know how you go and drop a comment if you need a hand! #",
+      "duration": "0:26",
+      "channel_name": "Nicholas Renotte",
+      "channel_id": "UCHXa4OpASJEwrHrLeIzw7Yg",
+      "view_count": 860295,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vdRp_w9f-qM/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARg8IDQofzAP&rs=AOn4CLCebknqedonsecXhh-nzBUKn9YAMw",
+      "youtube_url": "https://www.youtube.com/watch?v=vdRp_w9f-qM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 26
+      },
+      "search_query": "machine learning course",
+      "genre": "data-science-ai"
+    }
+  ],
+  "timestamp": "2025-06-14T08:56:05.769680",
+  "quality_stats": {
+    "avg_quality_score": 0.485,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.9,
+    "avg_view_count": 549888,
+    "total_view_count": 79183904,
+    "high_quality_count": 57,
+    "medium_quality_count": 77,
+    "basic_quality_count": 10
+  }
+}

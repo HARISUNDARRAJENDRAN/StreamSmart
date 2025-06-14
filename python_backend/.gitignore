@@ -1,1 +1,40 @@
 .vercel
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Log files
+*.log
+logs/
+
+# Cache directories
+cache/
+temp/
+.cache/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Embeddings cache (large files)
+embeddings_cache.pkl
+
+# Test files
+test_*.py
+*_test.py

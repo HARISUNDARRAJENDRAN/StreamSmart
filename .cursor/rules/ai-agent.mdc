@@ -3,32 +3,100 @@ description:
 globs: 
 alwaysApply: true
 ---
-This rule provides project context for implementing an AI agent that delivers genre-based personalized video recommendations.
+Goal: Build a Netflix-level AI-powered recommendation system for educational YouTube content
 
+Tech Stack: Python/FastAPI backend, React frontend, Google Vertex AI, PostgreSQL, Redis
 
-## Purpose
-Use this rule when working on:
-- AI agent logic for real-time personalized recommendations.
-- Integrating reinforcement learning-inspired feedback loops.
-- Connecting genre-based APIs to frontend components.
-- Modeling user preferences and dynamic content updates.
+**Architecture Overview**
 
-## Context
-This project uses an AI agent to recommend videos by:
-- Learning from explicit (likes, ratings) and implicit (watch time, hover) feedback.
-- Maintaining per-genre dynamic user profiles.
-- Using temporal decay and affinity scoring to update recommendations.
-- Balancing exploitation of known preferences with exploration of fresh content.
+Core Components
 
-Backend is Python-based for AI logic. Node.js is used for app logic. Data is stored in MongoDB Atlas and optionally cached in Redis.
+1. Data Collection & Processing Layer
+2. AI Agent with Vertex AI Integration
+3. Content Classification System
+4. User Behavior Analytics
+5. Recommendation Pipeline
+6. Content Refresh & Curation
 
-## Technologies
-- Python (Scikit-learn, Pandas)
-- Node.js backend
-- MongoDB, Redis
-- React frontend
+Build a genre-based recommendation engine using an AI agent from google ADK and vertex AI that is on par with streaming services such as youtube, netflix
 
+The genres that I have used in my projects are:
+🎯 Skill-Based Genres
+These focus on practical skills users want to acquire.
+* Coding & Programming
+* Data Science & AI/ML
+* Design (UI/UX, Graphic, Product)
+* Digital Marketing
+* Productivity & Time Management
+* Financial Literacy & Investing
+* Soft Skills (Communication, Leadership)
+* Entrepreneurship & Startups
+* Writing & Content Creation
+* Public Speaking
+📚 Academic Genres
+Useful for students and those preparing for exams.
+* Mathematics
+* Physics
+* Biology
+* Chemistry
+* History & Civics
+* Economics
+* Geography
+* Language Learning (English, French, etc.)
+💼 Career & Professional Development
+Focus on job-readiness and personal growth.
+* Resume Building & Job Hunting
+* Interview Preparation
+* Freelancing & Remote Work
+* Career Advice & Roadmaps
+* Corporate Etiquette
+* Certifications (AWS, Azure, PMP, etc.)
+🧠 Tech News & Trends
+For regular tech updates and industry news.
+* Tech News & Product Launches
+* AI & Innovation
+* Startups & Unicorns
+* Cybersecurity & Privacy
+* Space & Future Tech
+🧩 Mind-expanding & Curiosity Genres
+For people who want to learn for fun or general awareness.
+* Did You Know / Trivia
+* Science Experiments
+* Psychology & Human Behavior
+* Philosophy & Critical Thinking
+* Documentary & Deep Dives
+* Life Hacks & Tips
+🛠️ DIY & Hands-on Learning
+For creators, tinkerers, and hobbyists.
+* Robotics & IoT
+* 3D Printing & CAD
+* Electronics & Arduino
+* DIY Projects & Hacks
+* Art & Craft
+🌱 Lifestyle Learning
+Blending education with personal enrichment.
+* Health & Fitness
+* Mental Health & Wellness
+* Nutrition & Diet
+* Personal Finance
+* Language & Culture
+* Sustainable Living
+🎓 Age or Level-Based Genres
+Helps categorize based on user age or learning maturity.
+* School Level (K-12)
+* College & University Prep
+* Beginner / Intermediate / Advanced
+* Crash Courses
+* One-Minute Lessons
+🚀 Bonus: Personalized Genres
+To enhance personalization and engagement:
+* Trending Now
+* Recommended For You
+* Based on Your Interests
+* Most Watched This Week
+* Quick 5-Minute Lessons
 
+The AI agent must be able to fetch the necessary videos from youtube periodically(like 6hrs once something like that) based upon the user's viewing experience and feed it inside these genre subcategories i mentioned
 
-
-
+All JSON outputs must be strictly valid (no comments or trailing commas).
+Keep prompts in source-control so model changes can be tracked.

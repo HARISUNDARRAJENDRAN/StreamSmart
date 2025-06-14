@@ -20,6 +20,10 @@ import requests
 from urllib.parse import parse_qs, urlparse
 import time
 
+# Import remaining endpoints
+from genre_endpoints import router as genre_router
+from bert_recommendation_endpoints import router as bert_router
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -36,9 +40,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register routers for modular endpoints
+app.include_router(genre_router)
+app.include_router(bert_router)
+
+# Note: AI content endpoints were removed as part of recommendation engine cleanup
+
 # Environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-MONGODB_URI = os.getenv("MONGODB_URI")
+MONGODB_URI = os.getenv("MONGO_URI")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
 PROXY_URL = os.getenv("PROXY_URL")  # Format: http://user:pass@proxy-server:port
 PROXY_LIST = os.getenv("PROXY_LIST")  # Comma-separated list of proxies
@@ -61,7 +71,7 @@ if MONGODB_URI:
         logger.error(f"MongoDB connection failed: {e}")
         mongodb_client = None
 else:
-    logger.warning("MONGODB_URI not provided. Database features will be disabled.")
+            logger.warning("MONGO_URI not provided. Database features will be disabled.")
 
 # Initialize Gemini if available
 if GEMINI_API_KEY:
@@ -717,6 +727,38 @@ async def enhance_video(request: EnhanceVideoRequest):
 
 # Initialize proxy system when module loads
 initialize_proxies()
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("StreamSmart AI Backend started successfully!")
+    logger.info("🚀 Ready to serve educational content recommendations")
+    
+    # Initialize BERT recommendation system
+    try:
+        from services.bert_recommendation_engine import get_bert_recommendation_engine
+        logger.info("🧠 Initializing BERT recommendation system...")
+        bert_engine = get_bert_recommendation_engine()
+        bert_engine.initialize_system()
+        logger.info("✅ BERT recommendation system initialized successfully!")
+    except Exception as e:
+        logger.error(f"❌ Failed to initialize BERT system: {e}")
+    
+    # Start content collection system
+    try:
+        from genre_endpoints import start_content_collection
+        await start_content_collection()
+        logger.info("🎯 Content collection system started - collecting videos every 6 hours")
+    except Exception as e:
+        logger.error(f"Failed to start content collection: {e}")
+    
+    # Start intelligent AI-powered content discovery system
+    try:
+        from services.ai_content_scheduler import start_intelligent_content_system
+        await start_intelligent_content_system()
+        logger.info("🤖 Intelligent AI content discovery system activated!")
+        logger.info("📊 System will now analyze user behavior and feed personalized content")
+    except Exception as e:
+        logger.error(f"Failed to start intelligent content system: {e}")
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,0 +1,2579 @@
+{
+  "genre": "robotics-iot",
+  "target_count": 150,
+  "actual_count": 111,
+  "success": true,
+  "duration_seconds": 57.85,
+  "videos": [
+    {
+      "video_id": "6mBO2vqLv38",
+      "title": "IoT | Internet of Things | What is IoT ? | How IoT Works? | IoT Explained in 6 Minutes | Simplilearn",
+      "description": "This video on What is ",
+      "duration": "5:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 1484556,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6mBO2vqLv38/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD6Io-Na4yTckHEzuCR3tCL6VMvgA",
+      "youtube_url": "https://www.youtube.com/watch?v=6mBO2vqLv38",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 352
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ukzFI9rgwfU",
+      "title": "Machine Learning | What Is Machine Learning? | Introduction To Machine Learning | 2024 | Simplilearn",
+      "description": "This ",
+      "duration": "7:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 5060115,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ukzFI9rgwfU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCOAzod0f7eiMdsA_gq3n0Meyk5eA",
+      "youtube_url": "https://www.youtube.com/watch?v=ukzFI9rgwfU",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 472
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "KeaeuUcw02Q",
+      "title": "IoT Architecture | Internet Of Things Architecture For Beginners | IoT Tutorial | Simplilearn",
+      "description": "Below topics are explained in this IoT architecture tutorial: 1. IoT Architecture - 0:00 2. ",
+      "duration": "11:47",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 293403,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KeaeuUcw02Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB2uZ-6GqwMShiiIPQofsR90dyTew",
+      "youtube_url": "https://www.youtube.com/watch?v=KeaeuUcw02Q",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "explained",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 707
+      },
+      "search_query": "IoT device development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "_AlcRoqS65E",
+      "title": "What is the Internet of Things? And why should you care? | Benson Hougland | TEDxTemecula",
+      "description": "This talk was given at a local TEDx event, produced independently of the TED Conferences. There's a new buzz phrase in tech ...",
+      "duration": "16:38",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 1140132,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_AlcRoqS65E/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhyIFEoQDAP&rs=AOn4CLCgfUWsU3MlAzUX0BpMz5XsSf73vQ",
+      "youtube_url": "https://www.youtube.com/watch?v=_AlcRoqS65E",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 998
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7DZR5UaAM0E",
+      "title": "What Is IoT | What Is IoT Technology And How It Works | Internet Of Things Explained | Simplilearn",
+      "description": "Internet of Things",
+      "duration": "13:13",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 160675,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7DZR5UaAM0E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD1sckIbiVGcXtEcQxl0hhUHEGNSQ",
+      "youtube_url": "https://www.youtube.com/watch?v=7DZR5UaAM0E",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 793
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "uNfUAJBuZ0s",
+      "title": "How Engineering Robots Works: Crash Course Engineering #33",
+      "description": "In this episode we looked at ",
+      "duration": "11:02",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 320942,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uNfUAJBuZ0s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_DnX1KijdLgclWI9_ii0OwSf5HQ",
+      "youtube_url": "https://www.youtube.com/watch?v=uNfUAJBuZ0s",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 662
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Fj02iTrWUx0",
+      "title": "Internet Of Things (IoT) In 10 Minutes | What Is IoT And How It Works | Great Learning",
+      "description": "The ",
+      "duration": "8:49",
+      "channel_name": "Great Learning",
+      "channel_id": "UCObs0kLIrDjX2LLSybqNaEA",
+      "view_count": 390727,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Fj02iTrWUx0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAUL0vM3n0doy8yOAe8Oih05qg3AA",
+      "youtube_url": "https://www.youtube.com/watch?v=Fj02iTrWUx0",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 529
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "2lIV3dRvHmQ",
+      "title": "Five Things You Need Before Starting With ROS | Getting Ready to Build Robots with ROS #1",
+      "description": "In this video we cover the five things you need before you can start developing ",
+      "duration": "8:40",
+      "channel_name": "Articulated Robotics",
+      "channel_id": "UCx9vSJTSZGFrErfPtut5GNQ",
+      "view_count": 141139,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2lIV3dRvHmQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAP64YsTGvG8HxdWh5PbLzjrG21Uw",
+      "youtube_url": "https://www.youtube.com/watch?v=2lIV3dRvHmQ",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 520
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ps9ucSDH8s4",
+      "title": "IoT In 2 Minutes | What Is IoT | Introduction To IoT | IoT Explained | Simplilearn",
+      "description": "Introduction to ",
+      "duration": "1:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 135596,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ps9ucSDH8s4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD-Yj3wzrZZR7t5-lrg9wH99pbQUg",
+      "youtube_url": "https://www.youtube.com/watch?v=ps9ucSDH8s4",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 112
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "3QRtVZRblmg",
+      "title": "Boston Dynamics Atlas Demos New Abilities",
+      "description": "Boston Dynamics revealed just how coordinated the new Atlas is becoming in this recent demo of the ",
+      "duration": "0:47",
+      "channel_name": "CNET",
+      "channel_id": "UCOmcA3f_RrH6b9NmcNa4tdg",
+      "view_count": 4000508,
+      "upload_date": "2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3QRtVZRblmg/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIFIoRTAP&rs=AOn4CLAqxZb2oxIJWlCCa72xM5xr6lLAUA",
+      "youtube_url": "https://www.youtube.com/watch?v=3QRtVZRblmg",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 47
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "J0ssFp7yN8Y",
+      "title": "How to Start with Robotics? for Absolute Beginners || The Ultimate 3-Step Guide",
+      "description": "Who am I? - I'm a Surgical ",
+      "duration": "10:18",
+      "channel_name": "Robotix with Sina",
+      "channel_id": "UCTnCYYQ9Na-C3mpG2NjwjGA",
+      "view_count": 942804,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J0ssFp7yN8Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlJs8KrlmYTbv47rmiojhwJ8wXGA",
+      "youtube_url": "https://www.youtube.com/watch?v=J0ssFp7yN8Y",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 618
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Jky9I1ihAkg",
+      "title": "9 Most Advanced AI Robots - Humanoid & Industrial Robots",
+      "description": "A list of most advanced Humanoid, ",
+      "duration": "12:06",
+      "channel_name": "TerkRecoms - Tech TV",
+      "channel_id": "UCtbo7Mcf52Lbd-XZDUzTBNw",
+      "view_count": 6330395,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Jky9I1ihAkg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD5U9PP0wB4elt_3DmsM8cpm9oepQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Jky9I1ihAkg",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 726
+      },
+      "search_query": "industrial robotics applications",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "C0KBu2ihp-s",
+      "title": "Drones | The complete flight dynamics",
+      "description": "Let's learn the complete flight dynamics of the ",
+      "duration": "6:37",
+      "channel_name": "Sabin Civil Engineering",
+      "channel_id": "UCqZQJ4600a9wIfMPbYc60OQ",
+      "view_count": 1087462,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/C0KBu2ihp-s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB00MNrlpsOFYsUYCfsvRQQh2ZfjA",
+      "youtube_url": "https://www.youtube.com/watch?v=C0KBu2ihp-s",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 397
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "1tnc0Vx3sXU",
+      "title": "How To Fly a Drone - Beginners Guide",
+      "description": "Disclosures: All opinions are my own. Sponsors are acknowledged. Some links in the description are affiliate links that if you click ...",
+      "duration": "6:25",
+      "channel_name": "Jeven Dovey",
+      "channel_id": "UCFIRm1Fv1VC4DZxmYyvNOTQ",
+      "view_count": 762035,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1tnc0Vx3sXU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLClB6pl2zXz26jZVslkL27scpTNIQ",
+      "youtube_url": "https://www.youtube.com/watch?v=1tnc0Vx3sXU",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 385
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "C_tiur59Q2E",
+      "title": "20 Amazing Robot Animals That Will Blow Your Mind",
+      "description": "Ultimate Fact presents Top 20 Amazing ",
+      "duration": "12:14",
+      "channel_name": "Ultimate Fact",
+      "channel_id": "UCmaRm-IIdEVsA0OIlhubPiQ",
+      "view_count": 22879731,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/C_tiur59Q2E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBWzmH_2lw_1jgk_SFw8bLpBIgL5g",
+      "youtube_url": "https://www.youtube.com/watch?v=C_tiur59Q2E",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 734
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "kWFXAqv2ZKw",
+      "title": "Workbench Essentials When Starting Arduino! (Beginner Guide)",
+      "description": "If you're getting started with Arduino or building your engineering workbench, this video will cover all the essential components ...",
+      "duration": "8:14",
+      "channel_name": "Robonyx",
+      "channel_id": "UCdhDOlwIuY0yR-KxlblnsxQ",
+      "view_count": 685140,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kWFXAqv2ZKw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDdsg0nAVxc919yDyrsBpXn-eQp4w",
+      "youtube_url": "https://www.youtube.com/watch?v=kWFXAqv2ZKw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 494
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "oHKCwyUa2rg",
+      "title": "How are robots built?",
+      "description": "Robots",
+      "duration": "5:51",
+      "channel_name": "Interesting Engineering",
+      "channel_id": "UCEuiOszNd6msGgqsD0f9YAQ",
+      "view_count": 2221703,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/oHKCwyUa2rg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKTn2jhWHIilgtVu4LwVDKevdavg",
+      "youtube_url": "https://www.youtube.com/watch?v=oHKCwyUa2rg",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 351
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "9W7KH6LOKkw",
+      "title": "How Robots Are Made || How Robots Work || What Is Robotics || What Is Robots",
+      "description": "How Robots",
+      "duration": "8:51",
+      "channel_name": "LifeAda",
+      "channel_id": "UCHUByLzh_XbWd5-R9ZFJNCQ",
+      "view_count": 2699499,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/9W7KH6LOKkw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALzzdMGKJCrHVCFKKA_UMv4hbfhw",
+      "youtube_url": "https://www.youtube.com/watch?v=9W7KH6LOKkw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 531
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ttIOdAdQaUE",
+      "title": "What is Artificial Intelligence? | ChatGPT | The Dr Binocs Show | Peekaboo Kidz",
+      "description": "What is Artificial Intelligence? | AI | ChatGPT | AI System | Artificial Intelligence | ",
+      "duration": "5:42",
+      "channel_name": "Peekaboo Kidz",
+      "channel_id": "UCxlJ45KjG4XVcQ_hd8j227A",
+      "view_count": 1808963,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ttIOdAdQaUE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBf5qz_DLoJ2VWIAl7fFhwJg5Yi_Q",
+      "youtube_url": "https://www.youtube.com/watch?v=ttIOdAdQaUE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 342
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7miAJodFLgA",
+      "title": "FANUC programming tutorial - Create your first program. How to create a TP (teach pendant) program ?",
+      "description": "Hello ! Today is the day when we are going to create our first ",
+      "duration": "25:48",
+      "channel_name": "Future Robotics",
+      "channel_id": "UCHvE0x1xiT-OwMbZKfP7AhQ",
+      "view_count": 140485,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7miAJodFLgA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAD_VD7vrko-FCUJcMAljhuR6hNZA",
+      "youtube_url": "https://www.youtube.com/watch?v=7miAJodFLgA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1548
+      },
+      "search_query": "robot programming tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "BZIKNUVHhko",
+      "title": "Humanoid Robot Trends to Watch in 2025",
+      "description": "We saw a lot of advancements in ",
+      "duration": "4:17",
+      "channel_name": "CNET",
+      "channel_id": "UCOmcA3f_RrH6b9NmcNa4tdg",
+      "view_count": 292898,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BZIKNUVHhko/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZzC-BkC231xiOgwIetC9wjvgTng",
+      "youtube_url": "https://www.youtube.com/watch?v=BZIKNUVHhko",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 257
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ikZeU3wKVjM",
+      "title": "Gemini Robotics: Developing the next generation of humanoid robots with Apptronik",
+      "description": "Our new Gemini ",
+      "duration": "1:22",
+      "channel_name": "Google DeepMind",
+      "channel_id": "UCP7jMXSY2xbc3KCAE0MHQ-A",
+      "view_count": 122346,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ikZeU3wKVjM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCoZ9o5IPQN9wix9D7vlVzuMxxKQA",
+      "youtube_url": "https://www.youtube.com/watch?v=ikZeU3wKVjM",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 82
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "y2KF2DnvN9Y",
+      "title": "Meet the $16K Humanoid Robot Leaping Into Production",
+      "description": "... in robots 2:40 ",
+      "duration": "3:02",
+      "channel_name": "CNET",
+      "channel_id": "UCOmcA3f_RrH6b9NmcNa4tdg",
+      "view_count": 880847,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/y2KF2DnvN9Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAO7oLPlcC3UdCxbEQlnmkB-OgSKw",
+      "youtube_url": "https://www.youtube.com/watch?v=y2KF2DnvN9Y",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 182
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "0HoSwHNUOHg",
+      "title": "Interviewing Sophia, World’s First Humanoid Robot",
+      "description": "Thanks to Hanson Robotics for letting me interview @SophiatheRobot Sophia is a social ",
+      "duration": "14:08",
+      "channel_name": "Manav Golecha",
+      "channel_id": "UC6KP3BDcjoha1AAHhTTr4Qw",
+      "view_count": 2726580,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0HoSwHNUOHg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvqiH3TPze6gWF-DUHuP_-yQmLdw",
+      "youtube_url": "https://www.youtube.com/watch?v=0HoSwHNUOHg",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 848
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Uexur9rOxW4",
+      "title": "This $5,000 Cooking Robot SHOCKED the World with Its DELICIOUS Dishes",
+      "description": "The most advanced cooking ",
+      "duration": "31:59",
+      "channel_name": "Carros Show",
+      "channel_id": "UCS_tq7IKjgive1RpIm7O_aA",
+      "view_count": 1852139,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Uexur9rOxW4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAvEgPFPMwd8tK8ZroUeeR-PbeaWw",
+      "youtube_url": "https://www.youtube.com/watch?v=Uexur9rOxW4",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1919
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "gpB4600keWA",
+      "title": "Smart Home with Google Assistant & Alexa using NodeMCU ESP8266 (Manual + Voice) | IoT Projects 2021",
+      "description": "In this ",
+      "duration": "10:41",
+      "channel_name": "Tech StudyCell",
+      "channel_id": "UCMg4OFH7TA_pVm8cJcspfaQ",
+      "view_count": 1420775,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gpB4600keWA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrQ8rxqlenJHcq5GJfmtXYWYLnLQ",
+      "youtube_url": "https://www.youtube.com/watch?v=gpB4600keWA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 641
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "SnmcbfWEPvE",
+      "title": "Home Smart Home [#1] IoT Device Installation & User Experience",
+      "description": "Need ",
+      "duration": "6:05",
+      "channel_name": "IoT Africa Networks Limited ",
+      "channel_id": "UCy9rlqiX-0gAxv2zmgnUSTQ",
+      "view_count": 6359,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SnmcbfWEPvE/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARhlIGUoZTAP&rs=AOn4CLBMvc-xN-Bjt-ed5EIFhZQgRzEKWA",
+      "youtube_url": "https://www.youtube.com/watch?v=SnmcbfWEPvE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 365
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "AO3Z7dBbwRE",
+      "title": "Home Automation 32CH Distribution Board DIY Smart Home IOT Project 2020",
+      "description": "Here is the Ultimate ",
+      "duration": "12:06",
+      "channel_name": "KinCony IoT",
+      "channel_id": "UCTHZ5imPP8e-szIByaO4Eaw",
+      "view_count": 1284295,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/AO3Z7dBbwRE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6eFDIMNDFmMaP8pXh0DgQf3a96w",
+      "youtube_url": "https://www.youtube.com/watch?v=AO3Z7dBbwRE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 726
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "DlG6LY84MUU",
+      "title": "Sensors - which one to use",
+      "description": "Here I show you a few examples with ",
+      "duration": "17:06",
+      "channel_name": "Electronoobs",
+      "channel_id": "UCjiVhIvGmRZixSzupD0sS9Q",
+      "view_count": 1462749,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/DlG6LY84MUU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCEizco5mq8qjw10Cl1X_Vr51W_6A",
+      "youtube_url": "https://www.youtube.com/watch?v=DlG6LY84MUU",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1026
+      },
+      "search_query": "robot sensors and actuators",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "N_XneaFmOmU",
+      "title": "Drones | How do they work?",
+      "description": "Drones",
+      "duration": "10:13",
+      "channel_name": "Sabin Civil Engineering",
+      "channel_id": "UCqZQJ4600a9wIfMPbYc60OQ",
+      "view_count": 2601395,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N_XneaFmOmU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBuaXf3rh2PHmXHExYP6LIf14tQFg",
+      "youtube_url": "https://www.youtube.com/watch?v=N_XneaFmOmU",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 613
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Wil6V0sYHf8",
+      "title": "How a Military Drone Works | Bayraktar TB2 UAV",
+      "description": "tb2bayraktar #",
+      "duration": "6:09",
+      "channel_name": "AiTelly",
+      "channel_id": "UCBjr2QgkUNToRbwVecMgX3Q",
+      "view_count": 1180242,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Wil6V0sYHf8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCMtBG6MLY_We-5WQsnQdWw0_3JhA",
+      "youtube_url": "https://www.youtube.com/watch?v=Wil6V0sYHf8",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 369
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "aeMmriLNHgA",
+      "title": "From nudging to judging, Robots and the ethics of things. | Jochanan EYNIKEL | TEDxBrussels",
+      "description": "The fourth industrial revolution marked by artificial intelligence and ",
+      "duration": "12:18",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 2176,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aeMmriLNHgA/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARh_IBMoGTAP&rs=AOn4CLCZn67AZcP24SRnQGllpe9r8ocx_A",
+      "youtube_url": "https://www.youtube.com/watch?v=aeMmriLNHgA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 738
+      },
+      "search_query": "robot ethics and regulations",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "PsaEijZy1h4",
+      "title": "KAWASAKI Basics 101 Tutorial - Learn how to jog the robot, create a program and a backup 4k",
+      "description": "Kawasaki ",
+      "duration": "10:23",
+      "channel_name": "rebots",
+      "channel_id": "UCFNcSWtfb23a1O0EvyoZjDw",
+      "view_count": 20009,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PsaEijZy1h4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXnngLIsa1V50ycSM9XDNsIda9CA",
+      "youtube_url": "https://www.youtube.com/watch?v=PsaEijZy1h4",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 623
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "gz8mamoZoZY",
+      "title": "Fanuc Robot Tutorial 3: Introduction to Robot Coding - Write a Simple Code Using Teach Method",
+      "description": "fanuc #",
+      "duration": "17:15",
+      "channel_name": "Aleksandar Haber PhD",
+      "channel_id": "UCJb75Ftt5VukFioxk5OocFQ",
+      "view_count": 103942,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gz8mamoZoZY/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIF0oRzAP&rs=AOn4CLCF0Q4ifTsY9RQ0KRmqhm45SuJj7A",
+      "youtube_url": "https://www.youtube.com/watch?v=gz8mamoZoZY",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1035
+      },
+      "search_query": "robot programming tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Td1d5iMF3EQ",
+      "title": "15 Brilliant IoT Projects for Beginners!",
+      "description": "This video contains 15 Brilliant ",
+      "duration": "9:25",
+      "channel_name": "ToP Projects Compilation",
+      "channel_id": "UCakdd02jzfgmsXVsKbsKXfw",
+      "view_count": 950375,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Td1d5iMF3EQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdTYukxrgrLE16I0N3ut3mRooctQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Td1d5iMF3EQ",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 565
+      },
+      "search_query": "IoT device development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "WHXYlEB_QmY",
+      "title": "Ultimate Guide to Starting and Growing a Smart Home!",
+      "description": "Whether you're starting or growing a ",
+      "duration": "14:34",
+      "channel_name": "Smart Home Solver",
+      "channel_id": "UCwOBG77Tm8cE24FPxHb_abw",
+      "view_count": 854555,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WHXYlEB_QmY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCwcJGA6TdmYjO6QktOOAxSCrGcGA",
+      "youtube_url": "https://www.youtube.com/watch?v=WHXYlEB_QmY",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 874
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "dgWvsObRPcE",
+      "title": "Internet Of Things (IOT) Security Problems Explained in Hindi",
+      "description": "Myself Shridhar Mankar a Engineer l YouTuber l Educational Blogger l Educator l Podcaster. My Aim- To Make Engineering ...",
+      "duration": "7:59",
+      "channel_name": "5 Minutes Engineering",
+      "channel_id": "UCyHta2dyCTkf29AB67AYn7A",
+      "view_count": 139292,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dgWvsObRPcE/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzQZHICz5AfXRXomODFGMg5U1GwQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dgWvsObRPcE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 479
+      },
+      "search_query": "IoT security challenges",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "D7L1SmjQ3fo",
+      "title": "The Ultimate Roadmap for Embedded Systems | How to become an Embedded Engineer in 2025",
+      "description": "embedded systems",
+      "duration": "16:49",
+      "channel_name": "Sanchit Kulkarni",
+      "channel_id": "UCsQI4zcGAgbfaB2R7QZ7SvA",
+      "view_count": 149282,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/D7L1SmjQ3fo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBCcAhkz6BusAlBG3tY7smuik_3vQ",
+      "youtube_url": "https://www.youtube.com/watch?v=D7L1SmjQ3fo",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1009
+      },
+      "search_query": "embedded systems for IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "PdSDhdciSpE",
+      "title": "Machine Learning on Arduino Uno was a Good Idea",
+      "description": "The journey of teaching a ",
+      "duration": "12:30",
+      "channel_name": "Nikodem Bartnik",
+      "channel_id": "UChrCgXmIW1toX2B7viP6S7Q",
+      "view_count": 354926,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PdSDhdciSpE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfBkNetVxWMwPxJf7mgXLOPPBHUA",
+      "youtube_url": "https://www.youtube.com/watch?v=PdSDhdciSpE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 750
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "U2AGLeJBFNg",
+      "title": "World’s most advanced robotic warehouse (AI automation)",
+      "description": "Take a tour of the world's most advanced ecommerce warehouse run by AI ",
+      "duration": "10:26",
+      "channel_name": "Brightpick",
+      "channel_id": "UCPRMWvxhUlMXxl13U7RBwnA",
+      "view_count": 497541,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/U2AGLeJBFNg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCzE8hKaX3BWMqjJKfK7YxYHPD3aA",
+      "youtube_url": "https://www.youtube.com/watch?v=U2AGLeJBFNg",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 626
+      },
+      "search_query": "autonomous robots navigation",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "sOgjdDjmQxA",
+      "title": "Top 5 Educational Coding Robots for Kids",
+      "description": "☆ OUR FAVOURITE DEALS!! ☆ Hardware iMac 27 Inch (PC) ▻ https://amzn.to/2yZQyF9 Dell XPS 15 (Laptop) ...",
+      "duration": "15:04",
+      "channel_name": "Noteworthy",
+      "channel_id": "UCVpr3QrCsiT_fyCw4Ts2bxw",
+      "view_count": 298333,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sOgjdDjmQxA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAcGJHRpWo4iT2T0h5lvr-KmTo22A",
+      "youtube_url": "https://www.youtube.com/watch?v=sOgjdDjmQxA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 904
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Ld-Z7SNgdIM",
+      "title": "What is Internet of Things(IoT) in Tamil? | History & Industrial Revolution of IoT | Quick Through",
+      "description": "Hello Guys!! In this video , We are Going to learn about ",
+      "duration": "8:22",
+      "channel_name": "Quick Through",
+      "channel_id": "UC7yxavkwDx3RfY4Utu2lycw",
+      "view_count": 121523,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Ld-Z7SNgdIM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCHr5BpQFiw5QnhE5jnMRbK5qnbGA",
+      "youtube_url": "https://www.youtube.com/watch?v=Ld-Z7SNgdIM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 502
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ayvR8l4bSyU",
+      "title": "How to Learn Any Industrial Robot in Tamil",
+      "description": "robotics",
+      "duration": "10:38",
+      "channel_name": "Tamil Automation",
+      "channel_id": "UCZqJJand9KWPl0-DLEIk8Vg",
+      "view_count": 12255,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ayvR8l4bSyU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLARyMgBXFCDWMa4xwq8RaGBoSUL2A",
+      "youtube_url": "https://www.youtube.com/watch?v=ayvR8l4bSyU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 638
+      },
+      "search_query": "robot programming tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "z_uGhq2ayVA",
+      "title": "Robotics engineers are in high demand — but what is the job really like?",
+      "description": "From the operating theater to the factory floor and the testing laboratory, ",
+      "duration": "11:00",
+      "channel_name": "CNBC International",
+      "channel_id": "UCo7a6riBFJ3tkeHjvkXPn1g",
+      "view_count": 290591,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/z_uGhq2ayVA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSzjujoVCpNFNe-g-4Fxhl4LOoKQ",
+      "youtube_url": "https://www.youtube.com/watch?v=z_uGhq2ayVA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 660
+      },
+      "search_query": "robotics engineering career",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "yOZ6088bvTY",
+      "title": "ROBOTICS vs MECHATRONICS Engineering | What's the Difference?",
+      "description": "mechatronics #",
+      "duration": "6:05",
+      "channel_name": "Engineering Insiders",
+      "channel_id": "UCBsp9Vhj8RCgo6NRrWkgkhA",
+      "view_count": 137710,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yOZ6088bvTY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAUJz6i3FgMFHvAhroNFQQF_XkeUg",
+      "youtube_url": "https://www.youtube.com/watch?v=yOZ6088bvTY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 365
+      },
+      "search_query": "robotics engineering career",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "fBFwFyZbewo",
+      "title": "Top 10 NEW Humanoid Robots of 2025 (Updated)",
+      "description": "Humanoid robots",
+      "duration": "15:21",
+      "channel_name": "Techful Gadgets",
+      "channel_id": "UCmeUuOcw8szgptZwo7MuuqA",
+      "view_count": 238909,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fBFwFyZbewo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1zXftZ-KMQPljhUw3amBlXDGmJw",
+      "youtube_url": "https://www.youtube.com/watch?v=fBFwFyZbewo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 921
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7TVWlADXwRw",
+      "title": "What Is ROS2? - Framework Overview",
+      "description": "Let's look at what ROS2 has to offer when programming robotics ",
+      "duration": "8:22",
+      "channel_name": "Raymond Andrade",
+      "channel_id": "UCZrv4uihZ2772GFYfquI9JQ",
+      "view_count": 106631,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7TVWlADXwRw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKrnDph2FxTv1kCPwdeA6r78Gc_Q",
+      "youtube_url": "https://www.youtube.com/watch?v=7TVWlADXwRw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 502
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "VheHmWV7Iu0",
+      "title": "What is Robot Operating System (ROS)? | ROS 101 | ROS Tutorials for Beginners | Lesson 1",
+      "description": "In this lesson, you will learn what the ",
+      "duration": "45:18",
+      "channel_name": "Mecharithm - Robotics and Mechatronics",
+      "channel_id": "UCnHqZ43l6S1Ksd9di4VXNbQ",
+      "view_count": 19705,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VheHmWV7Iu0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB-utyLIgUyPorG7YrJNC3AVE7lJQ",
+      "youtube_url": "https://www.youtube.com/watch?v=VheHmWV7Iu0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "series",
+        "estimated_learning_time": 2718
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "-SHjXavvAZQ",
+      "title": "7 Best Home Automation Systems 2024",
+      "description": "Choose one of these 7 Best ",
+      "duration": "7:37",
+      "channel_name": "Smart Home 101",
+      "channel_id": "UCB74tpdumqNGXQkUe8o780A",
+      "view_count": 157694,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-SHjXavvAZQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAmi5aclpxkpqK5d8qW4jGSQQRjjA",
+      "youtube_url": "https://www.youtube.com/watch?v=-SHjXavvAZQ",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 457
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "HmbUJEShA-8",
+      "title": "What is the Industrial Internet of Things (IIoT)?",
+      "description": "============================= ▷ Check out the full blog post over at https://realpars.com/",
+      "duration": "8:57",
+      "channel_name": "RealPars",
+      "channel_id": "UCUKKQwBQZczpYzETkZNxi-w",
+      "view_count": 195727,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HmbUJEShA-8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBVGAuV-y1eXKmEG2VTlRI1HzdNMg",
+      "youtube_url": "https://www.youtube.com/watch?v=HmbUJEShA-8",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 537
+      },
+      "search_query": "industrial IoT (IIoT) solutions",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "_tBFaWR7gnA",
+      "title": "All about Embedded Systems | Must master Skills | Different Roles | Salaries 💰",
+      "description": "introduction to ",
+      "duration": "12:36",
+      "channel_name": "Sanchit Kulkarni",
+      "channel_id": "UCsQI4zcGAgbfaB2R7QZ7SvA",
+      "view_count": 136060,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_tBFaWR7gnA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLALd-dpMRR8M3SlDPFo6D5gZohLcQ",
+      "youtube_url": "https://www.youtube.com/watch?v=_tBFaWR7gnA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 756
+      },
+      "search_query": "embedded systems for IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "LHn7O6PUaoY",
+      "title": "What is an Actuator?",
+      "description": "============================= In this video, we're going to: – Explain the purpose of an ",
+      "duration": "5:10",
+      "channel_name": "RealPars",
+      "channel_id": "UCUKKQwBQZczpYzETkZNxi-w",
+      "view_count": 925756,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LHn7O6PUaoY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzk2SJ-vY0uGe4julbGFY9PLqPsA",
+      "youtube_url": "https://www.youtube.com/watch?v=LHn7O6PUaoY",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 310
+      },
+      "search_query": "robot sensors and actuators",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "XI49uFm5HRE",
+      "title": "What is a Sensor? Different Types of Sensors, Applications",
+      "description": "============================= ",
+      "duration": "5:32",
+      "channel_name": "RealPars",
+      "channel_id": "UCUKKQwBQZczpYzETkZNxi-w",
+      "view_count": 335271,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XI49uFm5HRE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDBGWhM3Fb4bikfYNczWpXA5ThRgA",
+      "youtube_url": "https://www.youtube.com/watch?v=XI49uFm5HRE",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 332
+      },
+      "search_query": "robot sensors and actuators",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "1GNwMhPwFiE",
+      "title": "Basics of Drone - How do Drones Fly?",
+      "description": "This video is part of the ",
+      "duration": "10:30",
+      "channel_name": "Murtaza's Workshop - Robotics and AI",
+      "channel_id": "UCYUjYU5FveRAscQ8V21w81A",
+      "view_count": 102828,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1GNwMhPwFiE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCYHMYiYXpNMI8fIha3FVq-eyWR_g",
+      "youtube_url": "https://www.youtube.com/watch?v=1GNwMhPwFiE",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 630
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "kIxTUcVpP0k",
+      "title": "What is Narrowband Internet of things? NB-IoT basics Tutorial | explained NB IoT vs. LTE-m  LORA 5G",
+      "description": "Hi! In this video, we will learn about the basics of NB-",
+      "duration": "13:46",
+      "channel_name": "Shunt Electronics",
+      "channel_id": "UCoYSmxT67xiTDkUu-Q3WQZQ",
+      "view_count": 26836,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kIxTUcVpP0k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_bF5NlhwAFtuvOpoALTEpf7vbFQ",
+      "youtube_url": "https://www.youtube.com/watch?v=kIxTUcVpP0k",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 826
+      },
+      "search_query": "IoT connectivity options (e.g., LoRa, 5G)",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "cEOUeItHDdo",
+      "title": "What is edge computing?",
+      "description": "Edge computing",
+      "duration": "10:40",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 261587,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/cEOUeItHDdo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAj_IgAVe29UXgn4vrPTI54MkVAVA",
+      "youtube_url": "https://www.youtube.com/watch?v=cEOUeItHDdo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 640
+      },
+      "search_query": "edge computing in IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "Fw8JQ5Q-ZwU",
+      "title": "What Is Autonomous Navigation? | Autonomous Navigation, Part 1",
+      "description": "Navigation",
+      "duration": "11:30",
+      "channel_name": "MATLAB",
+      "channel_id": "UCgdHSFcXvkN6O3NXvif0-pA",
+      "view_count": 165741,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Fw8JQ5Q-ZwU/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDOm0UtaGCdRn1kuYmQjdqa0DNArg",
+      "youtube_url": "https://www.youtube.com/watch?v=Fw8JQ5Q-ZwU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 690
+      },
+      "search_query": "autonomous robots navigation",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "xbyEP0M9w7k",
+      "title": "Robotics for Kids| Robotics Kits| Basics| Introduction Educational video for beginners projects",
+      "description": "Teach your kids about ",
+      "duration": "8:12",
+      "channel_name": "Intellect Kids Classroom",
+      "channel_id": "UCnTPDdSyf01jfj2qFwnCNrQ",
+      "view_count": 14471,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xbyEP0M9w7k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1QD2A6Qap4_6h2bNV7PphEq95hQ",
+      "youtube_url": "https://www.youtube.com/watch?v=xbyEP0M9w7k",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 492
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "EAyzRmAKueE",
+      "title": "How to start in robotics? The BEST intro to robotics!",
+      "description": "If you want to get into ",
+      "duration": "16:36",
+      "channel_name": "Every Flavor of Robot",
+      "channel_id": "UCbi3ei431gvBpgZ3R-_Wk5Q",
+      "view_count": 14237,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/EAyzRmAKueE/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD44y-gj8ecrKGtROCCs2P4xLo9SQ",
+      "youtube_url": "https://www.youtube.com/watch?v=EAyzRmAKueE",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 996
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "8QfI5a7lTKU",
+      "title": "What is ROS, When to use it, and Why ? - Robot Operating System Tutorial",
+      "description": "What is ",
+      "duration": "6:36",
+      "channel_name": "Le Hao Nhi",
+      "channel_id": "UClu2mgLRjzOwoclvw4_oLgA",
+      "view_count": 76779,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8QfI5a7lTKU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAVDUdLJIpFV6GB1t2lCMZoaxL3GQ",
+      "youtube_url": "https://www.youtube.com/watch?v=8QfI5a7lTKU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 396
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "6UFTJQyFu1k",
+      "title": "Smart Home For Beginners - IoT Security",
+      "description": "Episode 6: ",
+      "duration": "6:26",
+      "channel_name": "Undecided with Matt Ferrell",
+      "channel_id": "UCjtUS7-SZTi6pXjUbzGHQCg",
+      "view_count": 24635,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6UFTJQyFu1k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfqjn-XKwaQHTv8mXaX9nG6NifgQ",
+      "youtube_url": "https://www.youtube.com/watch?v=6UFTJQyFu1k",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 386
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "LlhmzVL5bm8",
+      "title": "Internet of Things (IoT) | What is IoT | How it Works | IoT Explained | Edureka",
+      "description": "#Edureka #EdurekaIoT #InternetOfThings #WhatIsIoT #IoTExplained #IoTonlineTraining -------------------------- About our ",
+      "duration": "3:22",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 2650156,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LlhmzVL5bm8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBf81c3nDoQQpG2jZkFQRgPfHnjeg",
+      "youtube_url": "https://www.youtube.com/watch?v=LlhmzVL5bm8",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 202
+      },
+      "search_query": "internet of things (IoT) explained",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "TFkUan5Uujs",
+      "title": "How to Make a Mini Robot bug",
+      "description": "How to make a toy ",
+      "duration": "3:24",
+      "channel_name": "JoshBuilds",
+      "channel_id": "UC-BwprrMqmpQXvArJWNaKTA",
+      "view_count": 6327506,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TFkUan5Uujs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDdEuymVUEE_iGS_WtlErHENTuO9w",
+      "youtube_url": "https://www.youtube.com/watch?v=TFkUan5Uujs",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 204
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "IIe3DMzaRSA",
+      "title": "How to Make a Motion-Tracking Radar with Arduino 🛠 #arduino #arduinoproject",
+      "description": "SunFounder focuses on STEAM education, offering open-source ",
+      "duration": "0:11",
+      "channel_name": "SunFounder Maker Education",
+      "channel_id": "UCf5Q-WNdLaYEx6MfLIPSTgg",
+      "view_count": 10897542,
+      "upload_date": "1 month ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IIe3DMzaRSA/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhXIFwoZTAP&rs=AOn4CLCVZLhXRc7w8VWoHHoaWqzHovE29Q",
+      "youtube_url": "https://www.youtube.com/watch?v=IIe3DMzaRSA",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 11
+      },
+      "search_query": "robot programming tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ahMGkeW9F-M",
+      "title": "Most Advanced Hyper-Realistic #Humanoid #Robots Available for Purchase / Buy Now! #ces2025 #AI #ces",
+      "description": "",
+      "duration": "0:30",
+      "channel_name": "Do3D.com",
+      "channel_id": "UCGODnMAAEhZeO0ROmB2EFBg",
+      "view_count": 1430132,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ahMGkeW9F-M/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIE4oPjAP&rs=AOn4CLA87RnKK8gECDi6EYa_CJorNmdc3w",
+      "youtube_url": "https://www.youtube.com/watch?v=ahMGkeW9F-M",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 30
+      },
+      "search_query": "humanoid robots development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "-HJJdIU3tok",
+      "title": "Which Course is Best to Master AI?! 🎓| Tamil CEO Sidd Ahmed",
+      "description": "Thank you for coming up and asking, Aravind! Choosing the right path for ",
+      "duration": "0:58",
+      "channel_name": "Sidd Ahmed",
+      "channel_id": "UCHetsKn3hHUg4J48onIKQZQ",
+      "view_count": 1839078,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-HJJdIU3tok/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhyIE8oQjAP&rs=AOn4CLDlC0-i9xfaZzi-m4Z_aXHBtS9lRw",
+      "youtube_url": "https://www.youtube.com/watch?v=-HJJdIU3tok",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 58
+      },
+      "search_query": "AI and robotics integration",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "NRj6gzah7JA",
+      "title": "How to get started with Robotics? [MUST KNOW TIPS] Building Robots for Beginners",
+      "description": "In this ",
+      "duration": "4:28",
+      "channel_name": "RootSaid - Robotics, Electronics & Technology ",
+      "channel_id": "UCEwYcyiJHW2GqPJW7cdnjJg",
+      "view_count": 198514,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NRj6gzah7JA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBWa8slBpkgzcYPxz8cvKnTWvPQJQ",
+      "youtube_url": "https://www.youtube.com/watch?v=NRj6gzah7JA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 268
+      },
+      "search_query": "robotics for beginners",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "OAVe9mW2uFQ",
+      "title": "Basic Demonstration of Da Vinci Robot - How Surgical Robot Works?",
+      "description": "This video demonstrates the ",
+      "duration": "49:27",
+      "channel_name": "Dr. R. K. Mishra",
+      "channel_id": "UC5GRDQvh5Ze-agGcaMeveKw",
+      "view_count": 70443,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OAVe9mW2uFQ/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARhlIF4oVjAP&rs=AOn4CLC1sCZkYjTxFzbxAPBlNvLA48H23A",
+      "youtube_url": "https://www.youtube.com/watch?v=OAVe9mW2uFQ",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2967
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "J5Xd43LIFiU",
+      "title": "How Self Balancing Robots Work! (Theory, Components, Design, PID)",
+      "description": "Easy, Affordable, and Reliable PCB with JLCPCB! Get $60 New customer coupons:https://jlcpcb.com/?from=robonyx Project ...",
+      "duration": "9:02",
+      "channel_name": "Robonyx",
+      "channel_id": "UCdhDOlwIuY0yR-KxlblnsxQ",
+      "view_count": 71769,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J5Xd43LIFiU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZqbgakGWYtm6txdwej4YJ27fCPw",
+      "youtube_url": "https://www.youtube.com/watch?v=J5Xd43LIFiU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 542
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "5uUiAkyY408",
+      "title": "So You Want to Be a ROBOTICS ENGINEER | Inside Robotics Engineering [Ep. 7]",
+      "description": "SoYouWantToBe #",
+      "duration": "8:15",
+      "channel_name": "Engineering Insiders",
+      "channel_id": "UCBsp9Vhj8RCgo6NRrWkgkhA",
+      "view_count": 79365,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5uUiAkyY408/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC7SieoZU3dHJMWa-B5GB2k2YotGA",
+      "youtube_url": "https://www.youtube.com/watch?v=5uUiAkyY408",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 495
+      },
+      "search_query": "robotics engineering career",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "rtrGoGsMVlI",
+      "title": "ROS/ROS 2 - What is Robot Operating System (ROS)? - an intuitive understanding",
+      "description": "This video is the first in this ROS2 series. We talk about what ",
+      "duration": "9:58",
+      "channel_name": "Hummingbird",
+      "channel_id": "UCPN4BAonS7QhKI-tODaA9cA",
+      "view_count": 25860,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rtrGoGsMVlI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLU67CEuib-NyGQDFGLNaMhq23YQ",
+      "youtube_url": "https://www.youtube.com/watch?v=rtrGoGsMVlI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 598
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "w-BawMpxBYs",
+      "title": "TUYA API (Setup, Basics and FREE FINGERBOTS)",
+      "description": "... connecting our Tuya / Smartlife app and importing our ",
+      "duration": "26:02",
+      "channel_name": "Mark Watt Tech",
+      "channel_id": "UCQRm_z7seHnGsBiWDNEWr6A",
+      "view_count": 45700,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/w-BawMpxBYs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-EzaBTQuekhsoEYmFy02gD5PjFg",
+      "youtube_url": "https://www.youtube.com/watch?v=w-BawMpxBYs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1562
+      },
+      "search_query": "IoT device development",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "zl2ZbdSeQVY",
+      "title": "IoT Security Challenges",
+      "description": "Join our VP of IoT and Embedded Solutions, Alan Grau, as he dives into ",
+      "duration": "11:20",
+      "channel_name": "Sectigo",
+      "channel_id": "UCpBIBygkjPsEdrGkkWNGOsQ",
+      "view_count": 16447,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zl2ZbdSeQVY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkNn8XRbM_7U4dfPs1etm2sbzn6w",
+      "youtube_url": "https://www.youtube.com/watch?v=zl2ZbdSeQVY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 680
+      },
+      "search_query": "IoT security challenges",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7zWVxrjjIpE",
+      "title": "Securing Your IoT Devices",
+      "description": "Thanks to the Internet of Things (",
+      "duration": "13:55",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 58777,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7zWVxrjjIpE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBKOi3j03GwzKl6UoD6tGUMMmfsA",
+      "youtube_url": "https://www.youtube.com/watch?v=7zWVxrjjIpE",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 835
+      },
+      "search_query": "IoT security challenges",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "dIK_nmcUKKk",
+      "title": "34 Internet of Things -- Introduction to Data Analytics For IoT",
+      "description": "Introduction to ",
+      "duration": "13:05",
+      "channel_name": "UMAMAHESWARARAO BATTA, Ph. D",
+      "channel_id": "UC7pW595g7yGAiJzaZhIgeRg",
+      "view_count": 17398,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dIK_nmcUKKk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAF8QrSJ1Eyki0xWVEn-uTakQpq6A",
+      "youtube_url": "https://www.youtube.com/watch?v=dIK_nmcUKKk",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 785
+      },
+      "search_query": "IoT data analytics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "8NbP07OEGsQ",
+      "title": "DATA & ANALYTICS - IoT - from small data to big data: Building solutions with connected devices",
+      "description": "Recorded on Mar 23 2016 at GCP NEXT 2016 in San Francisco. Businesses can improve visibility into the health of their products ...",
+      "duration": "34:27",
+      "channel_name": "Google Cloud Tech",
+      "channel_id": "UCJS9pqu9BzkAMNTmzNMNhvg",
+      "view_count": 25941,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8NbP07OEGsQ/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhDIEMoZTAP&rs=AOn4CLAtwELUtEtpMxaL7Ot533jEbEBEVQ",
+      "youtube_url": "https://www.youtube.com/watch?v=8NbP07OEGsQ",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2067
+      },
+      "search_query": "IoT data analytics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "brve9zRlPqc",
+      "title": "IoT Technologies | Embedded Systems | Basic Concepts | Internet Of Things",
+      "description": "In this video, we are going to discuss some basic concepts about ",
+      "duration": "12:05",
+      "channel_name": "ENGINEERING TUTORIAL",
+      "channel_id": "UC2JJTZ7onq7CMRDuxOES3yA",
+      "view_count": 15898,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/brve9zRlPqc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBB5uNPXdnL7G1ffQjwA-GqTcY4iw",
+      "youtube_url": "https://www.youtube.com/watch?v=brve9zRlPqc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 725
+      },
+      "search_query": "embedded systems for IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "I8LYBpx_eNk",
+      "title": "Home Automation in Tamil | Embedded Systems and IoT in Tamil CS3691 Unit 5 Applications Development",
+      "description": "https://youtube.com/playlist?list=PLOmHrZkA584-IpLHu89qI8XighA2hQrj1&si=vhGgSbQd2325nOFr.",
+      "duration": "7:01",
+      "channel_name": "4G Silver Academy தமிழ்",
+      "channel_id": "UCrx-FlNM6BWOJvu3re6HH7w",
+      "view_count": 13264,
+      "upload_date": "6 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I8LYBpx_eNk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABoOSydQYXCYNtCaLD9ru5mhrWWw",
+      "youtube_url": "https://www.youtube.com/watch?v=I8LYBpx_eNk",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 421
+      },
+      "search_query": "embedded systems for IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "OnyXqu4h9Iw",
+      "title": "How Intelligent Vision Systems Improve Industrial Robotic Automation",
+      "description": "Sawyer from Rethink ",
+      "duration": "8:07",
+      "channel_name": "Engineering TV",
+      "channel_id": "UCq0JW6wUMaWq2bPF38joPrA",
+      "view_count": 17423,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OnyXqu4h9Iw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJcaCmkXw8P-3G8Zje_bcu5mkK5Q",
+      "youtube_url": "https://www.youtube.com/watch?v=OnyXqu4h9Iw",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 487
+      },
+      "search_query": "robot vision systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "uuFyWKGycnU",
+      "title": "Dobot Vision Kit, Machine Vision System for Education (STEM)",
+      "description": "Review: Dobot Vision Kit Machine ",
+      "duration": "19:43",
+      "channel_name": "UptimeFab",
+      "channel_id": "UCMvsm_hOD4u96R8LeFSTx2g",
+      "view_count": 25440,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uuFyWKGycnU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDAuKfBlsYX0h7mE07iWwa-6sXr1A",
+      "youtube_url": "https://www.youtube.com/watch?v=uuFyWKGycnU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1183
+      },
+      "search_query": "robot vision systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7csTyRjKAeE",
+      "title": "ROBOTIC VISION SYSTEM AEE ROBOTICS PART 9",
+      "description": "FUNCTIONS AND COMPONENTS OF ",
+      "duration": "18:50",
+      "channel_name": "Javalkar academy",
+      "channel_id": "UCHDyM_ixBB1sd5JyOdTaAKQ",
+      "view_count": 17795,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7csTyRjKAeE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBFPFac-TnbzmnOcBZgnq0emGYapw",
+      "youtube_url": "https://www.youtube.com/watch?v=7csTyRjKAeE",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 1130
+      },
+      "search_query": "robot vision systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "x4nhA8h_gjU",
+      "title": "The use of AI in Construction Management and Automation",
+      "description": "Artificial Intelligence",
+      "duration": "7:12",
+      "channel_name": "Parametric Architecture",
+      "channel_id": "UCkGDJyJO27OvHfxCCSbL_Mg",
+      "view_count": 26082,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/x4nhA8h_gjU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDaslULnsgtX4bb4zDjjQEpQNOHOA",
+      "youtube_url": "https://www.youtube.com/watch?v=x4nhA8h_gjU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 432
+      },
+      "search_query": "AI and robotics integration",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "eH0WhuwKtE0",
+      "title": "UAV Basic Knowledge",
+      "description": "This course is to introduce the classification of ",
+      "duration": "27:44",
+      "channel_name": "DJI Academy",
+      "channel_id": "UC3EkjCPeNSXYNOc7gjDXlOA",
+      "view_count": 11809,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eH0WhuwKtE0/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARgwIFUocjAP&rs=AOn4CLAlH0fuEcaHcI44cwcYiSlEW2pXpg",
+      "youtube_url": "https://www.youtube.com/watch?v=eH0WhuwKtE0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1664
+      },
+      "search_query": "drone technology basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "pj3ioPCYOjI",
+      "title": "mod01lec02  - Introduction to Locomotion and Types of Locomotion",
+      "description": "Introduction to ",
+      "duration": "26:48",
+      "channel_name": "NPTEL-NOC IITM",
+      "channel_id": "UCYa1WtI-vb_bx-anHdmpNfA",
+      "view_count": 12958,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/pj3ioPCYOjI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3jz1u0KaxFpCXZS2EMJsTeoOtsA",
+      "youtube_url": "https://www.youtube.com/watch?v=pj3ioPCYOjI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1608
+      },
+      "search_query": "robot locomotion types",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "2WERuXROXpU",
+      "title": "LinkIt ONE development board-- prototyping Wearables and IoT devices",
+      "description": "More info: https://www.seeedstudio.com/LinkIt-ONE-p-2017.html?cPath=122_142 The LinkIt ONE development board is an open ...",
+      "duration": "5:52",
+      "channel_name": "Seeed Studio",
+      "channel_id": "UC5mX-JaRWXc8cBc1gm5kKhg",
+      "view_count": 30029,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2WERuXROXpU/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIGUoTDAP&rs=AOn4CLCz13ei9n6AdGk7PQ18M-jfsZVkOQ",
+      "youtube_url": "https://www.youtube.com/watch?v=2WERuXROXpU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 352
+      },
+      "search_query": "wearable IoT devices",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "GKzKMqx4GIg",
+      "title": "Applications of IoT in smart cities",
+      "description": "This video tells about the ",
+      "duration": "7:35",
+      "channel_name": "Akanksha Parashar",
+      "channel_id": "UCFglSu7gYwcoZXzEQ2g8-_Q",
+      "view_count": 16955,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GKzKMqx4GIg/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARgVIFcofzAP&rs=AOn4CLAUKVN9kvE2J1a8otAPHap6FlI8Ag",
+      "youtube_url": "https://www.youtube.com/watch?v=GKzKMqx4GIg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 455
+      },
+      "search_query": "smart city IoT applications",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "mbdl-Fh5ALg",
+      "title": "Smart City 🔥🔥",
+      "description": "Smart City",
+      "duration": "9:40",
+      "channel_name": "Perfect Computer Engineer",
+      "channel_id": "UCfGkxkJDQG7fBbX9mBtYz0A",
+      "view_count": 31480,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mbdl-Fh5ALg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCCm3tLGzby_WdeCBPsDJa0kjrFxA",
+      "youtube_url": "https://www.youtube.com/watch?v=mbdl-Fh5ALg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 580
+      },
+      "search_query": "smart city IoT applications",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "5aepM3ek6J0",
+      "title": "What is Edge Computing? Why it is in demand? Will edge computing replace cloud computing? (2021)",
+      "description": "What is ",
+      "duration": "11:11",
+      "channel_name": "IT k Funde",
+      "channel_id": "UC1RauiosDyz3K16X1wkaeiA",
+      "view_count": 96632,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5aepM3ek6J0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBdAMI2yrPMN0LgfF9u8O9mvqeedg",
+      "youtube_url": "https://www.youtube.com/watch?v=5aepM3ek6J0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 671
+      },
+      "search_query": "edge computing in IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "iE1GxmD2csw",
+      "title": "Edge Computing | Fog Computing | Cloud Computing",
+      "description": "Edge Computing",
+      "duration": "7:40",
+      "channel_name": "Perfect Computer Engineer",
+      "channel_id": "UCfGkxkJDQG7fBbX9mBtYz0A",
+      "view_count": 98420,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iE1GxmD2csw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAyubpeD2tiDYI4b3LxHBzARJBNIQ",
+      "youtube_url": "https://www.youtube.com/watch?v=iE1GxmD2csw",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 460
+      },
+      "search_query": "edge computing in IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "WDqIy3h9YeQ",
+      "title": "Free IoT Platform | Open Source IoT Platform Comparison | Cayenne | Blynk | Kaa",
+      "description": "Iotplatforms, #Cayenne, #Blynk You don't need to worry about it, check out these open source ",
+      "duration": "6:13",
+      "channel_name": "Thetips4you",
+      "channel_id": "UCoOq-DtESvayx5yJE5H6-qQ",
+      "view_count": 11480,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WDqIy3h9YeQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzxlPmHxO-BTIm7hjtM8LgtSmuHA",
+      "youtube_url": "https://www.youtube.com/watch?v=WDqIy3h9YeQ",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 373
+      },
+      "search_query": "IoT platform comparison",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "eyDcWPic0Do",
+      "title": "AWS vs Azure IoT [For Industry]",
+      "description": "In this video, Walker Reynolds shares insights into the similarities and ",
+      "duration": "23:00",
+      "channel_name": "4.0 Solutions",
+      "channel_id": "UC0pqyal5bd2AUT8hTTJQq0Q",
+      "view_count": 27500,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eyDcWPic0Do/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB8Mw-9pYTL0ehAEFZP6XZ4cxbPUQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eyDcWPic0Do",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1380
+      },
+      "search_query": "IoT platform comparison",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "_qQAfTmB5wc",
+      "title": "Make a robot in GAZEBO from scratch | under 8 minutes simulation",
+      "description": "in this beginner-friendly tutorial we are going to learn how to build and ",
+      "duration": "8:42",
+      "channel_name": "Hobby Coding",
+      "channel_id": "UCR27JFRfdHEiMdSoCUeZAGg",
+      "view_count": 65771,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_qQAfTmB5wc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDPBjaePHwKlGlT0NrqCYLfYrtS9w",
+      "youtube_url": "https://www.youtube.com/watch?v=_qQAfTmB5wc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 522
+      },
+      "search_query": "robot simulation software",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "JiT_nLJp6eg",
+      "title": "Unboxing ZBMINI-L2 Sonoff Smart Switch",
+      "description": "Unboxing sonoff Zigbee relay module! Stay tuned for the upcoming tutorials Link is in the bio Sonoff Water leakage sensor review ...",
+      "duration": "0:15",
+      "channel_name": "Useful Electronics",
+      "channel_id": "UC5zdou2_vz6rjpqMJ23UnQg",
+      "view_count": 7029107,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JiT_nLJp6eg/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIFgoTTAP&rs=AOn4CLCWnuMnx36bS3AqYzWL2O90O6fraA",
+      "youtube_url": "https://www.youtube.com/watch?v=JiT_nLJp6eg",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 15
+      },
+      "search_query": "smart home IoT systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "iwAuxDXJ8Dw",
+      "title": "Industrial IoT (IIoT) Solutions & Services - Industry 4.0",
+      "description": "The manufacturing sector is undergoing rapid transformation. As technology evolves, the need for collaboration across the ...",
+      "duration": "1:35",
+      "channel_name": "Inspirisys Solutions Limited",
+      "channel_id": "UCI3yrvoEPmN8CN-ThNXWq_A",
+      "view_count": 186,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iwAuxDXJ8Dw/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlcwYBZEur9xGbbyONN2GfvP9Opg",
+      "youtube_url": "https://www.youtube.com/watch?v=iwAuxDXJ8Dw",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 95
+      },
+      "search_query": "industrial IoT (IIoT) solutions",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "fUEwoiC5AO0",
+      "title": "Humanoid robot warns of AI dangers",
+      "description": "A humanoid ",
+      "duration": "0:53",
+      "channel_name": "TRT World",
+      "channel_id": "UC7fWeaHhqgM4Ry-RMpM2YYw",
+      "view_count": 2694316,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fUEwoiC5AO0/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARg-IEoofzAP&rs=AOn4CLABCOnhxmdadvqlmC9wLujMooDMsw",
+      "youtube_url": "https://www.youtube.com/watch?v=fUEwoiC5AO0",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 53
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "htjRUL3neMg",
+      "title": "What is ROBOTICS | Robotics Explained | Robotics Technology | What are Robots",
+      "description": "Hello guys! In this video, I will tell you about Robotics. I will tell you that What Is Robotics, What are ",
+      "duration": "3:33",
+      "channel_name": "Tech Might",
+      "channel_id": "UCKE86hHnKVGExM6jEZM747Q",
+      "view_count": 360536,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/htjRUL3neMg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAM5mCx5UCfTiQAAwNsxYiPKbWHqA",
+      "youtube_url": "https://www.youtube.com/watch?v=htjRUL3neMg",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 213
+      },
+      "search_query": "how robots work basics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "5SLif03E-KE",
+      "title": "What Programming Languages should you Learn for Robotics?",
+      "description": "Learn these 3 ",
+      "duration": "0:47",
+      "channel_name": "Robotix with Sina",
+      "channel_id": "UCTnCYYQ9Na-C3mpG2NjwjGA",
+      "view_count": 101956,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5SLif03E-KE/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoZTAP&rs=AOn4CLAM1nCZdMANmT2PzzDg_SuC2hv_bA",
+      "youtube_url": "https://www.youtube.com/watch?v=5SLif03E-KE",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 47
+      },
+      "search_query": "robot programming tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ws7hJeiUaaI",
+      "title": "Mechatronics -  Placements, Future Scope, Courses & Labs",
+      "description": "Mechatronics at IIT Bhilai – Honest Review 2025 Welcome to the most raw and unfiltered review of Mechatronics ",
+      "duration": "10:49",
+      "channel_name": "Kamalesh Swargam - IIT BHILAI",
+      "channel_id": "UCSAyEPVZn4xH7UTQ4Rv3O0g",
+      "view_count": 444,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ws7hJeiUaaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCJnRouYBJD8upT2BRPJNfMeHSjgA",
+      "youtube_url": "https://www.youtube.com/watch?v=ws7hJeiUaaI",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 649
+      },
+      "search_query": "robotics engineering career",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "N6K2LWG2kRI",
+      "title": "What is ROS (Robot Operating System)| Introduction to the Tutorials",
+      "description": "ROS",
+      "duration": "2:43",
+      "channel_name": "Tiziano Fiorenzani",
+      "channel_id": "UC2aPsByptP3HXobjXgsXQsA",
+      "view_count": 169905,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N6K2LWG2kRI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfzGwHKFPtm5NwKoehschQ5YgR-g",
+      "youtube_url": "https://www.youtube.com/watch?v=N6K2LWG2kRI",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 163
+      },
+      "search_query": "ROS robot operating system tutorial",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "XfWE4csM9rE",
+      "title": "How to Build IIoT Solutions with Ignition 8 and MQTT",
+      "description": "With the growth of analytics and the benefits of harnessing data from OT, a common question we receive is how best to implement ...",
+      "duration": "59:20",
+      "channel_name": "Cirrus Link Solutions",
+      "channel_id": "UCaBISWWeMTGWVALcH14JJXw",
+      "view_count": 5811,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XfWE4csM9rE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7dRzdb7qlXVGDAiF5AOioj7Ypvg",
+      "youtube_url": "https://www.youtube.com/watch?v=XfWE4csM9rE",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3560
+      },
+      "search_query": "industrial IoT (IIoT) solutions",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "UFhb66UvJ_4",
+      "title": "Real-Time Streaming with Azure Services - part1 | Stream Analytics & Event Hubs Explained",
+      "description": "Real-Time Streaming with Azure Services In this comprehensive lecture, we dive deep into the world of real-time ",
+      "duration": "11:18",
+      "channel_name": "Skilltech Club",
+      "channel_id": "UClVD-qXXZfQPUvJy2j6rAPg",
+      "view_count": 40,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UFhb66UvJ_4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBIdJ-tgjnwPNEIVv_63ThMFNQTlA",
+      "youtube_url": "https://www.youtube.com/watch?v=UFhb66UvJ_4",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture",
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 678
+      },
+      "search_query": "IoT data analytics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "xCwcjKGZhlA",
+      "title": "Top 5 Embedded Systems Courses with Certification | Best courses for Embedded @electronicsgeek",
+      "description": "In today's video, we're going to share with you the top five free ",
+      "duration": "3:10",
+      "channel_name": "electronics geek",
+      "channel_id": "UCj7rK-ERcqsC0LQra8ftUwA",
+      "view_count": 116551,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xCwcjKGZhlA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBGFymQ7xgRnq-IiqtqzzWGgZXrsw",
+      "youtube_url": "https://www.youtube.com/watch?v=xCwcjKGZhlA",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 190
+      },
+      "search_query": "embedded systems for IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "dVYNbH42W8g",
+      "title": "Vision guided robot for under $4000?",
+      "description": "Vision",
+      "duration": "5:49",
+      "channel_name": "YRG, Inc.",
+      "channel_id": "UCid1OOHL4Ej2fxDlDPjL_Ww",
+      "view_count": 302,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dVYNbH42W8g/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARheIF4oXjAP&rs=AOn4CLCpDMzJSb-uxQ7sYboL-kvfgkJnRg",
+      "youtube_url": "https://www.youtube.com/watch?v=dVYNbH42W8g",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 349
+      },
+      "search_query": "robot vision systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "ywgfplUdzuQ",
+      "title": "Vision Systems - Introduction to Robot guided vision",
+      "description": "Hello guys, today I would like to talk a bit about ",
+      "duration": "12:02",
+      "channel_name": "Future Robotics",
+      "channel_id": "UCHvE0x1xiT-OwMbZKfP7AhQ",
+      "view_count": 1895,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ywgfplUdzuQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDTJKePzk9UyF9Tf7JnNld4e4OtEg",
+      "youtube_url": "https://www.youtube.com/watch?v=ywgfplUdzuQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 722
+      },
+      "search_query": "robot vision systems",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "vWI4UhNdyKM",
+      "title": "AI and Machine Learning in Robotics",
+      "description": "Subscribe to our channel and get notified when a new video is released. AI and ",
+      "duration": "5:16",
+      "channel_name": "Appliancepreneur",
+      "channel_id": "UCd5iTqnM5qq2gc66vN5ZApw",
+      "view_count": 1472,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vWI4UhNdyKM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCvNkYyGvIiJuow1Cfx7KaZOOHEdg",
+      "youtube_url": "https://www.youtube.com/watch?v=vWI4UhNdyKM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 316
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "yADlxGz6nGE",
+      "title": "Introduction to Machine Learning (ML) | Machine Learning for Robotics | Lesson 1",
+      "description": "Welcome to the desert of the real. We are excited to announce that following the requests from our Mecharithm family to design a ...",
+      "duration": "5:36",
+      "channel_name": "Mecharithm - Robotics and Mechatronics",
+      "channel_id": "UCnHqZ43l6S1Ksd9di4VXNbQ",
+      "view_count": 902,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yADlxGz6nGE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBLAMsVF0GQ1Ag8nIA-IsanA_tJBw",
+      "youtube_url": "https://www.youtube.com/watch?v=yADlxGz6nGE",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "series",
+        "estimated_learning_time": 336
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "k64wPf_WSDQ",
+      "title": "The Basics of Robotics Theory: Machine learning applied to robotics",
+      "description": "In this video you will leran how to generate data based on a real ",
+      "duration": "11:00",
+      "channel_name": "The Construct Robotics Institute",
+      "channel_id": "UCt6Lag-vv25fTX3e11mVY1Q",
+      "view_count": 7478,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/k64wPf_WSDQ/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzpwI0xjJXitVPuHyM_TQqgBT2BQ",
+      "youtube_url": "https://www.youtube.com/watch?v=k64wPf_WSDQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 660
+      },
+      "search_query": "machine learning in robotics",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "l4AMhrXlsaM",
+      "title": "Artificial Intelligence | Tutorial #33 | Robotic Locomotion",
+      "description": "Robot locomotion",
+      "duration": "8:09",
+      "channel_name": "RANJI RAJ",
+      "channel_id": "UCl1Tqc3U-TAOjuh4izHLsUw",
+      "view_count": 3445,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/l4AMhrXlsaM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLArs-UfrYrlTX4JGAWaYe1L9kWXag",
+      "youtube_url": "https://www.youtube.com/watch?v=l4AMhrXlsaM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 489
+      },
+      "search_query": "robot locomotion types",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "U4Xchknhikc",
+      "title": "Edge Computing Explained: The Future of AI, IoT, and Real-Time Data Processing !",
+      "description": "Edge Computing",
+      "duration": "8:06",
+      "channel_name": "NeoTech-Lens",
+      "channel_id": "UCGsc_30JO7NgWucl49mMIMQ",
+      "view_count": 91,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/U4Xchknhikc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCKHJA72i3U9wcrweymcYcRyzlejA",
+      "youtube_url": "https://www.youtube.com/watch?v=U4Xchknhikc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 486
+      },
+      "search_query": "edge computing in IoT",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "qdWwsML2KdU",
+      "title": "Lecture - 6 Grippers Manipulators",
+      "description": "Lecture Series on ",
+      "duration": "1:01:24",
+      "channel_name": "nptelhrd",
+      "channel_id": "UC640y4UvDAlya_WOj5U4pfA",
+      "view_count": 18511,
+      "upload_date": "16 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qdWwsML2KdU/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgBvgKAAvABigIMCAAQARgtIFcocjAP&rs=AOn4CLDtk46sxhyCthh7Zzmq68fU4aZNbQ",
+      "youtube_url": "https://www.youtube.com/watch?v=qdWwsML2KdU",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3684
+      },
+      "search_query": "robot grippers and manipulators",
+      "genre": "robotics-iot"
+    },
+    {
+      "video_id": "7J0pW1z8mV0",
+      "title": "Robot Gripper - Learning Fine Grained Bimanual Manipulation with Low Cost Hardware",
+      "description": "Duane uses the 3d printed parts to assemble and attach the ",
+      "duration": "12:12",
+      "channel_name": "MindFactory",
+      "channel_id": "UCTVW-BYpJ5lvif_fOUYLwSA",
+      "view_count": 186,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7J0pW1z8mV0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDuzeUwUA1H5sawQV_l8fOkMpdwPg",
+      "youtube_url": "https://www.youtube.com/watch?v=7J0pW1z8mV0",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 732
+      },
+      "search_query": "robot grippers and manipulators",
+      "genre": "robotics-iot"
+    }
+  ],
+  "timestamp": "2025-06-14T09:14:20.724139",
+  "quality_stats": {
+    "avg_quality_score": 0.406,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.9,
+    "avg_view_count": 973322,
+    "total_view_count": 108038710,
+    "high_quality_count": 32,
+    "medium_quality_count": 63,
+    "basic_quality_count": 16
+  }
+}

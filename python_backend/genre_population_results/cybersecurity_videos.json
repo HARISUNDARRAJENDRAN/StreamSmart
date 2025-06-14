@@ -1,0 +1,3436 @@
+{
+  "genre": "cybersecurity",
+  "target_count": 150,
+  "actual_count": 147,
+  "success": true,
+  "duration_seconds": 53.58,
+  "videos": [
+    {
+      "video_id": "z5nc9MDbvkw",
+      "title": "Introduction To Cyber Security | Cyber Security Training For Beginners | CyberSecurity | Simplilearn",
+      "description": "Begin your journey into ",
+      "duration": "38:20",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 1595820,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/z5nc9MDbvkw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA2hu6rPuzNXu6YLyl3NvdztznejA",
+      "youtube_url": "https://www.youtube.com/watch?v=z5nc9MDbvkw",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2300
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "inWWhr5tnEA",
+      "title": "What Is Cyber Security | How It Works? | Cyber Security In 7 Minutes | Cyber Security | Simplilearn",
+      "description": "This Simplilearn video on What Is ",
+      "duration": "7:07",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 4035908,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/inWWhr5tnEA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAGUXo7b_ag1X_cINIhtM8RtRFGAQ",
+      "youtube_url": "https://www.youtube.com/watch?v=inWWhr5tnEA",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 427
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "hXSFdwIOfnE",
+      "title": "Cyber Security Full Course 2024 | Cyber Security Course Training For Beginners 2024 | Simplilearn",
+      "description": "We provide a small introduction to ",
+      "duration": "11:06:52",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 1744927,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hXSFdwIOfnE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDxPvUapHM3NJCanapLHM0_Nb5DIA",
+      "youtube_url": "https://www.youtube.com/watch?v=hXSFdwIOfnE",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 40012
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "NuyzuNBFWxQ",
+      "title": "7 Cryptography Concepts EVERY Developer Should Know",
+      "description": "Resources Full Tutorial https://fireship.io/lessons/node-",
+      "duration": "11:55",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1520285,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NuyzuNBFWxQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCTyrRHXyXUageXxbaKQcW-fg6vcA",
+      "youtube_url": "https://www.youtube.com/watch?v=NuyzuNBFWxQ",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 715
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "NQ1cvwEvh44",
+      "title": "What Is Network Security? | Introduction To Network Security | Network Security Tutorial|Simplilearn",
+      "description": "Got a Question on this topic? Let us know in the comment section below and we'll have our experts answer it for you. In this ...",
+      "duration": "23:56",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 116939,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NQ1cvwEvh44/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_dq0g1QrCpJKljcE77KBiYTfWOw",
+      "youtube_url": "https://www.youtube.com/watch?v=NQ1cvwEvh44",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1436
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "XBkzBrXlle0",
+      "title": "Phishing Explained In 6 Minutes | What Is A Phishing Attack? | Phishing Attack | Simplilearn",
+      "description": "... #Simplilearn A ",
+      "duration": "6:48",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 405205,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XBkzBrXlle0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAgKBArxf181W7Nhe3e30oN8sT5tQ",
+      "youtube_url": "https://www.youtube.com/watch?v=XBkzBrXlle0",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 408
+      },
+      "search_query": "phishing scam awareness",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "gsgdAyGhV0o",
+      "title": "What Is IAM? | Identity and Access Management for Beginners (IAM) | IAM for Beginners | Simplilearn",
+      "description": "utm_campaign=gsgdAyGhV0o&utm_medium=DescriptionFirstFold&utm_source=Youtube Purdue - Cloud Computing and ...",
+      "duration": "9:11",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 117105,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gsgdAyGhV0o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD8PXJBVRjtypirOvF43a3LUpCOJg",
+      "youtube_url": "https://www.youtube.com/watch?v=gsgdAyGhV0o",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 551
+      },
+      "search_query": "identity and access management (IAM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jhXCTbFnK8o",
+      "title": "Cryptography: Crash Course Computer Science #33",
+      "description": "Today we're going to talk about how to keep information secret, and this isn't a new goal. From as early as Julius Caesar's Caesar ...",
+      "duration": "12:33",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 900427,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jhXCTbFnK8o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAYax2t6X6RWbg_Wct5uLaFvPAnnw",
+      "youtube_url": "https://www.youtube.com/watch?v=jhXCTbFnK8o",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 753
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "3NRaP7hH3bU",
+      "title": "Ethical Hacking Full Course In 3 Hours🔥| Learn Ethical Hacking| Ethical Hacking Tutorial|Simplilearn",
+      "description": "The topics covered in this video are: 00:00:00 Importance of ",
+      "duration": "2:44:31",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 194896,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3NRaP7hH3bU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAAPfAOk-5gy0EL0PGqNyvdQN5s-w",
+      "youtube_url": "https://www.youtube.com/watch?v=3NRaP7hH3bU",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 9871
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "_DVVNOGYtmU",
+      "title": "Cybersecurity for Beginners | Google Cybersecurity Certificate",
+      "description": "This is the first course in the Google ",
+      "duration": "1:14:33",
+      "channel_name": "Google Career Certificates",
+      "channel_id": "UC_fyAp919RnkKmBrMXGwnUQ",
+      "view_count": 4759062,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_DVVNOGYtmU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB03XRqBBuWMgti1CFgnC_BN3gIXw",
+      "youtube_url": "https://www.youtube.com/watch?v=_DVVNOGYtmU",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 4473
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "lZAoFs75_cs",
+      "title": "Linux for Ethical Hackers (Kali Linux Tutorial)",
+      "description": "In this course, you will learn the basics of Kali Linux. The course covers installation, using the terminal / command line, bash ...",
+      "duration": "2:01:00",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 5874733,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lZAoFs75_cs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDBLmBTVtnxOXKWP8mshaXBA9qWYQ",
+      "youtube_url": "https://www.youtube.com/watch?v=lZAoFs75_cs",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7260
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "XLvPpirlmEs",
+      "title": "What Is Ethical Hacking? | Ethical Hacking In 8 Minutes | Ethical Hacking Explanation | Simplilearn",
+      "description": "This Simplilearn video on ",
+      "duration": "8:29",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 737524,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XLvPpirlmEs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCnVzx6bjb-ZVluB6o5s4Xb2qwmTw",
+      "youtube_url": "https://www.youtube.com/watch?v=XLvPpirlmEs",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 509
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "v7BNtpw53AA",
+      "title": "The Complete Cybersecurity Roadmap: Land a Cybersecurity Job in 10 Months",
+      "description": "The complete step-by-step roadmap to land your first ",
+      "duration": "5:54",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 275881,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/v7BNtpw53AA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDTuj4c3bQPDvnb8CQUSFZ0RxW2fg",
+      "youtube_url": "https://www.youtube.com/watch?v=v7BNtpw53AA",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 354
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "5xWnmUEi1Qw",
+      "title": "the hacker’s roadmap (how to get started in IT in 2025)",
+      "description": "Want to start a ",
+      "duration": "33:50",
+      "channel_name": "NetworkChuck",
+      "channel_id": "UC9x0AN7BWHpCDHSm9NiJFJQ",
+      "view_count": 831155,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5xWnmUEi1Qw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB8mb7AMcYgq9lEgGgpdGEF9TyCJA",
+      "youtube_url": "https://www.youtube.com/watch?v=5xWnmUEi1Qw",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2030
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "R-JUOpCgTZc",
+      "title": "VPN (Virtual Private Network) Explained",
+      "description": "What is a ",
+      "duration": "7:11",
+      "channel_name": "PowerCert Animated Videos",
+      "channel_id": "UCJQJ4GjTiq5lmn8czf8oo0Q",
+      "view_count": 767738,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/R-JUOpCgTZc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBVKws56nTWfmtyom2_SoO1IlAlKA",
+      "youtube_url": "https://www.youtube.com/watch?v=R-JUOpCgTZc",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 431
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "gaGyNM6PnCM",
+      "title": "What Is SIEM ? | Security Information And Event Management Explained | How SIEM Works ? |Simplilearn",
+      "description": "Unlock the secrets of robust cybersecurity with our latest video on ",
+      "duration": "12:28",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 28467,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gaGyNM6PnCM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDXKrb5r4HLpMiC8UpGm69wsLKaTg",
+      "youtube_url": "https://www.youtube.com/watch?v=gaGyNM6PnCM",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 748
+      },
+      "search_query": "security information and event management (SIEM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "C7vmouDOJYM",
+      "title": "Cryptography Full Course | Cryptography And Network Security | Cryptography | Simplilearn",
+      "description": "This video on ",
+      "duration": "2:15:01",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 243225,
+      "upload_date": "Streamed 3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/C7vmouDOJYM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDmKu1Rbqu5tgpryFXs4FGoQDCP2w",
+      "youtube_url": "https://www.youtube.com/watch?v=C7vmouDOJYM",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 8101
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "U-fpEHLIzQE",
+      "title": "Cyber Security Crash Course | Cyber Security Training For Beginners | Cyber Security | Simplilearn",
+      "description": "In this ",
+      "duration": "6:05:26",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 71200,
+      "upload_date": "Streamed 4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/U-fpEHLIzQE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCJDPSUgYPDKNJnmUUgLXOBrVOTMQ",
+      "youtube_url": "https://www.youtube.com/watch?v=U-fpEHLIzQE",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 21926
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "_nVq7f26-Uo",
+      "title": "The Five Laws of Cybersecurity | Nick Espinosa | TEDxFondduLac",
+      "description": "An expert in cybersecurity and network infrastructure, Nick Espinosa has consulted with clients ranging from small businesses up ...",
+      "duration": "7:11",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 385408,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_nVq7f26-Uo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC23Rwu92BbLVcA37Jpf3vWSIHNPw",
+      "youtube_url": "https://www.youtube.com/watch?v=_nVq7f26-Uo",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 431
+      },
+      "search_query": "cyber law and regulations",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "NIRXtMg-0z8",
+      "title": "Internet Networks & Network Security | Google Cybersecurity Certificate",
+      "description": "This is the third course in the Google Cybersecurity Certificate. In this course, you will explore how ",
+      "duration": "1:09:05",
+      "channel_name": "Google Career Certificates",
+      "channel_id": "UC_fyAp919RnkKmBrMXGwnUQ",
+      "view_count": 313827,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/NIRXtMg-0z8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAaIGF3i2DFVcBI842aNQ_7bXvarA",
+      "youtube_url": "https://www.youtube.com/watch?v=NIRXtMg-0z8",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4145
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "lEK84lV6dxs",
+      "title": "Social Engineering- The art of hacking humans | Prasad Sawant | TEDxElproIntlSchool",
+      "description": "Prasad Sawant in his very interesting talk inspires audiences and educates them to be safe on the digital platforms. Creative ...",
+      "duration": "10:45",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 64081,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lEK84lV6dxs/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARg_IFooZTAP&rs=AOn4CLB560Xya5erfLys632N7U10xNE3Lw",
+      "youtube_url": "https://www.youtube.com/watch?v=lEK84lV6dxs",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 645
+      },
+      "search_query": "social engineering attacks",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "MsGl6lX-YaI",
+      "title": "Cybersecurity IDR: Incident Detection & Response | Google Cybersecurity Certificate",
+      "description": "This is the sixth course in the Google ",
+      "duration": "1:43:03",
+      "channel_name": "Google Career Certificates",
+      "channel_id": "UC_fyAp919RnkKmBrMXGwnUQ",
+      "view_count": 191251,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/MsGl6lX-YaI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCKLvNVEneH1MwqnC7ZG_yfQ7GgbQ",
+      "youtube_url": "https://www.youtube.com/watch?v=MsGl6lX-YaI",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 6183
+      },
+      "search_query": "cybersecurity incident response",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "dz7Ntp7KQGA",
+      "title": "Ethical Hacking Full Course - Learn Ethical Hacking in 10 Hours | Ethical Hacking Tutorial | Edureka",
+      "description": "Chapters of ",
+      "duration": "9:56:19",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 8603718,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dz7Ntp7KQGA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBbGX8GUMrmJAQTg2us2hcFUQPukA",
+      "youtube_url": "https://www.youtube.com/watch?v=dz7Ntp7KQGA",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 35779
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "VJFaO2-zsCU",
+      "title": "Every Type of Computer Virus Explained in 8 Minutes",
+      "description": "Every famous type of PC ",
+      "duration": "8:21",
+      "channel_name": "The Paint Explainer",
+      "channel_id": "UCnwUjPK7dXety-AJ4fNw_RQ",
+      "view_count": 1685078,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VJFaO2-zsCU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAWJ0v_Rt_owfP80iQezQHBoykgLw",
+      "youtube_url": "https://www.youtube.com/watch?v=VJFaO2-zsCU",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 501
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "J3lRI9LRcmQ",
+      "title": "Hacker Teaches How to Manage Passwords",
+      "description": "Patrick Bet-David sits down with inventor and hacker Pablos Holman to talk about climate change, innovation of technology and ...",
+      "duration": "4:51",
+      "channel_name": "Valuetainment Short Clips",
+      "channel_id": "UCK2ldvZZeaDZpV1ti_ibabw",
+      "view_count": 177085,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J3lRI9LRcmQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC001XIIdE58CCi9qxy5BHYfLToAg",
+      "youtube_url": "https://www.youtube.com/watch?v=J3lRI9LRcmQ",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 291
+      },
+      "search_query": "password security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "aoJJIN49ECo",
+      "title": "What is VPN? Benefits of VPN? How to use VPN?",
+      "description": "Namaskaar Dosto, is video mein maine aapse ",
+      "duration": "7:14",
+      "channel_name": "Technical Guruji",
+      "channel_id": "UCOhHO2ICt0ti9KAh-QHvttQ",
+      "view_count": 6108674,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aoJJIN49ECo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDIKA26hJNzQkYEE2-Qg3AWYlXDlg",
+      "youtube_url": "https://www.youtube.com/watch?v=aoJJIN49ECo",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 434
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "lpa8uy4DyMo",
+      "title": "Cyber Security Full course - 11 Hours | Cyber Security Training For Beginners | Edureka",
+      "description": "Feel free to share your comments below.   Edureka Online Training and ...",
+      "duration": "11:03:33",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 1508838,
+      "upload_date": "Streamed 2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lpa8uy4DyMo/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBwu3vKlizKuexEB6gZNrQZ_zMN0Q",
+      "youtube_url": "https://www.youtube.com/watch?v=lpa8uy4DyMo",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 39813
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "VvFuieyTTSw",
+      "title": "Free CCNA | Security Fundamentals | Day 48 | CCNA 200-301 Complete Course",
+      "description": "In Day 48 of this free CCNA 200-301 complete course, you will learn about ",
+      "duration": "38:40",
+      "channel_name": "Jeremy's IT Lab",
+      "channel_id": "UC0Q7Hlz75NYhYAuq6O0fqHw",
+      "view_count": 156991,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VvFuieyTTSw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAtXe4pP4BDf3BFvn95GxHqDxZHtA",
+      "youtube_url": "https://www.youtube.com/watch?v=VvFuieyTTSw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 2320
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Uy60wy20ADE",
+      "title": "7 Cybersecurity Tips NOBODY Tells You (but are EASY to do)",
+      "description": "The exact same ",
+      "duration": "13:49",
+      "channel_name": "All Things Secured",
+      "channel_id": "UCvFGf8HZGZWFzpcDCqb3Lhw",
+      "view_count": 1695732,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Uy60wy20ADE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCjYJ9hxb6Ban64JmR10SNhWIzNog",
+      "youtube_url": "https://www.youtube.com/watch?v=Uy60wy20ADE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 829
+      },
+      "search_query": "internet security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "25iMrJDyIDk",
+      "title": "Beginners Guide to Hacking (Start to  Finish)",
+      "description": "Welcome to the ultimate Beginners ",
+      "duration": "11:45",
+      "channel_name": "Privacy Matters",
+      "channel_id": "UCVrrEzxFvIDjM0w5a8LKYwg",
+      "view_count": 118388,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/25iMrJDyIDk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXyfkuXrJUP-Y17XURsQU2jDgclw",
+      "youtube_url": "https://www.youtube.com/watch?v=25iMrJDyIDk",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 705
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Z068odTDKq0",
+      "title": "Ethical Hacking Tutorial for Beginners",
+      "description": "// Disclaimer // ",
+      "duration": "18:01",
+      "channel_name": "Loi Liang Yang",
+      "channel_id": "UC1szFCBUWXY3ESff8dJjjzw",
+      "view_count": 211566,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Z068odTDKq0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBlV1LsCxuQDjKcsOX4qjUAkkJllQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Z068odTDKq0",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1081
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "cKEf8H9cQGM",
+      "title": "Ethical Hacking Full Course for Beginners in 5 Hours [Part-1] 🔥 - 2025 Edition",
+      "description": "Ethical Hacking",
+      "duration": "5:03:23",
+      "channel_name": "WsCube Cyber Security",
+      "channel_id": "UC9ESQKs98jVWjjUEWkvTMvA",
+      "view_count": 2846841,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/cKEf8H9cQGM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBtTG9Khku7vt_gsnoVmnUaSIMpqA",
+      "youtube_url": "https://www.youtube.com/watch?v=cKEf8H9cQGM",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "series",
+        "estimated_learning_time": 18203
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "_vCuTjReHHU",
+      "title": "Don't buy an anti-virus - do THIS instead!",
+      "description": "... have the option to stop paying for your anti-",
+      "duration": "5:45",
+      "channel_name": "Liron Segev",
+      "channel_id": "UCjoNsHD6hXxCNiisSZjdlLA",
+      "view_count": 2111279,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_vCuTjReHHU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAgIxFQlBjW9TaB6znkRUiR0InjCw",
+      "youtube_url": "https://www.youtube.com/watch?v=_vCuTjReHHU",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 345
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "_AYBlQrsRrM",
+      "title": "How to Remove Ransomware and Decrypt Files | Step-by-Step Guide to Protect Your Data",
+      "description": "... windows start you need to download any free antivirus to ",
+      "duration": "5:31",
+      "channel_name": "Mango School",
+      "channel_id": "UCdMAz9iYQ81EiOqsa-7R8OQ",
+      "view_count": 174989,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_AYBlQrsRrM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBSqAJqT_cHF9OPpt8AiIY8bug8-Q",
+      "youtube_url": "https://www.youtube.com/watch?v=_AYBlQrsRrM",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 331
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "B7tTQ272OHE",
+      "title": "Simple Penetration Testing Tutorial for Beginners!",
+      "description": "// Disclaimer // Hacking without permission is illegal. This channel is strictly educational for learning about cyber-security in the ...",
+      "duration": "15:25",
+      "channel_name": "Loi Liang Yang",
+      "channel_id": "UC1szFCBUWXY3ESff8dJjjzw",
+      "view_count": 774227,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/B7tTQ272OHE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAg_vH1n5ZuDnOls7n1Ey8FvMnJ9Q",
+      "youtube_url": "https://www.youtube.com/watch?v=B7tTQ272OHE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 925
+      },
+      "search_query": "penetration testing methods",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "ocDmB0muCC4",
+      "title": "Cybersecurity Complete RoadMap for 2025 (From Basics to Advanced)",
+      "description": "In this comprehensive podcast, we take you on a journey through the ",
+      "duration": "21:44",
+      "channel_name": "WsCube Cyber Security",
+      "channel_id": "UC9ESQKs98jVWjjUEWkvTMvA",
+      "view_count": 231064,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ocDmB0muCC4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGtO13iQBP1Np66k6zLTGJaTDGTw",
+      "youtube_url": "https://www.youtube.com/watch?v=ocDmB0muCC4",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 1304
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "b12JrM-6DBY",
+      "title": "How I Would Learn Cyber Security if I Could Start Over in 2025 (Beginner Roadmap)",
+      "description": "In this video I walk you through a entry level ",
+      "duration": "7:52",
+      "channel_name": "Ben Truong",
+      "channel_id": "UCPk5EdfTqVkEzDQ89FeuOgA",
+      "view_count": 645673,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/b12JrM-6DBY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAiBgs-rAqRJx_cNL3Y7QoW6wO9xQ",
+      "youtube_url": "https://www.youtube.com/watch?v=b12JrM-6DBY",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 472
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "trHox1bN5es",
+      "title": "Lec-80: Cryptography in computer network in Hindi | Cryptography in Information Security",
+      "description": "Here, ",
+      "duration": "7:39",
+      "channel_name": "Gate Smashers",
+      "channel_id": "UCJihyK0A38SZ6SdJirEdIOw",
+      "view_count": 1096762,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/trHox1bN5es/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD769moQx5byAeESUWwLWxDVfSYeg",
+      "youtube_url": "https://www.youtube.com/watch?v=trHox1bN5es",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 459
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "aRbKFCY4tjE",
+      "title": "Cybersecurity for Beginners: Basic Skills",
+      "description": "Cybersecurity",
+      "duration": "5:41",
+      "channel_name": "PC Security Channel",
+      "channel_id": "UCKGe7fZ_S788Jaspxg-_5Sg",
+      "view_count": 555518,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aRbKFCY4tjE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA7bJ4I-aqYqvX9ZtX_PtGw3f_V8Q",
+      "youtube_url": "https://www.youtube.com/watch?v=aRbKFCY4tjE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 341
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Dk-ZqQ-bfy4",
+      "title": "8 Most Common Cybersecurity Threats | Types of Cyber Attacks | Cybersecurity for Beginners | Edureka",
+      "description": "1. 8 Most Common Cyber ",
+      "duration": "22:04",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 552094,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Dk-ZqQ-bfy4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBh7yIyXLnsVDdeSjtcaYmrLxdruQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Dk-ZqQ-bfy4",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1324
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "1zVZ9cWFnCc",
+      "title": "Network Protocols Explained: Networking Basics",
+      "description": "Ever wondered how data moves seamlessly across the internet? ",
+      "duration": "13:07",
+      "channel_name": "WhiteboardDoodles",
+      "channel_id": "UCy8KBeOp4g2B749unbq1I_Q",
+      "view_count": 298249,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1zVZ9cWFnCc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC8fuIl6pRwZIrbrrOsUpEL-Mgo-w",
+      "youtube_url": "https://www.youtube.com/watch?v=1zVZ9cWFnCc",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 787
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "3gpOM9c6mmA",
+      "title": "Anatomy of Scam Emails - How To Recognise A Phishing Scam Message",
+      "description": "This one is just an informational video in which I'll try to uplift the training level of everyone who has ever asked me \"Is this ",
+      "duration": "10:53",
+      "channel_name": "Atomic Shrimp",
+      "channel_id": "UCSl5Uxu2LyaoAoMMGp6oTJA",
+      "view_count": 524154,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3gpOM9c6mmA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAxNMzJMHbOWCzzbLpdLZ4cEIfoIw",
+      "youtube_url": "https://www.youtube.com/watch?v=3gpOM9c6mmA",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 653
+      },
+      "search_query": "phishing scam awareness",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "-nlcgBtuic0",
+      "title": "Cyber Security me Career Kaise Banaye in 2025? USA or India | Step By Step",
+      "description": "How to make ",
+      "duration": "15:34",
+      "channel_name": "Our American Dream",
+      "channel_id": "UCsykY6wbhmr7CV-zUoqLkug",
+      "view_count": 103803,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-nlcgBtuic0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAUjdLfgDJZjpWBakKgZyQ61iXSRg",
+      "youtube_url": "https://www.youtube.com/watch?v=-nlcgBtuic0",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 934
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "dgWvsObRPcE",
+      "title": "Internet Of Things (IOT) Security Problems Explained in Hindi",
+      "description": "Myself Shridhar Mankar a Engineer l YouTuber l Educational Blogger l Educator l Podcaster. My Aim- To Make Engineering ...",
+      "duration": "7:59",
+      "channel_name": "5 Minutes Engineering",
+      "channel_id": "UCyHta2dyCTkf29AB67AYn7A",
+      "view_count": 139292,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dgWvsObRPcE/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzQZHICz5AfXRXomODFGMg5U1GwQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dgWvsObRPcE",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 479
+      },
+      "search_query": "IoT security challenges",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "hlpoc3C1kWM",
+      "title": "How to set up Two-Factor Authentication (2FA) for all your accounts",
+      "description": "How to set up ",
+      "duration": "10:36",
+      "channel_name": "dottotech",
+      "channel_id": "UC9BqPtCcSyHvQsbl2rumM4w",
+      "view_count": 208202,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hlpoc3C1kWM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD5erY3MNwn-9ORJg0vejygJfpfXg",
+      "youtube_url": "https://www.youtube.com/watch?v=hlpoc3C1kWM",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 636
+      },
+      "search_query": "two-factor authentication setup",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "DS3f30DwMIw",
+      "title": "Should you use a VPN? | VPN explained",
+      "description": "You might find yourself asking “what is a ",
+      "duration": "5:31",
+      "channel_name": "Cybernews",
+      "channel_id": "UCCsREoj8rSRkEvxWqxr74rQ",
+      "view_count": 107070,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/DS3f30DwMIw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATJX3IGOK-UEdtMqN0bFmedXoCdw",
+      "youtube_url": "https://www.youtube.com/watch?v=DS3f30DwMIw",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 331
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "zMBtvkYRot0",
+      "title": "Cyber security Road map | Cyber Voyage | In Tamil",
+      "description": "Levels of ",
+      "duration": "11:05",
+      "channel_name": "Cyber Voyage",
+      "channel_id": "UCQjzv8RwVZpQmk7com22UNA",
+      "view_count": 126168,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zMBtvkYRot0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBqyfPSfXowokxdt55u7dVCA6r8NQ",
+      "youtube_url": "https://www.youtube.com/watch?v=zMBtvkYRot0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 665
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jq_LZ1RFPfU",
+      "title": "Cybersecurity Architecture: Five Principles to Follow (and One to Avoid)",
+      "description": "This ten part video series is based on a 400 level class on Enterprise ",
+      "duration": "17:34",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 679892,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jq_LZ1RFPfU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyZ5E8CO9Q1-YmPkAcgVI5XfsDpA",
+      "youtube_url": "https://www.youtube.com/watch?v=jq_LZ1RFPfU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1054
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "kqaMIFEz15s",
+      "title": "Cybersecurity Trends for 2025 and Beyond",
+      "description": "In the ever changing landscape ",
+      "duration": "16:55",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 535874,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kqaMIFEz15s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA7426GMqf0rgvPDKwZii3KIAg-Ag",
+      "youtube_url": "https://www.youtube.com/watch?v=kqaMIFEz15s",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1015
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "sesacY7Xz3c",
+      "title": "Cybersecurity Architecture: Networks",
+      "description": "... the elements of ",
+      "duration": "27:31",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 292631,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sesacY7Xz3c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBPIlG4xqcvgjMPt58lK-w9wGKWcw",
+      "youtube_url": "https://www.youtube.com/watch?v=sesacY7Xz3c",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1651
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "KjN64N6-_Sk",
+      "title": "Network Security Tutorial For Beginners | Network Security Basics | Cybersecurity Training",
+      "description": "#NetworkSecurityTutorial #NetworkSecurityBasics #NetworkSecurityTutorialForBeginners #",
+      "duration": "27:26",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 41683,
+      "upload_date": "Streamed 4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KjN64N6-_Sk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAYsM_QzqesHillQ_z8f507s7kKPQ",
+      "youtube_url": "https://www.youtube.com/watch?v=KjN64N6-_Sk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1646
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "ch2EP0BwhOw",
+      "title": "What is Malware? Malware Types and Protection? Complete Guide",
+      "description": "Topic: What is ",
+      "duration": "24:38",
+      "channel_name": "Mask Leaks",
+      "channel_id": "UCqQ5FcsiW3OCqvjnnkn0b0g",
+      "view_count": 27157,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ch2EP0BwhOw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLANWWm9U9zufKy0P9zA3BPfbe0o_Q",
+      "youtube_url": "https://www.youtube.com/watch?v=ch2EP0BwhOw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 1478
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "R42fKNwaeJw",
+      "title": "Let's Look at a Mélange of Scams (Scam Awareness AND Scambaiting)",
+      "description": "Just for a bit of a change, this video is half ",
+      "duration": "17:39",
+      "channel_name": "Atomic Shrimp",
+      "channel_id": "UCSl5Uxu2LyaoAoMMGp6oTJA",
+      "view_count": 146615,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/R42fKNwaeJw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCHZne3idlh6PjQ0CB9Eu0FN1Zvig",
+      "youtube_url": "https://www.youtube.com/watch?v=R42fKNwaeJw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1059
+      },
+      "search_query": "phishing scam awareness",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "XNOAOQktG6U",
+      "title": "12 ESSENTIAL Security Tools I Use Daily",
+      "description": "I'm a ",
+      "duration": "6:14",
+      "channel_name": "All Things Secured",
+      "channel_id": "UCvFGf8HZGZWFzpcDCqb3Lhw",
+      "view_count": 179826,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XNOAOQktG6U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAv-sXs5uLeqD4nsqMHsgSzfeTnXA",
+      "youtube_url": "https://www.youtube.com/watch?v=XNOAOQktG6U",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 374
+      },
+      "search_query": "digital privacy protection",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "LLpLU317zfc",
+      "title": "Top 10 Tools To Boost Privacy & Security!",
+      "description": "Top 10 best tools to boost privacy and security today. Most times, you need to put in a lot of effort to gain ",
+      "duration": "8:47",
+      "channel_name": "Techlore",
+      "channel_id": "UCs6KfncB4OV6Vug4o_bzijg",
+      "view_count": 223081,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LLpLU317zfc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1dsW4GYC2oH711Bv6sRuIpOgVMg",
+      "youtube_url": "https://www.youtube.com/watch?v=LLpLU317zfc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 527
+      },
+      "search_query": "digital privacy protection",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jI8IKpjiCSM",
+      "title": "What is Cloud Security?",
+      "description": "Check out this lightboard video with Nataraj Nagaratnam from IBM ",
+      "duration": "10:17",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 307747,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jI8IKpjiCSM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDk_1YFDYCWW_LJ05S-znwQeR0DnA",
+      "youtube_url": "https://www.youtube.com/watch?v=jI8IKpjiCSM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 617
+      },
+      "search_query": "cloud security architecture",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "5uNifnVlBy4",
+      "title": "Cybersecurity Architecture: Who Are You? Identity and Access Management",
+      "description": "Who are you? What system capabilities are you permitted? If you leave the company, what accesses need to be removed?",
+      "duration": "31:15",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 282780,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5uNifnVlBy4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC6LWmNNbI5DauQd-fhiwQohb1R5Q",
+      "youtube_url": "https://www.youtube.com/watch?v=5uNifnVlBy4",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1875
+      },
+      "search_query": "identity and access management (IAM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "hAk-7ImN6iM",
+      "title": "UPDATED - AWS Identity and Access Management (IAM) Basics | AWS Tutorials For Beginners",
+      "description": "UPDATED for the new UI showing Identity Center. ",
+      "duration": "19:09",
+      "channel_name": "Tiny Technical Tutorials",
+      "channel_id": "UCVpWDEFirsEfz2WGJMVd4mA",
+      "view_count": 20862,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hAk-7ImN6iM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAI9KLvRZfdYJvzBl8aun3TwzsXWA",
+      "youtube_url": "https://www.youtube.com/watch?v=hAk-7ImN6iM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1149
+      },
+      "search_query": "identity and access management (IAM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "V5XN2hd3BHM",
+      "title": "What is a SIEM solution? How SIEM works and Architecture?",
+      "description": "... this comprehensive journey as we unravel the historical roots of ",
+      "duration": "27:34",
+      "channel_name": "Relative Security",
+      "channel_id": "UCD9R-G6LL02NkLofchAwoiw",
+      "view_count": 117576,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/V5XN2hd3BHM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDoGJeiW-gPLFVMm4Cw9oVES1song",
+      "youtube_url": "https://www.youtube.com/watch?v=V5XN2hd3BHM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1654
+      },
+      "search_query": "security information and event management (SIEM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "hIbkwnOteTc",
+      "title": "vulnerability assessment tutorial for beginners",
+      "description": "vulnerability assessment tutorial",
+      "duration": "9:01",
+      "channel_name": "Cyber Pioneers",
+      "channel_id": "UCNx1NDtGtW-5brnq-XZU7_w",
+      "view_count": 35571,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hIbkwnOteTc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrSQV6lCPskEHwiFW-tgGkwxgTyw",
+      "youtube_url": "https://www.youtube.com/watch?v=hIbkwnOteTc",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 541
+      },
+      "search_query": "vulnerability assessment explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "4CuXNs6SboU",
+      "title": "Careers in Cybersecurity",
+      "description": "If you're interested in learning about the different entry paths and ",
+      "duration": "6:42",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 521799,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4CuXNs6SboU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAMCglmuC_zV9yveoj0ipU-pbdcag",
+      "youtube_url": "https://www.youtube.com/watch?v=4CuXNs6SboU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 402
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "qx3Zu5GdiQs",
+      "title": "Which Cyber Security specialisation is best? | Pros and Cons",
+      "description": "Start a non-Technical ",
+      "duration": "19:12",
+      "channel_name": "UnixGuy | Cyber Security",
+      "channel_id": "UCthRsjtSd2ZTrfgjgnBXMPw",
+      "view_count": 348109,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qx3Zu5GdiQs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXvkHRXt6f6AospWUeKqhXqJNi7A",
+      "youtube_url": "https://www.youtube.com/watch?v=qx3Zu5GdiQs",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1152
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "YIxm4LRZOgs",
+      "title": "Why you should NOT choose cybersecurity..",
+      "description": "Yet another reality check. Watch this if you want to know the truth and still have the guts to pursue the ",
+      "duration": "18:07",
+      "channel_name": "Bitten Tech",
+      "channel_id": "UC3PsooDxvFG0aEBe4JVtAbg",
+      "view_count": 224055,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YIxm4LRZOgs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDBcArn_RE0DPZViTP6SzbELSdUDw",
+      "youtube_url": "https://www.youtube.com/watch?v=YIxm4LRZOgs",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1087
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "6_Cxj5WKpIw",
+      "title": "Cryptography",
+      "description": "Network Security",
+      "duration": "13:34",
+      "channel_name": "Neso Academy",
+      "channel_id": "UCQYMhOMi_Cdj1CEAU-fv80A",
+      "view_count": 432264,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6_Cxj5WKpIw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD7RqOKfNmF-OOhkUUgXJsVV0M8IA",
+      "youtube_url": "https://www.youtube.com/watch?v=6_Cxj5WKpIw",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 814
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "IEIGEjy-W4Q",
+      "title": "Secure Coding Techniques - SY0-601 CompTIA Security+ : 2.3",
+      "description": "- - - - - An application developer must use many different techniques to keep their ",
+      "duration": "11:33",
+      "channel_name": "Professor Messer",
+      "channel_id": "UCkefXKtInZ9PLsoGRtml2FQ",
+      "view_count": 129645,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IEIGEjy-W4Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLANkese7l-HZEA4h-hS25mlTBcKhQ",
+      "youtube_url": "https://www.youtube.com/watch?v=IEIGEjy-W4Q",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 693
+      },
+      "search_query": "secure coding practices",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "IlcXKF5HlMs",
+      "title": "Why SAMSUNG KNOX is one of the best smartphone security ? How does it secures your data ?",
+      "description": "Smartphone ",
+      "duration": "9:49",
+      "channel_name": "Mr Techpedia",
+      "channel_id": "UCX6S71YiSkrEnJ_zcIKaI9g",
+      "view_count": 539527,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IlcXKF5HlMs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAT-_A_o1h4CTJpYuIXRnRV-cSNjw",
+      "youtube_url": "https://www.youtube.com/watch?v=IlcXKF5HlMs",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 589
+      },
+      "search_query": "mobile device security",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "JFXBjlT5cGU",
+      "title": "What is VPN | How VPN Works 🕵️‍♂️| Virtual Private Network (VPN) with Real Life Examples",
+      "description": "Subscribe to our new channel:https://www.youtube.com/@varunainashots Subject wise playlist Link: ...",
+      "duration": "7:09",
+      "channel_name": "Gate Smashers",
+      "channel_id": "UCJihyK0A38SZ6SdJirEdIOw",
+      "view_count": 140351,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JFXBjlT5cGU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDcWgiVo0ScMLjWtFX_mPvYKU-dvg",
+      "youtube_url": "https://www.youtube.com/watch?v=JFXBjlT5cGU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 429
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "8wDI5_MVdmk",
+      "title": "How VPN really works? Understand Virtual private network in 5 mins (2023)",
+      "description": "How ",
+      "duration": "5:56",
+      "channel_name": "IT k Funde",
+      "channel_id": "UC1RauiosDyz3K16X1wkaeiA",
+      "view_count": 498059,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8wDI5_MVdmk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGGILjvKP6mHklkg7c_UE_GJkZHQ",
+      "youtube_url": "https://www.youtube.com/watch?v=8wDI5_MVdmk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 356
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "2BOOl8_nwjQ",
+      "title": "SOC 101: Real-time Incident Response Walkthrough",
+      "description": "Interested to see exactly how security operations center (SOC) teams use SIEMs to kick off deeply technical ",
+      "duration": "12:30",
+      "channel_name": "Exabeam",
+      "channel_id": "UC8Ur9wIfXAtFNB-cMCPNY2g",
+      "view_count": 222179,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2BOOl8_nwjQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCFMoupRQBIJRY1xyS6BGFB-s_s9A",
+      "youtube_url": "https://www.youtube.com/watch?v=2BOOl8_nwjQ",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 750
+      },
+      "search_query": "cybersecurity incident response",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "VNp35Uw_bSM",
+      "title": "Cybersecurity Threat Hunting Explained",
+      "description": "It takes about 200 days to identify when your ",
+      "duration": "6:51",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 98356,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VNp35Uw_bSM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD3Hy6PLtMLpNWGT0WwmglByjYO1g",
+      "youtube_url": "https://www.youtube.com/watch?v=VNp35Uw_bSM",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 411
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "awhqnSskWjU",
+      "title": "Cybersecurity Threats | Types of Cybersecurity Threats | Invensis Learning",
+      "description": "This Invensis video on \"",
+      "duration": "12:24",
+      "channel_name": "Invensis Learning",
+      "channel_id": "UCq4xOlJ4xz6Fw7WcbFkrsUQ",
+      "view_count": 49991,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/awhqnSskWjU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAuq3ZOJ0lavc1yrBK8IMWZEHNf4Q",
+      "youtube_url": "https://www.youtube.com/watch?v=awhqnSskWjU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 744
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "K6a4eKsLNFQ",
+      "title": "DLP (Data Loss Prevention) | Explained by a cyber security Professional",
+      "description": "Welcome to AV Cyber Active channel where we discuss cyber Security related topics. Feel free to Comment if you want more ...",
+      "duration": "9:35",
+      "channel_name": "AV CYBER ACTIVE",
+      "channel_id": "UCtqdtH5OKklbQXZjiV_HglA",
+      "view_count": 21067,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/K6a4eKsLNFQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBPtJhUZqjtBkFPQPq0pl-GcKWm-g",
+      "youtube_url": "https://www.youtube.com/watch?v=K6a4eKsLNFQ",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 575
+      },
+      "search_query": "data breach prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "2eLJNBroFrg",
+      "title": "Ultimate Ethical Hacking Full Course 2025 in Hindi | Kali Linux",
+      "description": "Welcome to the Ultimate ",
+      "duration": "8:19:12",
+      "channel_name": "IYS",
+      "channel_id": "UCgVkiDnRnOQt3B1ts32eK9w",
+      "view_count": 657623,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2eLJNBroFrg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA8g30XS7VHv-r4HOI-HfW7hg_yNQ",
+      "youtube_url": "https://www.youtube.com/watch?v=2eLJNBroFrg",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 29952
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "dkHfrYdYKO4",
+      "title": "Ethical Hacking Guide for Beginners | Learn Ethical Hacking #ytshortsindia #ethicalhacking #shorts",
+      "description": "If you want to learn ",
+      "duration": "0:19",
+      "channel_name": "Studytonight with Abhishek",
+      "channel_id": "UCURY4RZois483CPY8prhx7g",
+      "view_count": 822831,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dkHfrYdYKO4/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBlAOAAtAFigIMCAAQARhlIFsoUzAP&rs=AOn4CLDbyiuv12zzDCcT5mdACL5Tm8FRYQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dkHfrYdYKO4",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 19
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Dhl9_P8uBw0",
+      "title": "The Practical Guide To Mac Security: Part 9, Do You Need Anti-Virus Software?",
+      "description": "#macmost #mactutorial #macsecurity.",
+      "duration": "7:32",
+      "channel_name": "macmostvideo",
+      "channel_id": "UC5ZoLwtjX_7Zs8LoqpiLztQ",
+      "view_count": 50399,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Dhl9_P8uBw0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAHjCjlGp24d3T7gK-DaQcPF7zulA",
+      "youtube_url": "https://www.youtube.com/watch?v=Dhl9_P8uBw0",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 452
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "prXChtehmHY",
+      "title": "Digital Personal Data Protection Act Explained: Key Rules For 2025",
+      "description": "Call Us for UPSC Counselling- 76-4000-3000 Use code ' ACLIVE ' to get Highest Discount UPSC IAS Live SIP+ 2025 New Year ...",
+      "duration": "26:31",
+      "channel_name": "StudyIQ IAS",
+      "channel_id": "UCrC8mOqJQpoB7NuIMKIS6rQ",
+      "view_count": 17331,
+      "upload_date": "Streamed 5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/prXChtehmHY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBEYLa-c11XV7sfHP-sxhSmtWKGpQ",
+      "youtube_url": "https://www.youtube.com/watch?v=prXChtehmHY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1591
+      },
+      "search_query": "digital privacy protection",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "RjLM50USrvY",
+      "title": "Cloud Security Architecture   An Introduction (2024) Full course",
+      "description": "This course gives an introduction to ",
+      "duration": "51:51",
+      "channel_name": "Cloud Security Architecture",
+      "channel_id": "UCebqqnv6Ek8gAF6B4hLruFg",
+      "view_count": 17074,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/RjLM50USrvY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCt8rBg5zRRqKNz_p7LTE45RaiaAw",
+      "youtube_url": "https://www.youtube.com/watch?v=RjLM50USrvY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 3111
+      },
+      "search_query": "cloud security architecture",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "XgLctgRh_7g",
+      "title": "Learn IAM (Identity and Access Management) in AWS",
+      "description": "Welcome to a youtube channel dedicated to programming and coding related tutorials. We talk about tech, write code, discuss ...",
+      "duration": "30:31",
+      "channel_name": "Hitesh Choudhary",
+      "channel_id": "UCXgGY0wkgOzynnHvSEVmE3A",
+      "view_count": 29250,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XgLctgRh_7g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCON-ymI2-5IagIEou1M-Psr2A1_Q",
+      "youtube_url": "https://www.youtube.com/watch?v=XgLctgRh_7g",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1831
+      },
+      "search_query": "identity and access management (IAM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "vcL28zmp9y8",
+      "title": "Different Types of Penetration Testing Methods Explained",
+      "description": "If you are thinking about performing ",
+      "duration": "8:12",
+      "channel_name": "Learn with Whiteboard",
+      "channel_id": "UCF-uUxo43IPpnEwnR62WGlA",
+      "view_count": 14268,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vcL28zmp9y8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAK0fkLo7xAxmh9T50kDfuHCATJyQ",
+      "youtube_url": "https://www.youtube.com/watch?v=vcL28zmp9y8",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 492
+      },
+      "search_query": "penetration testing methods",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "g5PEwaCf8Yg",
+      "title": "What is Cryptography? Full Explanation with examples - Cryptography for Beginners in Tamil",
+      "description": "Cryptography",
+      "duration": "5:16",
+      "channel_name": "Vishaal KM",
+      "channel_id": "UCQ9qOsvUbrRWiQf4MC_XBzg",
+      "view_count": 10443,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/g5PEwaCf8Yg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1qw5oNYRj9g9HgOzDLkazRuExFg",
+      "youtube_url": "https://www.youtube.com/watch?v=g5PEwaCf8Yg",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 316
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "4iEiKa1JmBU",
+      "title": "Secure Coding Guidelines for Java",
+      "description": "Gain an overview of the ",
+      "duration": "31:31",
+      "channel_name": "Java",
+      "channel_id": "UCmRtPmgnQ04CMUpSUqPfhxQ",
+      "view_count": 13356,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4iEiKa1JmBU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDEYJwMfwiH2qcHv8ATJSamkgVsig",
+      "youtube_url": "https://www.youtube.com/watch?v=4iEiKa1JmBU",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1891
+      },
+      "search_query": "secure coding practices",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "v7VTJhkJUUY",
+      "title": "What is Social Engineering in Cyber Security? Explained",
+      "description": "In this video, you will know what is ",
+      "duration": "6:57",
+      "channel_name": "MalwareFox",
+      "channel_id": "UCb32Exu4RsRfqDIRUwE6nxA",
+      "view_count": 92234,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/v7VTJhkJUUY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDxPhaCcvsc8eKlkNmek8l4eQcHIg",
+      "youtube_url": "https://www.youtube.com/watch?v=v7VTJhkJUUY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 417
+      },
+      "search_query": "social engineering attacks",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "sdpxddDzXfE",
+      "title": "How to Protect Your Data Online",
+      "description": "The ",
+      "duration": "3:53",
+      "channel_name": "NOVA PBS Official",
+      "channel_id": "UCjHz5SVHeMT0AViCYZvsGDA",
+      "view_count": 1065659,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sdpxddDzXfE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhm1zygMOSBe0qN-wUcOVJJtsiBQ",
+      "youtube_url": "https://www.youtube.com/watch?v=sdpxddDzXfE",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 233
+      },
+      "search_query": "internet security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "2ZLnBx8Mm40",
+      "title": "How to Set Up Google Authenticator for 2-Factor Authentication (2FA)",
+      "description": "What Next?       What should you watch next? When it comes to your online security, here's what I recommend: ✓ You're ...",
+      "duration": "4:14",
+      "channel_name": "All Things Secured",
+      "channel_id": "UCvFGf8HZGZWFzpcDCqb3Lhw",
+      "view_count": 1086659,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2ZLnBx8Mm40/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBq6IQvXlJ7kuK0E1kgEgBTIES-2g",
+      "youtube_url": "https://www.youtube.com/watch?v=2ZLnBx8Mm40",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 254
+      },
+      "search_query": "two-factor authentication setup",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "mJbtitCeT90",
+      "title": "Easy Guide to Capture the flag for Beginners!",
+      "description": "Doctor CTF - Full Penetration Testing Walkthrough Welcome to this in-depth walkthrough of the Doctor CTF, ...",
+      "duration": "15:26",
+      "channel_name": "PCPL ALEX",
+      "channel_id": "UCHwmo9eIoncEizU8NB-xtRQ",
+      "view_count": 70,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mJbtitCeT90/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAUZcSgg3iPJWmsTZvylx-fegQxjg",
+      "youtube_url": "https://www.youtube.com/watch?v=mJbtitCeT90",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 926
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "TTXtdi9aegc",
+      "title": "Cybersecurity Full Course - 10 Hours | Cyber Security Training for Beginners [2025] | Edureka",
+      "description": "In this comprehensive *",
+      "duration": "10:10:55",
+      "channel_name": "edureka!",
+      "channel_id": "UCkw4JCwteGrDHIsyIIKo4tQ",
+      "view_count": 15513,
+      "upload_date": "Streamed 3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TTXtdi9aegc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBLSq477PY0p6VN9T3tMcc0a3mx6Q",
+      "youtube_url": "https://www.youtube.com/watch?v=TTXtdi9aegc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 36655
+      },
+      "search_query": "cybersecurity for beginners",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "8zSoyAmHHc4",
+      "title": "Threats Vulnerabilities and Exploits",
+      "description": "IT systems are today's security concern - that's where the \"big money\" exposure for your business resides, not in a physical bank ...",
+      "duration": "5:45",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 26806,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8zSoyAmHHc4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBf1KNH0nTxPcWd_cD4dfMoVP2QWQ",
+      "youtube_url": "https://www.youtube.com/watch?v=8zSoyAmHHc4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 345
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "-Jpec7tOQqM",
+      "title": "7 Data Loss Prevention Best Practices (Expert Explains) | PurpleSec",
+      "description": "On average it takes organizations 191 days to identify ",
+      "duration": "18:04",
+      "channel_name": "PurpleSec",
+      "channel_id": "UCJ_dsa5WPjwNGK8PLnB18Bw",
+      "view_count": 47202,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-Jpec7tOQqM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_f5mvUcFg8SmpK3JPH5o5pvv4Rw",
+      "youtube_url": "https://www.youtube.com/watch?v=-Jpec7tOQqM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 1084
+      },
+      "search_query": "data breach prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jVqx8f-KQ_0",
+      "title": "CCNA1-ITNv7 - Module 16 - Network Security Fundamentals",
+      "description": "CCNA1-ITNv7 - Module 16 - ",
+      "duration": "23:21",
+      "channel_name": "Arthur Salmon",
+      "channel_id": "UCyiVwdvsessDrlr1x8zXn2Q",
+      "view_count": 13254,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jVqx8f-KQ_0/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARgTIF0ofzAP&rs=AOn4CLD9_XVdOn_4rj9mgcgdRIA0_rVfFA",
+      "youtube_url": "https://www.youtube.com/watch?v=jVqx8f-KQ_0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1401
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "XgOF6GhiMuM",
+      "title": "Required Cybersecurity Skill: Understanding Basic Networking Concepts",
+      "description": "In this video, I'm taking it back to ",
+      "duration": "37:12",
+      "channel_name": "Simply Cyber - Gerald Auger, PhD",
+      "channel_id": "UCG-48Ki-b6W_siaUkukJOSw",
+      "view_count": 91507,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XgOF6GhiMuM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBY93KzC7iMjOZK3vWIsvTvUQ1M3Q",
+      "youtube_url": "https://www.youtube.com/watch?v=XgOF6GhiMuM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2232
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "VflzXyzrkqY",
+      "title": "How to Enable Enhanced Protection on Google Chrome 🔒 | Quick Guide",
+      "description": "Learn how to enable enhanced ",
+      "duration": "0:28",
+      "channel_name": "Smart & Easy",
+      "channel_id": "UCNsZzl17yaKPS4m8d69VNCg",
+      "view_count": 143216,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VflzXyzrkqY/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoZTAP&rs=AOn4CLD9ClVbfJd_KafzeydBxC4R7LTCNQ",
+      "youtube_url": "https://www.youtube.com/watch?v=VflzXyzrkqY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 28
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "eizn9TC68E8",
+      "title": "Protecting Yourself from Ransomware",
+      "description": "... 2022: https://ibm.biz/Cost_of_a_Data_Breach ",
+      "duration": "5:40",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 14375,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eizn9TC68E8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB04-Em7InoQTEaCSFdIP0dSpNDrQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eizn9TC68E8",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 340
+      },
+      "search_query": "ransomware prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "vc7_TKN0kfw",
+      "title": "There’s Virtually Nothing You Can Do To Protect Your Online Privacy",
+      "description": "In the wake of Roe v. Wade being overturned, ",
+      "duration": "11:50",
+      "channel_name": "NBC News",
+      "channel_id": "UCeY0bbntWzzVIaj2z3QigXg",
+      "view_count": 96536,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vc7_TKN0kfw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB0vtiLt6m0BzYxEzBpwomfqo4Tdw",
+      "youtube_url": "https://www.youtube.com/watch?v=vc7_TKN0kfw",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 710
+      },
+      "search_query": "digital privacy protection",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "x3rg8bttldg",
+      "title": "Security vs. Privacy",
+      "description": "If you're not paying, you're likely the product. In this video, Jeff Crume explains that statement as well as the impact on user ...",
+      "duration": "9:52",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 18382,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/x3rg8bttldg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCiHVpWP1ia7mOPyGWTEX2QjX8fzw",
+      "youtube_url": "https://www.youtube.com/watch?v=x3rg8bttldg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 592
+      },
+      "search_query": "digital privacy protection",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "iRRnTUl7Fak",
+      "title": "Cloud Computing Security Architecture | Lec-25 | Cloud Computing",
+      "description": "cloudcomputing #ersahilkagyan ☑️ ",
+      "duration": "6:16",
+      "channel_name": "Er Sahil ka Gyan",
+      "channel_id": "UCORokwxq3Th4gzBlAmcEvaw",
+      "view_count": 28804,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iRRnTUl7Fak/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDRGgPyWhB5EchhefMO-ShiDf-_bg",
+      "youtube_url": "https://www.youtube.com/watch?v=iRRnTUl7Fak",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 376
+      },
+      "search_query": "cloud security architecture",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "4TxvqZFMaoA",
+      "title": "A Cloud Security Architecture Workshop",
+      "description": "Dave Shackleford, Sr. Instructor, SANS Institute As more ",
+      "duration": "52:00",
+      "channel_name": "RSA Conference",
+      "channel_id": "UCYzwGkfOqrevO-4TuTjPLwQ",
+      "view_count": 75342,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4TxvqZFMaoA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBbA5pB4gga7Y_UF4zI6BPin2_pg",
+      "youtube_url": "https://www.youtube.com/watch?v=4TxvqZFMaoA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3120
+      },
+      "search_query": "cloud security architecture",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "55GaIolVVqI",
+      "title": "What is Endpoint Detection and Response (EDR)?",
+      "description": "Cybersecurity tools like ",
+      "duration": "5:34",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 70538,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/55GaIolVVqI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBL1WqFy9sUJdHqApmOU5mHBtDHRA",
+      "youtube_url": "https://www.youtube.com/watch?v=55GaIolVVqI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 334
+      },
+      "search_query": "endpoint security solutions",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "2CVP9-Qslcw",
+      "title": "Endpoint Security: Definition, Benefits, and Key Components",
+      "description": "Advantages of endpoint security, types of ",
+      "duration": "10:46",
+      "channel_name": "Heimdal®",
+      "channel_id": "UC1WREdcXesu7Fs4qAP6SxRQ",
+      "view_count": 35611,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2CVP9-Qslcw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBdpm0HkzXnJ-RqSA5poLoEZr0h5A",
+      "youtube_url": "https://www.youtube.com/watch?v=2CVP9-Qslcw",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 646
+      },
+      "search_query": "endpoint security solutions",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "RzIGRHCPaKs",
+      "title": "What is IAM (Identity and Access Management)?",
+      "description": "Do you really know what is ",
+      "duration": "5:20",
+      "channel_name": "NetIQ Unplugged",
+      "channel_id": "UCFKZnnCt5Gj5K1-udl9Wp8w",
+      "view_count": 29349,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/RzIGRHCPaKs/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARhlIGUoZTAP&rs=AOn4CLCg1Imdk0Rwx9WhS7T3BTMCXVSYRQ",
+      "youtube_url": "https://www.youtube.com/watch?v=RzIGRHCPaKs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 320
+      },
+      "search_query": "identity and access management (IAM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "I9AJ26LSTYs",
+      "title": "What is SIEM | Security Information And Event Management | Cyber Security | Intellipaat",
+      "description": "#WhatisSIEM #SecurityInformationAndEventManagement #CyberSecurity #Intellipaat In this video, we will be focusing on one of ...",
+      "duration": "6:49",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 17780,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I9AJ26LSTYs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC1Dqov8_qMl6vElEiaxE28Fkd2pA",
+      "youtube_url": "https://www.youtube.com/watch?v=I9AJ26LSTYs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 409
+      },
+      "search_query": "security information and event management (SIEM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "zrgBrpv4azs",
+      "title": "What is a SIEM? (Security Information & Event Management)",
+      "description": "Security Information",
+      "duration": "13:59",
+      "channel_name": "CYBERWOX",
+      "channel_id": "UCY-UlEymdA23eo09U9a0FLA",
+      "view_count": 33935,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zrgBrpv4azs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAatbWg3r9o_yPQZOJhGxdImeGylA",
+      "youtube_url": "https://www.youtube.com/watch?v=zrgBrpv4azs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 839
+      },
+      "search_query": "security information and event management (SIEM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "PAh92fhCb6A",
+      "title": "Vulnerability Management Interview Questions and Answers| Part 1 |Cybersecurity Interview Questions",
+      "description": "Vulnerability",
+      "duration": "42:14",
+      "channel_name": "CyberPlatter",
+      "channel_id": "UC7asNccszmEwzQn2P414NKA",
+      "view_count": 34418,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PAh92fhCb6A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDu8mDqbkEwB6PStr7UdRBEt_Zp_w",
+      "youtube_url": "https://www.youtube.com/watch?v=PAh92fhCb6A",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 2534
+      },
+      "search_query": "vulnerability assessment explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "bQh-nhhYcS4",
+      "title": "Vulnerability Assessment vs. Penetration Testing: What's the Difference?",
+      "description": "Understand the difference between conducting an annual penetration test, compared to completing a monthly ",
+      "duration": "10:30",
+      "channel_name": "Cyber Security Resource",
+      "channel_id": "UCgx3g0e_9OSG3BjngIHgBzA",
+      "view_count": 16225,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bQh-nhhYcS4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBokRMQWBXF62fE7eTHVTJizHgolA",
+      "youtube_url": "https://www.youtube.com/watch?v=bQh-nhhYcS4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 630
+      },
+      "search_query": "vulnerability assessment explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "eRvv-WidX-o",
+      "title": "Cybersecurity Career Paths: Which One Is Right for You?",
+      "description": "In this video, we dive deep into the world of ",
+      "duration": "7:23",
+      "channel_name": "MyDFIR",
+      "channel_id": "UCWoH3f-Yx6TxJfO2O_ezJUw",
+      "view_count": 58336,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eRvv-WidX-o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXh0LnwFkEnqqTzDnwGHcAp0cKXg",
+      "youtube_url": "https://www.youtube.com/watch?v=eRvv-WidX-o",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 443
+      },
+      "search_query": "cybersecurity career path",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "dtY6ehDwzkg",
+      "title": "Indian Cyber laws You Should Know | Cyber Voyage | In Tamil",
+      "description": "What is Cybercrime? A cybercrime is a crime that involves a computer or a computer network. The computer may have been used ...",
+      "duration": "7:52",
+      "channel_name": "Cyber Voyage",
+      "channel_id": "UCQjzv8RwVZpQmk7com22UNA",
+      "view_count": 19409,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dtY6ehDwzkg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDhDG701uCKvRHQTKAnY5FwMat2IQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dtY6ehDwzkg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 472
+      },
+      "search_query": "cyber law and regulations",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "bmZx9xaQHoU",
+      "title": "Introduction to Cyber Law: Module 1 of 5",
+      "description": "Visit us at https://lawshelf.com to earn college credit for only $20 a credit! We now offer multi-packs, which allow you to purchase 5 ...",
+      "duration": "16:52",
+      "channel_name": "LawShelf",
+      "channel_id": "UCSxkqyENz-czORfYZipgt1w",
+      "view_count": 13336,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bmZx9xaQHoU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA3z_X1ncFWDV1nkI5LEvR9qIQqYA",
+      "youtube_url": "https://www.youtube.com/watch?v=bmZx9xaQHoU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1012
+      },
+      "search_query": "cyber law and regulations",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "42S6S9qGpW8",
+      "title": "Ek Class IT Act, 2000 Khallas | Tansukh Paliwal | Linking Laws",
+      "description": "In this session, Educator Tansukh Paliwal will talk about the Information Technology Act, of 2000. We will also discuss the Act's ...",
+      "duration": "2:24:53",
+      "channel_name": "Unacademy Judiciary",
+      "channel_id": "UCfIb90qNkuW8jHPWrBgpQlw",
+      "view_count": 190234,
+      "upload_date": "Streamed 2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/42S6S9qGpW8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBQhyxZ5kEOpFgpjeFazcmomwiYsw",
+      "youtube_url": "https://www.youtube.com/watch?v=42S6S9qGpW8",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 8693
+      },
+      "search_query": "cyber law and regulations",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "8m1N2t-WANc",
+      "title": "Secure Coding Best Practices | OWASP Top 10 Proactive Control",
+      "description": "How to build ",
+      "duration": "16:21",
+      "channel_name": "Telusko",
+      "channel_id": "UC59K-uG2A5ogwIrHw4bmlEg",
+      "view_count": 22082,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8m1N2t-WANc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAkWDEZZmS13QxwXJ-Oj2rAJd6a5A",
+      "youtube_url": "https://www.youtube.com/watch?v=8m1N2t-WANc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 981
+      },
+      "search_query": "secure coding practices",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "t_U7OknbCgM",
+      "title": "Secure Coding – Best Practices (also for non developers!)",
+      "description": "In this webinar security specialist Michael Kubiaczyk present some important security concepts for ",
+      "duration": "57:45",
+      "channel_name": "SecuraBV",
+      "channel_id": "UC_c88SOQJMQR2Z9vcp8r_yg",
+      "view_count": 21562,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/t_U7OknbCgM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDrAOSoOeqwZiB1bKN70kFVCv98JA",
+      "youtube_url": "https://www.youtube.com/watch?v=t_U7OknbCgM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3465
+      },
+      "search_query": "secure coding practices",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "1j2Q-e2RCww",
+      "title": "#50 Mobile Device Security -  Threats & Strategies for Security |CNS|",
+      "description": "Company Specific HR Mock Interview : A seasoned professional with over 18 years of experience with Product, IT Services and ...",
+      "duration": "11:02",
+      "channel_name": "Trouble- Free",
+      "channel_id": "UCHNO_Y3DskuKiw9VTvo8AMw",
+      "view_count": 56150,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1j2Q-e2RCww/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCnKA2b2qC2xalrQgf9RMiGbgoqjg",
+      "youtube_url": "https://www.youtube.com/watch?v=1j2Q-e2RCww",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 662
+      },
+      "search_query": "mobile device security",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "bOpMpBj1ipA",
+      "title": "Mobile Device Security - CompTIA A+ 220-1102 - 2.7",
+      "description": "- - - - - Our ",
+      "duration": "8:20",
+      "channel_name": "Professor Messer",
+      "channel_id": "UCkefXKtInZ9PLsoGRtml2FQ",
+      "view_count": 72887,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/bOpMpBj1ipA/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIFQoTDAP&rs=AOn4CLCYc7ke9UeEKbix7yEeH5wyNW6WBg",
+      "youtube_url": "https://www.youtube.com/watch?v=bOpMpBj1ipA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 500
+      },
+      "search_query": "mobile device security",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "UOGZbq4t_g8",
+      "title": "Troubleshooting Mobile Device Security - CompTIA A+ 220-1102 - 3.5",
+      "description": "- - - - - Our ",
+      "duration": "10:00",
+      "channel_name": "Professor Messer",
+      "channel_id": "UCkefXKtInZ9PLsoGRtml2FQ",
+      "view_count": 76926,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UOGZbq4t_g8/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARghIFQofzAP&rs=AOn4CLDe9ucEU8aPawkczbP1yoBPDQLjRA",
+      "youtube_url": "https://www.youtube.com/watch?v=UOGZbq4t_g8",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 600
+      },
+      "search_query": "mobile device security",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "zl2ZbdSeQVY",
+      "title": "IoT Security Challenges",
+      "description": "Join our VP of IoT and Embedded Solutions, Alan Grau, as he dives into ",
+      "duration": "11:20",
+      "channel_name": "Sectigo",
+      "channel_id": "UCpBIBygkjPsEdrGkkWNGOsQ",
+      "view_count": 16447,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zl2ZbdSeQVY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkNn8XRbM_7U4dfPs1etm2sbzn6w",
+      "youtube_url": "https://www.youtube.com/watch?v=zl2ZbdSeQVY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 680
+      },
+      "search_query": "IoT security challenges",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "7zWVxrjjIpE",
+      "title": "Securing Your IoT Devices",
+      "description": "Thanks to the Internet of Things (",
+      "duration": "13:55",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 58782,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7zWVxrjjIpE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBKOi3j03GwzKl6UoD6tGUMMmfsA",
+      "youtube_url": "https://www.youtube.com/watch?v=7zWVxrjjIpE",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 835
+      },
+      "search_query": "IoT security challenges",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "uMkOphesrqI",
+      "title": "Social Engineering - How Bad Guys Hack Users",
+      "description": "Humans are the weakest link in any security system. So why would a bad guy try to hack into a complex system when they can go ...",
+      "duration": "14:58",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 78087,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uMkOphesrqI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbOQZRoXjIVWMCCmExAGQaPTerBg",
+      "youtube_url": "https://www.youtube.com/watch?v=uMkOphesrqI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 898
+      },
+      "search_query": "social engineering attacks",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "vgM21snayl0",
+      "title": "Keep your Passwords Safe from HACKERS | Password Security Tips",
+      "description": "How to keep your ",
+      "duration": "7:21",
+      "channel_name": "NextTimeTech",
+      "channel_id": "UCa5-N7CN3bwuGT6vl2RmdQg",
+      "view_count": 10602,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vgM21snayl0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDqTl-k5hapYjgDR3HzyEJP-ESG3g",
+      "youtube_url": "https://www.youtube.com/watch?v=vgM21snayl0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 441
+      },
+      "search_query": "password security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "1yfTj2BtUfI",
+      "title": "How to Use Microsoft Authenticator App  - Easy Setup & Usage Tutorial (2024)",
+      "description": "How to use the Microsoft Authenticator App? Here is the video if you are looking for a Microsoft Authenticator app tutorial.",
+      "duration": "4:45",
+      "channel_name": "MK Loves Tech",
+      "channel_id": "UCm2TjoxF0Xuff-C3di4cfcQ",
+      "view_count": 707099,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1yfTj2BtUfI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQxxTs_Np6o91y3mN6hUvdLBXIrg",
+      "youtube_url": "https://www.youtube.com/watch?v=1yfTj2BtUfI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 285
+      },
+      "search_query": "two-factor authentication setup",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "fKEGqMN0hbc",
+      "title": "What to use a VPN for in 2024? | 5 Benefits of using a VPN",
+      "description": "From podcasts to YouTube adverts, ",
+      "duration": "10:45",
+      "channel_name": "VPNpro",
+      "channel_id": "UCEwH5yFKrIGhXjoulR-xwpg",
+      "view_count": 22187,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fKEGqMN0hbc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQNXCAWWOxawFBSPmOINVOTnz84w",
+      "youtube_url": "https://www.youtube.com/watch?v=fKEGqMN0hbc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 645
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "IRSQEO0koYY",
+      "title": "Incident Response Lifecycle | IR Plan | NIST SP 800-61 Security Incident Handling| Cybersecurity",
+      "description": "https://cyberplatter.com/",
+      "duration": "18:53",
+      "channel_name": "CyberPlatter",
+      "channel_id": "UC7asNccszmEwzQn2P414NKA",
+      "view_count": 25118,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IRSQEO0koYY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBSN4WpqT_5PuJofARg1mSTqUNBMw",
+      "youtube_url": "https://www.youtube.com/watch?v=IRSQEO0koYY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1133
+      },
+      "search_query": "cybersecurity incident response",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jTbUISW5q20",
+      "title": "Mock Interview |  Cyber Security Analyst | What is Incident Response?",
+      "description": "Welcome to our latest video where we delve into the fundamental question for SOC analysts: 'What is ",
+      "duration": "15:28",
+      "channel_name": "Rajneesh Gupta",
+      "channel_id": "UCJMX9jWseaRLY2Lj_ypUhZQ",
+      "view_count": 21341,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jTbUISW5q20/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWsgY6myTFZxdMOGLZCQTX4rzdOQ",
+      "youtube_url": "https://www.youtube.com/watch?v=jTbUISW5q20",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 928
+      },
+      "search_query": "cybersecurity incident response",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "dagb12kvr8M",
+      "title": "Incident Response Interview Questions and Answers| Part 1| Cybersecurity Incident Response Interview",
+      "description": "Incident Response",
+      "duration": "39:36",
+      "channel_name": "CyberPlatter",
+      "channel_id": "UC7asNccszmEwzQn2P414NKA",
+      "view_count": 18868,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dagb12kvr8M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgXOWT204qXJdoSYhd_XrbblNsSQ",
+      "youtube_url": "https://www.youtube.com/watch?v=dagb12kvr8M",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 2376
+      },
+      "search_query": "cybersecurity incident response",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "-ni_PWxrsNo",
+      "title": "Former NSA Hacker Reveals 5 Ways To Protect Yourself Online",
+      "description": "In a time where companies, celebrities, and even governments are coming under ",
+      "duration": "3:29",
+      "channel_name": "Insider Tech",
+      "channel_id": "UCVLZmDKeT-mV4H3ToYXIFYg",
+      "view_count": 1269518,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-ni_PWxrsNo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKs8rpHBmE3_oe1s1E6rOzVWCJPg",
+      "youtube_url": "https://www.youtube.com/watch?v=-ni_PWxrsNo",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 209
+      },
+      "search_query": "internet security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Ny5vjwA-3hU",
+      "title": "Hacking Knowledge",
+      "description": "#Shorts #Twitch #",
+      "duration": "0:27",
+      "channel_name": "Pirate Software",
+      "channel_id": "UCMnULQ6F6kLDAHxofDWIbrw",
+      "view_count": 18819073,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Ny5vjwA-3hU/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhyIFYoOTAP&rs=AOn4CLDYoDlc75hy8p7rGZkcr9JYSpUOEg",
+      "youtube_url": "https://www.youtube.com/watch?v=Ny5vjwA-3hU",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 27
+      },
+      "search_query": "ethical hacking tutorial",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "lc7scxvKQOo",
+      "title": "This is how hackers hack you using simple social engineering",
+      "description": "Simple ",
+      "duration": "2:31",
+      "channel_name": "oracle mind",
+      "channel_id": "UCNODlblPSIVwGg3A4Wx_QYw",
+      "view_count": 1701953,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lc7scxvKQOo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBd-JHRj_-uqihigWzQUqEluIP4ng",
+      "youtube_url": "https://www.youtube.com/watch?v=lc7scxvKQOo",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 151
+      },
+      "search_query": "social engineering attacks",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "8pudTt5bGow",
+      "title": "Basic password security tips (Tech Minute)",
+      "description": "Watch more tech ",
+      "duration": "1:11",
+      "channel_name": "CNET",
+      "channel_id": "UCOmcA3f_RrH6b9NmcNa4tdg",
+      "view_count": 8670,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8pudTt5bGow/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCtrH7CXVUzkGB0kw4oZ2BXiV4Txw",
+      "youtube_url": "https://www.youtube.com/watch?v=8pudTt5bGow",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 71
+      },
+      "search_query": "password security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "_wQTRMBAvzg",
+      "title": "What is a VPN and How Does it Work? [SHORT Video Explainer] ⏱️",
+      "description": "What is a ",
+      "duration": "4:20",
+      "channel_name": "vpnMentor",
+      "channel_id": "UCEA9ROzwUTy6t-QdLuWrjnw",
+      "view_count": 11074904,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_wQTRMBAvzg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB4dbdKaMpLu6ssB-EQTXEcgtT4ug",
+      "youtube_url": "https://www.youtube.com/watch?v=_wQTRMBAvzg",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 260
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "vkRWBjkLRIQ",
+      "title": "IGA Cybersecurity Explained | Identity Governance & Cyber Threats",
+      "description": "Welcome to Episode #7 of the Cyber Insurance News Podcast! In this episode, host Martin Hinton interviews Craig Ramsay of ...",
+      "duration": "33:47",
+      "channel_name": "Cyber Insurance News",
+      "channel_id": "UCzF2EbOHxBRxYPHJn8Jx1UQ",
+      "view_count": 29,
+      "upload_date": "1 day ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vkRWBjkLRIQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA6MxHrhQ4SpZ7_-FrmkWllcmNSYQ",
+      "youtube_url": "https://www.youtube.com/watch?v=vkRWBjkLRIQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2027
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "if5PU1SQ7-M",
+      "title": "What is Cyber Threats & Cyber Security?|Learn It In Tamil|தமிழ்",
+      "description": "What is ",
+      "duration": "3:22",
+      "channel_name": "Learn It In Tamil",
+      "channel_id": "UCvqsnT9_wVeiPzMvcX6HyzA",
+      "view_count": 104500,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/if5PU1SQ7-M/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAFZah6un1l46CJCIcv8DOzPxRPCg",
+      "youtube_url": "https://www.youtube.com/watch?v=if5PU1SQ7-M",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 202
+      },
+      "search_query": "cybersecurity threats explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "MhqIPKmZX4I",
+      "title": "Fortigate - Data Leak Prevention-How to Block File based on size or content #dlp #fortios #",
+      "description": "In this video, we dive into FortiGate ",
+      "duration": "26:13",
+      "channel_name": "ROSA Technocrat",
+      "channel_id": "UCJVjSyu86Mj2z7RxxQQ8JDg",
+      "view_count": 1418,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/MhqIPKmZX4I/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIGUoZTAP&rs=AOn4CLCEWFCob4EbdhMDDtgKMk49QNYy9g",
+      "youtube_url": "https://www.youtube.com/watch?v=MhqIPKmZX4I",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1573
+      },
+      "search_query": "data breach prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Q8C404N4fQw",
+      "title": "Fundamentals of Cyber Security | Cyber Security Basics | Cyber Security For Beginners | MindMajix",
+      "description": "Join hands-on ",
+      "duration": "36:03",
+      "channel_name": "MindMajix",
+      "channel_id": "UCkKemMaRnFPlNLHZ0zOYfpA",
+      "view_count": 48,
+      "upload_date": "1 day ago",
+      "thumbnail_url": "https://i9.ytimg.com/vi/Q8C404N4fQw/hq720_custom_1.jpg?sqp=CLz2tMIG-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA8B8Gnnoa6UO1ojnJ4AzDWkoHKTA",
+      "youtube_url": "https://www.youtube.com/watch?v=Q8C404N4fQw",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2163
+      },
+      "search_query": "network security fundamentals",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "LUajNJWRTZc",
+      "title": "How to Download Torrents Safely: Quick Tips & Tricks",
+      "description": "How to Download Torrents Safely   1️⃣ Exclusive ExpressVPN Discount ➢ https://go.expressvpn.com/75z32r *Get 4 Extra ...",
+      "duration": "10:45",
+      "channel_name": "Privacy King",
+      "channel_id": "UCtP4rPy24ZFuD2u2xyQlgCA",
+      "view_count": 338,
+      "upload_date": "1 day ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/LUajNJWRTZc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDU3SZuh6NmycxRI3i2nPyLT1Eoyw",
+      "youtube_url": "https://www.youtube.com/watch?v=LUajNJWRTZc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 645
+      },
+      "search_query": "internet security tips",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "ck7GnlUjnSY",
+      "title": "S3 Virus Scan and Malware Protection Step-by-Step Guide 🦠✋",
+      "description": "Do users or 3rd party systems upload data to your S3 buckets? How do you ensure that viruses, trojans, ",
+      "duration": "5:20",
+      "channel_name": "cloudonaut",
+      "channel_id": "UCKRq7wc2BcHBR0SJIfJVwdw",
+      "view_count": 419,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ck7GnlUjnSY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBinh2fA7e1PAr0_pGDLwAvueZX-g",
+      "youtube_url": "https://www.youtube.com/watch?v=ck7GnlUjnSY",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 320
+      },
+      "search_query": "malware protection guide",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Y7zNlEMDmI4",
+      "title": "What is phishing? Learn how this attack works",
+      "description": "Phishing",
+      "duration": "2:57",
+      "channel_name": "TECHtalk",
+      "channel_id": "UCyhpw4-Etc79Sq77Swre5KA",
+      "view_count": 496695,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Y7zNlEMDmI4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBVl2epNs3dq4mTQ8r9aHLWdg078w",
+      "youtube_url": "https://www.youtube.com/watch?v=Y7zNlEMDmI4",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 177
+      },
+      "search_query": "phishing scam awareness",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "UTKUWqxfkjs",
+      "title": "What is Ransomware and how to prevent ransomware attacks",
+      "description": "Find out what ",
+      "duration": "8:42",
+      "channel_name": "Spiceworks",
+      "channel_id": "UC2qtxxJ5cn9BOybX0Sa0J6A",
+      "view_count": 326,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UTKUWqxfkjs/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhWIF4oZTAP&rs=AOn4CLDeo7QqesIOHXgqyBtpMi-U-oylqg",
+      "youtube_url": "https://www.youtube.com/watch?v=UTKUWqxfkjs",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 522
+      },
+      "search_query": "ransomware prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "26NPSKDXimk",
+      "title": "Advanced Ransomware prevention",
+      "description": "Discover essential ",
+      "duration": "43:31",
+      "channel_name": "The Backup Wrap-up",
+      "channel_id": "UCxq7lHAdVVlJmv9kQWN8vzA",
+      "view_count": 39,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/26NPSKDXimk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBrfMQczyKUiYlflWJ1C8l0aaIDBw",
+      "youtube_url": "https://www.youtube.com/watch?v=26NPSKDXimk",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 2611
+      },
+      "search_query": "ransomware prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "wUWSs-7Cb1g",
+      "title": "Step-by-Step Guide to Building an Effective Ransomware Protection Plan",
+      "description": "If you're a business owner, or even just someone who wants to keep their data safe, then this video is for you! In this video, I'll ...",
+      "duration": "23:38",
+      "channel_name": "Prabh Nair",
+      "channel_id": "UCfZMpaSGpTa4JoqoZHCJBcw",
+      "view_count": 8104,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wUWSs-7Cb1g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgx52FrvBnpH553urUCKZiSOU5Yw",
+      "youtube_url": "https://www.youtube.com/watch?v=wUWSs-7Cb1g",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1418
+      },
+      "search_query": "ransomware prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "57N8LiqSvfI",
+      "title": "How to Prevent Ransomware attack In 2025",
+      "description": "Protect your data and boost your online safety with these 10 ",
+      "duration": "8:39",
+      "channel_name": "Circut Masters",
+      "channel_id": "UCkoJraiv7zQL_n5CV0MfEIg",
+      "view_count": 16,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/57N8LiqSvfI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCgUG-0uSWT9ID6LuCA4LHdyebr6w",
+      "youtube_url": "https://www.youtube.com/watch?v=57N8LiqSvfI",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 519
+      },
+      "search_query": "ransomware prevention",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "jLx4V0nx7lI",
+      "title": "Becoming a Cloud Security Architect: Step-by-Step Guide",
+      "description": "In this video, Abhay Bhargav shares invaluable insights and a step-by-step approach to help you achieve mastery in ",
+      "duration": "9:53",
+      "channel_name": "AppSecEngineer",
+      "channel_id": "UCzeWGp3WdLetPN7Lhph6S6g",
+      "view_count": 7410,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jLx4V0nx7lI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATewe9RqmZKHLBCWMlxcPDS0WDWg",
+      "youtube_url": "https://www.youtube.com/watch?v=jLx4V0nx7lI",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 593
+      },
+      "search_query": "cloud security architecture",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "OJkCmwhg2OE",
+      "title": "Endpoint security tutorial  | Understand endpoint security in less than 8 minutes",
+      "description": "Welcome to @cyberprofessional123 channel....!!!!!! In this video we will understand what is ",
+      "duration": "8:05",
+      "channel_name": "Cyberprofessional",
+      "channel_id": "UC-bmn9QGwRWIdVddxwa8brQ",
+      "view_count": 3947,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OJkCmwhg2OE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJL2LzTrxA_qKOy8hO_0vYe1jCWg",
+      "youtube_url": "https://www.youtube.com/watch?v=OJkCmwhg2OE",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 485
+      },
+      "search_query": "endpoint security solutions",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "GbFtSDnPZBQ",
+      "title": "What is SIEM? Security Information & Event Management Explained",
+      "description": "SIEM",
+      "duration": "4:24",
+      "channel_name": "Exabeam",
+      "channel_id": "UC8Ur9wIfXAtFNB-cMCPNY2g",
+      "view_count": 135833,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GbFtSDnPZBQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAwErQttNHNZ3QcT5jETtO-bMSINw",
+      "youtube_url": "https://www.youtube.com/watch?v=GbFtSDnPZBQ",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 264
+      },
+      "search_query": "security information and event management (SIEM)",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "Sy_c-s5fkcc",
+      "title": "Penetration Testing Methodology | Ethical Hacking for Beginners",
+      "description": "Take My Free 2.5 Hours Create Your Own VirtualBox Windows Server Lab from Scratch Course: ...",
+      "duration": "11:12",
+      "channel_name": "Instructor Alton",
+      "channel_id": "UCGQqv63CQL847iLDOwdZ3fA",
+      "view_count": 5250,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Sy_c-s5fkcc/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAr5OetPvGwoAbGJMuqHUmUBeOVdw",
+      "youtube_url": "https://www.youtube.com/watch?v=Sy_c-s5fkcc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 672
+      },
+      "search_query": "penetration testing methods",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "tf1NkpjPx1o",
+      "title": "VULNERABILITY ASSESSMENT EXPLAINED #CYBERSECURITY - EDUCATIONAL",
+      "description": "VULNERABILITY ASSESSMENT EXPLAINED",
+      "duration": "5:59",
+      "channel_name": "Tudell Tech TV",
+      "channel_id": "UCU8WnJKCzfnqg5BlNQlbQbw",
+      "view_count": 361,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tf1NkpjPx1o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDHuAjf7BQvXr9eRuhbRgI5QSA45g",
+      "youtube_url": "https://www.youtube.com/watch?v=tf1NkpjPx1o",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 359
+      },
+      "search_query": "vulnerability assessment explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "iLdsCnpMnTg",
+      "title": "Vulnerability Assessment course in 1 hour | vulnerability scanner | vulnerability scanning tools",
+      "description": "Learn How to Perform ",
+      "duration": "1:37:47",
+      "channel_name": "whitesec cyber security ",
+      "channel_id": "UC1YoWn9TDojkb9sav-bvykA",
+      "view_count": 33759,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iLdsCnpMnTg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAYyE5xf0VS4Y-9nbtdg1w9CPhMdw",
+      "youtube_url": "https://www.youtube.com/watch?v=iLdsCnpMnTg",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 5867
+      },
+      "search_query": "vulnerability assessment explained",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "-6z-dizJrc0",
+      "title": "COMPLETE Cybersecurity Roadmap",
+      "description": "COMPLETE ",
+      "duration": "0:47",
+      "channel_name": "Sajjaad Khader",
+      "channel_id": "UC7zZ2-Q_oxbUaoMVL0z51wg",
+      "view_count": 245977,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-6z-dizJrc0/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARg_IFEocjAP&rs=AOn4CLBxnoQxwjhlHZwmb8r4uUceTDWWDg",
+      "youtube_url": "https://www.youtube.com/watch?v=-6z-dizJrc0",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 47
+      },
+      "search_query": "cryptography basics for cybersecurity",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "L-9gmnwrba0",
+      "title": "3 biggest mobile security dangers EXPLAINED",
+      "description": "Your ",
+      "duration": "5:25",
+      "channel_name": "Cybernews",
+      "channel_id": "UCCsREoj8rSRkEvxWqxr74rQ",
+      "view_count": 9490,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/L-9gmnwrba0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdrzCjG_ycc1OmYcmu040N5D-2MA",
+      "youtube_url": "https://www.youtube.com/watch?v=L-9gmnwrba0",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 325
+      },
+      "search_query": "mobile device security",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "lJGmYl8erPw",
+      "title": "social engineering full course | social engineering toolkit full course in 1 hour",
+      "description": "in this course you will learn about ",
+      "duration": "1:25:06",
+      "channel_name": "whitesec cyber security ",
+      "channel_id": "UC1YoWn9TDojkb9sav-bvykA",
+      "view_count": 53156,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lJGmYl8erPw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCTxj3u8t9W9kA-iKlG7SF0qs2BKg",
+      "youtube_url": "https://www.youtube.com/watch?v=lJGmYl8erPw",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 5106
+      },
+      "search_query": "social engineering attacks",
+      "genre": "cybersecurity"
+    },
+    {
+      "video_id": "rt9iKCsUAMc",
+      "title": "Reason to use VPN: Benefits and Drawbacks Explained",
+      "description": "This is our special coupon for you that's not available through ExpressVPN directly. *Best Price: $4.99/mo with a 24-month plan ...",
+      "duration": "7:06",
+      "channel_name": "VPN Clan",
+      "channel_id": "UCTYgH1JoHOX4EDsRI0s1rag",
+      "view_count": 948,
+      "upload_date": "10 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rt9iKCsUAMc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAvroOC6OS4Z0yUKdL7xlVLqzik1Q",
+      "youtube_url": "https://www.youtube.com/watch?v=rt9iKCsUAMc",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 426
+      },
+      "search_query": "VPN usage and benefits",
+      "genre": "cybersecurity"
+    }
+  ],
+  "timestamp": "2025-06-14T09:09:42.857055",
+  "quality_stats": {
+    "avg_quality_score": 0.412,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.9,
+    "avg_view_count": 695312,
+    "total_view_count": 102210840,
+    "high_quality_count": 38,
+    "medium_quality_count": 88,
+    "basic_quality_count": 21
+  }
+}

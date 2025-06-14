@@ -38,6 +38,9 @@ class UserProfile(BaseModel):
     lastName: str
     subscription: Dict[str, Any]
     preferences: Dict[str, Any]
+    demographics: Optional[Dict[str, Any]] = None
+    learningPreferences: Optional[Dict[str, Any]] = None
+    behaviorPatterns: Optional[Dict[str, Any]] = None
     createdAt: datetime
     lastLogin: datetime
 
@@ -177,7 +180,22 @@ class UserService:
                     "preferences": {
                         "language": "en",
                         "theme": "light",
-                        "defaultSummaryLength": "detailed"
+                        "defaultSummaryLength": "detailed",
+                        "preferred_genres": [],
+                        "difficulty_preference": "adaptive",
+                        "content_length": "medium",
+                        "learning_style": "visual"
+                    },
+                    "demographics": {
+                        "age_group": None,
+                        "learning_goals": [],
+                        "time_availability": None
+                    },
+                    "behaviorPatterns": {
+                        "peak_learning_hours": None,
+                        "session_frequency": None,
+                        "completion_rate": 0,
+                        "genre_switching_pattern": "focused"
                     }
                 },
                 "subscription": {
@@ -532,7 +550,7 @@ def get_user_service() -> UserService:
     """Get user service instance"""
     global user_service
     if user_service is None:
-        mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+        mongodb_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
         user_service = UserService(mongodb_uri)
     return user_service
 

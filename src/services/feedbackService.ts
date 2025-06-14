@@ -31,26 +31,29 @@ export interface WatchlistData {
   notes?: string;
 }
 
+// Temporary mock data storage until new recommendation system is implemented
+const mockFeedbackData: Record<string, any> = {};
+const mockWatchlistData: Record<string, any[]> = {};
+
 export const feedbackService = {
-  // Submit feedback (rating, review, not interested)
+  // Submit feedback (rating, review, not interested) - Mock implementation
   async submitFeedback(feedbackData: FeedbackData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/feedback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(feedbackData),
-      });
+      console.log('📝 [Mock] Submitting feedback:', feedbackData);
       
-      const data = await response.json();
+      // Store in mock data
+      const key = `${feedbackData.userId}_${feedbackData.itemId}_${feedbackData.feedbackType}`;
+      mockFeedbackData[key] = {
+        ...feedbackData,
+        id: key,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
       
-      if (!response.ok) {
-        console.error('Feedback API error:', data);
-        throw new Error(data.error || 'Failed to submit feedback');
-      }
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      return { success: true, feedback: data.feedback };
+      return { success: true, feedback: mockFeedbackData[key] };
     } catch (error) {
       console.error('Error submitting feedback:', error);
       return { 
@@ -60,28 +63,23 @@ export const feedbackService = {
     }
   },
 
-  // Get user's feedback for items
+  // Get user's feedback for items - Mock implementation
   async getUserFeedback(userId: string, itemId?: string, feedbackType?: string) {
     try {
-      const params = new URLSearchParams({ userId });
-      if (itemId) params.append('itemId', itemId);
-      if (feedbackType) params.append('feedbackType', feedbackType);
-
-      const response = await fetch(`${API_BASE_URL}/feedback?${params.toString()}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      console.log('📖 [Mock] Getting user feedback:', { userId, itemId, feedbackType });
+      
+      // Filter mock data based on parameters
+      const filteredFeedback = Object.values(mockFeedbackData).filter(feedback => {
+        if (feedback.userId !== userId) return false;
+        if (itemId && feedback.itemId !== itemId) return false;
+        if (feedbackType && feedback.feedbackType !== feedbackType) return false;
+        return true;
       });
       
-      const data = await response.json();
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
       
-      if (!response.ok) {
-        console.error('Get feedback API error:', data);
-        throw new Error(data.error || 'Failed to get feedback');
-      }
-      
-      return { success: true, feedback: data.feedback };
+      return { success: true, feedback: filteredFeedback };
     } catch (error) {
       console.error('Error getting feedback:', error);
       return { 
@@ -91,26 +89,18 @@ export const feedbackService = {
     }
   },
 
-  // Remove feedback
+  // Remove feedback - Mock implementation
   async removeFeedback(feedbackId: string, userId: string) {
     try {
-      const params = new URLSearchParams({ feedbackId, userId });
-
-      const response = await fetch(`${API_BASE_URL}/feedback?${params.toString()}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      console.log('🗑️ [Mock] Removing feedback:', { feedbackId, userId });
       
-      const data = await response.json();
+      // Remove from mock data
+      delete mockFeedbackData[feedbackId];
       
-      if (!response.ok) {
-        console.error('Remove feedback API error:', data);
-        throw new Error(data.error || 'Failed to remove feedback');
-      }
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
       
-      return { success: true, message: data.message };
+      return { success: true, message: 'Feedback removed successfully' };
     } catch (error) {
       console.error('Error removing feedback:', error);
       return { 
@@ -120,45 +110,30 @@ export const feedbackService = {
     }
   },
 
-  // Add to watchlist
+  // Add to watchlist - Mock implementation
   async addToWatchlist(watchlistData: WatchlistData) {
     try {
-      console.log('🚀 [addToWatchlist] Sending data:', JSON.stringify(watchlistData, null, 2));
+      console.log('➕ [Mock] Adding to watchlist:', watchlistData);
       
-      const response = await fetch(`${API_BASE_URL}/watchlist`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(watchlistData),
-      });
+      // Create watchlist item
+      const watchlistItem = {
+        ...watchlistData,
+        id: `watchlist_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        createdAt: new Date().toISOString(),
+        status: 'pending',
+        completionPercentage: 0
+      };
       
-      console.log('📡 [addToWatchlist] Response status:', response.status, response.statusText);
-      console.log('📡 [addToWatchlist] Response headers:', Object.fromEntries(response.headers.entries()));
-      
-      let data;
-      try {
-        const responseText = await response.text();
-        console.log('📄 [addToWatchlist] Raw response text:', responseText);
-        
-        if (responseText) {
-          data = JSON.parse(responseText);
-        } else {
-          data = {};
-        }
-      } catch (parseError) {
-        console.error('❌ [addToWatchlist] JSON parse error:', parseError);
-        data = { error: 'Invalid response format' };
+      // Store in mock data
+      if (!mockWatchlistData[watchlistData.userId]) {
+        mockWatchlistData[watchlistData.userId] = [];
       }
+      mockWatchlistData[watchlistData.userId].push(watchlistItem);
       
-      console.log('📄 [addToWatchlist] Parsed response data:', JSON.stringify(data, null, 2));
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      if (!response.ok) {
-        console.error('Add to watchlist API error:', data);
-        throw new Error(data.error || `HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      return { success: true, watchlistItem: data.watchlistItem };
+      return { success: true, watchlistItem };
     } catch (error) {
       console.error('Error adding to watchlist:', error);
       return { 
@@ -168,32 +143,22 @@ export const feedbackService = {
     }
   },
 
-  // Remove from watchlist
+  // Remove from watchlist - Mock implementation
   async removeFromWatchlist(watchlistId: string, userId: string) {
     try {
-      const params = new URLSearchParams({ watchlistId, userId });
-      const url = `${API_BASE_URL}/watchlist?${params.toString()}`;
+      console.log('🗑️ [Mock] Removing from watchlist:', { watchlistId, userId });
       
-      console.log('Calling DELETE watchlist API:', { url, watchlistId, userId });
-
-      const response = await fetch(url, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      console.log('DELETE response status:', response.status, response.statusText);
-      
-      const data = await response.json();
-      console.log('DELETE response data:', data);
-      
-      if (!response.ok) {
-        console.error('Remove from watchlist API error:', data);
-        throw new Error(data.error || 'Failed to remove from watchlist');
+      // Remove from mock data
+      if (mockWatchlistData[userId]) {
+        mockWatchlistData[userId] = mockWatchlistData[userId].filter(
+          item => item.id !== watchlistId
+        );
       }
       
-      return { success: true, message: data.message };
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      return { success: true, message: 'Item removed from watchlist' };
     } catch (error) {
       console.error('Error removing from watchlist:', error);
       return { 
@@ -203,7 +168,7 @@ export const feedbackService = {
     }
   },
 
-  // Get user's watchlist
+  // Get user's watchlist - Mock implementation
   async getUserWatchlist(
     userId: string, 
     options: {
@@ -215,28 +180,41 @@ export const feedbackService = {
     } = {}
   ) {
     try {
-      const params = new URLSearchParams({ userId });
-      Object.entries(options).forEach(([key, value]) => {
-        if (value !== undefined) {
-          params.append(key, value.toString());
-        }
-      });
-
-      const response = await fetch(`${API_BASE_URL}/watchlist?${params.toString()}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      console.log('📚 [Mock] Getting user watchlist:', { userId, options });
       
-      const data = await response.json();
+      let watchlistItems = mockWatchlistData[userId] || [];
       
-      if (!response.ok) {
-        console.error('Get watchlist API error:', data);
-        throw new Error(data.error || 'Failed to get watchlist');
+      // Apply filters
+      if (options.status) {
+        watchlistItems = watchlistItems.filter(item => item.status === options.status);
+      }
+      if (options.itemType) {
+        watchlistItems = watchlistItems.filter(item => item.itemType === options.itemType);
       }
       
-      return { success: true, watchlistItems: data.watchlistItems };
+      // Apply sorting
+      if (options.sortBy) {
+        watchlistItems.sort((a, b) => {
+          const aVal = a[options.sortBy!];
+          const bVal = b[options.sortBy!];
+          const order = options.sortOrder === 'desc' ? -1 : 1;
+          return aVal > bVal ? order : aVal < bVal ? -order : 0;
+        });
+      }
+      
+      // Apply limit
+      if (options.limit) {
+        watchlistItems = watchlistItems.slice(0, options.limit);
+      }
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      return { 
+        success: true, 
+        watchlist: watchlistItems,
+        total: watchlistItems.length 
+      };
     } catch (error) {
       console.error('Error getting watchlist:', error);
       return { 
@@ -246,7 +224,7 @@ export const feedbackService = {
     }
   },
 
-  // Update watchlist item status
+  // Update watchlist item - Mock implementation
   async updateWatchlistItem(
     watchlistId: string, 
     userId: string, 
@@ -259,26 +237,24 @@ export const feedbackService = {
     }
   ) {
     try {
-      const response = await fetch(`${API_BASE_URL}/watchlist`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          watchlistId,
-          userId,
-          ...updates
-        }),
-      });
+      console.log('📝 [Mock] Updating watchlist item:', { watchlistId, userId, updates });
       
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error('Update watchlist API error:', data);
-        throw new Error(data.error || 'Failed to update watchlist item');
+      // Update in mock data
+      if (mockWatchlistData[userId]) {
+        const itemIndex = mockWatchlistData[userId].findIndex(item => item.id === watchlistId);
+        if (itemIndex !== -1) {
+          mockWatchlistData[userId][itemIndex] = {
+            ...mockWatchlistData[userId][itemIndex],
+            ...updates,
+            updatedAt: new Date().toISOString()
+          };
+        }
       }
       
-      return { success: true, watchlistItem: data.watchlistItem };
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 200));
+      
+      return { success: true, message: 'Watchlist item updated successfully' };
     } catch (error) {
       console.error('Error updating watchlist item:', error);
       return { 
@@ -288,46 +264,47 @@ export const feedbackService = {
     }
   },
 
-  // Check if item is in watchlist
+  // Check if item is in watchlist - Mock implementation
   async isInWatchlist(userId: string, itemId: string): Promise<boolean> {
     try {
-      const result = await this.getUserWatchlist(userId, { limit: 1000 });
-      if (result.success) {
-        // Only count active items (getUserWatchlist already filters by isActive: true)
-        return result.watchlistItems.some((item: any) => item.itemId === itemId && item.isActive !== false);
-      }
-      return false;
+      console.log('🔍 [Mock] Checking if in watchlist:', { userId, itemId });
+      
+      const userWatchlist = mockWatchlistData[userId] || [];
+      const isInWatchlist = userWatchlist.some(item => item.itemId === itemId);
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      return isInWatchlist;
     } catch (error) {
-      console.error('Error checking watchlist status:', error);
+      console.error('Error checking watchlist:', error);
       return false;
     }
   },
 
-  // Batch operations for handling multiple feedback at once
+  // Batch submit feedback - Mock implementation
   async batchSubmitFeedback(feedbackItems: FeedbackData[]) {
-    const results = await Promise.allSettled(
-      feedbackItems.map(item => this.submitFeedback(item))
-    );
-
-    const successful = results
-      .filter(result => result.status === 'fulfilled' && result.value.success)
-      .map(result => (result as PromiseFulfilledResult<any>).value);
-
-    const failed = results
-      .filter(result => result.status === 'rejected' || !result.value?.success)
-      .map((result, index) => ({ 
-        index, 
-        error: result.status === 'rejected' 
-          ? result.reason 
-          : (result as PromiseFulfilledResult<any>).value.error 
-      }));
-
-    return {
-      successful: successful.length,
-      failed: failed.length,
-      results: successful,
-      errors: failed
-    };
+    try {
+      console.log('📦 [Mock] Batch submitting feedback:', feedbackItems.length, 'items');
+      
+      const results = [];
+      for (const feedbackData of feedbackItems) {
+        const result = await this.submitFeedback(feedbackData);
+        results.push(result);
+      }
+      
+      return { 
+        success: true, 
+        results,
+        message: `Processed ${results.length} feedback items` 
+      };
+    } catch (error) {
+      console.error('Error batch submitting feedback:', error);
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Failed to batch submit feedback' 
+      };
+    }
   }
 };
 

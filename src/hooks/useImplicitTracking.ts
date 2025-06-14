@@ -1,170 +1,54 @@
-import { useCallback, useEffect } from 'react';
-import { useUser } from '@/contexts/UserContext';
-import { 
-  implicitTracker,
-  trackViewing,
-  trackSearch,
-  trackNavigation,
-  type ViewingTrackingData,
-  type SearchTrackingData
-} from '@/services/implicitTrackingService';
+// Mock useImplicitTracking hook - replaced the deleted advanced tracking system
+// This provides basic mock implementations to avoid build errors
 
-export function useImplicitTracking() {
-  const { user } = useUser();
+export interface SearchQueryTrackingData {
+  searchQuery: string;
+  searchType: string;
+  source: string;
+  sessionId: string;
+  device: string;
+  userAgent: string;
+  resultsFound: number;
+  resultsDisplayed: number;
+}
 
-  // Initialize tracking when user is available
-  useEffect(() => {
-    if (user) {
-      implicitTracker.setUserId(user.id);
-    }
-  }, [user]);
+export interface SearchClickTrackingData {
+  itemId: string;
+  itemType: string;
+  position: number;
+}
 
-  // Viewing tracking functions
-  const startViewing = useCallback(async (data: Omit<ViewingTrackingData, 'userId'>) => {
-    if (!user) return;
-    
-    return await trackViewing.start({
-      ...data,
-      userId: user.id,
-    });
-  }, [user]);
+export interface SearchRefineTrackingData {
+  refinementType: string;
+  refinementValue: string;
+}
 
-  const updateViewing = useCallback(async (data: {
-    itemId: string;
-    totalViewDuration: number;
-    completionPercentage: number;
-    pauseCount?: number;
-    seekCount?: number;
-    skipCount?: number;
-    replayCount?: number;
-    playbackSpeed?: number;
-    qualityChanges?: number;
-    bufferingEvents?: number;
-    fullScreenUsed?: boolean;
-    volumeAdjustments?: number;
-    captionsEnabled?: boolean;
-  }) => {
-    if (!user) return;
-    
-    return await trackViewing.update(data);
-  }, [user]);
+export const useImplicitTracking = () => {
+  // Mock implementations that don't actually track but prevent errors
+  const trackSearchQuery = async (data: SearchQueryTrackingData) => {
+    console.log('Mock search query tracking:', data);
+    // In a real implementation, this would send data to analytics
+  };
 
-  const endViewing = useCallback(async (data: {
-    itemId: string;
-    totalViewDuration: number;
-    completionPercentage: number;
-  }) => {
-    if (!user) return;
-    
-    return await trackViewing.end(data);
-  }, [user]);
+  const trackSearchClick = async (data: SearchClickTrackingData) => {
+    console.log('Mock search click tracking:', data);
+    // In a real implementation, this would track user clicks
+  };
 
-  // Search tracking functions
-  const trackSearchQuery = useCallback(async (data: Omit<SearchTrackingData, 'userId'>) => {
-    if (!user) return;
-    
-    return await trackSearch.search({
-      ...data,
-      userId: user.id,
-    });
-  }, [user]);
+  const trackSearchRefine = async (data: SearchRefineTrackingData) => {
+    console.log('Mock search refine tracking:', data);
+    // In a real implementation, this would track filter changes
+  };
 
-  const trackSearchClick = useCallback(async (data: {
-    itemId: string;
-    itemType: 'video' | 'playlist' | 'creator';
-    position: number;
-  }) => {
-    if (!user) return;
-    
-    return await trackSearch.clickResult(data);
-  }, [user]);
-
-  const trackSearchRefine = useCallback(async (data: {
-    refinementType: 'filter' | 'sort' | 'category' | 'duration';
-    refinementValue: string;
-  }) => {
-    if (!user) return;
-    
-    return await trackSearch.refine(data);
-  }, [user]);
-
-  const endSearch = useCallback(async (data?: { resultsScrollDepth?: number; abandoned?: boolean }) => {
-    if (!user) return;
-    
-    return await trackSearch.end(data);
-  }, [user]);
-
-  // Navigation tracking functions
-  const trackClick = useCallback(async (data: {
-    elementType: string;
-    elementId?: string;
-    elementText?: string;
-    coordinates?: { x: number; y: number };
-  }) => {
-    if (!user) return;
-    
-    return await trackNavigation.click(data);
-  }, [user]);
-
-  const trackContentInteraction = useCallback(async (data: {
-    interactionType: 'hover' | 'click' | 'bookmark' | 'share' | 'like' | 'dislike';
-    targetId: string;
-    targetType: 'video' | 'playlist' | 'creator' | 'category';
-    duration?: number;
-  }) => {
-    if (!user) return;
-    
-    return await trackNavigation.content(data);
-  }, [user]);
-
-  const trackCategoryExplore = useCallback(async (data: {
-    categoryId: string;
-    categoryName: string;
-    timeSpent: number;
-    itemsViewed: number;
-  }) => {
-    if (!user) return;
-    
-    return await trackNavigation.category(data);
-  }, [user]);
-
-  // Utility functions
-  const getSessionId = useCallback(() => {
-    return implicitTracker.getSessionId();
-  }, []);
-
-  const getPageInteractions = useCallback(() => {
-    return implicitTracker.getCurrentPageInteractions();
-  }, []);
-
-  const getScrollDepth = useCallback(() => {
-    return implicitTracker.getCurrentScrollDepth();
-  }, []);
+  const endSearch = async () => {
+    console.log('Mock end search tracking');
+    // In a real implementation, this would end the search session
+  };
 
   return {
-    // User info
-    userId: user?.id,
-    isTrackingEnabled: !!user,
-    
-    // Viewing tracking
-    startViewing,
-    updateViewing,
-    endViewing,
-    
-    // Search tracking
     trackSearchQuery,
     trackSearchClick,
     trackSearchRefine,
-    endSearch,
-    
-    // Navigation tracking
-    trackClick,
-    trackContentInteraction,
-    trackCategoryExplore,
-    
-    // Utilities
-    getSessionId,
-    getPageInteractions,
-    getScrollDepth,
+    endSearch
   };
-} 
+}; 

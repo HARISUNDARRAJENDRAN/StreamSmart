@@ -544,6 +544,6 @@ def get_admin_service() -> AdminService:
     """Get admin service instance"""
     global admin_service
     if admin_service is None:
-        mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017')
+        mongodb_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017')
         admin_service = AdminService(mongodb_uri)
     return admin_service 

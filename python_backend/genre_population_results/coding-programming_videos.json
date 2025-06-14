@@ -1,0 +1,3697 @@
+{
+  "genre": "coding-programming",
+  "target_count": 150,
+  "actual_count": 150,
+  "success": true,
+  "duration_seconds": 37.82,
+  "videos": [
+    {
+      "video_id": "McojvctVsUs",
+      "title": "C++ Tutorial For Beginners | C++ Programming | C++ | C++ Basics | C++ For Beginners | Simplilearn",
+      "description": "In this video on ",
+      "duration": "26:30",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 1159662,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/McojvctVsUs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbF3BSR7kKuoawdIqyJmXUObZEPQ",
+      "youtube_url": "https://www.youtube.com/watch?v=McojvctVsUs",
+      "quality_score": 0.9500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1590
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "W6NZfCO5SIk",
+      "title": "JavaScript Course for Beginners – Your First Step to Web Development",
+      "description": "Learn ",
+      "duration": "48:17",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 14102567,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/W6NZfCO5SIk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDOBWmb1XE5qRd1xinBxZPfYfXoEg",
+      "youtube_url": "https://www.youtube.com/watch?v=W6NZfCO5SIk",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 2897
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "pKd0Rpw7O48",
+      "title": "How to build a REST API with Node js & Express",
+      "description": "Want to learn more from me? Check out my blog and courses: Courses: https://codewithmosh.com Blog: ...",
+      "duration": "58:40",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 1848616,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/pKd0Rpw7O48/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLACYskcPJlWGP2wdhaq_fX5SseSRg",
+      "youtube_url": "https://www.youtube.com/watch?v=pKd0Rpw7O48",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3520
+      },
+      "search_query": "express programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "1xipg02Wu8s",
+      "title": "Flutter Basic Training - 12 Minute Bootcamp",
+      "description": "Get The FULL FlutterFire Course - Upgrade to PRO 30% off (expires 11/23) with code: ibTd664q #",
+      "duration": "12:09",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1213703,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1xipg02Wu8s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDU4pqELRqweqI4C2dBX-3GkThq4A",
+      "youtube_url": "https://www.youtube.com/watch?v=1xipg02Wu8s",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "bootcamp"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 729
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "PkZNo7MFNFg",
+      "title": "Learn JavaScript - Full Course for Beginners",
+      "description": "This complete 134-part ",
+      "duration": "3:26:43",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 19752118,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PkZNo7MFNFg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWGmAFXkqN3F-QqhVaqBWJY2ltFw",
+      "youtube_url": "https://www.youtube.com/watch?v=PkZNo7MFNFg",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 12403
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "8jLOx1hD3_o",
+      "title": "C++ Programming Course - Beginner to Advanced",
+      "description": "Learn modern ",
+      "duration": "31:07:30",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 6750469,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8jLOx1hD3_o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBHJT9d-W4K5yrkbq5yIwVOiWn7qg",
+      "youtube_url": "https://www.youtube.com/watch?v=8jLOx1hD3_o",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 112050
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "ZzaPdXTrSb8",
+      "title": "C++ Tutorial for Beginners - Learn C++ in 1 Hour",
+      "description": "Learn ",
+      "duration": "1:22:56",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 5212490,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZzaPdXTrSb8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA6nktB9woWNW8X_rG4hyqUqtsLHw",
+      "youtube_url": "https://www.youtube.com/watch?v=ZzaPdXTrSb8",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 4976
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "gfkTfcpWqAY",
+      "title": "C# Tutorial For Beginners - Learn C# Basics in 1 Hour",
+      "description": "Learn ",
+      "duration": "1:10:32",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 5492939,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gfkTfcpWqAY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC1Xf-_B4wVQzoBlWeQcU9jBLECEQ",
+      "youtube_url": "https://www.youtube.com/watch?v=gfkTfcpWqAY",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 4232
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "GhQdlIFylQ8",
+      "title": "C# Tutorial - Full Course for Beginners",
+      "description": "Follow along with the course and you'll be a ",
+      "duration": "4:31:09",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 8638690,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GhQdlIFylQ8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDMbK5afzQxm1aueZ-77eghAcLDcw",
+      "youtube_url": "https://www.youtube.com/watch?v=GhQdlIFylQ8",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 16269
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "KBT2gmAfav4",
+      "title": "Introduction To PHP | What Is PHP Programming | PHP Tutorial For Beginners | Simplilearn",
+      "description": "This Simplilearn video on Introduction to ",
+      "duration": "11:27",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 184415,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KBT2gmAfav4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZgaHMlCHc9R5kctaZCnAuYztARQ",
+      "youtube_url": "https://www.youtube.com/watch?v=KBT2gmAfav4",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 687
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HXV3zeQKqGY",
+      "title": "SQL Tutorial - Full Database Course for Beginners",
+      "description": "The course is designed for beginners to ",
+      "duration": "4:20:39",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 19721669,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HXV3zeQKqGY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDqd2jbSFzyQDvmezQaU6AtvYTDZw",
+      "youtube_url": "https://www.youtube.com/watch?v=HXV3zeQKqGY",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 15639
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "TlB_eWDSMt4",
+      "title": "Node.js Tutorial for Beginners: Learn Node in 1 Hour",
+      "description": "Learn ",
+      "duration": "1:18:16",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 6185106,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TlB_eWDSMt4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBJ8xFi3XlSEkQk3zW18IGcuasE6w",
+      "youtube_url": "https://www.youtube.com/watch?v=TlB_eWDSMt4",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 4696
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "F9UC9DY-vIU",
+      "title": "Kotlin Course - Tutorial for Beginners",
+      "description": "Learn the ",
+      "duration": "2:38:31",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1822083,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/F9UC9DY-vIU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDTyFPZZAxfaIMEqHsxu02z5J2E5w",
+      "youtube_url": "https://www.youtube.com/watch?v=F9UC9DY-vIU",
+      "quality_score": 0.85,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 9511
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "-MTSQjw5DrM",
+      "title": "RESTful APIs in 100 Seconds // Build an API from Scratch with Node.js Express",
+      "description": "Best comment wins a free T-shirt (read fine print at end of video) Open API Spec https://swagger.io/specification/ Request ...",
+      "duration": "11:20",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1678542,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-MTSQjw5DrM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCwzBTAbFVYlRSAzs17H4dXef_tag",
+      "youtube_url": "https://www.youtube.com/watch?v=-MTSQjw5DrM",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 680
+      },
+      "search_query": "express programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "KJgsSFOSQv0",
+      "title": "C Programming Tutorial for Beginners",
+      "description": "This course will give you a full introduction into all of the core concepts in the C ",
+      "duration": "3:46:13",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 17793751,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KJgsSFOSQv0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLChF6gN0z5RPKYjyehSstuLY5CYrg",
+      "youtube_url": "https://www.youtube.com/watch?v=KJgsSFOSQv0",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 13573
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "kqtD5dpn9C8",
+      "title": "Python for Beginners - Learn Coding with Python in 1 Hour",
+      "description": "Learn Python ",
+      "duration": "1:00:06",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 21916153,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kqtD5dpn9C8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD1iLVjsmE_gK2uZS887LgyThzx4Q",
+      "youtube_url": "https://www.youtube.com/watch?v=kqtD5dpn9C8",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 3606
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "nu_pCVPKzTk",
+      "title": "Full Stack Web Development for Beginners (Full Course on HTML, CSS, JavaScript, Node.js, MongoDB)",
+      "description": "Learn ",
+      "duration": "7:29:12",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 2625766,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/nu_pCVPKzTk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5yylJOFXOIds51SOZ-GwHe5mklA",
+      "youtube_url": "https://www.youtube.com/watch?v=nu_pCVPKzTk",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 26952
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "K5KVEU3aaeQ",
+      "title": "Python Full Course for Beginners [2025]",
+      "description": "Master ",
+      "duration": "2:02:21",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 1454292,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/K5KVEU3aaeQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXbPvWkQhvRSOYWD6mp9EVbfWSYg",
+      "youtube_url": "https://www.youtube.com/watch?v=K5KVEU3aaeQ",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 7341
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "_uQrJ0TkZlc",
+      "title": "Python Full Course for Beginners",
+      "description": "Learn ",
+      "duration": "6:14:07",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 44700547,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_uQrJ0TkZlc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCQfkbApoaN-_QBOuiyHzWJOiziEA",
+      "youtube_url": "https://www.youtube.com/watch?v=_uQrJ0TkZlc",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 22447
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "eIrMbAQSU34",
+      "title": "Java Full Course for Beginners",
+      "description": "Master ",
+      "duration": "2:30:48",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 12527978,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eIrMbAQSU34/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZ-5SP5wuVnGYWUnN5zBFVT7qieQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eIrMbAQSU34",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 9048
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "A74TOX803D0",
+      "title": "Java Programming for Beginners – Full Course",
+      "description": "✏️ Farhan Hasin Chowdhury created this course. Replit provided a grant that make this course possible.",
+      "duration": "4:11:00",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1612138,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/A74TOX803D0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGmz_YVYwHWpnUf8U-_FNZShSEvw",
+      "youtube_url": "https://www.youtube.com/watch?v=A74TOX803D0",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 15060
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "GoXwIVyNvX0",
+      "title": "Intro to Java Programming - Course for Absolute Beginners",
+      "description": "Java",
+      "duration": "3:48:25",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 3810834,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GoXwIVyNvX0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBH80tKrraZFyx2zIhYtxTG8zhfFA",
+      "youtube_url": "https://www.youtube.com/watch?v=GoXwIVyNvX0",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 13705
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "aZb0iu4uGwA",
+      "title": "C Language Tutorial for Beginners (With Notes + Surprise) 🔥",
+      "description": "Note: Scroll to the bottom of the page to download the Handbook Timestamps ⌚ 00:00:00 Story of CRK 00:04:37 Chapter 0 ...",
+      "duration": "10:03:19",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 4009125,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aZb0iu4uGwA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvZyniYLgPEixvkPjlqj_5tJmYAw",
+      "youtube_url": "https://www.youtube.com/watch?v=aZb0iu4uGwA",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 36199
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "OK_JCtrrv-c",
+      "title": "PHP Programming Language Tutorial - Full Course",
+      "description": "Learn the ",
+      "duration": "4:36:39",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 4054873,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OK_JCtrrv-c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBvAzjyO06ZHMR1cdvagNJZt88rOw",
+      "youtube_url": "https://www.youtube.com/watch?v=OK_JCtrrv-c",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 16599
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "1SnPKhCdlsU",
+      "title": "Php Tutorial for Beginners in Hindi with MySQL Project",
+      "description": "Best Hindi Videos For Learning ",
+      "duration": "2:33:45",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 3373650,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1SnPKhCdlsU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBns4FhOi2S3SmgSNhb_1sdo_EedA",
+      "youtube_url": "https://www.youtube.com/watch?v=1SnPKhCdlsU",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 9225
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "7S_tz1z_5bA",
+      "title": "SQL Course for Beginners [Full Course]",
+      "description": "Master ",
+      "duration": "3:10:19",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 13012175,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7S_tz1z_5bA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlohTYZhQDSWG32v6EfxEUlv6wqA",
+      "youtube_url": "https://www.youtube.com/watch?v=7S_tz1z_5bA",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 11419
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "SqcY0GlETPk",
+      "title": "React Tutorial for Beginners",
+      "description": "Master ",
+      "duration": "1:20:04",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 4623571,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SqcY0GlETPk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLChbr7yRBFhR7K-rqbSJIbfKCCnzQ",
+      "youtube_url": "https://www.youtube.com/watch?v=SqcY0GlETPk",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 4804
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "rHux0gMZ3Eg",
+      "title": "Django Tutorial for Beginners – Build Powerful Backends",
+      "description": "Learn ",
+      "duration": "1:02:36",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 3052854,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/rHux0gMZ3Eg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAr3nxFCcHFmhDXb2VpWGh6g_1nLQ",
+      "youtube_url": "https://www.youtube.com/watch?v=rHux0gMZ3Eg",
+      "quality_score": 0.7999999999999999,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 3756
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "BpPEoZW5IiY",
+      "title": "Learn Rust Programming - Complete Course 🦀",
+      "description": "In this ",
+      "duration": "13:59:10",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 924429,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BpPEoZW5IiY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAsFRfwZRm4r_etks4JWwEQJdPmVg",
+      "youtube_url": "https://www.youtube.com/watch?v=BpPEoZW5IiY",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 50350
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Z3EpnGi52tE",
+      "title": "C# Basics | C# For Beginners | What Is C# Programming Language | C# Tutorial | Simplilearn",
+      "description": "This C# tutorial explains the C# Basics. Beginners will learn everything there is to know about what is ",
+      "duration": "27:48",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 84550,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Z3EpnGi52tE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDSdBAk-jw3MtM75qac7r8Y128oww",
+      "youtube_url": "https://www.youtube.com/watch?v=Z3EpnGi52tE",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1668
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "EExSSotojVI",
+      "title": "Learn Kotlin Programming – Full Course for Beginners",
+      "description": "In this full ",
+      "duration": "13:18:56",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 941741,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/EExSSotojVI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAHDcXBThNnZEwAVsKYKqXUTDBq3g",
+      "youtube_url": "https://www.youtube.com/watch?v=EExSSotojVI",
+      "quality_score": 0.7500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 47936
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "8KaJRw-rfn8",
+      "title": "What Is Full Stack? | Full Stack Developer | What Is Full Stack Web Development |Simplilearn",
+      "description": "Full Stack",
+      "duration": "7:05",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 484618,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8KaJRw-rfn8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAN4UXmJhAo04Hpka3fu6X-r9KYiQ",
+      "youtube_url": "https://www.youtube.com/watch?v=8KaJRw-rfn8",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 425
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "FLtqAi7WNBY",
+      "title": "Software Design Tutorial #1 - Software Engineering & Software Architecture",
+      "description": "In this video I will be teaching you the basics of designing software systems like a ",
+      "duration": "40:43",
+      "channel_name": "Tech With Tim",
+      "channel_id": "UC4JX40jDee_tINbkjycV4Sg",
+      "view_count": 325006,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FLtqAi7WNBY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBxmBu_b_1tpWI2wORVgIxVIK4cKA",
+      "youtube_url": "https://www.youtube.com/watch?v=FLtqAi7WNBY",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2443
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "hKB-YGF14SY",
+      "title": "JavaScript Tutorial In Hindi",
+      "description": "00:00 – Video Introduction 01:10 – ",
+      "duration": "3:44:17",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 7162258,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hKB-YGF14SY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDaYvr0TwbQEg2_vZhrKVkByf5hNQ",
+      "youtube_url": "https://www.youtube.com/watch?v=hKB-YGF14SY",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 13457
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "SuLiu5AK9Ps",
+      "title": "C# Tutorial In Hindi",
+      "description": "In this ",
+      "duration": "2:33:23",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 2371861,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SuLiu5AK9Ps/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAXsl0tNrpRCpLDECd6FeS29SCwZQ",
+      "youtube_url": "https://www.youtube.com/watch?v=SuLiu5AK9Ps",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 9203
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "t_ispmWmdjY",
+      "title": "Ruby Programming Language - Full Course",
+      "description": "Learn the ",
+      "duration": "4:02:51",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1166262,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/t_ispmWmdjY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5FKlz__Yuq1PPEW33Ryvf4kpnHA",
+      "youtube_url": "https://www.youtube.com/watch?v=t_ispmWmdjY",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14571
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "BLl32FvcdVM",
+      "title": "Node Js Tutorial in Hindi 🔥🔥",
+      "description": "NodeJs",
+      "duration": "1:48:50",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 2189610,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BLl32FvcdVM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBz-0APt-D3UhsWez5fc4po1Djpnw",
+      "youtube_url": "https://www.youtube.com/watch?v=BLl32FvcdVM",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 6530
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "nGIg40xs9e4",
+      "title": "Learn Django in 20 Minutes!!",
+      "description": "Learn how to build a simple ",
+      "duration": "21:25",
+      "channel_name": "Tech With Tim",
+      "channel_id": "UC4JX40jDee_tINbkjycV4Sg",
+      "view_count": 609241,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/nGIg40xs9e4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCvZLGv6ELl859-3dyiwdMg7fkUUQ",
+      "youtube_url": "https://www.youtube.com/watch?v=nGIg40xs9e4",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1285
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "PtQiiknWUcI",
+      "title": "Python Django 7 Hour Course",
+      "description": "Timestamps: 00:00 - Intro 1:10 - Product Demo 4:04 - Prerequisites 5:27 - What is ",
+      "duration": "7:10:05",
+      "channel_name": "Traversy Media",
+      "channel_id": "UC29ju8bIPH5as8OGnQzwJyA",
+      "view_count": 2041390,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PtQiiknWUcI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCkeuGALY2ts5-8wpoxE080Ax9tTQ",
+      "youtube_url": "https://www.youtube.com/watch?v=PtQiiknWUcI",
+      "quality_score": 0.75,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 25805
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "YT8s-90oDC0",
+      "title": "Advanced C# Programming Course",
+      "description": "Learn advanced ",
+      "duration": "15:07:55",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 775982,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YT8s-90oDC0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCw8z_rI6HvDq0BzMVHXSjCpi4smg",
+      "youtube_url": "https://www.youtube.com/watch?v=YT8s-90oDC0",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 54475
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "YrtFtdTTfv0",
+      "title": "Learn C# Programming – Full Course with Mini-Projects",
+      "description": "This complete C# tutorial for beginners will take you from the basics of ",
+      "duration": "8:17:11",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 786380,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YrtFtdTTfv0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrWDbz6xwv4nk6A6-prof1U6g4jg",
+      "youtube_url": "https://www.youtube.com/watch?v=YrtFtdTTfv0",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 29831
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "6Vi_7R-BHPI",
+      "title": "What Is Ruby On Rails? | Ruby On Rails For Beginners | Ruby Programming Language | Simplilearn",
+      "description": "This video on What is ",
+      "duration": "7:21",
+      "channel_name": "Simplilearn",
+      "channel_id": "UCsvqVGtbbyHaMoevxPAq9Fg",
+      "view_count": 84854,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6Vi_7R-BHPI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiHyg0nqs58YVCA3I05TE316kJLA",
+      "youtube_url": "https://www.youtube.com/watch?v=6Vi_7R-BHPI",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 441
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "AeC4G-H-MQA",
+      "title": "Kotlin Programming Fundamentals Tutorial - Full Course",
+      "description": "Learn programming fundamentals using the ",
+      "duration": "4:09:58",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 105902,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/AeC4G-H-MQA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZYtS-zho1Rr_gK2VMZJIwfxLiyQ",
+      "youtube_url": "https://www.youtube.com/watch?v=AeC4G-H-MQA",
+      "quality_score": 0.7000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14998
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "ix5jPkxsr7M",
+      "title": "C Programming Language - Intro to Computer Science - Harvard's CS50 (2018)",
+      "description": "Learn the the basics of the ",
+      "duration": "2:13:17",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 1133714,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ix5jPkxsr7M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDe62II7X74gVLoXDNktcJ1Kf81ug",
+      "youtube_url": "https://www.youtube.com/watch?v=ix5jPkxsr7M",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7997
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "PaPN51Mm5qQ",
+      "title": "Learn C Programming and OOP with Dr. Chuck [feat. classic book by Kernighan and Ritchie]",
+      "description": "In this complete ",
+      "duration": "18:35:20",
+      "channel_name": "freeCodeCamp.org",
+      "channel_id": "UC8butISFwT-Wl7EV0hUK0BQ",
+      "view_count": 473856,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PaPN51Mm5qQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDt8vHtDC61cHyXdDX-3oz-NkTf1w",
+      "youtube_url": "https://www.youtube.com/watch?v=PaPN51Mm5qQ",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 66920
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "J6mDkcqU_ZE",
+      "title": "MongoDB Tutorial in 1 Hour (2024) 🍃",
+      "description": "Register for Atlas: https://www.",
+      "duration": "1:22:57",
+      "channel_name": "CodeWithHarry",
+      "channel_id": "UCeVMnSShP_Iviwkknt83cww",
+      "view_count": 977322,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J6mDkcqU_ZE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDr4LaC12bDMcoo4BJsmJpJ58bw7g",
+      "youtube_url": "https://www.youtube.com/watch?v=J6mDkcqU_ZE",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4977
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "G6D9cBaLViA",
+      "title": "Learn React With This ONE Project",
+      "description": "In this video, you'll learn ",
+      "duration": "1:39:30",
+      "channel_name": "Tech With Tim",
+      "channel_id": "UC4JX40jDee_tINbkjycV4Sg",
+      "view_count": 353910,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/G6D9cBaLViA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA6NRTbKZpNi3a4csPdmFXw5lfNpA",
+      "youtube_url": "https://www.youtube.com/watch?v=G6D9cBaLViA",
+      "quality_score": 0.6500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 5970
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HIj8wU_rGIU",
+      "title": "How to Start Coding | Programming for Beginners | Learn Coding | Intellipaat",
+      "description": "If you've enjoyed this how to start ",
+      "duration": "33:08",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 10261519,
+      "upload_date": "Streamed 5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HIj8wU_rGIU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDoT8ykDDfKA677GnAeyhfsakDbHQ",
+      "youtube_url": "https://www.youtube.com/watch?v=HIj8wU_rGIU",
+      "quality_score": 0.65,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1988
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "kbKty5ZVKMY",
+      "title": "Learn Basic SQL in 15 Minutes | Business Intelligence For Beginners | SQL Tutorial For Beginners 1/3",
+      "description": "In this ",
+      "duration": "17:40",
+      "channel_name": "Adam Finer - Learn BI Online",
+      "channel_id": "UC1bhYMFuSFREIQ5bgclLDkQ",
+      "view_count": 2614372,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kbKty5ZVKMY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD4hVVUoOXUgLBVnKlm-OgpzV5NDA",
+      "youtube_url": "https://www.youtube.com/watch?v=kbKty5ZVKMY",
+      "quality_score": 0.65,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1060
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "zsjvFFKOm3c",
+      "title": "SQL Explained in 100 Seconds",
+      "description": "Learn the fundamentals of Structured Query Language ",
+      "duration": "2:23",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1130665,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zsjvFFKOm3c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCjYKKg0u5_vydxeUzPQkVs9TpwAg",
+      "youtube_url": "https://www.youtube.com/watch?v=zsjvFFKOm3c",
+      "quality_score": 0.65,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 143
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "3s0lFtUrhSQ",
+      "title": "All SQL Fundamentals Explained in 10 Minutes | Learn SQL Basics for Beginners | SQL Crash Course",
+      "description": "Learn ",
+      "duration": "10:55",
+      "channel_name": "Learn with Whiteboard",
+      "channel_id": "UCF-uUxo43IPpnEwnR62WGlA",
+      "view_count": 131666,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3s0lFtUrhSQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCgXcmMkUHAH59M5TNH0yKxIdY9lw",
+      "youtube_url": "https://www.youtube.com/watch?v=3s0lFtUrhSQ",
+      "quality_score": 0.6000000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "explained",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 655
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "WR1ydijTx5E",
+      "title": "How I Learned to Code in 4 Months & Got a Job! (No CS Degree, No Bootcamp)",
+      "description": "I went from being a college dropout with zero technical skills to landing a software developer job in 4 months. This video is about ...",
+      "duration": "9:51",
+      "channel_name": "Tim Kim",
+      "channel_id": "UCQTmoQ_S26PlmDoXujZpbYQ",
+      "view_count": 7712049,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WR1ydijTx5E/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBs8Kxym5NgHrDMdy9OuiwBgVRaVQ",
+      "youtube_url": "https://www.youtube.com/watch?v=WR1ydijTx5E",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn",
+          "bootcamp"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 591
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "a7_WFUlFS94",
+      "title": "PHP in 100 Seconds",
+      "description": "#",
+      "duration": "2:21",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1516893,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/a7_WFUlFS94/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDO7qkVvLu3DpdWFBkpXgfapY2O3g",
+      "youtube_url": "https://www.youtube.com/watch?v=a7_WFUlFS94",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 141
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "-bt_y4Loofg",
+      "title": "MongoDB in 100 Seconds",
+      "description": "I collaborated with the team behind ",
+      "duration": "2:27",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1254995,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/-bt_y4Loofg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCY1BELABU4-V6MplgpmWIBfb2ODQ",
+      "youtube_url": "https://www.youtube.com/watch?v=-bt_y4Loofg",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 147
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Tn6-PIqc4UM",
+      "title": "React in 100 Seconds",
+      "description": "#",
+      "duration": "2:08",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1585787,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Tn6-PIqc4UM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDJFW0Yti88CQhc6f9uOl6noNZZag",
+      "youtube_url": "https://www.youtube.com/watch?v=Tn6-PIqc4UM",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 128
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "xT8oP0wy-A0",
+      "title": "Kotlin in 100 Seconds",
+      "description": "Kotlin",
+      "duration": "2:22",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 1411590,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xT8oP0wy-A0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD7OAOFM5DzSNYiDiPlNF_67gWhMw",
+      "youtube_url": "https://www.youtube.com/watch?v=xT8oP0wy-A0",
+      "quality_score": 0.6,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 142
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "yyUHQIec83I",
+      "title": "Golang Tutorial for Beginners | Full Go Course",
+      "description": "Full Golang ",
+      "duration": "3:24:59",
+      "channel_name": "TechWorld with Nana",
+      "channel_id": "UCdngmbVKX1Tgre699-XLlUA",
+      "view_count": 2165365,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yyUHQIec83I/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB4_rRdt_HVFu53B1PXgj63C1oscA",
+      "youtube_url": "https://www.youtube.com/watch?v=yyUHQIec83I",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 12299
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HcOc7P5BMi4",
+      "title": "HTML Tutorial for Beginners | Complete HTML with Notes & Code",
+      "description": "Early bird offer for first 5000 students only! International Student (payment link) - https://buy.stripe.com/7sI00cdru0tg10saEQ ...",
+      "duration": "2:06:00",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 22867949,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HcOc7P5BMi4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDhPX6wxKBrgd2wX8UgbzrzKb5Jdw",
+      "youtube_url": "https://www.youtube.com/watch?v=HcOc7P5BMi4",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 7560
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "poo0BXryffI",
+      "title": "JavaScript tutorial for Beginners in Tamil | DOM Explained | Mini Project in JavaScript",
+      "description": "Timestamps: 00:00 - Intro 00:52 - Course Preview 01:24 - ",
+      "duration": "4:35:10",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 1681574,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/poo0BXryffI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfAjlcBChqEu46vRcPwF3oHl9B_g",
+      "youtube_url": "https://www.youtube.com/watch?v=poo0BXryffI",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "explained",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 16510
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "EerdGm-ehJQ",
+      "title": "JavaScript Tutorial Full Course - Beginner to Pro",
+      "description": "Lessons: 00:00:00 Intro 00:02:01 1 ",
+      "duration": "22:15:57",
+      "channel_name": "SuperSimpleDev",
+      "channel_id": "UCB6dvaWu0N8uVq2yKsZ5s5g",
+      "view_count": 5305753,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/EerdGm-ehJQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAtpmIt8UMZuTOaZiwKYX_n1F3twg",
+      "youtube_url": "https://www.youtube.com/watch?v=EerdGm-ehJQ",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 80157
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "UmnCZ7-9yDY",
+      "title": "Java Tutorial for Beginners | Learn Java in 2 Hours",
+      "description": "Timestamps:- 0:00 Introduction Install ",
+      "duration": "2:04:35",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 8008518,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UmnCZ7-9yDY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDnhoaaZL8D-7bAcecmMqMe1ffThw",
+      "youtube_url": "https://www.youtube.com/watch?v=UmnCZ7-9yDY",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 7475
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "RRubcjpTkks",
+      "title": "Learn Java in 14 Minutes (seriously)",
+      "description": "If you do, you will walk away as a better ",
+      "duration": "14:00",
+      "channel_name": "Alex Lee",
+      "channel_id": "UC_fFL5jgoCOrwAVoM_fBYwA",
+      "view_count": 5152046,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/RRubcjpTkks/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDob_TewW89KyBdkjPjOQeUYXHrDw",
+      "youtube_url": "https://www.youtube.com/watch?v=RRubcjpTkks",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 840
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "e7sAf4SbS_g",
+      "title": "Complete C++ Tutorial in One Shot 2023 | Beginner To Advance | Basics Of C++ Programming",
+      "description": "Would you like to learn all about the basics of the ",
+      "duration": "11:44:22",
+      "channel_name": "College Wallah",
+      "channel_id": "UCDrf0V4fcBr5FlCtKwvpfwA",
+      "view_count": 3736895,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/e7sAf4SbS_g/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_p3lkeNeKwkhRHrLxsL2R-iNMZg",
+      "youtube_url": "https://www.youtube.com/watch?v=e7sAf4SbS_g",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 42262
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "fmSnLiAv-zc",
+      "title": "C Programming for Beginners in Tamil | Complete Course | code io - Tamil",
+      "description": "Hi Squad… We have launched IDK our own software to write and compile code. It comes built-in with compilers for multiple ...",
+      "duration": "6:30:20",
+      "channel_name": "code io - Tamil",
+      "channel_id": "UCGoLw0tC_QAXy0b4KCoxYZw",
+      "view_count": 1673613,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fmSnLiAv-zc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCwJydzGQIEmemDJUMdXFm5-iw6_g",
+      "youtube_url": "https://www.youtube.com/watch?v=fmSnLiAv-zc",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 23420
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "5Bn8h6Id14U",
+      "title": "Learn C Programming In Tamil | Complete C Tutorial in One Video Tamil",
+      "description": "#tutorjoes #tamil #tjc Time Stamps 00:00:00 - Introduction 00:01:37 - install Code Blocks For ",
+      "duration": "7:45:34",
+      "channel_name": "Tutor Joe's Stanley",
+      "channel_id": "UC30KMy77vMwgJ_O2HmS7JHA",
+      "view_count": 1705939,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5Bn8h6Id14U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDRMjhPuqdXyXz7elo1EO0qOisChQ",
+      "youtube_url": "https://www.youtube.com/watch?v=5Bn8h6Id14U",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 27934
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "c2M-rlkkT5o",
+      "title": "Learn MongoDB in 1 Hour 🍃",
+      "description": "MongoDB",
+      "duration": "1:00:00",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 1475674,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/c2M-rlkkT5o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBBoxR0nF8luSzUblscwPENuHv_lA",
+      "youtube_url": "https://www.youtube.com/watch?v=c2M-rlkkT5o",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3600
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "wIyHSOugGGw",
+      "title": "Every React Concept Explained in 12 Minutes",
+      "description": "Chapters 0:00 - Intro 0:11 - Components 0:29 - JSX 1:02 - Curly Braces 1:29 - Fragments 1:49 - Props 2:20 - Children 2:54 - Keys ...",
+      "duration": "11:53",
+      "channel_name": "Code Bootcamp",
+      "channel_id": "UC-kHm7pG884IYQiYwqJWv9A",
+      "view_count": 1252097,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/wIyHSOugGGw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-VFABDYtJgeNddxhu-cEuGOcHUQ",
+      "youtube_url": "https://www.youtube.com/watch?v=wIyHSOugGGw",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 713
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "OTmQOjsl0eg",
+      "title": "Django Tutorial for Beginners | Full Course",
+      "description": "Check out our courses: AI Powered DevOps with AWS - Live Course :- https://go.telusko.com/AIDevOps-AWS Coupon: ...",
+      "duration": "3:09:21",
+      "channel_name": "Telusko",
+      "channel_id": "UC59K-uG2A5ogwIrHw4bmlEg",
+      "view_count": 2001192,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OTmQOjsl0eg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDXs6uGtKgF7nEMTwhDESCUD9d3fg",
+      "youtube_url": "https://www.youtube.com/watch?v=OTmQOjsl0eg",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 11361
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "irqbmMNs2Bo",
+      "title": "C Language Tutorial for Beginners (with Notes & Practice Questions)",
+      "description": "Early bird offer for first 5000 students only! International Student (payment link) - https://buy.stripe.com/7sI00cdru0tg10saEQ ...",
+      "duration": "10:32:07",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 41794155,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/irqbmMNs2Bo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDMHBqTNGuQySW18wxlOZMhJoCQ5A",
+      "youtube_url": "https://www.youtube.com/watch?v=irqbmMNs2Bo",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 37927
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "zutb5Clb_0Y",
+      "title": "HTML Full Course Tutorial for Beginners - Learn EVERYTHING You Need to Know in Detail 🔍",
+      "description": "The Best Beginners HTML ",
+      "duration": "5:25:53",
+      "channel_name": "Future Fullstack",
+      "channel_id": "UC27LTkDYWSr7SkM6LdzlVlg",
+      "view_count": 257569,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zutb5Clb_0Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCp3DK0Prpu4In1JV4Xa7U069ILeg",
+      "youtube_url": "https://www.youtube.com/watch?v=zutb5Clb_0Y",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 19553
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "ZxKM3DCV2kE",
+      "title": "Full Course Web Development [22 Hours] | Learn Full Stack Web Development From Scratch",
+      "description": "This is ",
+      "duration": "21:48:35",
+      "channel_name": "Mehul - Codedamn",
+      "channel_id": "UCJUmE61LxhbhudzUugHL2wQ",
+      "view_count": 2505866,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZxKM3DCV2kE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBkFBoqbuSOzHUP-h_85OZ6bGQzRA",
+      "youtube_url": "https://www.youtube.com/watch?v=ZxKM3DCV2kE",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 78515
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HVjjoMvutj4",
+      "title": "Full Stack \"Web Development\" Full Course - in 28 Hours | Learn Web Developer in 2025 with Projects",
+      "description": "Full Stack",
+      "duration": "28:16:48",
+      "channel_name": "WsCube Tech",
+      "channel_id": "UC0T6MVd3wQDB5ICAe45OxaQ",
+      "view_count": 2974567,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HVjjoMvutj4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlM0-f5aqqZG89apPsB9InUUn_LQ",
+      "youtube_url": "https://www.youtube.com/watch?v=HVjjoMvutj4",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 101808
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "fWjsdhR3z3c",
+      "title": "Learn Python in Less than 10 Minutes for Beginners (Fast & Easy)",
+      "description": "In this crash course I'll be teaching you the basics of ",
+      "duration": "10:30",
+      "channel_name": "Indently",
+      "channel_id": "UCuudpdbKmQWq2PPzYgVCWlA",
+      "view_count": 809670,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fWjsdhR3z3c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBWamJZbnevfLEYEK0k5mhW1R6s6A",
+      "youtube_url": "https://www.youtube.com/watch?v=fWjsdhR3z3c",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 630
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "VlPiVmYuoqw",
+      "title": "JavaScript Tutorial (2024) for Beginners to Pro (with Notes, Projects & Practice Questions)",
+      "description": "Time stamp Introduction 00:00:00 Variables and data types 00:01:25 Operators 01:21:18 Loops 02:30:37 Arrays 03:43:30 ...",
+      "duration": "11:47:14",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 4652717,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VlPiVmYuoqw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAQ-84koy6tL6gVcuSdM6EhiYtJuQ",
+      "youtube_url": "https://www.youtube.com/watch?v=VlPiVmYuoqw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 42434
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "FtaQSdrl7YA",
+      "title": "JavaScript Tutorial for Beginners [JS Crash Course]",
+      "description": "JavaScript Tutorial",
+      "duration": "1:37:14",
+      "channel_name": "TechWorld with Nana",
+      "channel_id": "UCdngmbVKX1Tgre699-XLlUA",
+      "view_count": 350119,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/FtaQSdrl7YA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCf3UYI3IEcx9UnGeA4fX5HZ4PX5g",
+      "youtube_url": "https://www.youtube.com/watch?v=FtaQSdrl7YA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 5834
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Ihy0QziLDf0",
+      "title": "JavaScript tutorial for beginners 🌐",
+      "description": "JavaScript",
+      "duration": "12:03",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 495751,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Ihy0QziLDf0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDYATJUdLXiHJJLuRanAYJGNQubRA",
+      "youtube_url": "https://www.youtube.com/watch?v=Ihy0QziLDf0",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 723
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "UYm0kfnRTJk",
+      "title": "Ruby in 100 Seconds",
+      "description": "Ruby",
+      "duration": "2:37",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 897016,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UYm0kfnRTJk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlEsPXQM3vx5j6F9fR_Mrk8_uSVA",
+      "youtube_url": "https://www.youtube.com/watch?v=UYm0kfnRTJk",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 157
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "xyDoP5a_dvo",
+      "title": "Masterclass | Ruby Programming in 1 video | Beginners Ruby HandsOn Crash Course  Interview FAQs |",
+      "description": "47:12 ",
+      "duration": "49:35",
+      "channel_name": "Automation Step by Step",
+      "channel_id": "UCTt7pyY-o0eltq14glaG5dg",
+      "view_count": 45810,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xyDoP5a_dvo/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLQ7YSFNv2XU_NF8m2y8lbUJOMGw",
+      "youtube_url": "https://www.youtube.com/watch?v=xyDoP5a_dvo",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner",
+          "masterclass"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 2975
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "2DvrRadXwWY",
+      "title": "Ruby on Rails in 100 Seconds",
+      "description": "Ruby",
+      "duration": "3:33",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 548310,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2DvrRadXwWY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCmpzYGi0j5qcgrKMjoNLM6jhDfNA",
+      "youtube_url": "https://www.youtube.com/watch?v=2DvrRadXwWY",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 213
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "hlGoQC332VM",
+      "title": "SQL - Complete Course in 3 Hours | SQL One Shot using MySQL",
+      "description": "Early bird offer for first 5000 students only! International Student (payment link) - https://buy.stripe.com/7sI00cdru0tg10saEQ ...",
+      "duration": "3:16:14",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 12914373,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hlGoQC332VM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhnXHKBX0eUpJFvPZpHukRKh7xtQ",
+      "youtube_url": "https://www.youtube.com/watch?v=hlGoQC332VM",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 11774
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "N3AkSS5hXMA",
+      "title": "What Is React (React js) & Why Is It So Popular?",
+      "description": "Want to learn more from me? Check out my blog and courses: Courses: https://codewithmosh.com Blog: ...",
+      "duration": "4:33",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 911081,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/N3AkSS5hXMA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAo7nlXXQ4By-zMOzw7jG5yq6fjFQ",
+      "youtube_url": "https://www.youtube.com/watch?v=N3AkSS5hXMA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 273
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "uVwtVBpw7RQ",
+      "title": "What is Node js?",
+      "description": "Want to learn more from me? Check out my blog and courses: Courses: https://codewithmosh.com Blog: ...",
+      "duration": "3:43",
+      "channel_name": "Programming with Mosh",
+      "channel_id": "UCWv7vMbMWH4-V0ZXdmDpPBA",
+      "view_count": 935858,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uVwtVBpw7RQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_x0nA8eMxWzLoODm87O_cbdCoSA",
+      "youtube_url": "https://www.youtube.com/watch?v=uVwtVBpw7RQ",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 223
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "lHhRhPV--G0",
+      "title": "Flutter in 100 seconds",
+      "description": "#",
+      "duration": "2:10",
+      "channel_name": "Fireship",
+      "channel_id": "UCsBjURrPoezykLs9EqgamOA",
+      "view_count": 878501,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/lHhRhPV--G0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCeIGk8v8N3n_KksEGyyCn73vW-pg",
+      "youtube_url": "https://www.youtube.com/watch?v=lHhRhPV--G0",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 130
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "1bQwDO88Gyw",
+      "title": "Flutter Full Course For Beginners with Projects (22 Hours) | Learn Flutter App Development Tutorial",
+      "description": "Ready to become a ",
+      "duration": "22:16:31",
+      "channel_name": "WsCube Tech",
+      "channel_id": "UC0T6MVd3wQDB5ICAe45OxaQ",
+      "view_count": 531514,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1bQwDO88Gyw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhdoyrtbNQU2avAGU3RnVH3AhuAQ",
+      "youtube_url": "https://www.youtube.com/watch?v=1bQwDO88Gyw",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 80191
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HQ_ytw58tC4",
+      "title": "📱 FULL Flutter Beginner Course • Programming Basics / Widgets / Navigation / User Input / UI",
+      "description": "~; ⌚️TIMESTAMPS 0:00 intro 0:41 table of contents 2:06 ",
+      "duration": "2:23:26",
+      "channel_name": "Mitch Koko",
+      "channel_id": "UCVj9dwfXRmwyYmiWnk-qCCQ",
+      "view_count": 1197696,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HQ_ytw58tC4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDEWV6iw-bYIFONb6JPAb0oZYOwgg",
+      "youtube_url": "https://www.youtube.com/watch?v=HQ_ytw58tC4",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 8606
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "OT1RErkfLNQ",
+      "title": "Learn SQL Beginner to Advanced in Under 4 Hours",
+      "description": "RESOURCES: Analyst Builder - https://www.analystbuilder.com/ Take my Full MySQL Course Here: https://bit.ly/3tqOipr ...",
+      "duration": "4:04:58",
+      "channel_name": "Alex The Analyst",
+      "channel_id": "UC7cs8q-gJRlGwj4A8OmCmXg",
+      "view_count": 667453,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OT1RErkfLNQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDAH8B8UTliq-LT2JdzMw_AvE9koA",
+      "youtube_url": "https://www.youtube.com/watch?v=OT1RErkfLNQ",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 14698
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "tww-gbNPOcA",
+      "title": "Master MONGODB in ONE VIDEO: Beginner to Advanced Course For Beginners in [HINDI]",
+      "description": "mongodb",
+      "duration": "4:35:32",
+      "channel_name": "MPrashant TECH",
+      "channel_id": "UCOwaE3fVOZSRujo2OPDKCHg",
+      "view_count": 141073,
+      "upload_date": "9 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tww-gbNPOcA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCOWmolkGx-tr2vqphqC0QdqE184Q",
+      "youtube_url": "https://www.youtube.com/watch?v=tww-gbNPOcA",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner",
+          "advanced"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 16532
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "3kaGC_DrUnw",
+      "title": "The Ultimate Flutter Tutorial for Beginners - 2025 Full Course",
+      "description": "Learn ",
+      "duration": "5:16:54",
+      "channel_name": "Flutter Mapp",
+      "channel_id": "UC8zOy50mo4UzGISwqMrRJEQ",
+      "view_count": 215551,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/3kaGC_DrUnw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3ZfCSmV4sEV8UlB_EZV5U-5VYVw",
+      "youtube_url": "https://www.youtube.com/watch?v=3kaGC_DrUnw",
+      "quality_score": 0.45000000000000007,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 19014
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "cndko2lx-_Y",
+      "title": "Free 12 hour YouTube Coding Bootcamp 2025!",
+      "description": "To take the ",
+      "duration": "11:55:16",
+      "channel_name": "Code with Ania Kubów",
+      "channel_id": "UC5DNytAJ6_FISueUfzZCVsw",
+      "view_count": 1203301,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/cndko2lx-_Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTU9oVPbScyXQYb4Em0XJfc9fsvg",
+      "youtube_url": "https://www.youtube.com/watch?v=cndko2lx-_Y",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "bootcamp"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 42916
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "dPMk6_HTBq8",
+      "title": "How I'd Learn Full-Stack Web Development (If I Could Start Over)",
+      "description": "Learning ",
+      "duration": "10:28",
+      "channel_name": "Conner Ardman",
+      "channel_id": "UCWu_xJfwUuP_JV6RFq2EcXw",
+      "view_count": 568033,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dPMk6_HTBq8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBv82gQS4UQj-lfn3O_R5Oosf57gg",
+      "youtube_url": "https://www.youtube.com/watch?v=dPMk6_HTBq8",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 628
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "xTtL8E4LzTQ",
+      "title": "Java Full Course for free ☕ (2025)",
+      "description": "java",
+      "duration": "12:00:00",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 1128773,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xTtL8E4LzTQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBb2ZWLKZPOJF-Gl2MAGImT7s4KiA",
+      "youtube_url": "https://www.youtube.com/watch?v=xTtL8E4LzTQ",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 43200
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "mlIUKyZIUUU",
+      "title": "OOPs Tutorial in One Shot | Object Oriented Programming | in C++ Language | for Placement Interviews",
+      "description": "Hope this class helps you with your Placement & Internship Interviews❤️ Link to Practice MCQs ...",
+      "duration": "2:04:23",
+      "channel_name": "Apna College",
+      "channel_id": "UCBwmMxybNva6P_5VmxjzwqA",
+      "view_count": 2384477,
+      "upload_date": "11 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mlIUKyZIUUU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD4B8uBdRrPvFhC3_VUaxgxwt-fVw",
+      "youtube_url": "https://www.youtube.com/watch?v=mlIUKyZIUUU",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7463
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "87SH2Cn0s9A",
+      "title": "C Programming Full Course for free ⚙️",
+      "description": "C",
+      "duration": "4:05:00",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 4222477,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/87SH2Cn0s9A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWHg5mkVuJofJgUyJ8WqGQlq03sw",
+      "youtube_url": "https://www.youtube.com/watch?v=87SH2Cn0s9A",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14700
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "zZ6vybT1HQs",
+      "title": "PHP Full Course for non-haters 🐘",
+      "description": "php",
+      "duration": "4:00:00",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 2248405,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zZ6vybT1HQs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQxZda1wAarA1bbmSded2SjS3h5w",
+      "youtube_url": "https://www.youtube.com/watch?v=zZ6vybT1HQs",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 14400
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "tC49Nzm6SyM",
+      "title": "How to install MongoDB 8 on Windows 11 | Amit Thinks",
+      "description": "Learn how to download & install ",
+      "duration": "6:40",
+      "channel_name": "Amit Thinks",
+      "channel_id": "UCgnr2Lkl1LZf0IOKRDAoJ2g",
+      "view_count": 134308,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/tC49Nzm6SyM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDXYJh07awIpI7mD_r0pUi5iYfGIg",
+      "youtube_url": "https://www.youtube.com/watch?v=tC49Nzm6SyM",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 400
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "s2skans2dP4",
+      "title": "React JS Explained In 10 Minutes",
+      "description": "A list of the core concepts every ",
+      "duration": "10:00",
+      "channel_name": "Dennis Ivy",
+      "channel_id": "UCTZRcDjjkVajGL6wd76UnGg",
+      "view_count": 503368,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/s2skans2dP4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCxoYMOwhTpXgXkeuZWkatGdGgYlw",
+      "youtube_url": "https://www.youtube.com/watch?v=s2skans2dP4",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 600
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "SccSCuHhOw0",
+      "title": "Learn Express JS In 35 Minutes",
+      "description": "ExpressJS is the most popular Node.js web server framework and is the basis of thousands of sites. In this video I will be breaking ...",
+      "duration": "36:03",
+      "channel_name": "Web Dev Simplified",
+      "channel_id": "UCFbNIlppjAuEX4znoulh0Cw",
+      "view_count": 964699,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/SccSCuHhOw0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZcweVdoON6H09xKWtFSY_P-UPkg",
+      "youtube_url": "https://www.youtube.com/watch?v=SccSCuHhOw0",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2163
+      },
+      "search_query": "express programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "0sMtoedWaf0",
+      "title": "Python Django Explained In 8 Minutes",
+      "description": "A list of the 15 most important concepts every ",
+      "duration": "8:11",
+      "channel_name": "Dennis Ivy",
+      "channel_id": "UCTZRcDjjkVajGL6wd76UnGg",
+      "view_count": 383738,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0sMtoedWaf0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLARFFMnHQ-2Qen3JNNhmv5d_Q9y-w",
+      "youtube_url": "https://www.youtube.com/watch?v=0sMtoedWaf0",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 491
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "iYrgWO2oibY",
+      "title": "Learn Kotlin in 12 Minutes",
+      "description": "Learn the fundamentals of the ",
+      "duration": "12:01",
+      "channel_name": "Rahul Pandey",
+      "channel_id": "UCJNUtbsYnt-8meFSj_yF50Q",
+      "view_count": 378640,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iYrgWO2oibY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBeG3Me3n4GQ0gHGdVza5AAFfw0Nw",
+      "youtube_url": "https://www.youtube.com/watch?v=iYrgWO2oibY",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 721
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "kv9Gdeczpj8",
+      "title": "4 Best Online Coding Bootcamp Courses (2023)",
+      "description": "Wanna learn how to code – but don't have $10000 (or even $20000) for an in-person ",
+      "duration": "10:02",
+      "channel_name": "RealToughCandy",
+      "channel_id": "UC54NcJvLCvM2CNaBjd5j6HA",
+      "view_count": 19141,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kv9Gdeczpj8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-dkZ0uRmhZ3CcmmA6QObtzcdZew",
+      "youtube_url": "https://www.youtube.com/watch?v=kv9Gdeczpj8",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn",
+          "bootcamp"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 602
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "avdDEZCcluo",
+      "title": "If I Wanted to Become a Software Engineer in 2025, This is What I’d Do [FULL BLUEPRINT]",
+      "description": "In this video, I reveal the ultimate roadmap to becoming a ",
+      "duration": "17:17",
+      "channel_name": "Sajjaad Khader",
+      "channel_id": "UC7zZ2-Q_oxbUaoMVL0z51wg",
+      "view_count": 249549,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/avdDEZCcluo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBNxZzwRRhgMy-w3lueqP1X4N8Mxw",
+      "youtube_url": "https://www.youtube.com/watch?v=avdDEZCcluo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1037
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "iIxZrYzJJ7I",
+      "title": "What Do Software Engineers ACTUALLY Do?",
+      "description": "In this video, I will talk about what ",
+      "duration": "9:30",
+      "channel_name": "Sajjaad Khader",
+      "channel_id": "UC7zZ2-Q_oxbUaoMVL0z51wg",
+      "view_count": 298347,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iIxZrYzJJ7I/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAR7w1_bhK4AF_Oq_oUxCR7I1c9lQ",
+      "youtube_url": "https://www.youtube.com/watch?v=iIxZrYzJJ7I",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 570
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "QIyc6NKS5J0",
+      "title": "If I could give advice to myself when starting as a software engineer",
+      "description": "... Keyboard (15% off, I don't earn commission): https://bit.ly/primeagen-adv2 #vim #programming #",
+      "duration": "5:56",
+      "channel_name": "ThePrimeagen",
+      "channel_id": "UC8ENHE5xdFSwx71u3fDH5Xw",
+      "view_count": 670600,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/QIyc6NKS5J0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBleT6F4deSSOuTMtrEP8wsv7BfvQ",
+      "youtube_url": "https://www.youtube.com/watch?v=QIyc6NKS5J0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 356
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "s0g4ty29Xgg",
+      "title": "Introduction to C++ Programming",
+      "description": "C++ Programming",
+      "duration": "10:32",
+      "channel_name": "Neso Academy",
+      "channel_id": "UCQYMhOMi_Cdj1CEAU-fv80A",
+      "view_count": 746084,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/s0g4ty29Xgg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCqf0r40Gvm8rYZW6zHnpcMWHwqvg",
+      "youtube_url": "https://www.youtube.com/watch?v=s0g4ty29Xgg",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 632
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "J0FhV3dM80o",
+      "title": "Every single feature of C# in 10 minutes",
+      "description": "Get ready to become a ",
+      "duration": "9:50",
+      "channel_name": "Train To Code",
+      "channel_id": "UCSya6D3y1PFx94AGUZWyuuA",
+      "view_count": 218196,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/J0FhV3dM80o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBqH_MAhRQKAJRlOx7UmbEu5iF11w",
+      "youtube_url": "https://www.youtube.com/watch?v=J0FhV3dM80o",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 590
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Dji9ALCgfpM",
+      "title": "Ruby Programming",
+      "description": "MY UDEMY COURSES ARE 87.5% OFF TIL December 19th ($9.99) ONE IS FREE ➡️ Python Data Science Series for $9.99 ...",
+      "duration": "55:30",
+      "channel_name": "Derek Banas",
+      "channel_id": "UCwRXb5dUK4cvsHbx-rGzSgw",
+      "view_count": 669191,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Dji9ALCgfpM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGaj1j5U7GPoG5uByZsU_OHqd6hQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Dji9ALCgfpM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 3330
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "8wZ2ZD--VTk",
+      "title": "Ruby Programming | In One Video",
+      "description": "Overview - 1:32 Setup - 3:16 Printing - 3:43 Variables & Data Types - 4:18 Casting - 5:58 Strings - 7:13 Numbers - 8:56 User Input ...",
+      "duration": "36:36",
+      "channel_name": "Giraffe Academy",
+      "channel_id": "UCvmINlrza7JHB1zkIOuXEbw",
+      "view_count": 165171,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8wZ2ZD--VTk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1vWaXG1Tp7BXoZW9TAjFObLeFzw",
+      "youtube_url": "https://www.youtube.com/watch?v=8wZ2ZD--VTk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2196
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "2s6mIboARCM",
+      "title": "Learn PHP Language In 10 Minutes!! PHP Language Tutorial",
+      "description": "PHP",
+      "duration": "10:23",
+      "channel_name": "AmanBytes",
+      "channel_id": "UCv6eC6SWlm6p_fPbCwSYTjQ",
+      "view_count": 71400,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2s6mIboARCM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAcxBeHn68r9WGAz8OgkhNrw4jYOw",
+      "youtube_url": "https://www.youtube.com/watch?v=2s6mIboARCM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 623
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "r5IyLq2k2Ps",
+      "title": "SQL Beginner Full Course in Tamil | Logic First Tamil",
+      "description": "Full Beginner course for ",
+      "duration": "3:06:56",
+      "channel_name": "Logic First Tamil",
+      "channel_id": "UCXhbCCZAG4GlaBLm80ZL-iA",
+      "view_count": 982623,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/r5IyLq2k2Ps/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCc3AQynF4W-mTMEqGHhNrMMGGphQ",
+      "youtube_url": "https://www.youtube.com/watch?v=r5IyLq2k2Ps",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 11216
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "KJK2oJ4ZJCQ",
+      "title": "Complete MongoDB Tutorial in Telugu with Free Notes | Dodagatta Nihar",
+      "description": "Complete ",
+      "duration": "38:06",
+      "channel_name": "Dodagatta Nihar",
+      "channel_id": "UC5u7mJb1fIAedPG-9Pg6Nbw",
+      "view_count": 64152,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/KJK2oJ4ZJCQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDVU8-Ud2t5uLDnCzlP9IS_wLaVSw",
+      "youtube_url": "https://www.youtube.com/watch?v=KJK2oJ4ZJCQ",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 2286
+      },
+      "search_query": "mongodb programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "4AXQgOcL1mo",
+      "title": "7 React Lessons I Wish I Knew Earlier",
+      "description": "Chapters: 0:00 - ",
+      "duration": "7:30",
+      "channel_name": "Code Bootcamp",
+      "channel_id": "UC-kHm7pG884IYQiYwqJWv9A",
+      "view_count": 105721,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4AXQgOcL1mo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAAm3cgrERRCvxgaZkcCmi7eDWxyw",
+      "youtube_url": "https://www.youtube.com/watch?v=4AXQgOcL1mo",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 450
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "E8lXC2mR6-k",
+      "title": "Master React JS in easy way",
+      "description": "Learn the most important concepts of ",
+      "duration": "12:18",
+      "channel_name": "Nova Designs",
+      "channel_id": "UClNFeG4Smv1G7PIl9YCLkfA",
+      "view_count": 241487,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/E8lXC2mR6-k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAj5LFGnBfs1qcIW1JAave6gXJ3ag",
+      "youtube_url": "https://www.youtube.com/watch?v=E8lXC2mR6-k",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 738
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "D4nhaszNW4o",
+      "title": "Flutter Basics by a REAL Project",
+      "description": "You will easily learn the basics of ",
+      "duration": "25:42",
+      "channel_name": "Flutter Guys",
+      "channel_id": "UCkSbTj3XSWdaGfHiITheBqg",
+      "view_count": 752940,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/D4nhaszNW4o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBTWQsKRhmScLaqxHWMhRNtpWXHqw",
+      "youtube_url": "https://www.youtube.com/watch?v=D4nhaszNW4o",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 1542
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "2Tw9IooN7n0",
+      "title": "Your 2025 Guide to Becoming a Software Engineer",
+      "description": "About us: Brototype is more than just a YouTube channel. We are south India's Top community for aspiring techies looking to learn ...",
+      "duration": "16:46",
+      "channel_name": "Brototype Tamil",
+      "channel_id": "UCIFQgj1Rhx-FFgyo0zzPSfw",
+      "view_count": 30515,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/2Tw9IooN7n0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBId7JiFpzj46kgWzLnBsiW0St1w",
+      "youtube_url": "https://www.youtube.com/watch?v=2Tw9IooN7n0",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1006
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "xND0t1pr3KY",
+      "title": "C Programming Full Course for free ⚙️ (2025)",
+      "description": "coding #programming #",
+      "duration": "6:53:35",
+      "channel_name": "Bro Code",
+      "channel_id": "UC4SVo0Ue36XCfOyb5Lh1viQ",
+      "view_count": 145729,
+      "upload_date": "1 month ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/xND0t1pr3KY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB0CeLvfhYMzliQxfEgjftRg_7HEA",
+      "youtube_url": "https://www.youtube.com/watch?v=xND0t1pr3KY",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 24815
+      },
+      "search_query": "c programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "qOruiBrXlAw",
+      "title": "C# Programming All-in-One Tutorial Series (6 HOURS!)",
+      "description": "Timestamps 00:00:00 - Intro 00:03:24 - Hello World and botnet CLI 00:07:58 - Application Architecture 00:13:02 - Methods, Static ...",
+      "duration": "6:20:35",
+      "channel_name": "Caleb Curry",
+      "channel_id": "UCZUyPT9DkJWmS_DzdOi7RIA",
+      "view_count": 361267,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/qOruiBrXlAw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrO_jp_ZPMG0VWLhav5NZoJHUjtA",
+      "youtube_url": "https://www.youtube.com/watch?v=qOruiBrXlAw",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 22835
+      },
+      "search_query": "c# programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "9BD9eK9VqXA",
+      "title": "Backend Full Course | NodeJS ExpressJS PostgreSQL Prisma & Docker",
+      "description": "Dive into this comprehensive Backend Full Course, where you'll master the essentials of building robust backend systems using ...",
+      "duration": "5:17:22",
+      "channel_name": "Smoljames",
+      "channel_id": "UCPBK_brqoVQtO-fOWpxQGXw",
+      "view_count": 167168,
+      "upload_date": "6 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/9BD9eK9VqXA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3JPGE3eqPKYlqIQrXkmu09vfRPg",
+      "youtube_url": "https://www.youtube.com/watch?v=9BD9eK9VqXA",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 19042
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "dzUc9vrsldM",
+      "title": "Full 2025 Kotlin Crash Course For Beginners",
+      "description": "In this video I'll teach you everything you need to know to start developing real software with ",
+      "duration": "3:11:50",
+      "channel_name": "Philipp Lackner",
+      "channel_id": "UCKNTZMRHPLXfqlbdOI7mCkg",
+      "view_count": 71455,
+      "upload_date": "2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dzUc9vrsldM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCxoKqJVtAw-pXTIADFUB4WJGsc_g",
+      "youtube_url": "https://www.youtube.com/watch?v=dzUc9vrsldM",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 11510
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "mOYN9HlfTgo",
+      "title": "Kotlin Programming Full Tutorial with Android Development Project | Android Studio | @SCALER",
+      "description": "What is ",
+      "duration": "5:57:47",
+      "channel_name": "SCALER",
+      "channel_id": "UC9JWnvl5ZjZv09F5RqiLptw",
+      "view_count": 139593,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mOYN9HlfTgo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABsgPyGr3Cj_ZKZOkY_RlJVqBnuw",
+      "youtube_url": "https://www.youtube.com/watch?v=mOYN9HlfTgo",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 21467
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "6er14t0WA38",
+      "title": "What programming language you should learn👩‍💻(based off your interests) #programming #technology",
+      "description": "This is what ",
+      "duration": "0:32",
+      "channel_name": "Coding with Lewis",
+      "channel_id": "UCWI-ohtRu8eEeDj93hmUsUQ",
+      "view_count": 1141581,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6er14t0WA38/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhlIFQoSzAP&rs=AOn4CLDshdVgG7tKXKzar8bTvJ-oetyBbQ",
+      "youtube_url": "https://www.youtube.com/watch?v=6er14t0WA38",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 32
+      },
+      "search_query": "programming tutorial beginner",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "q5rrUR_-KKE",
+      "title": "Complete roadmap for developers #coding #webdesign #roadmap",
+      "description": "",
+      "duration": "0:06",
+      "channel_name": "Developer Shaurya",
+      "channel_id": "UCaa3jZGdwnwCRul1i0OWwnQ",
+      "view_count": 3019188,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/q5rrUR_-KKE/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhUIGEoZTAP&rs=AOn4CLA6VWJG1gydqOTtkdFGoz6uFFmBAA",
+      "youtube_url": "https://www.youtube.com/watch?v=q5rrUR_-KKE",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 6
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "oCrhPEZzr_0",
+      "title": "Programmers VS Software Engineers EXPLAINED 👩‍💻 #programmer #technology #coder #engineering",
+      "description": "Programmers versus ",
+      "duration": "0:38",
+      "channel_name": "Coding with Lewis",
+      "channel_id": "UCWI-ohtRu8eEeDj93hmUsUQ",
+      "view_count": 1398091,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/oCrhPEZzr_0/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgqIFUofzAP&rs=AOn4CLDwQK-5rvrJ2_Lmm3FSfZOOuOhJlQ",
+      "youtube_url": "https://www.youtube.com/watch?v=oCrhPEZzr_0",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 38
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "ufRLns-QQh0",
+      "title": "Struggling with Python programming? Learn it in a  Simplest way #shorts #pythonprogramming",
+      "description": "Think You Can't Code? Let's Fix That in 30 Seconds! Watch this quick video to learn the basics! Imagine you have turmeric ...",
+      "duration": "1:01",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 7303277,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ufRLns-QQh0/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhiIGIoYjAP&rs=AOn4CLC_xrfuLwrFsTXkdvpDlsrNS-hYZQ",
+      "youtube_url": "https://www.youtube.com/watch?v=ufRLns-QQh0",
+      "quality_score": 0.35,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 61
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Krzg0YlFHMs",
+      "title": "On an average Full Stack developer make 6 - 8LPA. The complete web development bootcamp from @udemy.",
+      "description": "On an average ",
+      "duration": "0:36",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 132650,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Krzg0YlFHMs/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhyIEUoNjAP&rs=AOn4CLCKNoEL11t0Yqed8cFKv0sWgnN_lA",
+      "youtube_url": "https://www.youtube.com/watch?v=Krzg0YlFHMs",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "bootcamp"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 36
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "QftjGj8Pg60",
+      "title": "Learn to Code Tutorial [5-Hour Prep for Coding Bootcamp] - Full Course for Absolute Beginners",
+      "description": "The ",
+      "duration": "4:53:42",
+      "channel_name": "Scrimba",
+      "channel_id": "UCNW7HDseZb6N3nKUEP6uLag",
+      "view_count": 2814,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/QftjGj8Pg60/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBuxYAlxgWvPUDWEmX-_e9w8KpS1w",
+      "youtube_url": "https://www.youtube.com/watch?v=QftjGj8Pg60",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "course",
+          "learn",
+          "beginner",
+          "bootcamp"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 17622
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "d0GkjcBGVbc",
+      "title": "Full Stack Web Development Course 2025 | Complete Full Stack Developer Course | Intellipaat",
+      "description": "#FullStackWebDevelopmentCourse2025 #CompleteFullStackWebDeveloperCourse #FullStackWebDevelopment ...",
+      "duration": "11:33:39",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 61429,
+      "upload_date": "Streamed 2 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/d0GkjcBGVbc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzP7mb53iPNTVsk29VN1EgQIharg",
+      "youtube_url": "https://www.youtube.com/watch?v=d0GkjcBGVbc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 41619
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "5QzzeYHApV0",
+      "title": "How to become a full stack developer 🚀 | Web Development Explained | Error Makes Clever Academy",
+      "description": "In this video, I will explain what ",
+      "duration": "4:22",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 486886,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5QzzeYHApV0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrW7QbQmytIDQgL5FarfEa1Q1kNA",
+      "youtube_url": "https://www.youtube.com/watch?v=5QzzeYHApV0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 262
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "GO_sp-Wl00M",
+      "title": "HTML Input Tags List Tutorial For Beginners (Web Development)",
+      "description": "... end tutorial for beginners ",
+      "duration": "0:12",
+      "channel_name": "CodeWithAnmol",
+      "channel_id": "UCNvR9hLclY9Cal4N_sGBfMQ",
+      "view_count": 383058,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/GO_sp-Wl00M/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAArgIigIMCAAQARhlIGUoZTAP&rs=AOn4CLAgX5n26TZx-suG9p9SwGa850zQhA",
+      "youtube_url": "https://www.youtube.com/watch?v=GO_sp-Wl00M",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 12
+      },
+      "search_query": "javascript tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "1ZmZU_12qIg",
+      "title": "Java tutorial beginner| Java interview questions | Java questions and answers | java syllabus #java",
+      "description": "... tcs java interview questions ask in Microsoft Microsoft placement preparation java ",
+      "duration": "0:05",
+      "channel_name": "kuchh technical sikhate hai",
+      "channel_id": "UC5XjZry_swH-_jBwDKqhOAg",
+      "view_count": 203991,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1ZmZU_12qIg/hq2.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgB3gOAAuADigIMCAAQARhlIGUoZTAP&rs=AOn4CLCaLo-eEjhC72BIR2ZizPI2riSgiQ",
+      "youtube_url": "https://www.youtube.com/watch?v=1ZmZU_12qIg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 5
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "7asBrx1F7Gg",
+      "title": "Python Vs. Ruby - Which Is Better?!",
+      "description": "Can't decide which ",
+      "duration": "5:15",
+      "channel_name": "Codemy.com",
+      "channel_id": "UCFB0dxMudkws1q8w5NJEAmw",
+      "view_count": 24990,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7asBrx1F7Gg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDKtC4gH4GJihfUxhOb2vdMeo2bVA",
+      "youtube_url": "https://www.youtube.com/watch?v=7asBrx1F7Gg",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 315
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "MXlZCgh2M6A",
+      "title": "Ruby For Beginners | Ruby Tutorial with Real Projects #ruby",
+      "description": "Final Project - Note Application Learn ",
+      "duration": "5:59:56",
+      "channel_name": "Best Tutorial",
+      "channel_id": "UCrRsuNXylZ85VT9u7c3e6Tw",
+      "view_count": 56016,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/MXlZCgh2M6A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLANHq_F35Z3c6hmKVUMLWCV3BRTDw",
+      "youtube_url": "https://www.youtube.com/watch?v=MXlZCgh2M6A",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "learn",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 21596
+      },
+      "search_query": "ruby programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "nFYWCouZ1UA",
+      "title": "PHP Programming Malayalam Tutorial for Beginners",
+      "description": "PHP Programming",
+      "duration": "2:13:00",
+      "channel_name": "Yes Tech Media",
+      "channel_id": "UC8oGXh16q4YXnVPNrF3fE9w",
+      "view_count": 72077,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/nFYWCouZ1UA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCKSHe5p1WybWqv5MiDch3wxPoaag",
+      "youtube_url": "https://www.youtube.com/watch?v=nFYWCouZ1UA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "tutorial",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 7980
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "ruwx8R2nXyI",
+      "title": "Top 25 Node.js Interview Questions to Ace Your BackEnd Interview | NodeJS Interview | Intellipaat",
+      "description": "#NodeJSInterviewQuestions #NodeJSInterviewPreparation #NodeJSInterview #BackendDeveloperInterviewPreparation ...",
+      "duration": "49:48",
+      "channel_name": "Intellipaat",
+      "channel_id": "UCCktnahuRFYIBtNnKT5IYyg",
+      "view_count": 60943,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ruwx8R2nXyI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDC06D8Al94YxM4eEOEsnX05CBT7w",
+      "youtube_url": "https://www.youtube.com/watch?v=ruwx8R2nXyI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2988
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "t_p4ZyAYyaY",
+      "title": "What is Django?",
+      "description": "New to building web apps in Python? Heard of ",
+      "duration": "7:44",
+      "channel_name": "IBM Technology",
+      "channel_id": "UCKWaEZ-_VweaEx1j62do_vQ",
+      "view_count": 84641,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/t_p4ZyAYyaY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBV7ICS3a1gqPjS3nwQXx68vPHGsQ",
+      "youtube_url": "https://www.youtube.com/watch?v=t_p4ZyAYyaY",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 464
+      },
+      "search_query": "django programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "56xvk6OHTpM",
+      "title": "Flutter Full Course for Beginners in Hindi (2025) | 5+ Projects",
+      "description": "Ready to Complete ",
+      "duration": "7:17:31",
+      "channel_name": "Neat Roots",
+      "channel_id": "UCyVD1TyR6Me7Yl7C2F5DMYA",
+      "view_count": 53416,
+      "upload_date": "3 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/56xvk6OHTpM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBY-FZDMOK91zFZ1596r1CKGIf_-g",
+      "youtube_url": "https://www.youtube.com/watch?v=56xvk6OHTpM",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "complete_course",
+        "estimated_learning_time": 26251
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Fn_wi4BXPjU",
+      "title": "🔥 ASMR Programming | Coffee App Welcome Page UI in Flutter No Talking ☕",
+      "description": "ASMR ",
+      "duration": "11:11",
+      "channel_name": "Yaqoob Developer",
+      "channel_id": "UCEvWoZNFpS3UQ4S0Y26JgIQ",
+      "view_count": 35429,
+      "upload_date": "4 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Fn_wi4BXPjU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBijwrh-ODIBIq1-vYdQh9ifmsisg",
+      "youtube_url": "https://www.youtube.com/watch?v=Fn_wi4BXPjU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 671
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "8Ds57M1wCGA",
+      "title": "🔥Full Kotlin Course | Complete Kotlin Course in one video | Master Kotlin in one video",
+      "description": "Important Videos: ➡️React JS with Project : https://youtu.be/TjnWtDWFZFc ➡️Learn JDBC in one ...",
+      "duration": "7:42:01",
+      "channel_name": "Learn Code With Durgesh",
+      "channel_id": "UC-Gn7EgShAINFthjuzxi9PQ",
+      "view_count": 92893,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8Ds57M1wCGA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDW4xae8GlMQ3p1nLJ4QtUuX-UpPw",
+      "youtube_url": "https://www.youtube.com/watch?v=8Ds57M1wCGA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course",
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 27721
+      },
+      "search_query": "kotlin programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "sYrLc_SBVIc",
+      "title": "Create a full-stack app with no coding skills #productivity #coding #development #webdevelopment",
+      "description": "... generate There we go Let's try another one Build a PDF editor There we go Now you can create a ",
+      "duration": "0:25",
+      "channel_name": "SetupsAI",
+      "channel_id": "UC0xHrJNbxHmFnUP-49WYM-Q",
+      "view_count": 1936888,
+      "upload_date": "1 month ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/sYrLc_SBVIc/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhkIGQoZDAP&rs=AOn4CLCTJjb2H1KWC1w_Oqew8ncP7Vq8bA",
+      "youtube_url": "https://www.youtube.com/watch?v=sYrLc_SBVIc",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 25
+      },
+      "search_query": "web development full stack",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "YZ5tOe7y9x4",
+      "title": "Software engineer interns on their first day be like...",
+      "description": "it's either this or you're sitting around with nothing to do. update: got a job at facebook :D https://youtu.be/JLEVJ1BLqKk NEW: ...",
+      "duration": "2:21",
+      "channel_name": "Frying Pan",
+      "channel_id": "UCfeMEuhdUtxtaUMNSvxq_Xg",
+      "view_count": 14697504,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YZ5tOe7y9x4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDIOOXn4Obvq-q8DdNIrlnqBi2kIg",
+      "youtube_url": "https://www.youtube.com/watch?v=YZ5tOe7y9x4",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 141
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "hRUJ41rdp4M",
+      "title": "1 Year of Coding #programming #comedy #coding",
+      "description": "",
+      "duration": "0:19",
+      "channel_name": "Devslopes",
+      "channel_id": "UClLXKYEEM8OBBx85DOa6-cg",
+      "view_count": 4518215,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/hRUJ41rdp4M/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhPIGAoZTAP&rs=AOn4CLD6hxYXIthf_XY4zy1GE2EycFhc0A",
+      "youtube_url": "https://www.youtube.com/watch?v=hRUJ41rdp4M",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 19
+      },
+      "search_query": "software engineering tutorial",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "HMMQkvKqqXQ",
+      "title": "Does Java SUCK!? 👩‍💻 #programming #technology #software #tech #code #career #java",
+      "description": "",
+      "duration": "0:52",
+      "channel_name": "Coding with Lewis",
+      "channel_id": "UCWI-ohtRu8eEeDj93hmUsUQ",
+      "view_count": 1016981,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/HMMQkvKqqXQ/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARg4IFoocjAP&rs=AOn4CLBG8V2fHf7uKebegHF--kLLF-0_8g",
+      "youtube_url": "https://www.youtube.com/watch?v=HMMQkvKqqXQ",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 52
+      },
+      "search_query": "java programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "4igiQuJaifU",
+      "title": "Master One Programming Language for Career Success! 🚀 #programming #coding",
+      "description": "Are you trying to learn multiple ",
+      "duration": "0:40",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 1602036,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4igiQuJaifU/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBzgWAAoAKigIMCAAQARhVIGAoZTAP&rs=AOn4CLB7WKpJDJaTFoAByJkfllyn2HsLmw",
+      "youtube_url": "https://www.youtube.com/watch?v=4igiQuJaifU",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 40
+      },
+      "search_query": "c++ programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "Is6j2pOnJXw",
+      "title": "Top 5 Udemy courses",
+      "description": "Links to ",
+      "duration": "0:48",
+      "channel_name": "Sahil & Sarra",
+      "channel_id": "UCkcqmxjMXaBb0kDWqqSEU1g",
+      "view_count": 246094,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Is6j2pOnJXw/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhJIFEoZTAP&rs=AOn4CLBRA5nt2iaGN1VccIS2prArinOAQQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Is6j2pOnJXw",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 48
+      },
+      "search_query": "coding bootcamp complete course",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "q2-pnQffZik",
+      "title": "Learn Python for FREE in 2025",
+      "description": "Learn ",
+      "duration": "0:22",
+      "channel_name": "Sajjaad Khader",
+      "channel_id": "UC7zZ2-Q_oxbUaoMVL0z51wg",
+      "view_count": 256474,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/q2-pnQffZik/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhlIGUoTzAP&rs=AOn4CLADPgKyngpZatBHQDmVrNoXPBvIYg",
+      "youtube_url": "https://www.youtube.com/watch?v=q2-pnQffZik",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 22
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "nC8sDcYOEk4",
+      "title": "Python Beginners Topics 💯   | #shorts #python #knowprogram",
+      "description": "",
+      "duration": "0:06",
+      "channel_name": "Know Program",
+      "channel_id": "UCv1PC0yHe8EDHj148nUfAYw",
+      "view_count": 176402,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/nC8sDcYOEk4/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgB4gSAAsAIigIMCAAQARgRIHIoOjAP&rs=AOn4CLCiNgagp3FvjY_ZuT4mccm3wOqR8w",
+      "youtube_url": "https://www.youtube.com/watch?v=nC8sDcYOEk4",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "beginner"
+        ],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 6
+      },
+      "search_query": "python programming guide",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "n04w2SzGr_U",
+      "title": "How To Install PHP In 1 Minute | Windows 10/11",
+      "description": "... Donations:https://www.paypal.com/donate/?hosted_button_id=MJ2L82SEPQ9D6 -Novuspad -PHP -",
+      "duration": "1:01",
+      "channel_name": "Novuspad",
+      "channel_id": "UCkW3VDsDqWBDrRJDHEhugBw",
+      "view_count": 216319,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/n04w2SzGr_U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC2hQHzmrI58rWB3e_DUClDLQaz0g",
+      "youtube_url": "https://www.youtube.com/watch?v=n04w2SzGr_U",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 61
+      },
+      "search_query": "php programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "yMqldbY2AAg",
+      "title": "Roadmap for Learning SQL",
+      "description": "Animation tools: Adobe Illustrator and After Effects. Checkout our bestselling System Design Interview books: Volume 1: ...",
+      "duration": "4:52",
+      "channel_name": "ByteByteGo",
+      "channel_id": "UCZgt6AzoyjslHTC9dz0UoTw",
+      "view_count": 645204,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yMqldbY2AAg/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLClmhybUCvbgs6yvQzbxlRaA_z32g",
+      "youtube_url": "https://www.youtube.com/watch?v=yMqldbY2AAg",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 292
+      },
+      "search_query": "sql programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "jvWAXjHCT0k",
+      "title": "How to get started with React Native",
+      "description": "Are you ready to build mobile apps using JavaScript? In this video, I'll walk you through how to get started with ",
+      "duration": "13:57",
+      "channel_name": "Chaoo Charles",
+      "channel_id": "UCe8uN9zoKksCb1hfw61myRw",
+      "view_count": 153,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jvWAXjHCT0k/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCp5zCYltY0Cw-ECzWI6-n-9anuTg",
+      "youtube_url": "https://www.youtube.com/watch?v=jvWAXjHCT0k",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 837
+      },
+      "search_query": "react programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "cz_Wlgz3QGY",
+      "title": "Learn Node.js in 30 Seconds #shorts #nodejs",
+      "description": "Learn ",
+      "duration": "0:27",
+      "channel_name": "TutorialsPoint",
+      "channel_id": "UCVLbzhxVTiTLiVKeGV7WEBg",
+      "view_count": 107356,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/cz_Wlgz3QGY/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARhjIGUoVjAP&rs=AOn4CLArcSiGl4r6TPXuczZ8DS8bR8b2gQ",
+      "youtube_url": "https://www.youtube.com/watch?v=cz_Wlgz3QGY",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 27
+      },
+      "search_query": "nodejs programming",
+      "genre": "coding-programming"
+    },
+    {
+      "video_id": "AOoZY1f3K-0",
+      "title": "Why You Should Learn Flutter in 2024 | Top Reasons to Master Flutter #shorts #flutter #emc",
+      "description": "Discover why learning ",
+      "duration": "0:58",
+      "channel_name": "Error Makes Clever",
+      "channel_id": "UCwr-evhuzGZgDFrq_1pLt_A",
+      "view_count": 136388,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/AOoZY1f3K-0/hq720_2.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGABwAcABBvABAfgBtgiAAoAPigIMCAAQARgdIDQofzAP&rs=AOn4CLCJ7fNkUew9rwiK6zOw_2AmzjX2Ww",
+      "youtube_url": "https://www.youtube.com/watch?v=AOoZY1f3K-0",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 58
+      },
+      "search_query": "flutter programming",
+      "genre": "coding-programming"
+    }
+  ],
+  "timestamp": "2025-06-14T08:55:20.884996",
+  "quality_stats": {
+    "avg_quality_score": 0.538,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.95,
+    "avg_view_count": 3161029,
+    "total_view_count": 474154395,
+    "high_quality_count": 85,
+    "medium_quality_count": 57,
+    "basic_quality_count": 8
+  }
+}

@@ -1,0 +1,1852 @@
+{
+  "genre": "psychology",
+  "target_count": 150,
+  "actual_count": 81,
+  "success": false,
+  "duration_seconds": 60.24,
+  "videos": [
+    {
+      "video_id": "R-sVnmmw6WY",
+      "title": "Cognition - How Your Mind Can Amaze and Betray You: Crash Course Psychology #15",
+      "description": "We used to think that the human brain was a lot like a computer; using logic to figure out complicated problems. It turns out, it's a ...",
+      "duration": "10:42",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 3022082,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/R-sVnmmw6WY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCyjXA6jwaRCk1kZclOYlEKLmMoJQ",
+      "youtube_url": "https://www.youtube.com/watch?v=R-sVnmmw6WY",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 642
+      },
+      "search_query": "cognitive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "8nz2dtv--ok",
+      "title": "The Growth of Knowledge: Crash Course Psychology #18",
+      "description": "How does our knowledge grow? It turns out there are some different ideas about that. Schemas, Four-",
+      "duration": "9:50",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 2929630,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8nz2dtv--ok/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAIBXilXGa9vXVF6Z_giMBtFo371A",
+      "youtube_url": "https://www.youtube.com/watch?v=8nz2dtv--ok",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 590
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "9hdSLiHaJz8",
+      "title": "The Power of Motivation: Crash Course Psychology #17",
+      "description": "Feeling ",
+      "duration": "11:20",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 3054014,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/9hdSLiHaJz8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAthk7qhUBIj8hq5BdDz_zk9XTDWw",
+      "youtube_url": "https://www.youtube.com/watch?v=9hdSLiHaJz8",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 680
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "unWnZvXJH2o",
+      "title": "Sensation and Perception: Crash Course Psychology #5",
+      "description": "Just what is the difference between sensing and perceiving? And how does vision actually work? And what does this have to do ...",
+      "duration": "10:46",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 5214298,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/unWnZvXJH2o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzQaWBqX2MLENbrS-7c9aUd7mbmQ",
+      "youtube_url": "https://www.youtube.com/watch?v=unWnZvXJH2o",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 646
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "n46umYA_4dM",
+      "title": "Perceiving is Believing: Crash Course Psychology #7",
+      "description": "So what does ",
+      "duration": "10:00",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 3164342,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/n46umYA_4dM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDhtbY6l68eIobgF08xosdQieubfQ",
+      "youtube_url": "https://www.youtube.com/watch?v=n46umYA_4dM",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 600
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "PzyXGUCngoU",
+      "title": "Adolescence: Crash Course Psychology #20",
+      "description": "In this episode of Crash Course ",
+      "duration": "10:15",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 2922800,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/PzyXGUCngoU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCvjDBHTsZX8nzyqlErQ7AEi3pY3g",
+      "youtube_url": "https://www.youtube.com/watch?v=PzyXGUCngoU",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 615
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "4KbSRXP0wik",
+      "title": "Emotion, Stress, and Health: Crash Course Psychology #26",
+      "description": "So, it turns out we have an easy time reading emotions in facial expressions, but emotions can straight up kill us! In this episode of ...",
+      "duration": "10:20",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 3313084,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/4KbSRXP0wik/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAvyoQfRb2PDSEeG6l1Dp14aOh-5g",
+      "youtube_url": "https://www.youtube.com/watch?v=4KbSRXP0wik",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 620
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "UGxGDdQnC1Y",
+      "title": "Social Influence: Crash Course Psychology #38",
+      "description": "Why do people sometimes do bad things just because someone else told them to? And what does the term Groupthink mean?",
+      "duration": "10:08",
+      "channel_name": "CrashCourse",
+      "channel_id": "UCX6b17PVsYBQ0ip5gyeme-Q",
+      "view_count": 2978261,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/UGxGDdQnC1Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCV2V_Dq4mSQQdS_3CubDTrDa1AKw",
+      "youtube_url": "https://www.youtube.com/watch?v=UGxGDdQnC1Y",
+      "quality_score": 0.9,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "complete_course",
+        "estimated_learning_time": 608
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "0vdPxLfAsqo",
+      "title": "How to parent a teen from a teen’s perspective | Lucy Androski | TEDxYouth@Okoboji",
+      "description": "A ",
+      "duration": "5:15",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 1378754,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0vdPxLfAsqo/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhyIDgoNzAP&rs=AOn4CLCJC2oUAbWt0QgFxAbbL2iLMAsv4g",
+      "youtube_url": "https://www.youtube.com/watch?v=0vdPxLfAsqo",
+      "quality_score": 0.8500000000000001,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 315
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "yG7v4y_xwzQ",
+      "title": "Sport psychology - inside the mind of champion athletes: Martin Hagger at TEDxPerth",
+      "description": "Martin Hagger is Professor of ",
+      "duration": "12:02",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 2223452,
+      "upload_date": "12 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yG7v4y_xwzQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAMhycZ8LZ2RSEJvBKQYERkcxNJyg",
+      "youtube_url": "https://www.youtube.com/watch?v=yG7v4y_xwzQ",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 722
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "7CBfCW67xT8",
+      "title": "How mindfulness changes the emotional life of our brains | Richard J. Davidson | TEDxSanFrancisco",
+      "description": "\"Why is it that some people are more vulnerable to life's slings and arrows and others more resilient?\" In this eye-opening talk, ...",
+      "duration": "17:53",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 4313286,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7CBfCW67xT8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDKVKQPOOcSpQjWGOsGs4ObqMYag",
+      "youtube_url": "https://www.youtube.com/watch?v=7CBfCW67xT8",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1073
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "9FBxfd7DL3E",
+      "title": "The new era of positive psychology | Martin Seligman",
+      "description": "http://www.ted.com Martin Seligman talks about ",
+      "duration": "23:43",
+      "channel_name": "TED",
+      "channel_id": "UCAuUUnT6oDeKwE6v1NGQxug",
+      "view_count": 1506514,
+      "upload_date": "16 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/9FBxfd7DL3E/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARghIBkofzAP&rs=AOn4CLCWKQlQZRX434ytvE0ZFnSwi-aVCQ",
+      "youtube_url": "https://www.youtube.com/watch?v=9FBxfd7DL3E",
+      "quality_score": 0.8,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1423
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "eJTIo_MhG3M",
+      "title": "Introduction to Developmental Psychology: Piaget’s Stages",
+      "description": "Developmental psychology",
+      "duration": "11:41",
+      "channel_name": "Professor Dave Explains",
+      "channel_id": "UC0cd_-e49hZpWLH3UIwoWRA",
+      "view_count": 262105,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/eJTIo_MhG3M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD7UBw3chS58My3Dbzk6YaqiGewoQ",
+      "youtube_url": "https://www.youtube.com/watch?v=eJTIo_MhG3M",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 701
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "BbruY110Ql8",
+      "title": "Communication and the Teenage Brain. | Martyn Richards | TEDxNorwichED",
+      "description": "Martyn begins by introducing teenagers many of whom were once sweet children, and will one day become loving adults, but who ...",
+      "duration": "12:23",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 311406,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BbruY110Ql8/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIEcoPzAP&rs=AOn4CLCiCKMZaIbTOXeid3FurY2SZYsAYQ",
+      "youtube_url": "https://www.youtube.com/watch?v=BbruY110Ql8",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 743
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "fxyDp0ZyRG8",
+      "title": "Brain Training Like a Champion | Cindra Kamphoff | TEDxMNSU",
+      "description": "Being a top athlete requires physical ",
+      "duration": "11:31",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 154107,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fxyDp0ZyRG8/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARgbICkofzAP&rs=AOn4CLD61z4MEEE954WdHSyaQhr8dVf05g",
+      "youtube_url": "https://www.youtube.com/watch?v=fxyDp0ZyRG8",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 691
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "5CpLEOO5oyo",
+      "title": "On positive psychology - Martin Seligman",
+      "description": "Martin Seligman talks about ",
+      "duration": "23:46",
+      "channel_name": "TED-Ed",
+      "channel_id": "UCsooa4yRKGN_zEE8iknghZA",
+      "view_count": 185936,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/5CpLEOO5oyo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAT0uHdSzDPofNGQJKGCQVFXGLMZg",
+      "youtube_url": "https://www.youtube.com/watch?v=5CpLEOO5oyo",
+      "quality_score": 0.7,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1426
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "DOmrm0Hy-2Y",
+      "title": "What is Perception | Explained in 2 min",
+      "description": "Let's have a look a what is ",
+      "duration": "2:22",
+      "channel_name": "Productivity Guy",
+      "channel_id": "UCVbbCJ6jN4ki3w3vdeO3EEQ",
+      "view_count": 171048,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/DOmrm0Hy-2Y/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBziQKZWCVBR1pYSV22TwcY8ILVhw",
+      "youtube_url": "https://www.youtube.com/watch?v=DOmrm0Hy-2Y",
+      "quality_score": 0.55,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 142
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "IhcgYgx7aAA",
+      "title": "Piaget's Theory of Cognitive Development",
+      "description": "About this video lesson: Piaget's theory argues that we have to conquer 4 stages of ",
+      "duration": "6:56",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 6629596,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IhcgYgx7aAA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAuuv6x_zuuKv7bdc0JhdynRx-qpw",
+      "youtube_url": "https://www.youtube.com/watch?v=IhcgYgx7aAA",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 416
+      },
+      "search_query": "cognitive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "aYCBdZLCDBQ",
+      "title": "8 Stages of Development by Erik Erikson",
+      "description": "Erikson's theory of psychosocial ",
+      "duration": "5:20",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 5129386,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aYCBdZLCDBQ/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlG4wwSSjoOGw2q9XVjAM9VEKUvQ",
+      "youtube_url": "https://www.youtube.com/watch?v=aYCBdZLCDBQ",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 320
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "IB1FVbo8TSs",
+      "title": "The Big Five Personality Traits",
+      "description": "The theory of the Big Five ",
+      "duration": "5:40",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 1492571,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/IB1FVbo8TSs/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbMaSs0jn0MRUI78ZWLbVFGdtFZw",
+      "youtube_url": "https://www.youtube.com/watch?v=IB1FVbo8TSs",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 340
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "dk7cXdjX2Ys",
+      "title": "Gestalt Psychology and Why It's Essential for Good Design",
+      "description": "What is Gestalt ",
+      "duration": "2:01",
+      "channel_name": "HubSpot Marketing",
+      "channel_id": "UCVeuau7DLrg7zlAjxxDbdww",
+      "view_count": 665378,
+      "upload_date": "7 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dk7cXdjX2Ys/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDRKKtmPyAvTWFPprTYIouH5PxGFw",
+      "youtube_url": "https://www.youtube.com/watch?v=dk7cXdjX2Ys",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 121
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "AagqaAQebKk",
+      "title": "How Do You Handle Teenagers? | Sadhguru",
+      "description": "An anguished parent asks, \"How should one deal with teenagers?\" Here's Sadhguru's answer! Sadhguru Talks @ Meditator ...",
+      "duration": "25:33",
+      "channel_name": "Sadhguru",
+      "channel_id": "UCcYzLCs3zrQIBVHYA1sK2sw",
+      "view_count": 2239830,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/AagqaAQebKk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCREwuNav9bbzWjav3qcMEpRu5huA",
+      "youtube_url": "https://www.youtube.com/watch?v=AagqaAQebKk",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1533
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "zmUlERppB_c",
+      "title": "Criminology course| Criminology course in India| How to become a Criminologist?| Sreevidhya Santhosh",
+      "description": "Criminology course | Criminology course in India | How to become a Criminologist? | Sreevidhya Santhosh | ",
+      "duration": "5:05",
+      "channel_name": "Career Talks with Sree",
+      "channel_id": "UCjgt1HM4twVZGMuT7yB_-tw",
+      "view_count": 123673,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/zmUlERppB_c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDtIBz8n61PRNfS7vsnhekPicbJw",
+      "youtube_url": "https://www.youtube.com/watch?v=zmUlERppB_c",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 305
+      },
+      "search_query": "forensic psychology careers",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "Cw6xuzosn4s",
+      "title": "INSIDE THE MIND OF A WINNER | Sports Psychologist Bill Beswick * train to dominate *",
+      "description": "====================================================== Filmed and Produced By The Mulligan Brothers ...",
+      "duration": "11:56",
+      "channel_name": "MulliganBrothers",
+      "channel_id": "UCIrn3pSjhCLp8xA7JXxi6Bw",
+      "view_count": 1168753,
+      "upload_date": "7 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Cw6xuzosn4s/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgVuewBOuBO3yQIUVE4I-NUl0G3A",
+      "youtube_url": "https://www.youtube.com/watch?v=Cw6xuzosn4s",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 716
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "iXHCCw762PU",
+      "title": "The power of group dynamics | Dr. Özge Kantas | TEDxNazarethUniversity",
+      "description": "Theres no \"I\" in ",
+      "duration": "15:19",
+      "channel_name": "TEDx Talks",
+      "channel_id": "UCsT0YIqwnpJCM-mx7-gSA4Q",
+      "view_count": 1883,
+      "upload_date": "8 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iXHCCw762PU/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARh_IBMoHDAP&rs=AOn4CLC1t-MpKvXSu4ICsX2L1fY9rpgHyQ",
+      "youtube_url": "https://www.youtube.com/watch?v=iXHCCw762PU",
+      "quality_score": 0.5,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 919
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "woa2Qa8i80U",
+      "title": "Motivation Theories Explained in 10 Minutes",
+      "description": "In this video, we'll explore 12 of the most common ",
+      "duration": "10:52",
+      "channel_name": "EPM",
+      "channel_id": "UC2tSqHvaHtmYl6XYBD9fJhg",
+      "view_count": 406475,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/woa2Qa8i80U/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCHo51dUpqfP6cBZs6mN6L9HiwmdQ",
+      "youtube_url": "https://www.youtube.com/watch?v=woa2Qa8i80U",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 652
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "yS7M5q7acmI",
+      "title": "Gestalt Psychology... Explained!",
+      "description": "This video discusses Gestalt ",
+      "duration": "7:25",
+      "channel_name": "Brain Boost",
+      "channel_id": "UC-MHyGZM72BZqK6Ldh4oCww",
+      "view_count": 156191,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yS7M5q7acmI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCf5rLPnJ5oDOL84GhjJ3JgjquLBw",
+      "youtube_url": "https://www.youtube.com/watch?v=yS7M5q7acmI",
+      "quality_score": 0.45,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 445
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "F624Baz-Vzk",
+      "title": "What is Schema Theory in Psychology?",
+      "description": "--- Invest in yourself and support this channel! --- ❤️ ",
+      "duration": "6:36",
+      "channel_name": "Practical Psychology",
+      "channel_id": "UCir93b_ftqInEaDpsWYbo_g",
+      "view_count": 187722,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/F624Baz-Vzk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBYTXTD9fzaWdI4b7xestoil_DnzA",
+      "youtube_url": "https://www.youtube.com/watch?v=F624Baz-Vzk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 396
+      },
+      "search_query": "cognitive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "41h08L5n_Ls",
+      "title": "Erik Erikson Stages of Psychosocial Development Theory",
+      "description": "-------------------------------------------------------------- TEACHERSPAYTEACHERS STORE Classroom Posters, Courses, Lessons, ...",
+      "duration": "12:11",
+      "channel_name": "Teachings in Education",
+      "channel_id": "UCB-hXAnF8U_KMAgtAUUC7Aw",
+      "view_count": 164446,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/41h08L5n_Ls/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABLghO2NTpqc9W5ImoiVUcBxUywg",
+      "youtube_url": "https://www.youtube.com/watch?v=41h08L5n_Ls",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 731
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "7KU5u75J8VU",
+      "title": "Robber's Cave Experiment - Realistic Conflict Theory",
+      "description": "--- Invest in yourself and support this channel! --- ❤️ ",
+      "duration": "6:55",
+      "channel_name": "Practical Psychology",
+      "channel_id": "UCir93b_ftqInEaDpsWYbo_g",
+      "view_count": 142794,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7KU5u75J8VU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBHCoZN2WLeFN_c3O0020AP9Gc0oQ",
+      "youtube_url": "https://www.youtube.com/watch?v=7KU5u75J8VU",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 415
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "vuMt8b4UrcI",
+      "title": "The Milgram Experiment: Obedience to Authority",
+      "description": "Are ordinary people able to do terrible things? And if so, how many would give high electric shocks to an innocent student, just ...",
+      "duration": "5:47",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 360162,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/vuMt8b4UrcI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBfusm8hNadz551gtTycDelz5CFPA",
+      "youtube_url": "https://www.youtube.com/watch?v=vuMt8b4UrcI",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 347
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "iXv91xFipLM",
+      "title": "The Stanford Prison Experiment (Summary + Lessons)",
+      "description": "--- Invest in yourself and support this channel! --- ❤️ ",
+      "duration": "6:11",
+      "channel_name": "Practical Psychology",
+      "channel_id": "UCir93b_ftqInEaDpsWYbo_g",
+      "view_count": 635976,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/iXv91xFipLM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBnJGU9FA1uzaJLdaC8Ma_G57o_Qw",
+      "youtube_url": "https://www.youtube.com/watch?v=iXv91xFipLM",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 371
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "WkK5eA_qhFk",
+      "title": "Asch’s Conformity Experiment on Groupthink",
+      "description": "In the 1950s the ",
+      "duration": "6:02",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 264903,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WkK5eA_qhFk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABJ0mlFukpWW9_CP_D1zVDYnnqvA",
+      "youtube_url": "https://www.youtube.com/watch?v=WkK5eA_qhFk",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 362
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "dcsc_EsJmsA",
+      "title": "What is Personality? - Personality Psychology",
+      "description": "--- Invest in yourself --- ❤️ ",
+      "duration": "13:46",
+      "channel_name": "Practical Psychology",
+      "channel_id": "UCir93b_ftqInEaDpsWYbo_g",
+      "view_count": 772098,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/dcsc_EsJmsA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCD46q5nM_djSl2RsP8y5Sm36olfw",
+      "youtube_url": "https://www.youtube.com/watch?v=dcsc_EsJmsA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 826
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "fuY3yXra--o",
+      "title": "Carl Rogers’s Theory of Personality: Key Concepts",
+      "description": "This video lecture discusses the key concepts of Carl Rogers's theory of ",
+      "duration": "10:13",
+      "channel_name": "PHILO-notes",
+      "channel_id": "UCEAn_gNN1ShcSyP65o6HLTA",
+      "view_count": 151575,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/fuY3yXra--o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZEVso8sqKPRb_YGrSZVXZR3Ea3A",
+      "youtube_url": "https://www.youtube.com/watch?v=fuY3yXra--o",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 613
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "Jz55Uk9EH6U",
+      "title": "Cognitive Behavioral Therapy (CBT)",
+      "description": "Youtube descriptions Cognitive ",
+      "duration": "6:00",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 362636,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Jz55Uk9EH6U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAbpQyRNDe6rGN1kF3LWCLeHXJWRQ",
+      "youtube_url": "https://www.youtube.com/watch?v=Jz55Uk9EH6U",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 360
+      },
+      "search_query": "behavioral psychology principles",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "gdSTXJGFPs0",
+      "title": "Theories of Motivation [AP Psychology Unit 7 Topic 1] (7.1)",
+      "description": "Each of these packets comes with unit review videos, practice quizzes, answer keys, study guides, full practice exams, & more!",
+      "duration": "12:21",
+      "channel_name": "Mr. Sinn",
+      "channel_id": "UCyI9ZKZqlfaWhGLKTVTz9cA",
+      "view_count": 117444,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/gdSTXJGFPs0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBHjG-0BpOwqsNEWkiciaV7s1y8OA",
+      "youtube_url": "https://www.youtube.com/watch?v=gdSTXJGFPs0",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "guide"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 741
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "YV_LBx3t6pA",
+      "title": "Theories of motivation - Maslow, Herzberg, McGregor",
+      "description": "This video includes important ",
+      "duration": "12:44",
+      "channel_name": "EasyMBA",
+      "channel_id": "UCG_IqUdj0t4DdLF3b9si63Q",
+      "view_count": 340379,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YV_LBx3t6pA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3-S5NoEY4uuML11EHOzE-7xvn7g",
+      "youtube_url": "https://www.youtube.com/watch?v=YV_LBx3t6pA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 764
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "uL6x99-VSBA",
+      "title": "Understanding Group Dynamics",
+      "description": "Understanding ",
+      "duration": "10:34",
+      "channel_name": "St. Thomas Aquinas College",
+      "channel_id": "UC2701ElCB9x1DyWBPt_LG-w",
+      "view_count": 332130,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/uL6x99-VSBA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgj1e9SEED7taq2lgc7fX-cEI2wg",
+      "youtube_url": "https://www.youtube.com/watch?v=uL6x99-VSBA",
+      "quality_score": 0.4,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 634
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "kzRIXpFlMVc",
+      "title": "Famous Psychologists Theories Explained In 9 Minutes",
+      "description": "Famous ",
+      "duration": "9:22",
+      "channel_name": "Mindset Unwrapped",
+      "channel_id": "UCjFkSbCdlVkgb9MK7Hl3myQ",
+      "view_count": 26665,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kzRIXpFlMVc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBuhAa_BFjyPBDE8vmkBlvkfeEZXg",
+      "youtube_url": "https://www.youtube.com/watch?v=kzRIXpFlMVc",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 562
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "58x3iDNiL3o",
+      "title": "How to become a Forensic Psychologist in India | Forensic Psychology  - Insider's Insights Part 1",
+      "description": "Video TimeLine: 4:00 – Introduction to Guest 6:37 – Difference Between Criminology and ",
+      "duration": "46:27",
+      "channel_name": "Power Within Psychology (PWP)",
+      "channel_id": "UCXtOpEK3Zgz0HznAXN9uYrA",
+      "view_count": 24625,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/58x3iDNiL3o/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5n2-fafbFhB8MKVaxMbX_yO-Zxw",
+      "youtube_url": "https://www.youtube.com/watch?v=58x3iDNiL3o",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 2787
+      },
+      "search_query": "forensic psychology careers",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "0RYyQRQFgFk",
+      "title": "Science-Based Mental Training & Visualization for Improved Learning | Huberman Lab Podcast",
+      "description": "In this episode, I explore the science of ",
+      "duration": "1:59:47",
+      "channel_name": "Andrew Huberman",
+      "channel_id": "UC2D2CMWXMOVWx7giW1n3LIg",
+      "view_count": 940624,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/0RYyQRQFgFk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSHc__6jOdk0Y3Utf6D5jkDfvURQ",
+      "youtube_url": "https://www.youtube.com/watch?v=0RYyQRQFgFk",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 7187
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "WxPifuzuI5M",
+      "title": "Advanced Ethics for Counseling Professionals",
+      "description": "Dr. Dawn-Elise Snipes is a Licensed Professional Counselor and Qualified Clinical Supervisor. She received her PhD in Mental ...",
+      "duration": "52:13",
+      "channel_name": "Doc Snipes",
+      "channel_id": "UCAE3JJi8tX7gfhZEXCUGd_A",
+      "view_count": 16706,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WxPifuzuI5M/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBT5-QQM72f3eTBN2tpcSBhCs_fOw",
+      "youtube_url": "https://www.youtube.com/watch?v=WxPifuzuI5M",
+      "quality_score": 0.35000000000000003,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "advanced"
+        ],
+        "difficulty_level": "advanced",
+        "course_type": "standalone",
+        "estimated_learning_time": 3133
+      },
+      "search_query": "ethics in psychology practice",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "pVEJgvMcqDc",
+      "title": "8 Stages of Development by Erik Erikson",
+      "description": "More from Mr. Sinn Ultimate Review Packets: AP ",
+      "duration": "6:43",
+      "channel_name": "Mr. Sinn",
+      "channel_id": "UCyI9ZKZqlfaWhGLKTVTz9cA",
+      "view_count": 65150,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/pVEJgvMcqDc/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDz7yttadEGDI2EUJmTDCFmeG0Mow",
+      "youtube_url": "https://www.youtube.com/watch?v=pVEJgvMcqDc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 403
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "RKN6UgXlEeU",
+      "title": "Stages of Development | Developmental Psychology | Psychology Entrances| Mind Review",
+      "description": "SUBSCRIBE & CLICK THE BELL ICON TO KEEP WATCHING THE VIDEOS OF THIS SERIES |DU Pg Entrances ",
+      "duration": "18:16",
+      "channel_name": "Mind Review",
+      "channel_id": "UCcKDnZy484OqAyLFr8E-MHQ",
+      "view_count": 56118,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/RKN6UgXlEeU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1D3r2NriJ5frkSUrXSKU5xQvnUg",
+      "youtube_url": "https://www.youtube.com/watch?v=RKN6UgXlEeU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1096
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "I45S2041enU",
+      "title": "What is Developmental Psychology?",
+      "description": "This video lecture discusses very briefly the meaning, nature, and dynamics of ",
+      "duration": "5:22",
+      "channel_name": "PHILO-notes",
+      "channel_id": "UCEAn_gNN1ShcSyP65o6HLTA",
+      "view_count": 11004,
+      "upload_date": "10 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/I45S2041enU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBQ8RWJUZ-rIA9eAGQm9IkjOZ0a3w",
+      "youtube_url": "https://www.youtube.com/watch?v=I45S2041enU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 322
+      },
+      "search_query": "developmental psychology stages",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "BsJ1m2BCvi8",
+      "title": "Every Psychological Experiment in 18 Minutes",
+      "description": "We cover interesting topics that you might not know about!",
+      "duration": "17:39",
+      "channel_name": "The Evaluator",
+      "channel_id": "UCc7p7J9tem8-18oJ0JzYOGg",
+      "view_count": 44050,
+      "upload_date": "5 months ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BsJ1m2BCvi8/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAaIywslIcs5oX_7OQShrOf3rMuRw",
+      "youtube_url": "https://www.youtube.com/watch?v=BsJ1m2BCvi8",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1059
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "6ZUpATVxixk",
+      "title": "Intro to Psychology Theories of Personality",
+      "description": "... into anything there are courses on ",
+      "duration": "1:08:04",
+      "channel_name": "David Troy",
+      "channel_id": "UCRC3AoIZ_gIpOzJQgIl0FMg",
+      "view_count": 190925,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/6ZUpATVxixk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB2jsaYUdVt9KpoNVMQ_7yetEFcGQ",
+      "youtube_url": "https://www.youtube.com/watch?v=6ZUpATVxixk",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "course"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 4084
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "_pXBnNEia6Y",
+      "title": "Personality Theories: Eight Major Approaches | Psyched with Setmire",
+      "description": "In this lecture presentation video I will cover the 8 basic approaches to ",
+      "duration": "12:32",
+      "channel_name": "Psyched with Setmire",
+      "channel_id": "UCwvomSK0K4MzK2_28zO6VhA",
+      "view_count": 99671,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/_pXBnNEia6Y/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAyeuqQxVW3ydnZBILo6CBkJ4I8cA",
+      "youtube_url": "https://www.youtube.com/watch?v=_pXBnNEia6Y",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "lecture"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 752
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "e7prKdC99mc",
+      "title": "Basic Principles of Behavior Modification",
+      "description": "Mini ",
+      "duration": "7:48",
+      "channel_name": "DrAliceBoyes",
+      "channel_id": "UCJWtQmnfUtRTwSy4NQ849eg",
+      "view_count": 75345,
+      "upload_date": "13 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/e7prKdC99mc/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhyIEooLjAP&rs=AOn4CLC84N7kzNXE_ppvG8UaBY8CDM2n0g",
+      "youtube_url": "https://www.youtube.com/watch?v=e7prKdC99mc",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 468
+      },
+      "search_query": "behavioral psychology principles",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "kG8GepViaH4",
+      "title": "Foundations of Cognitive Behavior Therapy (Theoretical aspects of CBT) Principles of CBT",
+      "description": "Foundations of Cognitive ",
+      "duration": "38:42",
+      "channel_name": "Prof. Suresh Bada Math",
+      "channel_id": "UCt3R1upNvfkHkEN3PzwubHA",
+      "view_count": 10972,
+      "upload_date": "3 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kG8GepViaH4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATIrdeZMVih-tL8T7iqHt1XnbXpw",
+      "youtube_url": "https://www.youtube.com/watch?v=kG8GepViaH4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2322
+      },
+      "search_query": "behavioral psychology principles",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "BHufRlAgxQo",
+      "title": "#Theories of motivation in OB #herberz #maslow #x and y #alderfer #vroom  #adamtheory etc..| Tamil",
+      "description": "what's up no 914 869 2049 reinforcement ",
+      "duration": "15:34",
+      "channel_name": "Deepi Senpai ",
+      "channel_id": "UCliD8lphn7ZM6R-WxdWm0wQ",
+      "view_count": 38749,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/BHufRlAgxQo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDovOmqfwFx3mRWmGYsVOpQ9A-cpQ",
+      "youtube_url": "https://www.youtube.com/watch?v=BHufRlAgxQo",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 934
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "jxNhGE3gPcA",
+      "title": "David McClelland and Three Motivational Needs - Content Theories of Motivation",
+      "description": "For my money, David McClelland gave us one of the most useful models of ",
+      "duration": "8:13",
+      "channel_name": "Management Courses - Mike Clayton",
+      "channel_id": "UCQazot7vvCK6sz3ZAr6OG9g",
+      "view_count": 98362,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/jxNhGE3gPcA/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDK7cm7UARUQW4-xeY8KBl5RMiAjg",
+      "youtube_url": "https://www.youtube.com/watch?v=jxNhGE3gPcA",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 493
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "mwkZU-n9kQ4",
+      "title": "Sensation vs. Perception: What's the Difference?",
+      "description": "In this video, Dr. Kushner provides an overview of what it means to \"sense\" and \"",
+      "duration": "15:59",
+      "channel_name": "Psych Explained",
+      "channel_id": "UC6Unpcb3T4QijIBs8hPfeyA",
+      "view_count": 96280,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/mwkZU-n9kQ4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDHOJ3ekmG4KeuQc9EGtjf2i_qqQw",
+      "youtube_url": "https://www.youtube.com/watch?v=mwkZU-n9kQ4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 959
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "1zq6H3yzqGU",
+      "title": "Monocular Cues and Binocular Cues - AP Psychology - What is Depth Perception?",
+      "description": "In this video, Dr. Kushner takes you on a journey through the neighborhood to showcase a variety of visual depth cues that allow ...",
+      "duration": "6:33",
+      "channel_name": "Psych Explained",
+      "channel_id": "UC6Unpcb3T4QijIBs8hPfeyA",
+      "view_count": 53091,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1zq6H3yzqGU/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDI8gYz4yzQ9Lvg09SkABwuXlp_jg",
+      "youtube_url": "https://www.youtube.com/watch?v=1zq6H3yzqGU",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 393
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "yZTen0Apf1U",
+      "title": "Perception- Meaning, Process and Factors Affecting Perception",
+      "description": "This video describes about ",
+      "duration": "6:44",
+      "channel_name": "Mini Sethi",
+      "channel_id": "UCvkAdsbzyp_n3H-54vyoIBQ",
+      "view_count": 14308,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/yZTen0Apf1U/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBiJUPs8jMD1iV3Z23-TzHgLiO7BA",
+      "youtube_url": "https://www.youtube.com/watch?v=yZTen0Apf1U",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 404
+      },
+      "search_query": "perception psychology explained",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "YtZsBbFnaNk",
+      "title": "Adolescent Psychology | 7 Teenage Parenting Tips in Malayalam | Dr. Mary Matilda",
+      "description": "Teenage",
+      "duration": "16:55",
+      "channel_name": "Mary Matilda",
+      "channel_id": "UCPYGjKyFOWdQ3uVgG47IRow",
+      "view_count": 47647,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/YtZsBbFnaNk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBIvH3Mi9TinZYRerWCSmk2JWkknA",
+      "youtube_url": "https://www.youtube.com/watch?v=YtZsBbFnaNk",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1015
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "JuBL-MH0xdI",
+      "title": "Adolescence (Physical & Cognitive Development) - Human Development | Class 11 Psychology Chapter 4",
+      "description": "✓ In this video, ✔️ Class: 11th ✔️ Subject: ",
+      "duration": "45:09",
+      "channel_name": "Magnet Brains",
+      "channel_id": "UC3HS6gQ79jjn4xHxogw0HiA",
+      "view_count": 28520,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/JuBL-MH0xdI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB-qaJGIWlJS_w-LbIzG0ZPTT1JhQ",
+      "youtube_url": "https://www.youtube.com/watch?v=JuBL-MH0xdI",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 2709
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "m55yvq6A2iE",
+      "title": "How Do You Become a Forensic Psychologist",
+      "description": "... weekly video blog, Dr. Jeff Kieliszewski discusses the education and specialized training needed to be a ",
+      "duration": "6:06",
+      "channel_name": "Dr. Jeff Kieliszewski, Forensic Psychologist",
+      "channel_id": "UCbOaoahHR7_sCcLQaUeeSYA",
+      "view_count": 56828,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/m55yvq6A2iE/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDvZR4UWw8NaOcvXKygZz6MC1EZYw",
+      "youtube_url": "https://www.youtube.com/watch?v=m55yvq6A2iE",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 366
+      },
+      "search_query": "forensic psychology careers",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "EXZGoF5eqo0",
+      "title": "Highest Paying Psychology Careers || Psychology as a career in INDIA || Psychology Seekho",
+      "description": "Book appointment- www.drnehamehta.com Book appointment- 9728732637 Highest Paying ",
+      "duration": "5:38",
+      "channel_name": "Psychology Seekho",
+      "channel_id": "UC1-J2ZuH_PBe8VSDA_R7yxA",
+      "view_count": 94981,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/EXZGoF5eqo0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDzyS5ujh3bL4oyhGRbmHl3qjlPEg",
+      "youtube_url": "https://www.youtube.com/watch?v=EXZGoF5eqo0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 338
+      },
+      "search_query": "forensic psychology careers",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "WatR9knHSOk",
+      "title": "Managing Anxiety and Fear Before Competition: The Sports Psychology Podcast",
+      "description": "... ",
+      "duration": "5:41",
+      "channel_name": "Peak Performance Sports, LLC",
+      "channel_id": "UCukPAfxPlVp9edldc-Way9A",
+      "view_count": 24292,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/WatR9knHSOk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBADJ1Me6br2aS-OCAxSQfK53y0EQ",
+      "youtube_url": "https://www.youtube.com/watch?v=WatR9knHSOk",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 341
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "aL9VhmO7T_c",
+      "title": "Positive Psychology Introduction - Research, Theory, & Criticisms (The Science of Human Well-Being)",
+      "description": "Introduction to ",
+      "duration": "9:20",
+      "channel_name": "Thinking Deeply with Ben ",
+      "channel_id": "UC7tZhFT-C8rpUFoMKGSg7WQ",
+      "view_count": 29624,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aL9VhmO7T_c/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBGaflWFQHCrMMsUDJTkNKP7wFrYg",
+      "youtube_url": "https://www.youtube.com/watch?v=aL9VhmO7T_c",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "beginner",
+        "course_type": "standalone",
+        "estimated_learning_time": 560
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "OU7BnLR81po",
+      "title": "Bring Your Awareness to the Present, Positive Psychology Exercise",
+      "description": "About Dr. Judy Ho Dr. Judy Ho is a licensed and triple board certified clinical and forensic neuropsychologist. What is ",
+      "duration": "5:33",
+      "channel_name": "MedCircle",
+      "channel_id": "UCyGOloOIJWt8NlE4tnejQeA",
+      "view_count": 18033,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OU7BnLR81po/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC-hgFDMKW_LsW6315qbZM7OimKFw",
+      "youtube_url": "https://www.youtube.com/watch?v=OU7BnLR81po",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 333
+      },
+      "search_query": "positive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "OUJJgktZqTw",
+      "title": "What is Group dynamics? | Meaning, Types, Importance, Stages",
+      "description": "In this video, you are going to learn all about \" ",
+      "duration": "6:15",
+      "channel_name": "Educationleaves",
+      "channel_id": "UCozlv5hcNUusrkmqaXzKExQ",
+      "view_count": 54324,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OUJJgktZqTw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCYjl2Vh38uV4tXoRPuuJER5qtRJw",
+      "youtube_url": "https://www.youtube.com/watch?v=OUJJgktZqTw",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 375
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "r9ksjrnSV04",
+      "title": "Group Dynamics & Leadership Styles | Social Psychology| Psychology Entrances| Mind Review",
+      "description": "SUBSCRIBE & CLICK THE BELL ICON TO KEEP WATCHING THE VIDEOS OF THIS SERIES |DU Pg Entrances ",
+      "duration": "14:00",
+      "channel_name": "Mind Review",
+      "channel_id": "UCcKDnZy484OqAyLFr8E-MHQ",
+      "view_count": 18987,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/r9ksjrnSV04/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDthR7V2SGhn4IHeyb687nRT1Qc8Q",
+      "youtube_url": "https://www.youtube.com/watch?v=r9ksjrnSV04",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 840
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "Qvg5DW8Mze4",
+      "title": "Ethics in Psychology Research - APA Code of Ethics",
+      "description": "In this video, Dr. Kushner breaks down the APA Code of ",
+      "duration": "20:15",
+      "channel_name": "Psych Explained",
+      "channel_id": "UC6Unpcb3T4QijIBs8hPfeyA",
+      "view_count": 64524,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/Qvg5DW8Mze4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAM6o8zjfMbGEQS9hzomG7W4qzl8A",
+      "youtube_url": "https://www.youtube.com/watch?v=Qvg5DW8Mze4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 1215
+      },
+      "search_query": "ethics in psychology practice",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "1y09CgRxsz4",
+      "title": "Ethics in Counseling",
+      "description": "By Chris Frank, MA, LPCC (2021, January 11) Counselors who ",
+      "duration": "11:22",
+      "channel_name": "Social and Behavioral Sciences at Bethel Univ.",
+      "channel_id": "UC81bMXUfoAC7jPf2Cdb8BYQ",
+      "view_count": 26575,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/1y09CgRxsz4/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCvlj1ys6Y09uhRm64UBr2cgyMAOQ",
+      "youtube_url": "https://www.youtube.com/watch?v=1y09CgRxsz4",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 682
+      },
+      "search_query": "ethics in psychology practice",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "XU3qnBpx7c0",
+      "title": "Ethics in Psychology: The APA Code of Ethics",
+      "description": "Ethics",
+      "duration": "6:08",
+      "channel_name": "Psy vs. Psy",
+      "channel_id": "UC2N8gioFih8sOjKXJc2wpNQ",
+      "view_count": 44301,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/XU3qnBpx7c0/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD69rjiC1dKUHsOlHDfTCUhrG76oQ",
+      "youtube_url": "https://www.youtube.com/watch?v=XU3qnBpx7c0",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 368
+      },
+      "search_query": "ethics in psychology practice",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "kBprKEAO3zQ",
+      "title": "Ethics & Psychology: Ethical Decision-making (Part 1)",
+      "description": "This episode provides didactic material about ",
+      "duration": "55:48",
+      "channel_name": "John Gavazzi",
+      "channel_id": "UCwCkmYjKvwgbRiEbIGUTRkw",
+      "view_count": 33487,
+      "upload_date": "10 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/kBprKEAO3zQ/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB1AaAAuADigIMCAAQARhlIGUoZTAP&rs=AOn4CLDF8SDe09LWVH4vzwh3z_gjF25pnA",
+      "youtube_url": "https://www.youtube.com/watch?v=kBprKEAO3zQ",
+      "quality_score": 0.30000000000000004,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 3348
+      },
+      "search_query": "ethics in psychology practice",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "TYIh4MkcfJA",
+      "title": "Asch Conformity Experiment",
+      "description": "I am forced to put aomething here! It won't let me upload if I don't. So that is another way of getting conformity, through force!",
+      "duration": "4:11",
+      "channel_name": "eqivideos",
+      "channel_id": "UCJWNDzNYbaTZ0YxhDM9SzpA",
+      "view_count": 2742616,
+      "upload_date": "17 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/TYIh4MkcfJA/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgBvgKAAvABigIMCAAQARhyIGYoLTAP&rs=AOn4CLBKLkW3PQelLOQ1Ib3mi_6s1R5U1A",
+      "youtube_url": "https://www.youtube.com/watch?v=TYIh4MkcfJA",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 251
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "OSsPfbup0ac",
+      "title": "THE BYSTANDER EFFECT",
+      "description": "An interesting look at the Bystander Effect.",
+      "duration": "3:36",
+      "channel_name": "Coolpsychologist",
+      "channel_id": "UC943UnajVxe9SpFJpwxpLsQ",
+      "view_count": 3909933,
+      "upload_date": "16 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/OSsPfbup0ac/hqdefault.jpg?sqp=-oaymwE2COADEI4CSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gSAAuADigIMCAAQARhlIFUoRTAP&rs=AOn4CLD8xsJSl8HovvRR_ITaumSKALRh9A",
+      "youtube_url": "https://www.youtube.com/watch?v=OSsPfbup0ac",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 216
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "7vFf5CS27-Y",
+      "title": "Freud's Psychoanalytic Theory on Instincts: Motivation, Personality and Development",
+      "description": "Learn how Sigmund Freud's psychoanalytic ",
+      "duration": "2:38",
+      "channel_name": "Study.com",
+      "channel_id": "UCixRv4BVgl-O1mCN2DjHuuQ",
+      "view_count": 2010048,
+      "upload_date": "11 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/7vFf5CS27-Y/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhlIFMoQDAP&rs=AOn4CLDA3EDQF8tps75GzCshpCbv0G1Shg",
+      "youtube_url": "https://www.youtube.com/watch?v=7vFf5CS27-Y",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "learn"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 158
+      },
+      "search_query": "personality psychology theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "ZdyOwZ4_RnI",
+      "title": "How Does Cognitive Behavioral Therapy Work?",
+      "description": "Cognitive ",
+      "duration": "4:55",
+      "channel_name": "Psych Hub",
+      "channel_id": "UC_zQoiPtBDvsThGroagm3ww",
+      "view_count": 1062626,
+      "upload_date": "5 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/ZdyOwZ4_RnI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDd8iLmK7ZWXlz28us7rSlQSt66RA",
+      "youtube_url": "https://www.youtube.com/watch?v=ZdyOwZ4_RnI",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 295
+      },
+      "search_query": "behavioral psychology principles",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "q6aAQgXauQw",
+      "title": "What is Cognitive Behavioral Therapy?",
+      "description": "CBT is an evidence-based treatment that can help people with depression, anxiety, panic attacks, hard relationships, and many ...",
+      "duration": "3:55",
+      "channel_name": "Psych Hub",
+      "channel_id": "UC_zQoiPtBDvsThGroagm3ww",
+      "view_count": 1019647,
+      "upload_date": "6 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/q6aAQgXauQw/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDtw3whXaOq677koAGS_1f_l0Q7Ow",
+      "youtube_url": "https://www.youtube.com/watch?v=q6aAQgXauQw",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 235
+      },
+      "search_query": "behavioral psychology principles",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "O-4ithG_07Q",
+      "title": "Maslow's Hierarchy of Needs",
+      "description": "Maslow's Hierarchy of Needs is a ",
+      "duration": "2:48",
+      "channel_name": "Sprouts",
+      "channel_id": "UC-RKpEc4eE9PwJaupN91xYQ",
+      "view_count": 3229516,
+      "upload_date": "8 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/O-4ithG_07Q/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDFosr1cxMdWaAIv2fivP9aZ76HVg",
+      "youtube_url": "https://www.youtube.com/watch?v=O-4ithG_07Q",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 168
+      },
+      "search_query": "human motivation theories",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "du8siPJ1ZKo",
+      "title": "Why Are Teens So Moody?",
+      "description": "Written by Rachel Salt, Mitchell Moffit and Gregory Brown FOLLOW US! Instagram and Twitter: @whalewatchmeplz and ...",
+      "duration": "3:58",
+      "channel_name": "AsapSCIENCE",
+      "channel_id": "UCC552Sd-3nyi_tk2BudLUzA",
+      "view_count": 4836024,
+      "upload_date": "9 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/du8siPJ1ZKo/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_L_ha7VWMRFe-c4NtLZ001mUwuA",
+      "youtube_url": "https://www.youtube.com/watch?v=du8siPJ1ZKo",
+      "quality_score": 0.3,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 238
+      },
+      "search_query": "adolescent psychology challenges",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "VcaAVWtP48A",
+      "title": "Cognitive Psychology explained in less than 5 minutes",
+      "description": "Sign up for our FREE eZine: http://www.psychologyunlocked.com/PsyZine ----------------------------------------- In the middle of the 20th ...",
+      "duration": "4:45",
+      "channel_name": "Psychology Unlocked",
+      "channel_id": "UC6DPXDvTLB8YH79u0RQVx_Q",
+      "view_count": 243800,
+      "upload_date": "4 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/VcaAVWtP48A/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBezqWMcYPAfurxyE_W59ziWRUp_w",
+      "youtube_url": "https://www.youtube.com/watch?v=VcaAVWtP48A",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 285
+      },
+      "search_query": "cognitive psychology concepts",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "aeY4lrd7xog",
+      "title": "What Is Social Psychology? Explained With Real-Life Experiments & Mind-Blowing Theories",
+      "description": "What is ",
+      "duration": "14:51",
+      "channel_name": "Knowle",
+      "channel_id": "UC5c1I6x6jCTWC9FZIqed2AA",
+      "view_count": 17,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/aeY4lrd7xog/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAuXZIfbBX9vGvzN2tJSZRWOnsWdw",
+      "youtube_url": "https://www.youtube.com/watch?v=aeY4lrd7xog",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [
+          "explained"
+        ],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 891
+      },
+      "search_query": "social psychology experiments",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "8VRTyQLLLDM",
+      "title": "How To Explain Mental Training To Teens | Improve Mental Skills In Sports",
+      "description": "how to explain ",
+      "duration": "5:22",
+      "channel_name": "Peak Performance Sports, LLC",
+      "channel_id": "UCukPAfxPlVp9edldc-Way9A",
+      "view_count": 4491,
+      "upload_date": "1 year ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/8VRTyQLLLDM/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZZsvPf-avkJMShLdfJY9Nsz5nUw",
+      "youtube_url": "https://www.youtube.com/watch?v=8VRTyQLLLDM",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 322
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "z6GrlHzxkhI",
+      "title": "How to Get Started With Mental Training in Sports",
+      "description": "Links: ",
+      "duration": "6:10",
+      "channel_name": "Eli Straw",
+      "channel_id": "UCTKTsxBhit3shv2CXjuDI8g",
+      "view_count": 246,
+      "upload_date": "2 years ago",
+      "thumbnail_url": "https://i.ytimg.com/vi/z6GrlHzxkhI/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCWGxjTRlH2CKh3qu5v-G-8wetQpw",
+      "youtube_url": "https://www.youtube.com/watch?v=z6GrlHzxkhI",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "standalone",
+        "estimated_learning_time": 370
+      },
+      "search_query": "sports psychology mental training",
+      "genre": "psychology"
+    },
+    {
+      "video_id": "GYYv5MGFC-I",
+      "title": "How Toxic/Narcissistic Partners Sabotage Your Leadership Growth",
+      "description": "In this video, we'll explore how narcissistic ",
+      "duration": "21:02",
+      "channel_name": "Namita Purohit",
+      "channel_id": "UC8dX6d2ru4xFjWEw_LN74Lw",
+      "view_count": 242,
+      "upload_date": "2 days ago",
+      "thumbnail_url": "https://i9.ytimg.com/vi/GYYv5MGFC-I/hq720_custom_1.jpg?sqp=COj4tMIG-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCgtbQEsbjxBDwREdMB3RR_omDUVw",
+      "youtube_url": "https://www.youtube.com/watch?v=GYYv5MGFC-I",
+      "quality_score": 0.25,
+      "educational_indicators": {
+        "has_transcript": false,
+        "educational_keywords": [],
+        "difficulty_level": "unknown",
+        "course_type": "series",
+        "estimated_learning_time": 1262
+      },
+      "search_query": "group dynamics psychology",
+      "genre": "psychology"
+    }
+  ],
+  "timestamp": "2025-06-14T09:12:37.411140",
+  "quality_stats": {
+    "avg_quality_score": 0.445,
+    "min_quality_score": 0.25,
+    "max_quality_score": 0.9,
+    "avg_view_count": 992779,
+    "total_view_count": 80415094,
+    "high_quality_count": 25,
+    "medium_quality_count": 51,
+    "basic_quality_count": 5
+  }
+}

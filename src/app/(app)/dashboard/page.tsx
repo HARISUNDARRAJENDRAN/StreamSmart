@@ -71,7 +71,7 @@ import { feedbackService } from '@/services/feedbackService';
 import { RecommendationCard } from '@/components/feedback/RecommendationCard';
 import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
 import { useToast } from "@/hooks/use-toast";
-import { implicitTracker } from '@/services/implicitTrackingService';
+// Note: Implicit tracking service removed - will be implemented in new recommendation system
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -98,10 +98,10 @@ export default function DashboardPage() {
   const { toast } = useToast();
   const router = useRouter();
 
-  // Initialize implicit tracking
+  // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
     if (user) {
-      implicitTracker.setUserId(user.id);
+      console.log('User ID available for tracking:', user.id);
     }
   }, [user]);
 

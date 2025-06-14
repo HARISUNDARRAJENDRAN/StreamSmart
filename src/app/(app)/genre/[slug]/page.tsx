@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import BertGenreRecommendations from '@/components/BertGenreRecommendations';
 
 interface Video {
   _id: string;
@@ -98,25 +99,45 @@ export default function GenrePage() {
 
   const categoryName = categoryMap[slug];
 
-  // Fetch videos from database
+  // Fetch videos from Python backend
   useEffect(() => {
     const fetchVideos = async () => {
-      if (!categoryName) {
+      if (!slug) {
         setError('Category not found');
         setLoading(false);
         return;
       }
 
       try {
-        const response = await fetch(`/api/videos/category/${encodeURIComponent(categoryName)}`);
+        // Call Python backend API directly
+        const response = await fetch(`http://localhost:8000/genre/${slug}`);
         if (!response.ok) {
           throw new Error('Failed to fetch videos');
         }
         
         const data = await response.json();
-        setVideos(data.videos || []);
-        setFilteredVideos(data.videos || []);
+        if (data.success) {
+          // Transform backend data to match frontend expectations
+          const transformedVideos = data.videos.map((video: any) => ({
+            youtubeId: video.video_id,
+            title: video.title,
+            thumbnail: video.thumbnail_url,
+            duration: video.duration ? `${Math.floor(video.duration / 60)}:${(video.duration % 60).toString().padStart(2, '0')}` : 'N/A',
+            category: data.genre,
+            channelTitle: video.channel_name,
+            viewCount: video.view_count || 0,
+            youtubeURL: `https://youtube.com/watch?v=${video.video_id}`,
+            publishedAt: video.upload_date,
+            difficulty: 'intermediate' // Default value
+          }));
+          
+          setVideos(transformedVideos);
+          setFilteredVideos(transformedVideos);
+        } else {
+          throw new Error('Failed to fetch videos from backend');
+        }
       } catch (err) {
+        console.error('Error fetching videos:', err);
         setError(err instanceof Error ? err.message : 'Failed to load videos');
       } finally {
         setLoading(false);
@@ -124,7 +145,7 @@ export default function GenrePage() {
     };
 
     fetchVideos();
-  }, [categoryName]);
+  }, [slug]);
 
   // Filter and sort videos
   useEffect(() => {
@@ -318,6 +339,14 @@ export default function GenrePage() {
         </div>
       </div>
 
+      {/* BERT AI Recommendations */}
+      <div className="container mx-auto px-4 py-6 border-b bg-gradient-to-r from-blue-50/30 to-purple-50/30">
+        <BertGenreRecommendations 
+          genre={categoryName || slug} 
+          userId="user_123" // This would come from your auth context
+        />
+      </div>
+
       {/* Content */}
       <div className="container mx-auto px-4 py-6">
         {filteredVideos.length === 0 ? (
@@ -345,7 +374,7 @@ export default function GenrePage() {
           >
             {filteredVideos.map((video, index) => (
               <motion.div
-                key={video._id}
+                key={video.youtubeId || video._id || `video-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
