@@ -37,29 +37,54 @@ export default function PlaylistsPage() {
 
     setIsLoading(true);
     try {
+      console.log('Loading playlists for user:', user.id);
       const userPlaylists = await playlistService.getPlaylists(user.id);
+      console.log('Raw playlists received:', userPlaylists);
+      console.log('First playlist raw data:', userPlaylists[0]);
       
-      const processedPlaylists = userPlaylists.map((p: any) => ({
-        ...p,
-        id: p._id, // MongoDB uses _id
-        createdAt: new Date(p.createdAt),
-        lastModified: new Date(p.updatedAt || p.createdAt),
-        videos: (p.videos || []).map((video: any) => ({
-          id: video.id,
-          title: video.title || '',
-          youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
-          thumbnail: video.thumbnail || '',
-          duration: video.duration || '',
-          addedBy: video.addedBy || 'user',
-          summary: video.summary || '',
-          completionStatus: video.completionStatus || 0,
-          channelTitle: video.channelTitle || '',
-        })),
-        tags: p.tags || [],
-        userId: p.userId,
-        overallProgress: p.overallProgress || 0,
-        aiRecommended: p.aiRecommended || false,
-      }));
+      const processedPlaylists = userPlaylists.map((p: any, index: number) => {
+        console.log(`Processing playlist ${index}:`, {
+          _id: p._id,
+          id: p.id,
+          title: p.title,
+          videoCount: p.videoCount,
+          actualVideosLength: p.videos ? p.videos.length : 0,
+          hasVideos: !!(p.videos && p.videos.length > 0)
+        });
+        
+        const playlistId = p._id || p.id;
+        if (!playlistId) {
+          console.error('Playlist missing ID!', p);
+        }
+        
+        return {
+          ...p,
+          id: playlistId, // Use _id or id, whichever is available
+          videoCount: p.videoCount, // Pass through the correct video count from API
+          createdAt: new Date(p.createdAt),
+          lastModified: new Date(p.updatedAt || p.createdAt),
+          videos: (p.videos || []).map((video: any) => ({
+            id: video.id,
+            title: video.title || '',
+            youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
+            youtubeId: video.youtubeId || '', // Include youtubeId
+            thumbnail: video.thumbnail || '',
+            duration: video.duration || '',
+            addedBy: video.addedBy || 'user',
+            summary: video.summary || '',
+            completionStatus: video.completionStatus || 0,
+            channelTitle: video.channelTitle || '',
+          })),
+          tags: p.tags || [],
+          userId: p.userId,
+          overallProgress: p.overallProgress || 0,
+          aiRecommended: p.aiRecommended || false,
+        };
+      });
+      
+      console.log('Processed playlists:', processedPlaylists);
+      console.log('First processed playlist:', processedPlaylists[0]);
+      console.log('First playlist videos:', processedPlaylists[0]?.videos);
       
       // Sort by creation date, newest first
       processedPlaylists.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
@@ -170,20 +195,82 @@ export default function PlaylistsPage() {
                 <CardHeader className="relative p-0">
                   <Image
                     src={
+                      // Try to get thumbnail from first video
                       playlist.videos && 
                       playlist.videos.length > 0 && 
-                      playlist.videos[0] && 
-                      playlist.videos[0].thumbnail && 
-                      (playlist.videos[0].thumbnail.startsWith('https://i.ytimg.com') || playlist.videos[0].thumbnail.startsWith('https://placehold.co')) 
-                      ? playlist.videos[0].thumbnail 
-                      : `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,15))}`
+                      playlist.videos[0]?.thumbnail
+                        ? playlist.videos[0].thumbnail
+                        : // Try using the stored youtubeId field first
+                          playlist.videos && 
+                          playlist.videos.length > 0 && 
+                          playlist.videos[0]?.youtubeId &&
+                          playlist.videos[0].youtubeId.length === 11 &&
+                          !playlist.videos[0].youtubeId.startsWith('video_')
+                            ? `https://img.youtube.com/vi/${playlist.videos[0].youtubeId}/hqdefault.jpg`
+                            : // Fallback to extracting YouTube ID from youtubeURL
+                              playlist.videos && 
+                              playlist.videos.length > 0 && 
+                              playlist.videos[0]?.youtubeURL
+                                ? (() => {
+                                    const youtubeURL = playlist.videos[0].youtubeURL;
+                                    console.log('Extracting YouTube ID from URL:', youtubeURL);
+                                    
+                                    // Extract YouTube ID from various URL formats
+                                    let youtubeId = '';
+                                    
+                                    // Try different YouTube URL patterns
+                                    const patterns = [
+                                      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+                                      /v=([a-zA-Z0-9_-]{11})/,
+                                      /\/([a-zA-Z0-9_-]{11})$/
+                                    ];
+                                    
+                                    for (const pattern of patterns) {
+                                      const match = youtubeURL.match(pattern);
+                                      if (match && match[1] && match[1].length === 11) {
+                                        youtubeId = match[1];
+                                        break;
+                                      }
+                                    }
+                                    
+                                    console.log('Extracted YouTube ID:', youtubeId);
+                                    
+                                    return youtubeId && youtubeId.length === 11
+                                      ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
+                                      : `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,20))}`;
+                                  })()
+                                : // Final fallback with playlist title
+                                  `https://placehold.co/400x240.png?text=${encodeURIComponent(playlist.title.substring(0,20))}`
                     }
                     alt={playlist.title}
                     width={400}
                     height={240}
                     className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     data-ai-hint={playlist.tags && playlist.tags.length > 0 ? playlist.tags.join(' ').substring(0, 20) : 'technology'}
-                    onError={(e) => { e.currentTarget.src = `https://placehold.co/400x240.png?text=Error`; }}
+                    onError={(e) => { 
+                      const target = e.currentTarget;
+                      console.log('Image failed to load:', target.src);
+                      
+                      // If the primary thumbnail fails, try different YouTube thumbnail sizes
+                      if (target.src.includes('hqdefault')) {
+                        const newSrc = target.src.replace('hqdefault', 'mqdefault');
+                        console.log('Trying mqdefault:', newSrc);
+                        target.src = newSrc;
+                      } else if (target.src.includes('mqdefault')) {
+                        const newSrc = target.src.replace('mqdefault', 'default');
+                        console.log('Trying default:', newSrc);
+                        target.src = newSrc;
+                      } else if (target.src.includes('default.jpg')) {
+                        const newSrc = target.src.replace('default.jpg', '0.jpg');
+                        console.log('Trying 0.jpg:', newSrc);
+                        target.src = newSrc;
+                      } else if (!target.src.includes('placehold.co')) {
+                        // Final fallback to PNG placeholder
+                        const finalSrc = `https://placehold.co/400x240.png?text=${encodeURIComponent('No Preview')}`;
+                        console.log('Using final fallback:', finalSrc);
+                        target.src = finalSrc;
+                      }
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <CirclePlay className="h-16 w-16 text-white/80" />
@@ -197,7 +284,7 @@ export default function PlaylistsPage() {
                       <span key={tag} className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">{tag}</span>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground">{playlist.videos?.length || 0} videos</p>
+                  <p className="text-xs text-muted-foreground">{playlist.videoCount || 0} videos</p>
                   {playlist.overallProgress > 0 && (
                     <div className="mt-2">
                       <div className="h-2 bg-secondary rounded-full overflow-hidden">

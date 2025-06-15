@@ -27,12 +27,48 @@ export function VideoProgressItem({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  let imgSrc = `https://placehold.co/120x68.png?text=${encodeURIComponent(video.title?.substring(0,10) || 'Video')}`;
-  if (typeof video.thumbnail === 'string' && (video.thumbnail.startsWith('http://') || video.thumbnail.startsWith('https://'))) {
-    imgSrc = video.thumbnail;
-  }
-  
-  const errorFallbackSrc = `https://placehold.co/120x68.png?text=Err`;
+  // Smart thumbnail logic with multiple fallback strategies
+  const getThumbnailSrc = () => {
+    // PRIORITIZE: Try extracting YouTube ID from youtubeURL FIRST (most reliable)
+    if (video.youtubeURL) {
+      const patterns = [
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+        /v=([a-zA-Z0-9_-]{11})/,
+        /\/([a-zA-Z0-9_-]{11})$/
+      ];
+      
+      for (const pattern of patterns) {
+        const match = video.youtubeURL.match(pattern);
+        if (match && match[1] && match[1].length === 11) {
+          const thumbnailUrl = `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+          return thumbnailUrl;
+        }
+      }
+    }
+
+    // Try using the stored youtubeId field if it's a valid YouTube ID (not generated ID)
+    if (video.youtubeId && 
+        video.youtubeId.length === 11 && 
+        !video.youtubeId.startsWith('video_') &&
+        /^[a-zA-Z0-9_-]{11}$/.test(video.youtubeId)) {
+      const thumbnailUrl = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
+      return thumbnailUrl;
+    }
+
+    // LAST RESORT: Check stored thumbnail only if it doesn't contain generated IDs
+    if (video.thumbnail && 
+        (video.thumbnail.startsWith('http://') || video.thumbnail.startsWith('https://')) &&
+        !video.thumbnail.includes('video_')) {
+      return video.thumbnail;
+    }
+
+    // Final fallback to placeholder
+    const placeholderUrl = `https://placehold.co/120x68.png?text=${encodeURIComponent(video.title?.substring(0,10) || 'Video')}`;
+    return placeholderUrl;
+  };
+
+  const imgSrc = getThumbnailSrc();
+  const errorFallbackSrc = `https://placehold.co/120x68.png?text=No+Preview`;
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent triggering onSelectVideo
@@ -132,3 +168,4 @@ export function VideoProgressItem({
   );
 }
     
+

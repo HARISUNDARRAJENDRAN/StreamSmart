@@ -634,7 +634,7 @@ export default function PlaylistDetailPage() {
 
         {/* Playlist Videos Sidebar */}
         <motion.div variants={fadeInUp} className="xl:col-span-1 space-y-6">
-          <Card className="shadow-lg h-fit max-h-[calc(100vh-24rem)] flex flex-col">
+          <Card className="shadow-lg h-fit max-h-[calc(100vh-28rem)] flex flex-col">
             <CardHeader className="border-b bg-accent/20">
               <CardTitle className="flex items-center">
                 <ListIcon className="h-5 w-5 mr-2 text-primary" />
@@ -644,9 +644,9 @@ export default function PlaylistDetailPage() {
                 {playlist.videos.length} videos • {Math.round(overallProgress)}% complete
               </CardDescription>
             </CardHeader>
-            <CardContent className="p-0 flex-1 min-h-0 overflow-visible">
-              <ScrollArea className="h-full overflow-visible"> 
-                <div className="p-2 space-y-1 overflow-visible">
+            <CardContent className="p-0 flex-1 min-h-0">
+              <ScrollArea className="h-full"> 
+                <div className="p-2 space-y-1">
                   {playlist.videos.map((video, index) => (
                     <VideoProgressItem
                       key={video.id}
@@ -666,9 +666,6 @@ export default function PlaylistDetailPage() {
               </ScrollArea>
             </CardContent>
           </Card>
-
-          {/* Playlist Feedback */}
-          <PlaylistFeedback playlist={playlist} />
         </motion.div>
       </div>
     </motion.div>

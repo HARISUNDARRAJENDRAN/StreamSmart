@@ -7,9 +7,8 @@ export async function GET(request: NextRequest) {
   try {
     const userId = request.nextUrl.searchParams.get('userId');
     
-    if (!userId) {
-      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
-    }
+    // For demo purposes, allow fetching all playlists if no userId provided
+    const queryUserId = userId || 'guest';
 
     try {
       await connectToDatabase();
@@ -18,9 +17,68 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
     }
     
-    const playlists = await Playlist.find({ userId }).sort({ createdAt: -1 });
+    // Debug mode: return all playlists with their userIds
+    if (userId === 'all-debug') {
+      const allPlaylists = await Playlist.find({}).sort({ createdAt: -1 }).limit(20);
+      return NextResponse.json({ 
+        success: true,
+        debug: true,
+        playlists: allPlaylists.map(p => ({
+          id: p._id,
+          title: p.title,
+          description: p.description,
+          videoCount: p.videos.length,
+          userId: p.userId,
+          createdAt: p.createdAt
+        }))
+      });
+    }
     
-    return NextResponse.json({ playlists });
+    const playlists = await Playlist.find({ userId: queryUserId }).sort({ createdAt: -1 });
+    
+    console.log('Found playlists count:', playlists.length);
+    if (playlists.length > 0) {
+      console.log('First playlist _id:', playlists[0]._id, 'type:', typeof playlists[0]._id);
+      console.log('First playlist title:', playlists[0].title);
+      console.log('First playlist videos count:', playlists[0].videos.length);
+      if (playlists[0].videos.length > 0) {
+        console.log('First video data:', {
+          id: playlists[0].videos[0].id,
+          youtubeId: playlists[0].videos[0].youtubeId,
+          youtubeURL: playlists[0].videos[0].youtubeURL,
+          url: playlists[0].videos[0].url,
+          title: playlists[0].videos[0].title
+        });
+      }
+    }
+    
+    return NextResponse.json({ 
+      success: true,
+      playlists: playlists.map(p => ({
+        _id: p._id.toString(), // Ensure _id is stringified
+        id: p._id.toString(),  // Ensure id is also stringified
+        title: p.title,
+        description: p.description,
+        category: p.category,
+        tags: p.tags,
+        isPublic: p.isPublic,
+        videoCount: p.videos.length,
+        overallProgress: p.overallProgress,
+        createdAt: p.createdAt,
+        updatedAt: p.updatedAt,
+        userId: p.userId,
+        // Include first video for thumbnail
+        videos: p.videos.length > 0 ? [{
+          id: p.videos[0].id,
+          title: p.videos[0].title,
+          thumbnail: p.videos[0].thumbnail,
+          youtubeURL: p.videos[0].youtubeURL || p.videos[0].url,
+          youtubeId: p.videos[0].youtubeId, // Include the actual youtubeId
+          duration: p.videos[0].duration,
+          channelTitle: p.videos[0].channelTitle,
+        }] : []
+      }))
+    });
   } catch (error) {
     console.error('Error fetching playlists:', error);
     return NextResponse.json({ error: 'Failed to fetch playlists' }, { status: 500 });
@@ -31,18 +89,93 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, title, description, category, tags, isPublic, videos } = body;
+    const { userId, title, description, category, tags, isPublic, videos, firstVideo } = body;
 
-    if (!userId || !title || !category) {
-      console.error('Missing required fields:', { userId: !!userId, title: !!title, category: !!category });
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    console.log('Creating playlist with data:', { userId, title, description, category, hasFirstVideo: !!firstVideo });
+    console.log('Environment check:', { 
+      MONGO_URI: !!process.env.MONGO_URI,
+      NODE_ENV: process.env.NODE_ENV 
+    });
+
+    // For new simple playlist creation (from genre page), we don't require all fields
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
     try {
+      console.log('Attempting to connect to MongoDB...');
       await connectToDatabase();
+      console.log('MongoDB connection successful');
     } catch (dbError) {
       console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
+      
+      // Check if it's a missing environment variable
+      if (!process.env.MONGO_URI && !process.env.MONGODB_URI) {
+        return NextResponse.json({ 
+          error: 'Database not configured. Please set MONGO_URI environment variable.' 
+        }, { status: 500 });
+      }
+      
+      return NextResponse.json({ 
+        error: 'Database connection failed. Please check your MongoDB Atlas configuration.' 
+      }, { status: 500 });
+    }
+
+    // Handle simple playlist creation (from genre page) - when firstVideo is provided
+    if (firstVideo) {
+      const playlistVideos = [];
+      
+      // Add first video
+      const video = {
+        id: `video_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        youtubeId: firstVideo.youtubeId,
+        title: firstVideo.title,
+        thumbnail: firstVideo.thumbnail,
+        duration: firstVideo.duration,
+        channelTitle: firstVideo.channelTitle,
+        url: firstVideo.youtubeURL,
+        youtubeURL: firstVideo.youtubeURL,
+        description: firstVideo.description,
+        addedAt: new Date().toISOString(),
+        completionStatus: 0,
+        addedBy: 'user'
+      };
+      playlistVideos.push(video);
+
+      const playlist = new Playlist({
+        userId: userId || 'guest', // Use provided userId or fallback to guest
+        title,
+        description: description || '',
+        category: category || 'General',
+        tags: tags || [],
+        isPublic: isPublic || false,
+        videos: playlistVideos,
+        overallProgress: 0,
+      });
+
+      try {
+        await playlist.save();
+        console.log('Playlist saved successfully:', playlist._id);
+        
+        return NextResponse.json({ 
+          success: true,
+          playlist: {
+            id: playlist._id,
+            title: playlist.title,
+            description: playlist.description,
+            videoCount: playlist.videos.length
+          }
+        });
+      } catch (saveError) {
+        console.error('Error saving playlist:', saveError);
+        return NextResponse.json({ error: 'Failed to save playlist to database' }, { status: 500 });
+      }
+    }
+
+    // Handle full playlist creation (from playlist create page)
+    if (!userId || !category) {
+      console.error('Missing required fields for full playlist creation:', { userId: !!userId, title: !!title, category: !!category });
+      return NextResponse.json({ error: 'Missing required fields for full playlist creation' }, { status: 400 });
     }
 
     const playlist = new Playlist({
@@ -58,10 +191,19 @@ export async function POST(request: NextRequest) {
 
     try {
       await playlist.save();
+      console.log('Full playlist saved successfully:', playlist._id);
       
-      return NextResponse.json({ playlist });
+      return NextResponse.json({ 
+        success: true,
+        playlist: {
+          id: playlist._id,
+          title: playlist.title,
+          description: playlist.description,
+          videoCount: playlist.videos.length
+        }
+      });
     } catch (saveError) {
-      console.error('Error saving playlist:', saveError);
+      console.error('Error saving full playlist:', saveError);
       if (saveError instanceof Error) {
         return NextResponse.json({ error: saveError.message }, { status: 400 });
       }

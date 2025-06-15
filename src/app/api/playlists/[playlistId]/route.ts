@@ -10,6 +10,8 @@ export async function GET(
   try {
     const { playlistId } = await params;
     
+    console.log('Fetching playlist by ID:', playlistId);
+    
     if (!playlistId) {
       return NextResponse.json({ error: 'Playlist ID is required' }, { status: 400 });
     }
@@ -26,8 +28,25 @@ export async function GET(
     if (!playlist) {
       return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
     }
+
+    console.log('Playlist found:', playlist.title, 'with', playlist.videos.length, 'videos');
     
-    return NextResponse.json({ playlist });
+    return NextResponse.json({ 
+      success: true,
+      playlist: {
+        id: playlist._id,
+        title: playlist.title,
+        description: playlist.description,
+        category: playlist.category,
+        tags: playlist.tags,
+        isPublic: playlist.isPublic,
+        videos: playlist.videos,
+        overallProgress: playlist.overallProgress,
+        createdAt: playlist.createdAt,
+        updatedAt: playlist.updatedAt,
+        userId: playlist.userId
+      }
+    });
   } catch (error) {
     console.error('Error fetching playlist:', error);
     return NextResponse.json({ error: 'Failed to fetch playlist' }, { status: 500 });

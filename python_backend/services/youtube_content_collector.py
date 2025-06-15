@@ -1712,7 +1712,7 @@ GenreCategory.SUSTAINABLE_LIVING: [
         except Exception as e:
             logger.error(f"Error initializing search: {e}")
             return []
-            
+    
         return all_videos[:total_limit]  # Return exactly the requested number
 
     async def search_videos_for_genre(
@@ -1748,7 +1748,7 @@ GenreCategory.SUSTAINABLE_LIVING: [
                 
                 if len(all_videos) >= limit:
                     break
-                    
+            
             except Exception as e:
                 logger.error(f"Error searching for genre {genre} with query '{query}': {e}")
                 continue
@@ -1877,7 +1877,7 @@ GenreCategory.SUSTAINABLE_LIVING: [
                 
                 # Rate limiting between genres
                 await asyncio.sleep(2)
-            
+                    
             except Exception as e:
                 logger.error(f"Failed to collect content for genre {genre.value}: {e}")
                 genre_content[genre] = []

@@ -23,6 +23,7 @@ import time
 # Import remaining endpoints
 from genre_endpoints import router as genre_router
 from bert_recommendation_endpoints import router as bert_router
+from smart_recommendation_endpoints import router as smart_router
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -43,6 +44,7 @@ app.add_middleware(
 # Register routers for modular endpoints
 app.include_router(genre_router)
 app.include_router(bert_router)
+app.include_router(smart_router)
 
 # Note: AI content endpoints were removed as part of recommendation engine cleanup
 

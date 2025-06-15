@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   ArrowLeft, 
   Search, 
@@ -17,7 +18,12 @@ import {
   Eye, 
   ThumbsUp,
   Play,
-  ExternalLink
+  ExternalLink,
+  RefreshCw,
+  Plus,
+  PlayCircle,
+  BookmarkPlus,
+  X
 } from 'lucide-react';
 import {
   Select,
@@ -26,7 +32,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import BertGenreRecommendations from '@/components/BertGenreRecommendations';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useUser } from '@/contexts/UserContext';
 
 interface Video {
   _id: string;
@@ -44,6 +58,13 @@ interface Video {
   tags: string[];
   difficulty: string;
   createdAt: string;
+}
+
+interface Playlist {
+  id: string;
+  title: string;
+  description: string;
+  videoCount: number;
 }
 
 // Map URL slugs to category names
@@ -87,6 +108,7 @@ export default function GenrePage() {
   const params = useParams();
   const router = useRouter();
   const slug = params.slug as string;
+  const { user } = useUser();
   
   const [videos, setVideos] = useState<Video[]>([]);
   const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
@@ -96,6 +118,17 @@ export default function GenrePage() {
   const [sortBy, setSortBy] = useState('newest');
   const [difficultyFilter, setDifficultyFilter] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [aiRefreshLoading, setAiRefreshLoading] = useState(false);
+  const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
+  const [totalAvailable, setTotalAvailable] = useState(0);
+  
+  // Preview and Playlist states
+  const [previewVideo, setPreviewVideo] = useState<Video | null>(null);
+  const [playlists, setPlaylists] = useState<Playlist[]>([]);
+  const [showCreatePlaylist, setShowCreatePlaylist] = useState(false);
+  const [newPlaylistTitle, setNewPlaylistTitle] = useState('');
+  const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
+  const [selectedVideoForPlaylist, setSelectedVideoForPlaylist] = useState<Video | null>(null);
 
   const categoryName = categoryMap[slug];
 
@@ -109,26 +142,43 @@ export default function GenrePage() {
       }
 
       try {
-        // Call Python backend API directly
-        const response = await fetch(`http://localhost:8000/genre/${slug}`);
+        // Try the new smart recommendation API first
+        let response = await fetch(`http://localhost:8000/api/smart/genre/${slug}?user_id=guest&limit=200`);
+        
+        if (!response.ok) {
+          // Fallback to old API
+          response = await fetch(`http://localhost:8000/genre/${slug}`);
+        }
+        
         if (!response.ok) {
           throw new Error('Failed to fetch videos');
         }
         
         const data = await response.json();
         if (data.success) {
+          // Set algorithm info
+          setAlgorithmUsed(data.algorithm_used || 'unknown');
+          setTotalAvailable(data.total_available || data.videos.length);
+          
           // Transform backend data to match frontend expectations
           const transformedVideos = data.videos.map((video: any) => ({
-            youtubeId: video.video_id,
-            title: video.title,
-            thumbnail: video.thumbnail_url,
-            duration: video.duration ? `${Math.floor(video.duration / 60)}:${(video.duration % 60).toString().padStart(2, '0')}` : 'N/A',
-            category: data.genre,
-            channelTitle: video.channel_name,
-            viewCount: video.view_count || 0,
-            youtubeURL: `https://youtube.com/watch?v=${video.video_id}`,
-            publishedAt: video.upload_date,
-            difficulty: 'intermediate' // Default value
+            _id: video._id || video.youtubeId || `${Date.now()}-${Math.random()}`,
+            youtubeId: video.youtubeId || video.video_id,
+            title: video.title || '',
+            description: video.description || '',
+            thumbnail: video.thumbnail || video.thumbnail_url || 'https://placehold.co/480x360.png?text=Video',
+            duration: video.duration || 'N/A',
+            category: data.genre_name || data.genre,
+            channelTitle: video.channelTitle || video.channel_name || video.channel || '',
+            viewCount: video.viewCount || video.view_count || 0,
+            likeCount: video.likeCount || 0,
+            youtubeURL: video.youtubeURL || video.url || `https://youtube.com/watch?v=${video.youtubeId || video.video_id}`,
+            publishedAt: video.publishedAt || video.published || video.collected_at || '',
+            difficulty: video.difficulty || 'intermediate',
+            tags: video.tags || [],
+            quality_score: video.quality_score || 0,
+            search_query: video.search_query || '',
+            similarity_score: video.similarity_score || 0
           }));
           
           setVideos(transformedVideos);
@@ -147,60 +197,126 @@ export default function GenrePage() {
     fetchVideos();
   }, [slug]);
 
+  // Helper function to fetch playlists
+  const fetchPlaylists = async () => {
+    try {
+      // Use the actual user ID if logged in, otherwise use 'guest'
+      const userId = user?.id || 'guest';
+      console.log('=== PLAYLIST FETCH DEBUG ===');
+      console.log('User object:', user);
+      console.log('Fetching playlists for userId:', userId);
+      console.log('user?.id:', user?.id);
+      
+      const response = await fetch(`/api/playlists?userId=${userId}`);
+      console.log('Playlists response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Playlists data received:', data);
+        setPlaylists(data.playlists || []);
+      } else {
+        console.error('Failed to fetch playlists:', response.status);
+        const errorData = await response.text();
+        console.error('Error response:', errorData);
+      }
+    } catch (err) {
+      console.error('Error fetching playlists:', err);
+    }
+  };
+
+  // Fetch user playlists on component mount and when user changes
+  useEffect(() => {
+    fetchPlaylists();
+  }, [user]);
+
   // Filter and sort videos
   useEffect(() => {
-    let filtered = [...videos];
+    let filtered = videos.filter(video => {
+      const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           video.channelTitle.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesDifficulty = difficultyFilter === 'all' || video.difficulty === difficultyFilter;
+      
+      return matchesSearch && matchesDifficulty;
+    });
 
-    // Search filter
-    if (searchQuery) {
-      filtered = filtered.filter(video =>
-        video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        video.channelTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        video.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-
-    // Difficulty filter
-    if (difficultyFilter !== 'all') {
-      filtered = filtered.filter(video => video.difficulty === difficultyFilter);
-    }
-
-    // Sort
-    switch (sortBy) {
-      case 'newest':
-        filtered.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-        break;
-      case 'oldest':
-        filtered.sort((a, b) => new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime());
-        break;
-      case 'views':
-        filtered.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0));
-        break;
-      case 'duration':
-        filtered.sort((a, b) => {
-          const aDuration = parseDuration(a.duration);
-          const bDuration = parseDuration(b.duration);
-          return bDuration - aDuration;
-        });
-        break;
-      case 'alphabetical':
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      default:
-        break;
-    }
+    // Sort videos
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+        case 'oldest':
+          return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
+        case 'views':
+          return (b.viewCount || 0) - (a.viewCount || 0);
+        case 'duration':
+          return parseDuration(b.duration) - parseDuration(a.duration);
+        case 'alphabetical':
+          return a.title.localeCompare(b.title);
+        default:
+          return 0;
+      }
+    });
 
     setFilteredVideos(filtered);
   }, [videos, searchQuery, sortBy, difficultyFilter]);
 
+  // AI Refresh functionality
+  const handleAiRefresh = async () => {
+    setAiRefreshLoading(true);
+    try {
+      const response = await fetch(`http://localhost:8000/api/smart/ai-refresh/guest?genre=${slug}&limit=51`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to refresh recommendations');
+      }
+      
+      const data = await response.json();
+      if (data.success) {
+        setAlgorithmUsed(data.algorithm_used || 'ai_refreshed');
+        setTotalAvailable(data.total_available || data.videos.length);
+        
+        const transformedVideos = data.videos.map((video: any) => ({
+          _id: video._id || video.youtubeId || `${Date.now()}-${Math.random()}`,
+          youtubeId: video.youtubeId || video.video_id,
+          title: video.title || '',
+          description: video.description || '',
+          thumbnail: video.thumbnail || video.thumbnail_url || `https://img.youtube.com/vi/${video.youtubeId || video.video_id}/maxresdefault.jpg`,
+          duration: video.duration || 'N/A',
+          category: categoryName || slug,
+          channelTitle: video.channelTitle || video.channel_name || video.channel || '',
+          viewCount: video.viewCount || video.view_count || 0,
+          likeCount: video.likeCount || 0,
+          youtubeURL: video.youtubeURL || video.url || `https://youtube.com/watch?v=${video.youtubeId || video.video_id}`,
+          publishedAt: video.publishedAt || video.published || video.collected_at || '',
+          difficulty: video.difficulty || 'intermediate',
+          tags: video.tags || [],
+          quality_score: video.quality_score || 0,
+          search_query: video.search_query || '',
+          similarity_score: video.similarity_score || 0
+        }));
+        
+        setVideos(transformedVideos);
+      }
+    } catch (err) {
+      console.error('Error refreshing recommendations:', err);
+    } finally {
+      setAiRefreshLoading(false);
+    }
+  };
+
   const parseDuration = (duration: string): number => {
-    // Convert duration string like "1h 23min" to minutes
-    const match = duration.match(/(?:(\d+)h\s*)?(?:(\d+)min)?/);
-    if (!match) return 0;
-    const hours = parseInt(match[1] || '0');
-    const minutes = parseInt(match[2] || '0');
-    return hours * 60 + minutes;
+    if (!duration || duration === 'N/A') return 0;
+    const parts = duration.split(':').map(Number);
+    if (parts.length === 2) return parts[0] * 60 + parts[1];
+    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    return 0;
   };
 
   const formatNumber = (num: number): string => {
@@ -210,17 +326,169 @@ export default function GenrePage() {
   };
 
   const getDifficultyColor = (difficulty: string): string => {
-    switch (difficulty) {
-      case 'beginner': return 'bg-green-500/20 text-green-700 dark:text-green-300';
-      case 'intermediate': return 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-300';
-      case 'advanced': return 'bg-red-500/20 text-red-700 dark:text-red-300';
-      default: return 'bg-gray-500/20 text-gray-700 dark:text-gray-300';
+    switch (difficulty.toLowerCase()) {
+      case 'beginner': return 'bg-green-100 text-green-800 border-green-200';
+      case 'intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'advanced': return 'bg-red-100 text-red-800 border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
-  const handleVideoClick = (video: Video) => {
-    // Open YouTube video in new tab
-    window.open(video.youtubeURL, '_blank');
+  const handlePreviewVideo = (video: Video) => {
+    setPreviewVideo(video);
+  };
+
+  const handleAddToPlaylist = async (video: Video, playlistId: string) => {
+    try {
+      // Close any open modals first
+      setPreviewVideo(null);
+      setShowCreatePlaylist(false);
+      
+      const response = await fetch(`/api/playlists/${playlistId}/videos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          youtubeId: video.youtubeId,
+          title: video.title,
+          thumbnail: video.thumbnail,
+          duration: video.duration,
+          channelTitle: video.channelTitle,
+          youtubeURL: video.youtubeURL,
+          description: video.description
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          alert('Video added to playlist successfully!');
+          // Refresh playlists to update video counts
+          await fetchPlaylists();
+        } else {
+          alert(data.error || 'Failed to add video to playlist');
+        }
+      } else {
+        const errorData = await response.text();
+        console.error('Add to playlist error:', errorData);
+        alert('Failed to add video to playlist');
+      }
+    } catch (err) {
+      console.error('Error adding video to playlist:', err);
+      alert('Error adding video to playlist');
+    }
+  };
+
+  const handlePlaylistAction = (video: Video) => {
+    console.log('=== PLAYLIST ACTION DEBUG ===');
+    console.log('Video:', video.title);
+    console.log('Current modal states:', { 
+      showCreatePlaylist, 
+      previewVideo: !!previewVideo, 
+      selectedVideoForPlaylist: !!selectedVideoForPlaylist 
+    });
+    
+    // Ensure no other modals are open
+    setPreviewVideo(null);
+    
+    // Set state for new playlist creation
+    setSelectedVideoForPlaylist(video);
+    setShowCreatePlaylist(true);
+    
+    console.log('Modal states after action:', { 
+      showCreatePlaylist: true, 
+      previewVideo: false, 
+      selectedVideoForPlaylist: true 
+    });
+  };
+
+  const handleCreatePlaylist = async () => {
+    if (!newPlaylistTitle.trim() || !selectedVideoForPlaylist) return;
+
+    try {
+      console.log('Sending playlist creation request...');
+      const requestData = {
+        userId: user?.id || 'guest',
+        title: newPlaylistTitle,
+        description: newPlaylistDescription,
+        firstVideo: {
+          youtubeId: selectedVideoForPlaylist.youtubeId,
+          title: selectedVideoForPlaylist.title,
+          thumbnail: selectedVideoForPlaylist.thumbnail,
+          duration: selectedVideoForPlaylist.duration,
+          channelTitle: selectedVideoForPlaylist.channelTitle,
+          youtubeURL: selectedVideoForPlaylist.youtubeURL,
+          description: selectedVideoForPlaylist.description
+        }
+      };
+      
+      console.log('Request data:', requestData);
+      
+      const response = await fetch('/api/playlists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      console.log('Response status:', response.status);
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Response data:', data);
+        
+        if (data.success) {
+          console.log('Playlist created successfully, refreshing list...');
+          
+          // Reset form state FIRST to prevent UI blocking
+          setNewPlaylistTitle('');
+          setNewPlaylistDescription('');
+          setShowCreatePlaylist(false);
+          setSelectedVideoForPlaylist(null);
+          
+          // Then refresh playlists from server
+          await fetchPlaylists();
+          
+          alert('Playlist created successfully! Redirecting to playlists page...');
+          
+          // Small delay to ensure playlist is saved before redirect
+          setTimeout(() => {
+            router.push('/playlists');
+          }, 1000);
+        } else {
+          alert(data.error || 'Failed to create playlist');
+        }
+      } else {
+        const errorData = await response.text();
+        console.error('Create playlist error:', errorData);
+        
+        // Try to parse error message
+        let errorMessage = 'Failed to create playlist';
+        try {
+          const errorJson = JSON.parse(errorData);
+          errorMessage = errorJson.error || errorMessage;
+        } catch {
+          // Use default message if parsing fails
+        }
+        
+        alert(errorMessage);
+      }
+    } catch (err) {
+      console.error('Error creating playlist:', err);
+      alert('Network error: Could not create playlist. Please check your connection.');
+    }
+  };
+
+  // Enhanced close handler for create playlist modal
+  const handleCloseCreatePlaylist = () => {
+    console.log('=== CLOSING CREATE PLAYLIST MODAL ===');
+    setShowCreatePlaylist(false);
+    setSelectedVideoForPlaylist(null);
+    setNewPlaylistTitle('');
+    setNewPlaylistDescription('');
+    console.log('Modal closed, all states reset');
   };
 
   if (loading) {
@@ -334,17 +602,53 @@ export default function GenrePage() {
                   <SelectItem value="advanced">Advanced</SelectItem>
                 </SelectContent>
               </Select>
+
+              {/* AI Refresh Button */}
+              <Button
+                onClick={handleAiRefresh}
+                disabled={aiRefreshLoading}
+                variant="outline"
+                size="sm"
+                className="border-blue-200 hover:bg-blue-50 hover:border-blue-300"
+                title="Refresh recommendations"
+              >
+                <RefreshCw className={`h-4 w-4 ${aiRefreshLoading ? 'animate-spin' : ''}`} />
+              </Button>
+              
+              {/* Playlist Refresh Button for debugging */}
+              <Button
+                onClick={fetchPlaylists}
+                variant="outline"
+                size="sm"
+                className="border-green-200 hover:bg-green-50 hover:border-green-300"
+                title={`Refresh playlists (${playlists.length} found)`}
+              >
+                <RefreshCw className="h-4 w-4" />
+                <span className="ml-1 text-xs">P:{playlists.length}</span>
+              </Button>
+              
+              {/* Debug button to check all playlists */}
+              <Button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/playlists?userId=all-debug');
+                    const data = await response.json();
+                    console.log('=== ALL PLAYLISTS DEBUG ===');
+                    console.log('All playlists in database:', data);
+                  } catch (err) {
+                    console.error('Debug fetch error:', err);
+                  }
+                }}
+                variant="outline"
+                size="sm"
+                className="border-red-200 hover:bg-red-50 hover:border-red-300"
+                title="Debug: Check all playlists"
+              >
+                Debug
+              </Button>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* BERT AI Recommendations */}
-      <div className="container mx-auto px-4 py-6 border-b bg-gradient-to-r from-blue-50/30 to-purple-50/30">
-        <BertGenreRecommendations 
-          genre={categoryName || slug} 
-          userId="user_123" // This would come from your auth context
-        />
       </div>
 
       {/* Content */}
@@ -368,31 +672,48 @@ export default function GenrePage() {
             transition={{ duration: 0.3 }}
             className={
               viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
+                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
                 : 'space-y-4'
             }
           >
-            {filteredVideos.map((video, index) => (
-              <motion.div
-                key={video.youtubeId || video._id || `video-${index}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-              >
-                {viewMode === 'grid' ? (
-                  <Card 
-                    className="group cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30"
-                    onClick={() => handleVideoClick(video)}
-                  >
+            {filteredVideos.map((video, index) => {
+              const uniqueKey = video.youtubeId || video._id || `video-${index}-${Date.now()}`;
+              
+              return (
+                <motion.div
+                  key={uniqueKey}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30">
                     <CardContent className="p-0">
                       <div className="relative">
                         <img
-                          src={video.thumbnail}
+                          src={video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
                           alt={video.title}
+                          loading="lazy"
                           className="w-full h-48 object-cover rounded-t-lg"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            if (target.src.includes('maxresdefault')) {
+                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
+                            } else if (target.src.includes('hqdefault')) {
+                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`;
+                            } else {
+                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/default.jpg`;
+                            }
+                          }}
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-t-lg flex items-center justify-center">
-                          <Play className="h-12 w-12 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <Button
+                            size="sm"
+                            className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-black hover:bg-white"
+                            onClick={() => handlePreviewVideo(video)}
+                          >
+                            <PlayCircle className="h-4 w-4 mr-2" />
+                            Preview
+                          </Button>
                         </div>
                         <Badge className="absolute top-2 right-2 bg-black/80 text-white">
                           {video.duration}
@@ -402,13 +723,13 @@ export default function GenrePage() {
                         </Badge>
                       </div>
                       <div className="p-4">
-                        <h3 className="font-semibold text-sm line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+                        <h3 className="font-semibold text-sm line-clamp-2 mb-2">
                           {video.title}
                         </h3>
-                        <p className="text-xs text-muted-foreground mb-2">
+                        <p className="text-xs text-muted-foreground mb-3">
                           {video.channelTitle}
                         </p>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
                           <div className="flex items-center gap-1">
                             <Eye className="h-3 w-3" />
                             {formatNumber(video.viewCount || 0)}
@@ -418,68 +739,215 @@ export default function GenrePage() {
                             {formatNumber(video.likeCount || 0)}
                           </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ) : (
-                  <Card 
-                    className="group cursor-pointer hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30"
-                    onClick={() => handleVideoClick(video)}
-                  >
-                    <CardContent className="p-4">
-                      <div className="flex gap-4">
-                        <div className="relative flex-shrink-0">
-                          <img
-                            src={video.thumbnail}
-                            alt={video.title}
-                            className="w-32 h-24 object-cover rounded-lg"
-                          />
-                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-lg flex items-center justify-center">
-                            <Play className="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                          <Badge className="absolute bottom-1 right-1 bg-black/80 text-white text-xs">
-                            {video.duration}
-                          </Badge>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <h3 className="font-semibold line-clamp-2 group-hover:text-primary transition-colors">
-                              {video.title}
-                            </h3>
-                            <Badge className={getDifficultyColor(video.difficulty)}>
-                              {video.difficulty}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground mb-2">
-                            {video.channelTitle}
-                          </p>
-                          <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                            {video.description}
-                          </p>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <div className="flex items-center gap-1">
-                              <Eye className="h-4 w-4" />
-                              {formatNumber(video.viewCount || 0)} views
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <ThumbsUp className="h-4 w-4" />
-                              {formatNumber(video.likeCount || 0)} likes
-                            </div>
-                            <div className="flex items-center gap-1">
-                              <Clock className="h-4 w-4" />
-                              {new Date(video.publishedAt).toLocaleDateString()}
-                            </div>
-                          </div>
+                        
+                        {/* Action Buttons */}
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex-1"
+                            onClick={() => handlePreviewVideo(video)}
+                          >
+                            <PlayCircle className="h-4 w-4 mr-1" />
+                            Preview
+                          </Button>
+                          
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button size="sm" className="bg-[#D90429] hover:bg-[#C80021]">
+                                <BookmarkPlus className="h-4 w-4 mr-1" />
+                                Add to Playlist
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Choose Action</DropdownMenuLabel>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem
+                                onClick={() => handlePlaylistAction(video)}
+                              >
+                                <Plus className="h-4 w-4 mr-2" />
+                                Create New Playlist
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuLabel>Add to Existing Playlist</DropdownMenuLabel>
+                              {playlists.length > 0 ? (
+                                playlists.map((playlist) => (
+                                  <DropdownMenuItem
+                                    key={playlist.id}
+                                    onClick={() => handleAddToPlaylist(video, playlist.id)}
+                                  >
+                                    {playlist.title} ({playlist.videoCount} videos)
+                                  </DropdownMenuItem>
+                                ))
+                              ) : (
+                                <DropdownMenuItem disabled>
+                                  No playlists available
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                )}
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
       </div>
+
+      {/* Video Preview Modal */}
+      <Dialog open={!!previewVideo} onOpenChange={() => setPreviewVideo(null)}>
+        <DialogContent className="max-w-4xl w-full h-[80vh] z-50">
+          <DialogHeader>
+            <div className="flex items-center justify-between">
+              <DialogTitle className="text-lg line-clamp-1">
+                {previewVideo?.title}
+              </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setPreviewVideo(null)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </DialogHeader>
+          
+          {previewVideo && (
+            <div className="space-y-4">
+              {/* YouTube Embed */}
+              <div className="aspect-video w-full">
+                <iframe
+                  src={`https://www.youtube.com/embed/${previewVideo.youtubeId}?autoplay=1`}
+                  title={previewVideo.title}
+                  className="w-full h-full rounded-lg"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
+              </div>
+              
+              {/* Video Info */}
+              <div className="space-y-2">
+                <h3 className="font-semibold">{previewVideo.title}</h3>
+                <p className="text-sm text-muted-foreground">{previewVideo.channelTitle}</p>
+                <p className="text-sm">{previewVideo.description}</p>
+                
+                <div className="flex gap-4 text-sm text-muted-foreground">
+                  <span>{formatNumber(previewVideo.viewCount || 0)} views</span>
+                  <span>{formatNumber(previewVideo.likeCount || 0)} likes</span>
+                  <span>{previewVideo.duration}</span>
+                </div>
+              </div>
+              
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-4">
+                <Button
+                  onClick={() => window.open(previewVideo.youtubeURL, '_blank')}
+                  variant="outline"
+                >
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Watch on YouTube
+                </Button>
+                
+                                 <DropdownMenu>
+                   <DropdownMenuTrigger asChild>
+                     <Button className="bg-[#D90429] hover:bg-[#C80021]">
+                       <BookmarkPlus className="h-4 w-4 mr-2" />
+                       Add to Playlist
+                     </Button>
+                   </DropdownMenuTrigger>
+                   <DropdownMenuContent>
+                     <DropdownMenuLabel>Choose Action</DropdownMenuLabel>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuItem
+                       onClick={() => {
+                         handlePlaylistAction(previewVideo);
+                         setPreviewVideo(null);
+                       }}
+                     >
+                       <Plus className="h-4 w-4 mr-2" />
+                       Create New Playlist
+                     </DropdownMenuItem>
+                     <DropdownMenuSeparator />
+                     <DropdownMenuLabel>Add to Existing Playlist</DropdownMenuLabel>
+                     {playlists.length > 0 ? (
+                       playlists.map((playlist) => (
+                         <DropdownMenuItem
+                           key={playlist.id}
+                           onClick={() => {
+                             handleAddToPlaylist(previewVideo, playlist.id);
+                             setPreviewVideo(null);
+                           }}
+                         >
+                           {playlist.title} ({playlist.videoCount} videos)
+                         </DropdownMenuItem>
+                       ))
+                     ) : (
+                       <DropdownMenuItem disabled>
+                         No playlists available
+                       </DropdownMenuItem>
+                     )}
+                   </DropdownMenuContent>
+                 </DropdownMenu>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Playlist Modal */}
+      <Dialog open={showCreatePlaylist} onOpenChange={handleCloseCreatePlaylist}>
+        <DialogContent className="z-50">
+          <DialogHeader>
+            <DialogTitle>Create New Playlist</DialogTitle>
+          </DialogHeader>
+          
+          {selectedVideoForPlaylist && (
+            <div className="mb-4 p-3 bg-gray-100 rounded-lg">
+              <p className="text-sm font-medium">Adding video:</p>
+              <p className="text-sm text-gray-600 line-clamp-1">{selectedVideoForPlaylist.title}</p>
+            </div>
+          )}
+          
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Playlist Title</label>
+              <Input
+                value={newPlaylistTitle}
+                onChange={(e) => setNewPlaylistTitle(e.target.value)}
+                placeholder="Enter playlist title..."
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-medium">Description (Optional)</label>
+              <Input
+                value={newPlaylistDescription}
+                onChange={(e) => setNewPlaylistDescription(e.target.value)}
+                placeholder="Enter playlist description..."
+              />
+            </div>
+            
+            <div className="flex gap-2 pt-4">
+              <Button
+                variant="outline"
+                onClick={handleCloseCreatePlaylist}
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleCreatePlaylist}
+                disabled={!newPlaylistTitle.trim()}
+                className="bg-[#D90429] hover:bg-[#C80021]"
+              >
+                Create Playlist
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 } 

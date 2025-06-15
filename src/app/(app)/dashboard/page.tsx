@@ -833,16 +833,7 @@ export default function DashboardPage() {
       iconColor: "text-orange-500",
       count: "4+ courses"
     },
-    {
-      id: "history-civics",
-      title: "History & Civics",
-      description: "Past events and government systems",
-      icon: Globe,
-      gradient: "from-amber-500/20 to-yellow-500/20",
-      borderColor: "border-amber-500/30",
-      iconColor: "text-amber-500",
-      count: "5+ courses"
-    },
+
     {
       id: "language-learning",
       title: "Language Learning",
@@ -921,16 +912,7 @@ export default function DashboardPage() {
       iconColor: "text-purple-500",
       count: "Weekly insights"
     },
-    {
-      id: "startup-ecosystem",
-      title: "Startups & Ecosystem",
-      description: "Venture capital and startup news",
-      icon: Rocket,
-      gradient: "from-orange-500/20 to-red-500/20",
-      borderColor: "border-orange-500/30",
-      iconColor: "text-orange-500",
-      count: "Latest stories"
-    },
+
     {
       id: "cybersecurity",
       title: "Cybersecurity",
@@ -955,16 +937,7 @@ export default function DashboardPage() {
       iconColor: "text-yellow-500",
       count: "8+ collections"
     },
-    {
-      id: "science-experiments",
-      title: "Science Experiments",
-      description: "Hands-on learning through discovery",
-      icon: Beaker,
-      gradient: "from-teal-500/20 to-green-500/20",
-      borderColor: "border-teal-500/30",
-      iconColor: "text-teal-500",
-      count: "Interactive demos"
-    },
+
     {
       id: "psychology",
       title: "Psychology",
@@ -999,26 +972,8 @@ export default function DashboardPage() {
       iconColor: "text-cyan-500",
       count: "Project tutorials"
     },
-    {
-      id: "electronics-arduino",
-      title: "Electronics & Arduino",
-      description: "Circuit building and microcontrollers",
-      icon: Wrench,
-      gradient: "from-green-500/20 to-teal-500/20",
-      borderColor: "border-green-500/30",
-      iconColor: "text-green-500",
-      count: "Maker projects"
-    },
-    {
-      id: "diy-projects",
-      title: "DIY Projects",
-      description: "Creative making and building",
-      icon: Settings,
-      gradient: "from-orange-500/20 to-yellow-500/20",
-      borderColor: "border-orange-500/30",
-      iconColor: "text-orange-500",
-      count: "Step-by-step guides"
-    }
+
+
   ];
 
   // Lifestyle
@@ -1043,51 +998,10 @@ export default function DashboardPage() {
       iconColor: "text-pink-500",
       count: "Wellness guides"
     },
-    {
-      id: "sustainable-living",
-      title: "Sustainable Living",
-      description: "Eco-friendly lifestyle choices",
-      icon: Leaf,
-      gradient: "from-green-500/20 to-emerald-500/20",
-      borderColor: "border-green-500/30",
-      iconColor: "text-green-500",
-      count: "Green living tips"
-    }
+
   ];
 
-  // Personalized
-  const personalizedGenres = [
-    {
-      id: "trending-now",
-      title: "Trending Now",
-      description: "What's popular in learning today",
-      icon: TrendingUp,
-      gradient: "from-violet-500/20 to-purple-500/20",
-      borderColor: "border-violet-500/30",
-      iconColor: "text-violet-500",
-      count: "Hot topics"
-    },
-    {
-      id: "recommended-for-you",
-      title: "Recommended For You",
-      description: "Curated based on your interests",
-      icon: Sparkles,
-      gradient: "from-amber-500/20 to-orange-500/20",
-      borderColor: "border-amber-500/30",
-      iconColor: "text-amber-500",
-      count: "Personalized"
-    },
-    {
-      id: "based-on-interests",
-      title: "Based on Your Interests",
-      description: "More content you'll love",
-      icon: Heart,
-      gradient: "from-rose-500/20 to-pink-500/20",
-      borderColor: "border-rose-500/30",
-      iconColor: "text-rose-500",
-      count: "Tailored picks"
-    }
-  ];
+
 
   const handleGenreClick = (genreId: string) => {
     // Find genre across all categories
@@ -1098,8 +1012,7 @@ export default function DashboardPage() {
       ...techTrendsGenres,
       ...curiosityGenres,
       ...diyGenres,
-      ...lifestyleGenres,
-      ...personalizedGenres
+      ...lifestyleGenres
     ];
     
     const selectedGenre = allGenres.find(g => g.id === genreId);
@@ -1116,100 +1029,175 @@ export default function DashboardPage() {
     }
   };
 
-  // Reusable genre section renderer
+  // Category-specific background images using Unsplash
+  const getCategoryBackgroundImage = (genreId: string) => {
+    const imageMap: Record<string, string> = {
+      // Skill-Based Genres
+      'coding-programming': 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=320&h=224&fit=crop&auto=format&q=80',
+      'data-science-ai': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=320&h=224&fit=crop&auto=format&q=80',
+      'design': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=320&h=224&fit=crop&auto=format&q=80',
+      'digital-marketing': 'https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=320&h=224&fit=crop&auto=format&q=80',
+      'productivity': 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=320&h=224&fit=crop&auto=format&q=80',
+      'financial-literacy': 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=320&h=224&fit=crop&auto=format&q=80',
+      'soft-skills': 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=320&h=224&fit=crop&auto=format&q=80',
+      'entrepreneurship': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=320&h=224&fit=crop&auto=format&q=80',
+      'writing-content': 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?w=320&h=224&fit=crop&auto=format&q=80',
+      'public-speaking': 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=320&h=224&fit=crop&auto=format&q=80',
+
+      // Academic Genres
+      'mathematics': 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=320&h=224&fit=crop&auto=format&q=80',
+      'physics': 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=320&h=224&fit=crop&auto=format&q=80',
+      'biology': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=320&h=224&fit=crop&auto=format&q=80',
+      'chemistry': 'https://images.unsplash.com/photo-1532634922-8fe0b757fb13?w=320&h=224&fit=crop&auto=format&q=80',
+
+      'language-learning': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=320&h=224&fit=crop&auto=format&q=80',
+
+      // Career & Professional
+      'resume-job-hunting': 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=320&h=224&fit=crop&auto=format&q=80',
+      'interview-prep': 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=320&h=224&fit=crop&auto=format&q=80',
+      'freelancing-remote': 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=320&h=224&fit=crop&auto=format&q=80',
+      'certifications': 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=320&h=224&fit=crop&auto=format&q=80',
+
+      // Tech News & Trends
+      'tech-news': 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=320&h=224&fit=crop&auto=format&q=80',
+      'ai-innovation': 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=320&h=224&fit=crop&auto=format&q=80',
+
+      'cybersecurity': 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=320&h=224&fit=crop&auto=format&q=80',
+
+      // Mind-expanding & Curiosity
+      'trivia-facts': 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=320&h=224&fit=crop&auto=format&q=80',
+
+      'psychology': 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=320&h=224&fit=crop&auto=format&q=80',
+      'philosophy': 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=320&h=224&fit=crop&auto=format&q=80',
+
+      // DIY & Hands-on
+      'robotics-iot': 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=320&h=224&fit=crop&auto=format&q=80',
+
+
+
+      // Lifestyle & Wellness
+      'health-fitness': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=320&h=224&fit=crop&auto=format&q=80',
+      'mental-wellness': 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=320&h=224&fit=crop&auto=format&q=80',
+
+    };
+
+    // Return specific image for the genre, or fallback to a default tech image
+    return imageMap[genreId] || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=320&h=224&fit=crop&auto=format&q=80';
+  };
+
+  // Netflix-style genre section renderer
   const renderGenreSection = (
     sectionTitle: string,
     genres: any[],
     iconComponent: any,
     showExploreAll = true
   ) => (
-    <motion.section variants={fadeInUp} className="space-y-6 w-full">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-semibold flex items-center gap-2">
-          {iconComponent && iconComponent}
+    <motion.section key={sectionTitle} variants={fadeInUp} className="space-y-6 w-full">
+      <div className="flex items-center justify-between px-4">
+        <h2 className="text-4xl font-bold text-white flex items-center gap-3 tracking-tight">
+          <div className="p-2 bg-[#D90429] rounded-xl">
+            {iconComponent}
+          </div>
           {sectionTitle}
         </h2>
         {showExploreAll && (
-          <Button variant="ghost" className="text-primary hover:text-primary/80">
-            Explore All <ChevronRightIcon className="ml-1 h-4 w-4" />
+          <Button 
+            variant="ghost" 
+            className="text-gray-400 hover:text-white text-sm font-medium hover:bg-white/10"
+          >
+            See All <ChevronRightIcon className="ml-1 h-4 w-4" />
           </Button>
         )}
       </div>
       
-      <div className="w-full max-w-full">
-        <div className="relative bg-card/50 rounded-lg p-4 border border-border/50 group overflow-hidden">
-          <div className="genre-scroll-container" style={{ maxWidth: '100%' }}>
-            <div className="genre-cards-wrapper">
-              {genres.map((genre, index) => {
-                const IconComponent = genre.icon;
-                return (
-                  <motion.div
-                    key={genre.id}
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex-shrink-0"
-                    style={{ width: '280px' }}
+      <div className="relative group">
+        <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 px-4" style={{ scrollBehavior: 'smooth' }}>
+          <div className="flex gap-4" style={{ minWidth: 'max-content' }}>
+            {genres.map((genre, index) => {
+              const IconComponent = genre.icon;
+              return (
+                <motion.div
+                  key={genre.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex-shrink-0"
+                  style={{ width: '320px' }}
+                >
+                  <Card 
+                    className="w-full h-56 cursor-pointer transition-all duration-300 hover:scale-105 hover:z-10 bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-[#D90429]/50 group/card relative overflow-hidden shadow-xl hover:shadow-[#D90429]/20"
+                    onClick={() => handleGenreClick(genre.id)}
                   >
-                    <Card 
-                      className={`w-full h-44 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 ${genre.borderColor} bg-gradient-to-br ${genre.gradient} backdrop-blur-sm group/card`}
-                      onClick={() => handleGenreClick(genre.id)}
-                    >
-                      <CardContent className="p-4 h-full flex flex-col justify-between relative overflow-hidden">
-                        {/* Background Pattern */}
-                        <div className="absolute inset-0 opacity-5">
-                          <div className="absolute top-2 right-2 transform rotate-12">
-                            <IconComponent className="h-20 w-20" />
-                          </div>
+                    {/* Background Image */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center opacity-15 group-hover/card:opacity-25 transition-opacity duration-500"
+                      style={{
+                        backgroundImage: `url('${getCategoryBackgroundImage(genre.id)}')`
+                      }}
+                    />
+                    
+                    {/* Subtle Pattern Overlay */}
+                    <div className="absolute inset-0 opacity-5 group-hover/card:opacity-10 transition-opacity duration-300" 
+                         style={{ backgroundImage: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)' }} />
+                    
+                    {/* Dark Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-black/30" />
+                    
+                    <CardContent className="p-5 h-full flex flex-col relative z-10">
+                      {/* Top Section */}
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="bg-[#D90429] p-2.5 rounded-xl group-hover/card:bg-[#C80021] transition-colors shadow-lg">
+                          <IconComponent className="h-5 w-5 text-white" />
+                        </div>
+                        <Badge className="bg-[#D90429]/20 text-[#D90429] border-[#D90429]/30 font-medium backdrop-blur-sm text-xs">
+                          {genre.count} Videos
+                        </Badge>
+                      </div>
+                      
+                      {/* Content Section - Takes up most space */}
+                      <div className="flex-1 flex flex-col justify-between min-h-0">
+                        <div className="space-y-2">
+                          <h3 className="font-bold text-xl text-white leading-tight group-hover/card:text-[#D90429] transition-colors drop-shadow-lg line-clamp-2">
+                            {genre.title}
+                          </h3>
+                          <p className="text-sm text-gray-300 line-clamp-3 leading-relaxed">
+                            {genre.description}
+                          </p>
                         </div>
                         
-                        {/* Content */}
-                        <div className="relative z-10">
-                          <div className="flex items-start justify-between mb-2">
-                            <div className={`p-2 rounded-lg bg-background/80 backdrop-blur-sm ${genre.iconColor} transition-transform duration-300 group-hover/card:scale-110`}>
-                              <IconComponent className="h-5 w-5" />
+                        {/* Action Button - Always at bottom */}
+                        <div className="flex items-center justify-between pt-3 mt-auto">
+                          <div className="flex items-center gap-2 text-sm text-gray-400 font-medium">
+                            <CirclePlay className="h-4 w-4 flex-shrink-0" />
+                            <span className="whitespace-nowrap">Start Learning</span>
+                          </div>
+                          <div className="opacity-0 group-hover/card:opacity-100 transition-all duration-300 transform translate-x-2 group-hover/card:translate-x-0 flex-shrink-0">
+                            <div className="bg-white text-black p-1.5 rounded-full shadow-lg">
+                              <ChevronRightIcon className="h-3 w-3" />
                             </div>
-                            <Badge variant="secondary" className="bg-background/60 backdrop-blur-sm text-xs">
-                              {genre.count}
-                            </Badge>
-                          </div>
-                          
-                          <div className="space-y-1">
-                            <h3 className="font-bold text-base leading-tight group-hover/card:text-primary transition-colors">
-                              {genre.title}
-                            </h3>
-                            <p className="text-xs text-muted-foreground line-clamp-2">
-                              {genre.description}
-                            </p>
                           </div>
                         </div>
-                        
-                        {/* Hover Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-                        
-                        {/* Bottom Action */}
-                        <div className="relative z-10 flex items-center justify-between mt-auto">
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <CirclePlay className="h-3 w-3" />
-                            <span>Start Learning</span>
-                          </div>
-                          <ChevronRightIcon className="h-3 w-3 text-primary opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
+                      </div>
+                    </CardContent>
+                    
+                    {/* Hover Glow Effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#D90429]/20 via-transparent to-[#D90429]/20" />
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#D90429]" />
+                    </div>
+                  </Card>
+                </motion.div>
+              );
+            })}
           </div>
-          
-          {/* Scroll Indicators */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
-            <ChevronLeft className="h-4 w-4 text-muted-foreground" />
-          </div>
-          <div className="absolute top-1/2 -translate-y-1/2 right-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
-            <ChevronRight className="h-4 w-4 text-muted-foreground" />
-          </div>
+        </div>
+        
+        {/* Netflix-style Scroll Arrows */}
+        <div className="absolute top-1/2 -translate-y-1/2 -left-4 bg-black/80 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-2xl border border-gray-700 cursor-pointer hover:bg-black/90">
+          <ChevronLeft className="h-6 w-6 text-white" />
+        </div>
+        <div className="absolute top-1/2 -translate-y-1/2 -right-4 bg-black/80 backdrop-blur-sm rounded-full p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-2xl border border-gray-700 cursor-pointer hover:bg-black/90">
+          <ChevronRight className="h-6 w-6 text-white" />
         </div>
       </div>
     </motion.section>
@@ -1221,11 +1209,13 @@ export default function DashboardPage() {
       <div className="flex flex-col items-center justify-center h-full py-20">
         <h2 className="text-2xl font-bold mb-4">Welcome to StreamSmart!</h2>
         <p className="text-muted-foreground mb-6">Please sign in to access your dashboard.</p>
-        <Link href="/login">
-          <Button size="lg" className="bg-primary hover:bg-primary/90">
-            Sign In to Continue
-          </Button>
-        </Link>
+        <Button 
+          size="lg" 
+          className="bg-[#D90429] hover:bg-[#C80021] text-white"
+          onClick={() => window.location.href = '/login'}
+        >
+          Sign In to Continue
+        </Button>
       </div>
     );
   }
@@ -1244,309 +1234,244 @@ export default function DashboardPage() {
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
-      className="space-y-8"
+      className="space-y-12 bg-black min-h-screen"
     >
-      {/* Welcome Section - Enhanced with landing page theme */}
+      <style jsx global>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .line-clamp-3 {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+      `}</style>
+      {/* Netflix-Style Hero Section */}
       <motion.div 
         variants={fadeInUp}
-        className="relative overflow-hidden rounded-2xl p-8"
+        className="relative overflow-hidden rounded-3xl h-[70vh] flex items-end"
         style={{
-          background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.15) 0%, rgba(169, 29, 58, 0.1) 100%)',
-          backdropFilter: 'blur(15px)',
-          border: '1px solid rgba(217, 4, 41, 0.2)'
+          backgroundImage: `
+            linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.6) 100%),
+            linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.1) 100%),
+            url('https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg')
+          `,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       >
-        {/* Background decoration */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div 
-            className="absolute -top-1/4 -right-1/4 w-96 h-96 rounded-full blur-3xl opacity-10"
-            style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.6) 0%, transparent 70%)' }}
-          />
-        </div>
-        
-        <div className="relative z-10 flex items-center justify-between">
+        {/* Hero Content */}
+        <div className="relative z-10 p-12 max-w-2xl">
+          {/* Netflix-style badge */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="bg-purple-500 text-white px-3 py-1 rounded text-sm font-bold tracking-wider">
+              FEATURED
+            </div>
+            <Badge className="bg-purple-200 text-purple-800 font-semibold">
+              🔥 Trending
+            </Badge>
+            <div className="text-purple-300 font-semibold text-sm">97% Match</div>
+          </div>
+
+          {/* Title */}
+          <h1 className="text-6xl font-black text-white mb-4 drop-shadow-2xl">
+            Master React in 2024
+          </h1>
+
+          {/* Description */}
+          <p className="text-xl text-gray-200 mb-6 max-w-lg leading-relaxed drop-shadow-lg">
+            Complete React development course covering hooks, context, performance optimization, and modern patterns. Build real-world projects and master the most in-demand frontend framework.
+          </p>
+
+          {/* Video Info */}
+          <div className="flex items-center gap-6 mb-8 text-gray-300">
+            <div className="flex items-center gap-2">
+              <ClockIcon className="h-5 w-5" />
+              <span>4h 23min</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <UsersIcon className="h-5 w-5" />
+              <span>2.1M students</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <StarIcon className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+              <span>4.8 rating</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="bg-black/50 text-green-400 border-green-400">
+                Advanced
+              </Badge>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex items-center gap-4">
-            <Avatar className="h-16 w-16 border-2" style={{ borderColor: '#D90429' }}>
+            <Button 
+              size="lg"
+              className="bg-white text-black hover:bg-gray-200 font-bold px-8 py-4 rounded-lg text-lg flex items-center gap-3 shadow-2xl"
+              onClick={() => window.open('https://youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
+            >
+              <CirclePlay className="h-6 w-6" />
+              Start Learning
+            </Button>
+            <Button 
+              size="lg"
+              variant="outline"
+              className="bg-black/60 text-white border-gray-400 hover:bg-black/80 font-semibold px-8 py-4 rounded-lg text-lg flex items-center gap-3 backdrop-blur-sm"
+            >
+              <Bookmark className="h-5 w-5" />
+              Add to Playlist
+            </Button>
+          </div>
+        </div>
+
+        {/* Floating User Stats */}
+        <div className="absolute top-8 right-8 bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-[#D90429]/30">
+          <div className="flex items-center gap-4 mb-4">
+            <Avatar className="h-12 w-12 border-2 border-[#D90429]">
               <AvatarImage 
                 src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
                 alt={user?.name || "User Avatar"} 
               />
-              <AvatarFallback 
-                className="text-2xl font-bold"
-                style={{ backgroundColor: '#D90429', color: 'white' }}
-              >
+              <AvatarFallback className="bg-[#D90429] text-white font-bold">
                 {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-3xl font-bold text-white mb-2 flex items-center gap-2">
-                Welcome back, {user?.name || 'Learner'}! 
-                <span className="animate-bounce">👋</span>
-              </h1>
-              <p className="text-lg text-white/80">
-                Ready to continue your learning journey?
-              </p>
+              <p className="text-white font-semibold">{user?.name || 'Learner'}</p>
+              <p className="text-gray-400 text-sm">Level {Math.floor((userStats?.overallProgress || 0) / 10) + 1}</p>
             </div>
           </div>
-          <Link href="/playlists/new">
-            <Button 
-              className="bg-white text-[#D90429] hover:bg-gray-100 font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-2"
-            >
-              <PlusCircleIcon className="h-5 w-5" />
-              Create New Playlist
-            </Button>
-          </Link>
-        </div>
-        
-        {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
-            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
-              <Flame className="h-5 w-5 text-white" />
+          
+          {/* Mini Stats */}
+          <div className="grid grid-cols-2 gap-4 text-center">
+            <div>
+              <p className="text-2xl font-bold text-[#D90429]">{userStats?.currentStreak || 0}</p>
+              <p className="text-xs text-gray-400">Day Streak</p>
             </div>
             <div>
-              <p className="text-sm text-white/70">Learning Streak</p>
-              <p className="text-xl font-bold text-white">{userStats?.currentStreak || 0} days</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
-            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
-              <ClockIcon className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-white/70">Total Watch Time</p>
-              <p className="text-xl font-bold text-white">{userStats?.totalWatchTime || '0h 0m'}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 p-4 rounded-xl" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
-            <div className="p-2 rounded-lg" style={{ backgroundColor: '#D90429' }}>
-              <TrendingUpIcon className="h-5 w-5 text-white" />
-            </div>
-            <div>
-              <p className="text-sm text-white/70">Progress</p>
-              <p className="text-xl font-bold text-white">{userStats?.overallProgress || 0}% complete</p>
+              <p className="text-2xl font-bold text-[#D90429]">{userStats?.totalPlaylists || 0}</p>
+              <p className="text-xs text-gray-400">Playlists</p>
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* Skill-Based Genres Section - Netflix Style */}
-      <motion.section variants={fadeInUp} className="space-y-6 w-full">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold flex items-center gap-2">
-            <ZapIcon className="h-6 w-6 text-primary" />
-            Skill-Based Genres
-          </h2>
-          <Button variant="ghost" className="text-primary hover:text-primary/80">
-            Explore All <ChevronRightIcon className="ml-1 h-4 w-4" />
-          </Button>
-        </div>
-        
-        {/* Large Horizontal Container for All Genre Cards */}
-        <div className="w-full max-w-full">
-          <div className="relative bg-card/50 rounded-lg p-4 border border-border/50 group overflow-hidden">
-            <div className="genre-scroll-container" style={{ maxWidth: '100%' }}>
-              <div className="genre-cards-wrapper">
-                {skillBasedGenres.map((genre, index) => {
-                  const IconComponent = genre.icon;
-                  return (
-                    <motion.div
-                      key={genre.id}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex-shrink-0"
-                      style={{ width: '280px' }}
-                    >
-                      <Card 
-                        className={`w-full h-44 cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl border-2 ${genre.borderColor} bg-gradient-to-br ${genre.gradient} backdrop-blur-sm group/card`}
-                        onClick={() => handleGenreClick(genre.id)}
-                      >
-                        <CardContent className="p-4 h-full flex flex-col justify-between relative overflow-hidden">
-                          {/* Background Pattern */}
-                          <div className="absolute inset-0 opacity-5">
-                            <div className="absolute top-2 right-2 transform rotate-12">
-                              <IconComponent className="h-20 w-20" />
-                            </div>
-                          </div>
-                          
-                          {/* Content */}
-                          <div className="relative z-10">
-                            <div className="flex items-start justify-between mb-2">
-                              <div className={`p-2 rounded-lg bg-background/80 backdrop-blur-sm ${genre.iconColor} transition-transform duration-300 group-hover/card:scale-110`}>
-                                <IconComponent className="h-5 w-5" />
-                              </div>
-                              <Badge variant="secondary" className="bg-background/60 backdrop-blur-sm text-xs">
-                                {genre.count}
-                              </Badge>
-                            </div>
-                            
-                            <div className="space-y-1">
-                              <h3 className="font-bold text-base leading-tight group-hover/card:text-primary transition-colors">
-                                {genre.title}
-                              </h3>
-                              <p className="text-xs text-muted-foreground line-clamp-2">
-                                {genre.description}
-                              </p>
-                            </div>
-                          </div>
-                          
-                          {/* Hover Effect */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-                          
-                          {/* Bottom Action */}
-                          <div className="relative z-10 flex items-center justify-between mt-auto">
-                            <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                              <CirclePlay className="h-3 w-3" />
-                              <span>Start Learning</span>
-                            </div>
-                            <ChevronRightIcon className="h-3 w-3 text-primary opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-            
-            {/* Scroll Indicators */}
-            <div className="absolute top-1/2 -translate-y-1/2 left-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
-              <ChevronLeft className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="absolute top-1/2 -translate-y-1/2 right-2 bg-background/80 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg border border-border/50">
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      {/* Skill-Based Genres */}
+      {renderGenreSection(
+        "Skill-Based Genres",
+        skillBasedGenres,
+        <ZapIcon className="h-6 w-6 text-white" />
+      )}
 
       {/* Academic Genres */}
       {renderGenreSection(
         "Academic Subjects",
         academicGenres,
-        <GraduationCap className="h-6 w-6 text-primary" />
+        <GraduationCap className="h-6 w-6 text-white" />
       )}
 
       {/* Career & Professional Development */}
       {renderGenreSection(
         "Career & Professional Development",
         careerGenres,
-        <Briefcase className="h-6 w-6 text-primary" />
+        <Briefcase className="h-6 w-6 text-white" />
       )}
 
       {/* Tech News & Trends */}
       {renderGenreSection(
         "Tech News & Trends",
         techTrendsGenres,
-        <Newspaper className="h-6 w-6 text-primary" />
+        <Newspaper className="h-6 w-6 text-white" />
       )}
 
       {/* Mind-expanding & Curiosity */}
       {renderGenreSection(
         "Mind-Expanding & Curiosity",
         curiosityGenres,
-        <Lightbulb className="h-6 w-6 text-primary" />
+        <Lightbulb className="h-6 w-6 text-white" />
       )}
 
       {/* DIY & Hands-on */}
       {renderGenreSection(
         "DIY & Hands-on Learning",
         diyGenres,
-        <Wrench className="h-6 w-6 text-primary" />
+        <Wrench className="h-6 w-6 text-white" />
       )}
 
       {/* Lifestyle */}
       {renderGenreSection(
         "Lifestyle & Wellness",
         lifestyleGenres,
-        <Heart className="h-6 w-6 text-primary" />
+        <Heart className="h-6 w-6 text-white" />
       )}
 
-      {/* Personalized */}
-      {renderGenreSection(
-        "Personalized for You",
-        personalizedGenres,
-        <Sparkles className="h-6 w-6 text-primary" />
-      )}
 
-      {/* Stats Overview */}
-      <motion.section variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/10 border-blue-200/20 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Playlists</p>
-                <p className="text-3xl font-bold text-blue-600">{userStats?.totalPlaylists || 0}</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <BookOpenCheckIcon className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card className="bg-gradient-to-br from-green-500/10 to-green-600/10 border-green-200/20 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Videos Completed</p>
-                <p className="text-3xl font-bold text-green-600">{userStats?.totalVideosCompleted || 0}</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
-                <CircleCheck className="h-6 w-6 text-green-600" />
-              </div>
+      {/* Netflix-Style Quick Stats Bar */}
+      <motion.section variants={fadeInUp} className="px-4">
+        <div className="flex items-center justify-between bg-gradient-to-r from-gray-900 to-black rounded-2xl p-6 border border-gray-800">
+          <div className="flex items-center gap-8">
+            <div className="text-center">
+              <p className="text-3xl font-bold text-[#D90429]">{userStats?.totalPlaylists || 0}</p>
+              <p className="text-sm text-gray-400">Playlists</p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-orange-500/10 to-orange-600/10 border-orange-200/20 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Learning Streak</p>
-                <p className="text-3xl font-bold text-orange-600">{userStats?.currentStreak || 0} days</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-orange-100 flex items-center justify-center">
-                <Flame className="h-6 w-6 text-orange-600" />
-              </div>
+            <div className="w-px h-12 bg-gray-700"></div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-green-500">{userStats?.totalVideosCompleted || 0}</p>
+              <p className="text-sm text-gray-400">Completed</p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/10 border-purple-200/20 hover:shadow-lg transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Overall Progress</p>
-                <p className="text-3xl font-bold text-purple-600">{userStats?.overallProgress || 0}%</p>
-              </div>
-              <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
-                <TrendingUpIcon className="h-6 w-6 text-purple-600" />
-              </div>
+            <div className="w-px h-12 bg-gray-700"></div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-yellow-500">{userStats?.currentStreak || 0}</p>
+              <p className="text-sm text-gray-400">Day Streak</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="w-px h-12 bg-gray-700"></div>
+            <div className="text-center">
+              <p className="text-3xl font-bold text-blue-500">{userStats?.overallProgress || 0}%</p>
+              <p className="text-sm text-gray-400">Progress</p>
+            </div>
+          </div>
+          
+          <Link href="/playlists/create">
+            <Button className="bg-[#D90429] hover:bg-[#C80021] text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2">
+              <PlusCircleIcon className="h-5 w-5" />
+              Create Playlist
+            </Button>
+          </Link>
+        </div>
       </motion.section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
           {/* Continue Learning */}
           <motion.section variants={fadeInUp}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-semibold flex items-center gap-2">
-                <CirclePlay className="h-6 w-6 text-primary" />
+            <div className="flex items-center justify-between mb-8 px-4">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                <CirclePlay className="h-8 w-8 text-[#D90429]" />
                 Continue Learning
               </h2>
               <Link href="/playlists">
-                <Button variant="ghost" className="text-primary hover:text-primary/80">
+                <Button variant="ghost" className="text-gray-400 hover:text-white hover:bg-white/10">
                   View All <ChevronRightIcon className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
             </div>
             
             {playlists.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="flex gap-6 overflow-x-auto scrollbar-hide pb-4 px-4">
                 {playlists.map((playlist) => {
                   const playlistProgress = playlist.videos.length > 0 
                     ? playlist.videos.reduce((acc, vid) => acc + (vid.completionStatus || 0), 0) / playlist.videos.length
@@ -1555,10 +1480,12 @@ export default function DashboardPage() {
                   return (
                     <motion.div
                       key={playlist.id}
-                      whileHover={{ scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                      className="flex-shrink-0"
+                      style={{ width: '400px' }}
                     >
-                      <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                      <Card className="overflow-hidden hover:shadow-2xl hover:shadow-[#D90429]/20 transition-all duration-300 group bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-[#D90429]/50">
                         <Link href={`/playlists/${playlist.id}`}>
                           <div className="relative">
                             <Image 
@@ -1566,25 +1493,40 @@ export default function DashboardPage() {
                               alt={playlist.title} 
                               width={400} 
                               height={240} 
-                              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                            <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <Progress value={playlistProgress} className="h-2" />
-                              <p className="text-white text-sm mt-2">{Math.round(playlistProgress)}% complete</p>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            
+                            {/* Progress Bar - Always Visible */}
+                            <div className="absolute bottom-0 left-0 right-0 h-2 bg-gray-800">
+                              <div 
+                                className="h-full bg-[#D90429] transition-all duration-300"
+                                style={{ width: `${playlistProgress}%` }}
+                              />
+                            </div>
+                            
+                            {/* Hover Overlay */}
+                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                              <div className="text-center text-white">
+                                <CirclePlay className="h-16 w-16 mx-auto mb-2 opacity-80" />
+                                <p className="text-lg font-semibold">{Math.round(playlistProgress)}% Complete</p>
+                              </div>
                             </div>
                           </div>
-                          <CardContent className="p-4">
-                            <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                          
+                          <CardContent className="p-6 bg-gradient-to-t from-black to-gray-900">
+                            <h3 className="font-bold text-xl text-white mb-2 group-hover:text-[#D90429] transition-colors">
                               {playlist.title}
                             </h3>
-                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                            <p className="text-sm text-gray-300 mb-4 line-clamp-2 leading-relaxed">
                               {playlist.description}
                             </p>
-                            <div className="flex items-center justify-between text-sm">
-                              <span className="text-muted-foreground">{playlist.videos.length} videos</span>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2 text-sm text-gray-400">
+                                <span>{playlist.videos.length} videos</span>
+                              </div>
                               {playlist.aiRecommended && (
-                                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                                <Badge className="bg-[#D90429]/20 text-[#D90429] border-[#D90429]/30">
                                   <ZapIcon className="w-3 h-3 mr-1" />
                                   AI Curated
                                 </Badge>
@@ -1598,22 +1540,22 @@ export default function DashboardPage() {
                 })}
               </div>
             ) : (
-              <Card className="text-center p-12 border-dashed border-2">
-                <BookOpenCheckIcon className="mx-auto h-16 w-16 text-muted-foreground/50 mb-4" />
-                <h3 className="text-xl font-semibold mb-2">No playlists yet</h3>
-                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                  Start your learning journey by creating your first playlist or let our AI suggest content for you.
+              <Card className="text-center p-12 bg-gradient-to-br from-gray-900 to-black border border-gray-800 mx-4">
+                <BookOpenCheckIcon className="mx-auto h-20 w-20 text-[#D90429]/50 mb-6" />
+                <h3 className="text-2xl font-bold text-white mb-4">Ready to Start Learning?</h3>
+                <p className="text-gray-300 mb-8 max-w-md mx-auto text-lg leading-relaxed">
+                  Create your first playlist or explore our AI-curated content to begin your learning adventure.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <Link href="/playlists/create">
-                    <Button className="w-full sm:w-auto">
-                      <PlusCircleIcon className="mr-2 h-4 w-4" />
-                      Create Playlist
+                    <Button className="w-full sm:w-auto bg-[#D90429] hover:bg-[#C80021] text-white font-semibold px-8 py-3 text-lg">
+                      <PlusCircleIcon className="mr-2 h-5 w-5" />
+                      Create First Playlist
                     </Button>
                   </Link>
                   <Link href="/playlists">
-                    <Button variant="outline" className="w-full sm:w-auto">
-                      <ZapIcon className="mr-2 h-4 w-4" />
+                    <Button variant="outline" className="w-full sm:w-auto border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white font-semibold px-8 py-3 text-lg">
+                      <ZapIcon className="mr-2 h-5 w-5" />
                       Explore AI Suggestions
                     </Button>
                   </Link>
@@ -1622,40 +1564,11 @@ export default function DashboardPage() {
             )}
           </motion.section>
 
-          {/* AI Recommendations */}
-          <motion.section variants={fadeInUp}>
-            <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
-              <BrainIcon className="h-6 w-6 text-primary" />
-              Recommended for You
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {recommendations
-                .filter(rec => !getUserFeedbackForItem(rec.id).notInterested)
-                .map((rec, index) => (
-                <RecommendationCard
-                  key={rec.id}
-                  recommendation={rec}
-                  userFeedback={getUserFeedbackForItem(rec.id)}
-                  onRating={(rating) => handleRating(rec.id, rating)}
-                  onThumbsRating={(rating) => handleThumbsRating(rec.id, rating)}
-                  onWatchlistToggle={() => handleWatchlistToggle(rec.id)}
-                  onNotInterested={() => handleNotInterested(rec.id)}
-                  onWriteReview={() => handleWriteReview(rec.id)}
-                  onPlay={() => window.open(rec.url, '_blank')}
-                  recommendationContext={{
-                    source: 'dashboard',
-                    algorithm: 'content_based',
-                    position: index + 1
-                  }}
-                  ratingType="stars"
-                />
-              ))}
-            </div>
-          </motion.section>
+
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-8">
+        {/* Netflix-Style Sidebar */}
+        <div className="space-y-8 bg-gradient-to-b from-gray-900 to-black rounded-2xl p-6 border border-gray-800">
           {/* Achievements */}
           <motion.section variants={fadeInUp}>
             <AchievementsSystem maxDisplay={4} />
@@ -1663,17 +1576,17 @@ export default function DashboardPage() {
 
           {/* Recent Activity */}
           <motion.section variants={fadeInUp}>
-            <Card>
+            <Card className="bg-gray-900/50 border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CalendarIcon className="h-5 w-5 text-blue-500" />
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <CalendarIcon className="h-5 w-5 text-[#D90429]" />
                   Recent Activity
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {userStats?.recentActivity && userStats.recentActivity.length > 0 ? (
                   userStats.recentActivity.map((activity, index) => (
-                    <div key={activity.id || index} className="flex items-start gap-3">
+                    <div key={activity.id || `activity-${index}`} className="flex items-start gap-3">
                       <div className="p-1.5 rounded-full bg-accent/50 mt-0.5">
                         {activity.type === 'completed' && <CircleCheck className="h-4 w-4 text-green-500" />}
                         {activity.type === 'started' && <CirclePlay className="h-4 w-4 text-blue-500" />}
@@ -1705,11 +1618,11 @@ export default function DashboardPage() {
 
           {/* Learning Goals */}
           <motion.section variants={fadeInUp}>
-            <Card>
+            <Card className="bg-gray-900/50 border-gray-700">
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
+                <CardTitle className="flex items-center justify-between text-white">
                   <span className="flex items-center gap-2">
-                  <TargetIcon className="h-5 w-5 text-green-500" />
+                  <TargetIcon className="h-5 w-5 text-[#D90429]" />
                   Weekly Goal
                   </span>
                   <WeeklyGoalSettings />

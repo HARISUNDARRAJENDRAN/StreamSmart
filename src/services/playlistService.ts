@@ -23,18 +23,41 @@ export const playlistService = {
   // Fetch a single playlist by ID
   async getPlaylistById(playlistId: string) {
     try {
+      console.log('Fetching playlist with ID:', playlistId);
       const response = await fetch(`${API_BASE_URL}/playlists/${playlistId}`);
-      const data = await response.json();
+      
+      console.log('Playlist fetch response status:', response.status);
       
       if (!response.ok) {
-        console.error('Playlist API error:', data);
-        throw new Error(data.error || 'Failed to fetch playlist');
+        const errorText = await response.text();
+        console.error('Playlist API error response:', errorText);
+        
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          errorData = { error: errorText || 'Unknown error' };
+        }
+        
+        console.error('Playlist API error:', errorData);
+        throw new Error(errorData.error || `HTTP ${response.status}: Failed to fetch playlist`);
       }
       
-      return data.playlist;
+      const data = await response.json();
+      console.log('Playlist data received:', data);
+      
+      // Handle both old and new response formats
+      const playlist = data.playlist || data;
+      
+      // Ensure we have the correct ID field
+      if (playlist && !playlist._id && playlist.id) {
+        playlist._id = playlist.id;
+      }
+      
+      return playlist;
     } catch (error) {
       console.error('Error fetching playlist:', error);
-      return null;
+      throw error; // Re-throw to allow caller to handle
     }
   },
 
