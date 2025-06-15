@@ -94,6 +94,12 @@ class YouTubeContentCollector:
         self.batch_size = 20  # Videos per request
         self.max_retries = 3
         
+        # Enhanced filtering criteria
+        self.min_view_count = 10000  # Minimum 10K views
+        self.min_duration_seconds = 300  # Minimum 5 minutes (exclude shorts)
+        self.max_duration_seconds = 14400  # Maximum 4 hours (reasonable limit)
+        self.videos_per_genre_target = 2000  # Target 2000 videos per genre
+        
         # Educational channel whitelist (high-quality educational channels)
         self.educational_channels = {
     'coding-programming': [
@@ -276,17 +282,26 @@ class YouTubeContentCollector:
                 # Search query templates for each genre
         self.genre_queries = {
             GenreCategory.CODING_PROGRAMMING: [
-                "programming tutorial beginner",
-                "coding bootcamp complete course",
-                "web development full stack",
-                "software engineering tutorial",
-                "python programming guide",
-                "javascript tutorial",
-                "java programming",
-                "c++ programming",
-                "c programming",
-                "c# programming",
-                "ruby programming",
+                "programming tutorial complete course",
+                "coding bootcamp full course",
+                "web development full stack course",
+                "software engineering complete tutorial",
+                "python programming full course",
+                "javascript complete tutorial",
+                "java programming full course",
+                "c++ programming complete guide",
+                "c programming full tutorial",
+                "c# programming complete course",
+                "ruby programming full course",
+                "react js complete course",
+                "node js full tutorial",
+                "angular complete course",
+                "vue js full course",
+                "django complete tutorial",
+                "flask programming course",
+                "spring boot full course",
+                "data structures algorithms course",
+                "object oriented programming tutorial",
                 "php programming",
                 "sql programming",
                 "mongodb programming",
@@ -1500,31 +1515,59 @@ GenreCategory.SUSTAINABLE_LIVING: [
         return 0
 
     def calculate_quality_score(self, video: Dict[str, Any]) -> float:
-        """Calculate educational quality score for a video"""
+        """Calculate educational quality score for a video with enhanced filtering"""
         score = 0.0
         
-        # View count factor (normalized)
+        # View count factor (normalized) - Enhanced scoring for higher view counts
         view_count_text = video.get('viewCount', {})
         if isinstance(view_count_text, dict):
             view_count_text = view_count_text.get('text', '0')
         
         try:
             views = self._parse_view_count(str(view_count_text))
-            if views > 1000000:  # 1M+ views
+            
+            # Minimum view count requirement (10K+)
+            if views < self.min_view_count:
+                return 0.0  # Reject videos with less than 10K views
+            
+            # Enhanced view count scoring
+            if views > 10000000:  # 10M+ views
+                score += 0.4
+            elif views > 5000000:  # 5M+ views
+                score += 0.35
+            elif views > 1000000:  # 1M+ views
                 score += 0.3
-            elif views > 100000:  # 100K+ views
+            elif views > 500000:   # 500K+ views
+                score += 0.25
+            elif views > 100000:   # 100K+ views
                 score += 0.2
-            elif views > 10000:   # 10K+ views
+            elif views > 50000:    # 50K+ views
+                score += 0.15
+            else:  # 10K-50K views
                 score += 0.1
         except:
-            pass
+            return 0.0  # Reject if view count can't be parsed
         
-        # Duration factor (educational videos are typically longer)
+        # Duration factor - Enhanced for long-form content only
         duration = self.parse_duration(video.get('duration', ''))
-        if 300 <= duration <= 3600:  # 5 minutes to 1 hour (sweet spot)
+        
+        # Reject short-form content (less than 5 minutes)
+        if duration < self.min_duration_seconds:
+            return 0.0
+        
+        # Reject extremely long content (more than 4 hours)
+        if duration > self.max_duration_seconds:
+            return 0.0
+        
+        # Enhanced duration scoring for educational content
+        if 1800 <= duration <= 7200:  # 30 minutes to 2 hours (optimal for learning)
+            score += 0.3
+        elif 900 <= duration <= 1800:  # 15-30 minutes (good for tutorials)
+            score += 0.25
+        elif 600 <= duration <= 900:   # 10-15 minutes (good for concepts)
             score += 0.2
-        elif duration > 1800:  # 30+ minutes
-            score += 0.1
+        elif 300 <= duration <= 600:   # 5-10 minutes (acceptable)
+            score += 0.15
         
         # Channel reputation
         channel_info = video.get('channel', {})
@@ -1548,6 +1591,44 @@ GenreCategory.SUSTAINABLE_LIVING: [
         score += min(keyword_matches * 0.05, 0.2)  # Max 0.2 from keywords
         
         return min(score, 1.0)  # Cap at 1.0
+
+    def _meets_enhanced_criteria(self, video_data: VideoData, quality_threshold: float) -> bool:
+        """Check if video meets enhanced filtering criteria for long-form educational content"""
+        
+        # Quality score threshold
+        if video_data.quality_score < quality_threshold:
+            return False
+        
+        # Minimum view count (10K+)
+        if video_data.view_count < self.min_view_count:
+            return False
+        
+        # Duration check for long-form content
+        duration_seconds = self.parse_duration(video_data.duration)
+        if duration_seconds < self.min_duration_seconds or duration_seconds > self.max_duration_seconds:
+            return False
+        
+        # Exclude obvious short-form indicators in title
+        title_lower = video_data.title.lower()
+        short_form_indicators = [
+            '#shorts', 'short', 'quick tip', 'in 60 seconds', 'in 1 minute',
+            'tiktok', 'reel', 'viral', 'meme', 'funny moment'
+        ]
+        
+        if any(indicator in title_lower for indicator in short_form_indicators):
+            return False
+        
+        # Prefer educational content indicators
+        educational_indicators = [
+            'tutorial', 'course', 'lecture', 'explained', 'guide', 'learn',
+            'complete', 'full', 'comprehensive', 'step by step', 'masterclass',
+            'bootcamp', 'crash course', 'deep dive', 'fundamentals', 'basics'
+        ]
+        
+        # Bonus points for educational indicators (not required but preferred)
+        has_educational_indicator = any(indicator in title_lower for indicator in educational_indicators)
+        
+        return True  # Passed all criteria
 
     def extract_educational_indicators(self, video: Dict[str, Any]) -> Dict[str, Any]:
         """Extract educational indicators from video metadata"""
@@ -1637,8 +1718,8 @@ GenreCategory.SUSTAINABLE_LIVING: [
     async def search_videos_for_genre(
         self, 
         genre: GenreCategory, 
-        limit: int = 100,
-        quality_threshold: float = 0.3
+        limit: int = 2000,
+        quality_threshold: float = 0.4
     ) -> List[VideoData]:
         """Search and collect videos for a specific genre"""
         
@@ -1649,8 +1730,8 @@ GenreCategory.SUSTAINABLE_LIVING: [
         all_videos = []
         queries = self.genre_queries[genre]
         
-        # Diversify search with multiple queries
-        videos_per_query = max(limit // len(queries), 20)
+        # Diversify search with multiple queries - Enhanced for 2000 videos
+        videos_per_query = max(limit // len(queries), 100)  # Increased from 20 to 100
         
         for query in queries:
             try:
@@ -1659,10 +1740,10 @@ GenreCategory.SUSTAINABLE_LIVING: [
                 # Use the synchronous get_videos method
                 raw_videos = self.get_videos(query, videos_per_query)
                 
-                # Parse and filter videos
+                # Parse and filter videos with enhanced criteria
                 for video_raw in raw_videos:
                     video_data = self._parse_video_data(video_raw)
-                    if video_data and video_data.quality_score >= quality_threshold:
+                    if video_data and self._meets_enhanced_criteria(video_data, quality_threshold):
                         all_videos.append(video_data)
                 
                 if len(all_videos) >= limit:
@@ -1774,8 +1855,8 @@ GenreCategory.SUSTAINABLE_LIVING: [
 
     async def collect_content_for_all_genres(
         self, 
-        videos_per_genre: int = 50,
-        quality_threshold: float = 0.3
+        videos_per_genre: int = 2000,
+        quality_threshold: float = 0.4
     ) -> Dict[GenreCategory, List[VideoData]]:
         """Collect content for all genres"""
         
@@ -1811,11 +1892,11 @@ def get_videos_sync(query: str, total_limit: int = 100) -> List[Dict[str, Any]]:
     """Synchronous wrapper for getting videos"""
     return youtube_collector.get_videos(query, total_limit)
 
-async def get_genre_videos(genre: GenreCategory, limit: int = 50) -> List[VideoData]:
+async def get_genre_videos(genre: GenreCategory, limit: int = 2000) -> List[VideoData]:
     """Get videos for a specific genre"""
     return await youtube_collector.search_videos_for_genre(genre, limit)
 
-async def collect_all_content(videos_per_genre: int = 50) -> Dict[str, List[Dict]]:
+async def collect_all_content(videos_per_genre: int = 2000) -> Dict[str, List[Dict]]:
     """Collect content for all genres and return as serializable dict"""
     content = await youtube_collector.collect_content_for_all_genres(videos_per_genre)
     

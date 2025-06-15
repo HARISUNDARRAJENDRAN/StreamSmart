@@ -41,11 +41,14 @@ logger = logging.getLogger(__name__)
 class BulkGenrePopulator:
     def __init__(self):
         self.collector = YouTubeContentCollector()
-        self.target_videos_per_genre = 150  # Target 150 videos per genre
-        self.min_videos_per_genre = 100     # Minimum acceptable
-        self.quality_threshold = 0.25       # Lower threshold for more videos
+        self.target_videos_per_genre = 2000  # Target 2000 videos per genre
+        self.min_videos_per_genre = 1500     # Minimum acceptable (75% of target)
+        self.quality_threshold = 0.15        # Lower threshold for more videos
         self.results_dir = Path("genre_population_results")
         self.results_dir.mkdir(exist_ok=True)
+        
+        # Load existing videos to avoid duplicates
+        self.existing_video_ids = self._load_existing_video_ids()
         
         # All 29 genre categories from the codebase
         self.all_genres = [
@@ -99,9 +102,59 @@ class BulkGenrePopulator:
         ]
         
         logger.info(f"Initialized populator for {len(self.all_genres)} genre categories")
+        logger.info(f"Loaded {len(self.existing_video_ids)} existing video IDs to avoid duplicates")
+    
+    def _load_existing_video_ids(self) -> set:
+        """Load existing video IDs from all genre result files to avoid duplicates"""
+        existing_ids = set()
+        
+        # Load from individual genre files
+        for genre_file in self.results_dir.glob("*_videos.json"):
+            try:
+                with open(genre_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    videos = data.get('videos', [])
+                    for video in videos:
+                        if 'video_id' in video:
+                            existing_ids.add(video['video_id'])
+                logger.info(f"Loaded {len(videos)} video IDs from {genre_file.name}")
+            except Exception as e:
+                logger.warning(f"Could not load existing videos from {genre_file}: {e}")
+        
+        # Also load from complete results file if it exists
+        complete_file = self.results_dir / "complete_population_results.json"
+        if complete_file.exists():
+            try:
+                with open(complete_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    individual_results = data.get('individual_results', [])
+                    for result in individual_results:
+                        videos = result.get('videos', [])
+                        for video in videos:
+                            if 'video_id' in video:
+                                existing_ids.add(video['video_id'])
+            except Exception as e:
+                logger.warning(f"Could not load from complete results file: {e}")
+        
+        return existing_ids
+    
+    def _load_existing_genre_videos(self, genre: GenreCategory) -> List[Dict[str, Any]]:
+        """Load existing videos for a specific genre"""
+        genre_file = self.results_dir / f"{genre.value}_videos.json"
+        
+        if not genre_file.exists():
+            return []
+        
+        try:
+            with open(genre_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                return data.get('videos', [])
+        except Exception as e:
+            logger.warning(f"Could not load existing videos for {genre.value}: {e}")
+            return []
 
     def collect_videos_for_genre_sync(self, genre: GenreCategory) -> List[Dict[str, Any]]:
-        """Synchronously collect videos for a single genre using multiple strategies"""
+        """Enhanced synchronous collection for 2000+ videos per genre with multiple strategies"""
         
         if genre not in self.collector.genre_queries:
             logger.warning(f"No search queries defined for genre: {genre}")
@@ -110,89 +163,226 @@ class BulkGenrePopulator:
         all_videos = []
         queries = self.collector.genre_queries[genre]
         
-        # Calculate videos per query to reach target
-        videos_per_query = max(self.target_videos_per_genre // len(queries), 10)
+        # Enhanced strategy: Multiple passes with different search depths
+        videos_per_query_base = max(self.target_videos_per_genre // len(queries), 50)
         
-        logger.info(f"🎯 Collecting videos for {genre.value} using {len(queries)} search queries")
+        logger.info(f"🎯 Enhanced collection for {genre.value} using {len(queries)} search queries")
+        logger.info(f"   Target: {self.target_videos_per_genre} videos | Base per query: {videos_per_query_base}")
         
+        # Strategy 1: Standard search with increased depth
         for i, query in enumerate(queries, 1):
             try:
-                logger.info(f"  📝 Query {i}/{len(queries)}: '{query}' (targeting {videos_per_query} videos)")
+                logger.info(f"  📝 Pass 1 - Query {i}/{len(queries)}: '{query}'")
                 
-                # Get videos for this query
-                raw_videos = get_videos_sync(query, videos_per_query)
+                # Get more videos per query for 2000 target
+                raw_videos = get_videos_sync(query, videos_per_query_base * 2)
                 
-                # Parse and filter videos
-                query_videos = []
-                for video_raw in raw_videos:
-                    try:
-                        video_data = self.collector._parse_video_data(video_raw)
-                        if video_data and video_data.quality_score >= self.quality_threshold:
-                            # Convert to dict for JSON serialization
-                            video_dict = {
-                                'video_id': video_data.video_id,
-                                'title': video_data.title,
-                                'description': video_data.description,
-                                'duration': video_data.duration,
-                                'channel_name': video_data.channel_name,
-                                'channel_id': video_data.channel_id,
-                                'view_count': video_data.view_count,
-                                'upload_date': video_data.upload_date,
-                                'thumbnail_url': video_data.thumbnail_url,
-                                'youtube_url': video_data.youtube_url,
-                                'quality_score': video_data.quality_score,
-                                'educational_indicators': video_data.educational_indicators,
-                                'search_query': query,
-                                'genre': genre.value
-                            }
-                            query_videos.append(video_dict)
-                            all_videos.append(video_dict)
-                    except Exception as e:
-                        logger.error(f"Error parsing video: {e}")
-                        continue
+                query_videos = self._process_raw_videos(raw_videos, query, genre.value)
+                all_videos.extend(query_videos)
                 
-                logger.info(f"    ✅ Found {len(query_videos)} quality videos for this query")
+                logger.info(f"    ✅ Pass 1: {len(query_videos)} quality videos")
                 
-                # Rate limiting between queries
-                time.sleep(1)
+                # Rate limiting
+                time.sleep(1.5)
                 
-                # Early exit if we have enough videos
-                if len(all_videos) >= self.target_videos_per_genre:
-                    logger.info(f"    🎉 Reached target of {self.target_videos_per_genre} videos, stopping early")
-                    break
-                    
             except Exception as e:
                 logger.error(f"Error with query '{query}': {e}")
                 continue
         
-        # Remove duplicates based on video_id
-        unique_videos = []
-        seen_ids = set()
+        # Strategy 2: Enhanced queries with course/tutorial focus
+        if len(all_videos) < self.target_videos_per_genre * 0.7:  # If we have less than 70% of target
+            logger.info(f"  🔄 Pass 2: Enhanced queries (current: {len(all_videos)} videos)")
+            
+            enhanced_queries = []
+            for base_query in queries[:3]:  # Use top 3 queries
+                enhanced_queries.extend([
+                    f"{base_query} complete course",
+                    f"{base_query} full tutorial",
+                    f"{base_query} comprehensive guide",
+                    f"learn {base_query} step by step"
+                ])
+            
+            for i, query in enumerate(enhanced_queries, 1):
+                try:
+                    logger.info(f"  📝 Pass 2 - Enhanced {i}/{len(enhanced_queries)}: '{query}'")
+                    
+                    raw_videos = get_videos_sync(query, videos_per_query_base)
+                    query_videos = self._process_raw_videos(raw_videos, query, genre.value)
+                    all_videos.extend(query_videos)
+                    
+                    logger.info(f"    ✅ Pass 2: {len(query_videos)} additional videos")
+                    
+                    time.sleep(1)
+                    
+                    # Check if we've reached target
+                    if len(all_videos) >= self.target_videos_per_genre:
+                        logger.info(f"    🎉 Reached target after enhanced queries!")
+                        break
+                        
+                except Exception as e:
+                    logger.error(f"Error with enhanced query '{query}': {e}")
+                    continue
         
-        for video in all_videos:
-            if video['video_id'] not in seen_ids:
-                seen_ids.add(video['video_id'])
-                unique_videos.append(video)
+        # Strategy 3: Channel-based collection if still short
+        if len(all_videos) < self.target_videos_per_genre * 0.8:  # If we have less than 80% of target
+            logger.info(f"  🔄 Pass 3: Channel-based collection (current: {len(all_videos)} videos)")
+            
+            # Get videos from high-quality educational channels
+            channel_queries = [
+                f"{genre.value} site:youtube.com/c/freecodecamp",
+                f"{genre.value} site:youtube.com/c/khanacademy", 
+                f"{genre.value} site:youtube.com/c/3blue1brown",
+                f"{genre.value} site:youtube.com/c/crashcourse",
+                f"{genre.value} site:youtube.com/c/edureka"
+            ]
+            
+            for query in channel_queries:
+                try:
+                    raw_videos = get_videos_sync(query, 100)
+                    query_videos = self._process_raw_videos(raw_videos, query, genre.value)
+                    all_videos.extend(query_videos)
+                    
+                    logger.info(f"    ✅ Channel search: {len(query_videos)} videos")
+                    time.sleep(1)
+                    
+                except Exception as e:
+                    logger.error(f"Error with channel query '{query}': {e}")
+                    continue
         
-        # Sort by quality score (highest first)
+        # Remove duplicates and apply enhanced filtering
+        unique_videos = self._deduplicate_and_filter(all_videos)
+        
+        # Sort by enhanced quality score
         unique_videos.sort(key=lambda x: x['quality_score'], reverse=True)
         
         # Take top videos up to target
         final_videos = unique_videos[:self.target_videos_per_genre]
         
         logger.info(f"🏆 Final result for {genre.value}: {len(final_videos)} unique videos")
+        logger.info(f"   Quality distribution: High({len([v for v in final_videos if v['quality_score'] >= 0.5])}) | "
+                   f"Medium({len([v for v in final_videos if 0.3 <= v['quality_score'] < 0.5])}) | "
+                   f"Basic({len([v for v in final_videos if v['quality_score'] < 0.3])})")
+        
         return final_videos
+    
+    def _process_raw_videos(self, raw_videos: list, query: str, genre: str) -> List[Dict[str, Any]]:
+        """Process raw video data with enhanced filtering"""
+        processed_videos = []
+        
+        for video_raw in raw_videos:
+            try:
+                video_data = self.collector._parse_video_data(video_raw)
+                
+                # Enhanced filtering criteria
+                if video_data and self._meets_enhanced_criteria(video_data):
+                    video_dict = {
+                        'video_id': video_data.video_id,
+                        'title': video_data.title,
+                        'description': video_data.description,
+                        'duration': video_data.duration,
+                        'channel_name': video_data.channel_name,
+                        'channel_id': video_data.channel_id,
+                        'view_count': video_data.view_count,
+                        'upload_date': video_data.upload_date,
+                        'thumbnail_url': video_data.thumbnail_url,
+                        'youtube_url': video_data.youtube_url,
+                        'quality_score': video_data.quality_score,
+                        'educational_indicators': video_data.educational_indicators,
+                        'search_query': query,
+                        'genre': genre
+                    }
+                    processed_videos.append(video_dict)
+                    
+            except Exception as e:
+                logger.error(f"Error parsing video: {e}")
+                continue
+        
+        return processed_videos
+    
+    def _meets_enhanced_criteria(self, video_data) -> bool:
+        """Enhanced criteria for 2000-video collection with quality focus"""
+        
+        # Minimum view count (10K+ as discussed)
+        if video_data.view_count < 10000:
+            return False
+        
+        # Minimum duration (5+ minutes for long-form content)
+        # Parse duration string to seconds
+        duration_seconds = self.collector.parse_duration(video_data.duration)
+        if duration_seconds < 300:  # 5 minutes
+            return False
+        
+        # Maximum duration (4 hours to avoid extremely long content)
+        if duration_seconds > 14400:  # 4 hours
+            return False
+        
+        # Quality score threshold
+        if video_data.quality_score < self.quality_threshold:
+            return False
+        
+        # Exclude shorts and viral content
+        title_lower = video_data.title.lower()
+        if any(term in title_lower for term in ['#shorts', 'quick tip', 'in 60 seconds', 'viral']):
+            return False
+        
+        return True
+    
+    def _deduplicate_and_filter(self, videos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Remove duplicates and apply final filtering against existing videos"""
+        unique_videos = []
+        seen_ids = set()
+        seen_titles = set()
+        skipped_existing = 0
+        skipped_duplicate = 0
+        
+        for video in videos:
+            video_id = video.get('video_id', '')
+            
+            # Skip if already exists in our database
+            if video_id in self.existing_video_ids:
+                skipped_existing += 1
+                continue
+            
+            # Skip duplicates by ID within current batch
+            if video_id in seen_ids:
+                skipped_duplicate += 1
+                continue
+            
+            # Skip very similar titles (basic deduplication)
+            title_normalized = video['title'].lower().strip()
+            if title_normalized in seen_titles:
+                skipped_duplicate += 1
+                continue
+            
+            seen_ids.add(video_id)
+            seen_titles.add(title_normalized)
+            unique_videos.append(video)
+        
+        logger.info(f"   Deduplication: Kept {len(unique_videos)} | Skipped existing: {skipped_existing} | Skipped duplicates: {skipped_duplicate}")
+        return unique_videos
 
     def populate_single_genre(self, genre: GenreCategory) -> Dict[str, Any]:
-        """Populate a single genre and return results"""
+        """Populate a single genre and return results with incremental updates"""
         
         start_time = time.time()
         logger.info(f"\n{'='*60}")
         logger.info(f"🚀 Starting population for: {genre.value.upper()}")
         logger.info(f"{'='*60}")
         
+        # Load existing videos for this genre
+        existing_videos = self._load_existing_genre_videos(genre)
+        logger.info(f"   Found {len(existing_videos)} existing videos for {genre.value}")
+        
         try:
-            videos = self.collect_videos_for_genre_sync(genre)
+            # Collect new videos
+            new_videos = self.collect_videos_for_genre_sync(genre)
+            
+            # Merge with existing videos
+            all_videos = existing_videos + new_videos
+            
+            # Sort by quality score and take top videos up to target
+            all_videos.sort(key=lambda x: x['quality_score'], reverse=True)
+            final_videos = all_videos[:self.target_videos_per_genre]
             
             end_time = time.time()
             duration = end_time - start_time
@@ -200,12 +390,14 @@ class BulkGenrePopulator:
             result = {
                 'genre': genre.value,
                 'target_count': self.target_videos_per_genre,
-                'actual_count': len(videos),
-                'success': len(videos) >= self.min_videos_per_genre,
+                'actual_count': len(final_videos),
+                'new_videos_added': len(new_videos),
+                'existing_videos_kept': len(existing_videos),
+                'success': len(final_videos) >= self.min_videos_per_genre,
                 'duration_seconds': round(duration, 2),
-                'videos': videos,
+                'videos': final_videos,
                 'timestamp': datetime.now().isoformat(),
-                'quality_stats': self._calculate_quality_stats(videos)
+                'quality_stats': self._calculate_quality_stats(final_videos)
             }
             
             # Save individual genre results
@@ -214,7 +406,7 @@ class BulkGenrePopulator:
                 json.dump(result, f, indent=2, ensure_ascii=False)
             
             status = "✅ SUCCESS" if result['success'] else "⚠️  PARTIAL"
-            logger.info(f"{status} - {genre.value}: {len(videos)} videos in {duration:.1f}s")
+            logger.info(f"{status} - {genre.value}: {len(final_videos)} total videos ({len(new_videos)} new + {len(existing_videos)} existing) in {duration:.1f}s")
             
             return result
             

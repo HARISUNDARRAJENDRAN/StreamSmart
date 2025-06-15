@@ -72,7 +72,7 @@ class BertRecommendationEngine:
             import kaggle
             logger.info("Downloading dataset from Kaggle...")
             kaggle.api.dataset_download_files(
-                'harisundarrajendran/educational-youtube-content-dataset',
+                'harisundarrajendran/educational-youtube-content',
                 path='.',
                 unzip=True
             )

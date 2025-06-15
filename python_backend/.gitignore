@@ -57,3 +57,10 @@ google-cloud-*.json
 # Test files
 test_*.py
 *_test.py
+
+# Kaggle Integration
+kaggle_models/*.pkl
+kaggle_models/*.npy
+kaggle_outputs/*.zip
+kaggle_datasets/*.csv
+kaggle_datasets/dataset-metadata.json

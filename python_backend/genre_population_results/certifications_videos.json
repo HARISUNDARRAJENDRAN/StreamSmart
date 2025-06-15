@@ -1,10 +1,7 @@
 {
   "genre": "certifications",
-  "target_count": 150,
+  "target_count": 1500,
   "actual_count": 0,
-  "success": false,
-  "duration_seconds": 0.0,
   "videos": [],
-  "timestamp": "2025-06-14T09:06:54.865554",
-  "quality_stats": {}
+  "last_updated": "2025-06-15T13:25:21.407826"
 }
