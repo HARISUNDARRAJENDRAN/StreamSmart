@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target } from 'lucide-react';
+import SplitText from '@/components/ui/split-text';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -622,23 +623,125 @@ export default function LandingPage() {
           className="relative h-screen flex items-center justify-center overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
           }}
         >
+          {/* Dynamic Animated Background */}
+          <div className="absolute inset-0 w-full h-full">
+            {/* Base gradient with smooth transitions */}
+            <div 
+              className="absolute inset-0 w-full h-full animate-gradient-shift"
+              style={{
+                background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2a0a0a 50%, #1a1a1a 75%, #0f0f0f 100%)',
+                backgroundSize: '200% 200%'
+              }}
+            />
+            
+            {/* Radial glow effects */}
+            <div 
+              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full animate-pulse-glow"
+              style={{
+                background: 'radial-gradient(circle, rgba(217, 4, 41, 0.15) 0%, transparent 70%)',
+                filter: 'blur(40px)',
+              }}
+            />
+            <div 
+              className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full animate-pulse-glow"
+              style={{
+                background: 'radial-gradient(circle, rgba(169, 29, 58, 0.12) 0%, transparent 70%)',
+                filter: 'blur(35px)',
+                animationDelay: '2s'
+              }}
+            />
+            
+            {/* Floating particles */}
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 bg-white/20 rounded-full animate-float-particles"
+                style={{
+                  left: `${15 + i * 12}%`,
+                  top: `${20 + (i % 3) * 25}%`,
+                  animationDelay: `${i * 0.8}s`,
+                  animationDuration: `${6 + (i % 3)}s`
+                }}
+              />
+            ))}
+            
+            {/* Seamless light streaks */}
+            <div 
+              className="absolute inset-0 w-full h-full opacity-40"
+              style={{
+                background: `
+                  linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.03) 20%, transparent 40%),
+                  linear-gradient(-45deg, transparent 60%, rgba(217, 4, 41, 0.08) 80%, transparent 100%)
+                `,
+                animation: 'shimmer 12s ease-in-out infinite'
+              }}
+            />
+            
+            {/* Edge vignette for depth */}
+            <div 
+              className="absolute inset-0 w-full h-full"
+              style={{
+                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 100%)'
+              }}
+            />
+          </div>
           {/* Split Screen Content */}
           <div className="relative h-full w-full flex">
             
-            {/* Left Half - Content */}
+            {/* Left Half - Preview */}
             <motion.div 
               className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pl-16 xl:pl-32 py-12"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : -50 }}
+              transition={{ duration: 0.8, delay: 2.0, ease: "easeOut" }}
+            >
+              <div className="flex flex-col items-center text-center space-y-4 w-full max-w-lg">
+                
+                {/* StreamSmart Preview text */}
+                <p 
+                  className="text-base md:text-lg text-white/70 font-medium"
+                          style={{
+                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
+                          }}
+                        >
+                  StreamSmart Preview
+                </p>
+
+                {/* Video Preview Container - Simplified */}
+                <div 
+                  className="relative w-full aspect-[16/10] rounded-xl overflow-hidden group"
+                      style={{
+                    background: '#1C1C1E',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                      }}
+                    >
+                  {/* Simple Play button icon */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <PlayCircle className="w-16 h-16 text-white/40 group-hover:text-white/60 transition-colors duration-300" />
+                      </div>
+                  
+                  {/* Corner brackets - Matched to target image */}
+                  <div className="absolute top-3 left-3 w-5 h-5 border-l-2 border-t-2 border-white/20 rounded-tl-sm" />
+                  <div className="absolute top-3 right-3 w-5 h-5 border-r-2 border-t-2 border-white/20 rounded-tr-sm" />
+                  <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/20 rounded-bl-sm" />
+                  <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/20 rounded-br-sm" />
+          </div>
+          </div>
+            </motion.div>
+
+            {/* Right Half - Content */}
+            <motion.div 
+              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pr-16 xl:pr-32 py-12"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : 50 }}
               transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
             >
               <div className="flex flex-col items-center text-center space-y-6 max-w-xl">
                 
-                {/* Main Heading */}
-                <motion.h1
+                {/* Main Heading with Split Text Animation */}
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: pushTransitionComplete ? 1 : 0 }}
                   transition={{ delay: 2.0, duration: 0.8 }}
@@ -648,8 +751,21 @@ export default function LandingPage() {
                     letterSpacing: '-0.02em',
                   }}
                 >
-                  <span style={{ color: '#D90429' }}>S</span>TREAMSMART
-                </motion.h1>
+                  <SplitText
+                    text="STREAMSMART"
+                    trigger={pushTransitionComplete}
+                    delay={2.2}
+                    duration={0.8}
+                    stagger={0.08}
+                    ease="power3.out"
+                    from={{ opacity: 0, y: 60, rotationX: 90 }}
+                    to={{ opacity: 1, y: 0, rotationX: 0 }}
+                    className="inline-block"
+                    onLetterAnimationComplete={() => {
+                      console.log('STREAMSMART animation completed!');
+                    }}
+                  />
+                </motion.div>
 
                 {/* Subtitle with red underline */}
                 <motion.div
@@ -659,22 +775,61 @@ export default function LandingPage() {
                   className="flex flex-col items-center"
                 >
                   <p
-                    className="text-base md:text-lg text-white/90 font-normal lowercase tracking-wide"
+                    className="text-base md:text-lg text-white/90 font-normal tracking-wide"
                     style={{
                       fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
                       fontWeight: 400,
                     }}
                   >
-                    your simplified <span style={{ color: '#D90429', fontWeight: 500 }}>youtube learning</span>
+                    Your Simplified <span style={{ color: '#D90429', fontWeight: 500 }}>Youtube Learning</span>
                   </p>
                   
-                  {/* Static red line */}
-                  <div
-                    className="mt-1 w-48 h-[2px]"
-                    style={{
-                      background: '#D90429'
+                  {/* Seamless glowing line with center peak brightness */}
+                  <div className="relative mt-1 w-48 h-[2px]">
+                    {/* Base line with sharp ends */}
+                    <div
+                      className="w-full h-full relative"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent 0%, #A91D3A 15%, #D90429 50%, #A91D3A 85%, transparent 100%)',
+                      }}
+                    >
+                      {/* Brightness gradient overlay - peaks at center */}
+                      <div 
+                        className="absolute inset-0 w-full h-full"
+                        style={{
+                          background: 'linear-gradient(90deg, transparent 0%, rgba(255, 23, 68, 0.3) 20%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 23, 68, 0.3) 80%, transparent 100%)',
+                        }}
+                      />
+                      
+                      {/* Center glow effect - seamless integration */}
+                      <div 
+                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-glow"
+                        style={{
+                          width: '20px',
+                          height: '6px',
+                          background: 'radial-gradient(ellipse, rgba(255, 255, 255, 0.9) 0%, rgba(255, 23, 68, 0.6) 40%, transparent 70%)',
+                          filter: 'blur(0.5px)',
+                        }}
+                      />
+                      
+                      {/* Shimmer effect */}
+                      <div 
+                        className="absolute inset-0 w-full h-full opacity-60 animate-shimmer"
+                        style={{
+                          background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%, transparent 100%)',
+                        }}
+                      />
+                    </div>
+                    
+                    {/* Extended glow for sharp ends effect */}
+                    <div 
+                      className="absolute inset-0 w-full h-full"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(217, 4, 41, 0.1) 0%, transparent 25%, transparent 75%, rgba(217, 4, 41, 0.1) 100%)',
+                        filter: 'blur(1px)',
                       }}
                     />
+                  </div>
                 </motion.div>
 
                 {/* Main Description */}
@@ -720,47 +875,6 @@ export default function LandingPage() {
                   </Link>
                 </motion.div>
               </div>
-            </motion.div>
-
-            {/* Right Half - Preview */}
-            <motion.div 
-              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pr-16 xl:pr-32 py-12"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : 50 }}
-              transition={{ duration: 0.8, delay: 2.0, ease: "easeOut" }}
-            >
-              <div className="flex flex-col items-center text-center space-y-4 w-full max-w-lg">
-                
-                {/* StreamSmart Preview text */}
-                <p 
-                  className="text-base md:text-lg text-white/70 font-medium"
-                          style={{
-                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
-                          }}
-                        >
-                  StreamSmart Preview
-                </p>
-
-                {/* Video Preview Container - Simplified */}
-                <div 
-                  className="relative w-full aspect-[16/10] rounded-xl overflow-hidden group"
-                      style={{
-                    background: '#1C1C1E',
-                    border: '1px solid rgba(255, 255, 255, 0.08)'
-                      }}
-                    >
-                  {/* Simple Play button icon */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <PlayCircle className="w-16 h-16 text-white/40 group-hover:text-white/60 transition-colors duration-300" />
-                      </div>
-                  
-                  {/* Corner brackets - Matched to target image */}
-                  <div className="absolute top-3 left-3 w-5 h-5 border-l-2 border-t-2 border-white/20 rounded-tl-sm" />
-                  <div className="absolute top-3 right-3 w-5 h-5 border-r-2 border-t-2 border-white/20 rounded-tr-sm" />
-                  <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/20 rounded-bl-sm" />
-                  <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/20 rounded-br-sm" />
-          </div>
-          </div>
             </motion.div>
           </div>
         </section>
@@ -913,26 +1027,20 @@ export default function LandingPage() {
                 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight text-white font-poppins"
                 variants={aboutItemVariants}
               >
-                Empowering the next generation of{' '}
+                The Future of{' '}
                 <span 
                   className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
                 >
-                  digital learners
+                  YouTube Learning
                 </span>
               </motion.h2>
               
-              {/* Description paragraphs */}
+              {/* Visual description */}
               <motion.div 
-                className="space-y-6 text-lg md:text-xl leading-relaxed mb-12 max-w-4xl mx-auto font-poppins"
+                className="text-xl leading-relaxed mb-12 max-w-3xl mx-auto font-poppins"
                 variants={aboutItemVariants}
-                style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                style={{ color: 'rgba(255, 255, 255, 0.8)' }}
               >
-                <p>
-                  StreamSmart was born from a simple observation: YouTube contains the world&apos;s largest collection of educational content, but it&apos;s scattered, unorganized, and overwhelming. We knew there had to be a better way.
-                </p>
-                <p>
-                  Our mission is to transform YouTube into a structured, personalized learning platform using the power of artificial intelligence. We help learners discover, organize, and master knowledge efficiently through AI-powered playlists, interactive mind maps, and intelligent progress tracking.
-                </p>
               </motion.div>
               
               {/* Three-column layout */}
@@ -965,7 +1073,7 @@ export default function LandingPage() {
                     </div>
                     <h3 className="text-2xl font-bold mb-4 text-white font-poppins">Our Mission</h3>
                     <p className="text-base leading-relaxed font-poppins" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      Making quality education accessible and organized for everyone, everywhere. We believe learning should be structured, engaging, and tailored to individual needs.
+                      Empowering learners to achieve their educational goals faster through AI-powered organization and personalized learning paths.
                     </p>
                   </div>
                 </motion.div>
