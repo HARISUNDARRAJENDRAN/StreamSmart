@@ -863,7 +863,7 @@ export default function LandingPage() {
                   transition={{ delay: 2.6, duration: 0.8, ease: "easeOut" }}
                   className="mt-6"
                 >
-                  <Link href="/signup">
+                  <Link href="/register">
                     <Button
                       variant="default"
                       className="group bg-white text-[#D90429] font-poppins font-semibold px-7 py-3 text-base transition-all duration-300 hover:bg-gray-100 shadow-md hover:shadow-lg rounded-lg flex items-center gap-2.5"
