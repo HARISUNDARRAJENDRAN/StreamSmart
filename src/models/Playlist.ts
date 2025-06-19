@@ -56,4 +56,7 @@ const PlaylistSchema = new Schema<IPlaylist>({
 PlaylistSchema.index({ userId: 1, createdAt: -1 });
 PlaylistSchema.index({ userId: 1, category: 1 });
 
-export default mongoose.models.Playlist || mongoose.model<IPlaylist>('Playlist', PlaylistSchema); 
+const Playlist = mongoose.models.Playlist || mongoose.model<IPlaylist>('Playlist', PlaylistSchema);
+
+export default Playlist;
+export { Playlist }; 
