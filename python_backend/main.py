@@ -20,9 +20,26 @@ import requests
 from urllib.parse import parse_qs, urlparse
 import time
 
+# Import lightweight BERT with graceful fallback
+try:
+    from services.lightweight_bert_engine import get_lightweight_bert_engine
+    LIGHTWEIGHT_BERT_AVAILABLE = True
+    lightweight_bert = None
+except ImportError as e:
+    print(f"Lightweight BERT service unavailable: {e}")
+    LIGHTWEIGHT_BERT_AVAILABLE = False
+    lightweight_bert = None
+
 # Import remaining endpoints
 from genre_endpoints import router as genre_router
-from bert_recommendation_endpoints import router as bert_router
+# Import BERT router with error handling for free deployment
+try:
+    from bert_recommendation_endpoints import router as bert_router
+    BERT_AVAILABLE = True
+except ImportError as e:
+    print(f"BERT service unavailable: {e}")
+    BERT_AVAILABLE = False
+    bert_router = None
 from smart_recommendation_endpoints import router as smart_router
 
 # Configure logging
@@ -43,7 +60,12 @@ app.add_middleware(
 
 # Register routers for modular endpoints
 app.include_router(genre_router)
-app.include_router(bert_router)
+# Include BERT router only if available
+if BERT_AVAILABLE and bert_router:
+    app.include_router(bert_router)
+    print("✅ BERT recommendation service enabled")
+else:
+    print("⚠️ BERT recommendation service disabled (dependencies not available)")
 app.include_router(smart_router)
 
 # Note: AI content endpoints were removed as part of recommendation engine cleanup
@@ -485,10 +507,13 @@ async def health_check():
     services = {
         "gemini_ai": bool(GEMINI_API_KEY),
         "mongodb": bool(mongodb_client),
-        "backend": True
+        "backend": True,
+        "lightweight_bert": bool(LIGHTWEIGHT_BERT_AVAILABLE and lightweight_bert),
+        "heavy_bert": bool(BERT_AVAILABLE),
+        "proxy_system": bool(proxy_list)
     }
     
-    status = "healthy" if all(services.values()) else "degraded"
+    status = "healthy" if services["backend"] else "degraded"
     
     return HealthResponse(
         status=status,
@@ -727,40 +752,136 @@ async def enhance_video(request: EnhanceVideoRequest):
         logger.error(f"Error in enhance video: {e}")
         raise HTTPException(status_code=500, detail=f"Error enhancing video: {str(e)}")
 
+# Lightweight BERT recommendation endpoints
+@app.get("/api/lightweight-bert/recommendations/{video_title}")
+async def get_lightweight_recommendations(video_title: str, top_n: int = 5, genre_filter: str = None):
+    """Get recommendations using lightweight BERT engine"""
+    if not lightweight_bert:
+        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
+    
+    try:
+        recommendations = lightweight_bert.recommend_videos(
+            title=video_title, 
+            top_n=top_n, 
+            genre_filter=genre_filter
+        )
+        
+        return {
+            "success": True,
+            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
+            "total": len(recommendations),
+            "engine": "lightweight_bert"
+        }
+    except Exception as e:
+        logger.error(f"Error getting lightweight recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/lightweight-bert/genre/{genre}")
+async def get_lightweight_genre_recommendations(genre: str, top_n: int = 10):
+    """Get genre-based recommendations using lightweight BERT"""
+    if not lightweight_bert:
+        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
+    
+    try:
+        recommendations = lightweight_bert.get_genre_recommendations(genre=genre, top_n=top_n)
+        
+        return {
+            "success": True,
+            "genre": genre,
+            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
+            "total": len(recommendations),
+            "engine": "lightweight_bert"
+        }
+    except Exception as e:
+        logger.error(f"Error getting genre recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/lightweight-bert/popular")
+async def get_lightweight_popular_recommendations(top_n: int = 10):
+    """Get popular recommendations using lightweight BERT"""
+    if not lightweight_bert:
+        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
+    
+    try:
+        recommendations = lightweight_bert.get_popular_recommendations(top_n=top_n)
+        
+        return {
+            "success": True,
+            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
+            "total": len(recommendations),
+            "engine": "lightweight_bert"
+        }
+    except Exception as e:
+        logger.error(f"Error getting popular recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/lightweight-bert/stats")
+async def get_lightweight_bert_stats():
+    """Get lightweight BERT system stats"""
+    if not lightweight_bert:
+        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
+    
+    try:
+        stats = lightweight_bert.get_system_stats()
+        return {
+            "success": True,
+            "stats": stats,
+            "engine": "lightweight_bert"
+        }
+    except Exception as e:
+        logger.error(f"Error getting stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # Initialize proxy system when module loads
 initialize_proxies()
 
 @app.on_event("startup")
 async def startup_event():
-    logger.info("StreamSmart AI Backend started successfully!")
-    logger.info("🚀 Ready to serve educational content recommendations")
-    
-    # Initialize BERT recommendation system
+    """Initialize services on startup"""
+    global lightweight_bert
     try:
-        from services.bert_recommendation_engine import get_bert_recommendation_engine
-        logger.info("🧠 Initializing BERT recommendation system...")
-        bert_engine = get_bert_recommendation_engine()
-        bert_engine.initialize_system()
-        logger.info("✅ BERT recommendation system initialized successfully!")
+        logger.info("🚀 StreamSmart Backend starting up...")
+        logger.info(f"📡 Proxy system: {'✅ Enabled' if proxy_list else '❌ Disabled'}")
+        logger.info(f"🤖 Gemini AI: {'✅ Available' if GEMINI_API_KEY else '❌ Not configured'}")
+        logger.info(f"📊 MongoDB: {'✅ Connected' if mongodb_client else '❌ Not connected'}")
+        logger.info(f"🧠 Heavy BERT Service: {'✅ Available' if BERT_AVAILABLE else '❌ Disabled'}")
+        
+        # Initialize Lightweight BERT Engine as primary recommendation system
+        if LIGHTWEIGHT_BERT_AVAILABLE:
+            try:
+                logger.info("🧠 Initializing Lightweight BERT Engine...")
+                lightweight_bert = get_lightweight_bert_engine()
+                if lightweight_bert.initialize_system():
+                    logger.info("✅ Lightweight BERT Engine: Initialized successfully!")
+                else:
+                    logger.warning("⚠️ Lightweight BERT Engine: Failed to initialize, using fallback")
+            except Exception as e:
+                logger.error(f"❌ Lightweight BERT Engine error: {e}")
+        else:
+            logger.info("⚠️ Lightweight BERT Engine: Not available")
+        
+        # Fallback to heavy BERT if lightweight fails
+        if not lightweight_bert:
+            try:
+                from services.bert_recommendation_engine import get_bert_recommendation_engine
+                logger.info("🧠 Fallback: Initializing Heavy BERT recommendation system...")
+                bert_engine = get_bert_recommendation_engine()
+                bert_engine.initialize_system()
+                logger.info("✅ Heavy BERT recommendation system initialized!")
+            except Exception as e:
+                logger.error(f"❌ Failed to initialize Heavy BERT system: {e}")
+        
+        # Start content collection system
+        try:
+            from genre_endpoints import start_content_collection
+            await start_content_collection()
+            logger.info("🎯 Content collection system started - collecting videos every 6 hours")
+        except Exception as e:
+            logger.error(f"Failed to start content collection: {e}")
+        
+        logger.info("🎉 Backend startup complete!")
     except Exception as e:
-        logger.error(f"❌ Failed to initialize BERT system: {e}")
-    
-    # Start content collection system
-    try:
-        from genre_endpoints import start_content_collection
-        await start_content_collection()
-        logger.info("🎯 Content collection system started - collecting videos every 6 hours")
-    except Exception as e:
-        logger.error(f"Failed to start content collection: {e}")
-    
-    # Start intelligent AI-powered content discovery system
-    try:
-        from services.ai_content_scheduler import start_intelligent_content_system
-        await start_intelligent_content_system()
-        logger.info("🤖 Intelligent AI content discovery system activated!")
-        logger.info("📊 System will now analyze user behavior and feed personalized content")
-    except Exception as e:
-        logger.error(f"Failed to start intelligent content system: {e}")
+        logger.error(f"❌ Startup error: {e}")
 
 if __name__ == "__main__":
     import uvicorn

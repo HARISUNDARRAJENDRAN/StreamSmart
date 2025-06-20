@@ -2,15 +2,22 @@ services:
   - type: web
     name: streamsmart-backend
     env: python
-    buildCommand: pip install -r requirements_light.txt
-    startCommand: python start.py
-    healthCheckPath: /health
+    buildCommand: "pip install -r requirements_render.txt"
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    plan: free
     envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
       - key: GEMINI_API_KEY
         sync: false
-      - key: MONGODB_URI
-        sync: false
-      - key: JWT_SECRET
-        generateValue: true
-      - key: ADMIN_JWT_SECRET
-        generateValue: true 
+      - key: PORT
+        value: 10000
+      - key: HOST
+        value: 0.0.0.0
+      - key: LIGHTWEIGHT_BERT_ENABLED
+        value: "true"
+      - key: AUTO_FETCH_FREE_PROXIES
+        value: "true"
+    healthCheckPath: /health 

@@ -1,0 +1,35 @@
+# Core FastAPI and server dependencies
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+pydantic==2.5.0
+
+# Database
+pymongo==4.6.0
+
+# YouTube and media processing
+yt-dlp==2023.12.30
+youtube-transcript-api==0.6.1
+
+# AI and ML (lightweight versions only)
+google-generativeai==0.3.2
+sentence-transformers==2.2.2
+scikit-learn==1.3.2
+
+# HTTP and utilities
+requests==2.31.0
+aiohttp==3.9.1
+
+# Data processing (essential only)
+pandas==2.1.4
+numpy==1.24.4
+
+# Environment and config
+python-dotenv==1.0.0
+
+# Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Regex for text processing
+regex==2023.12.25 
