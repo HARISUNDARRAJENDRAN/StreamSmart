@@ -8,7 +8,7 @@ pydantic==2.5.0
 pymongo==4.6.0
 
 # YouTube and media processing
-yt-dlp==2023.12.30
+yt-dlp==2024.12.13
 youtube-transcript-api==0.6.1
 
 # AI and ML (lightweight versions only)

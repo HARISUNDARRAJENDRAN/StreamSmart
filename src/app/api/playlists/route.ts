@@ -2,6 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Playlist from '@/models/Playlist';
 
+// Utility function to extract YouTube ID from URL
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /youtube\.com\/watch\?.*v=([^&\n?#]+)/
+  ];
+  
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) {
+      return match[1];
+    }
+  }
+  
+  return null;
+}
+
 // GET - Fetch user's playlists
 export async function GET(request: NextRequest) {
   try {
@@ -178,6 +197,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields for full playlist creation' }, { status: 400 });
     }
 
+    // Transform videos to include all required fields
+    const transformedVideos = (videos || []).map((video: any, index: number) => {
+      // Extract youtubeId from url if not provided
+      const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
+      
+      return {
+        id: video.id || `video_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 9)}`,
+        youtubeId: youtubeId || '', // Required field
+        title: video.title || 'Untitled Video',
+        channelTitle: video.channelTitle || '',
+        thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
+        duration: video.duration || '0:00',
+        url: video.url || video.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
+        youtubeURL: video.youtubeURL || video.url || `https://www.youtube.com/watch?v=${youtubeId}`, // Required field
+        description: video.description || '',
+        completionStatus: video.completionStatus || 0,
+        addedAt: video.addedAt || new Date().toISOString(), // Required field
+        addedBy: video.addedBy || 'user',
+      };
+    });
+
     const playlist = new Playlist({
       userId,
       title,
@@ -185,7 +225,7 @@ export async function POST(request: NextRequest) {
       category,
       tags: tags || [],
       isPublic: isPublic || false,
-      videos: videos || [],
+      videos: transformedVideos,
       overallProgress: 0,
     });
 
@@ -234,6 +274,27 @@ export async function PUT(request: NextRequest) {
 
     // Calculate overall progress if videos are being updated
     if (updateData.videos) {
+      // Transform videos to include all required fields
+      updateData.videos = updateData.videos.map((video: any, index: number) => {
+        // Extract youtubeId from url if not provided
+        const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
+        
+        return {
+          id: video.id || `video_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 9)}`,
+          youtubeId: youtubeId || '', // Required field
+          title: video.title || 'Untitled Video',
+          channelTitle: video.channelTitle || '',
+          thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
+          duration: video.duration || '0:00',
+          url: video.url || video.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
+          youtubeURL: video.youtubeURL || video.url || `https://www.youtube.com/watch?v=${youtubeId}`, // Required field
+          description: video.description || '',
+          completionStatus: video.completionStatus || 0,
+          addedAt: video.addedAt || new Date().toISOString(), // Required field
+          addedBy: video.addedBy || 'user',
+        };
+      });
+
       const completedVideos = updateData.videos.filter((v: any) => v.completionStatus === 100).length;
       const totalVideos = updateData.videos.length;
       updateData.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;

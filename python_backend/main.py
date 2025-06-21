@@ -19,6 +19,10 @@ import yt_dlp
 import requests
 from urllib.parse import parse_qs, urlparse
 import time
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+import nltk
+from nltk.tokenize import sent_tokenize
 
 # Import lightweight BERT with graceful fallback
 try:
@@ -104,6 +108,15 @@ if GEMINI_API_KEY:
         logger.info("Gemini AI configured successfully")
     except Exception as e:
         logger.error(f"Gemini AI configuration failed: {e}")
+
+# Try to download required NLTK data
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    try:
+        nltk.download('punkt', quiet=True)
+    except Exception as e:
+        logger.warning(f"Could not download NLTK punkt tokenizer: {e}")
 
 def initialize_proxies():
     """Initialize proxy list from environment variables"""
@@ -216,76 +229,198 @@ def extract_video_id(url: str) -> Optional[str]:
             return match.group(1)
     return None
 
-def get_video_transcript_with_user_agent(video_id: str) -> Optional[str]:
-    """Get transcript for a YouTube video using browser-like User-Agent headers"""
-    
-    # Create a session with browser-like headers
-    session = requests.Session()
-    session.headers.update({
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'DNT': '1',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Sec-Fetch-Dest': 'document',
-        'Sec-Fetch-Mode': 'navigate',
-        'Sec-Fetch-Site': 'none',
-        'Cache-Control': 'max-age=0'
-    })
-    
-    # Monkey patch the requests module to use our session
-    original_get = requests.get
-    original_post = requests.post
-    
-    def patched_get(*args, **kwargs):
-        kwargs.setdefault('headers', {}).update(session.headers)
-        return original_get(*args, **kwargs)
-    
-    def patched_post(*args, **kwargs):
-        kwargs.setdefault('headers', {}).update(session.headers)
-        return original_post(*args, **kwargs)
-    
-    # Apply the patch
-    requests.get = patched_get
-    requests.post = patched_post
-    
+def calculate_cosine_similarity(vec1: np.ndarray, vec2: np.ndarray) -> float:
+    """Calculate cosine similarity between two vectors"""
     try:
-        # Method 1: Try YouTube Transcript API with different language codes
-        transcript_methods = [
-            (['en'], 'English'),
-            (['en-US'], 'English (US)'),
-            (['en-GB'], 'English (UK)'),
-            (['auto'], 'Auto-generated'),
-            (['es', 'fr', 'de', 'it'], 'Other languages')
+        # Ensure vectors are 2D for sklearn
+        vec1 = vec1.reshape(1, -1)
+        vec2 = vec2.reshape(1, -1)
+        similarity = cosine_similarity(vec1, vec2)[0][0]
+        return float(similarity)
+    except Exception as e:
+        logger.error(f"Error calculating cosine similarity: {e}")
+        return 0.0
+
+def chunk_transcript(transcript_text: str, chunk_size: int = 300, overlap: int = 50) -> List[str]:
+    """Split transcript into overlapping chunks"""
+    try:
+        # First, try to split by sentences for more natural chunks
+        sentences = sent_tokenize(transcript_text)
+        
+        chunks = []
+        current_chunk = ""
+        
+        for sentence in sentences:
+            # If adding this sentence would exceed chunk_size, finalize current chunk
+            if len(current_chunk) + len(sentence) > chunk_size and current_chunk:
+                chunks.append(current_chunk.strip())
+                # Start new chunk with overlap (last few words)
+                words = current_chunk.split()
+                if len(words) > overlap // 10:  # Rough word-based overlap
+                    current_chunk = " ".join(words[-(overlap // 10):]) + " " + sentence
+                else:
+                    current_chunk = sentence
+            else:
+                current_chunk += " " + sentence if current_chunk else sentence
+        
+        # Add the last chunk
+        if current_chunk.strip():
+            chunks.append(current_chunk.strip())
+        
+        # Filter out very short chunks
+        chunks = [chunk for chunk in chunks if len(chunk.strip()) > 50]
+        
+        logger.info(f"Created {len(chunks)} chunks from transcript of {len(transcript_text)} characters")
+        return chunks
+        
+    except Exception as e:
+        logger.error(f"Error chunking transcript: {e}")
+        # Fallback to simple word-based chunking
+        words = transcript_text.split()
+        chunks = []
+        for i in range(0, len(words), chunk_size - overlap):
+            chunk = " ".join(words[i:i + chunk_size])
+            if len(chunk.strip()) > 50:
+                chunks.append(chunk)
+        return chunks
+
+def generate_chunks_and_embeddings(transcript_text: str, sentence_transformer_model) -> List[dict]:
+    """Generate chunks and their embeddings for a transcript"""
+    try:
+        logger.info(f"Generating chunks and embeddings for transcript of {len(transcript_text)} characters")
+        
+        # Create chunks
+        chunks = chunk_transcript(transcript_text)
+        
+        if not chunks:
+            logger.warning("No chunks created from transcript")
+            return []
+        
+        # Generate embeddings for all chunks
+        chunk_texts = [chunk for chunk in chunks]
+        if hasattr(sentence_transformer_model, 'encode'):
+            # Direct sentence transformer model
+            embeddings = sentence_transformer_model.encode(chunk_texts)
+        elif hasattr(sentence_transformer_model, 'get_embeddings'):
+            # LightweightBertEngine model
+            embeddings = [sentence_transformer_model.get_embeddings(chunk) for chunk in chunk_texts]
+            embeddings = np.array(embeddings)
+        else:
+            logger.error("Model does not have encode or get_embeddings method")
+            return []
+        
+        # Create chunk objects with embeddings
+        chunk_objects = []
+        for i, (chunk_text, embedding) in enumerate(zip(chunk_texts, embeddings)):
+            chunk_objects.append({
+                "chunk_id": i + 1,
+                "text": chunk_text,
+                "embedding": embedding.tolist()  # Convert numpy array to list for MongoDB storage
+            })
+        
+        logger.info(f"Successfully generated {len(chunk_objects)} chunks with embeddings")
+        return chunk_objects
+        
+    except Exception as e:
+        logger.error(f"Error generating chunks and embeddings: {e}")
+        return []
+
+def get_video_transcript_with_user_agent(video_id: str) -> Optional[str]:
+    """Get transcript using youtube-transcript-api with detailed error logging"""
+    try:
+        logger.info(f"🔍 Starting enhanced transcript fetch for video {video_id}")
+        
+        # Try different transcript languages and methods
+        methods_to_try = [
+            ('English', 'en'),
+            ('English (US)', 'en-US'), 
+            ('English (UK)', 'en-GB'),
+            ('Auto-generated', None),  # Let the library auto-detect
         ]
         
-        for languages, method_name in transcript_methods:
+        for method_name, language_code in methods_to_try:
             try:
-                logger.info(f"Trying transcript method: {method_name} for video {video_id} with browser User-Agent")
+                logger.info(f"🔍 Attempting {method_name} transcript for {video_id}")
                 
-                # Add a small delay to mimic human behavior
-                time.sleep(0.5)
+                if language_code:
+                    # Method 1: Try specific language code
+                    try:
+                        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+                        logger.info(f"📋 Available transcripts for {video_id}: {[t.language_code for t in transcript_list]}")
+                        
+                        transcript = transcript_list.find_transcript([language_code])
+                        transcript_data = transcript.fetch()
+                        logger.info(f"✅ Found transcript via list_transcripts method for {language_code}")
+                    except Exception as list_error:
+                        logger.warning(f"❌ list_transcripts method failed for {language_code}: {str(list_error)}")
+                        # Fallback: Try direct get_transcript
+                        try:
+                            transcript_data = YouTubeTranscriptApi.get_transcript(video_id, languages=[language_code])
+                            logger.info(f"✅ Found transcript via get_transcript method for {language_code}")
+                        except Exception as get_error:
+                            logger.warning(f"❌ get_transcript method also failed for {language_code}: {str(get_error)}")
+                            continue
+                else:
+                    # Auto-detect method
+                    try:
+                        transcript_data = YouTubeTranscriptApi.get_transcript(video_id)
+                        logger.info(f"✅ Found transcript via auto-detect method")
+                    except Exception as auto_error:
+                        logger.warning(f"❌ Auto-detect method failed: {str(auto_error)}")
+                        continue
                 
-                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
-                transcript_text = ' '.join([item['text'] for item in transcript_list])
-                
-                if transcript_text and len(transcript_text.strip()) > 50:
-                    logger.info(f"✅ Successfully retrieved transcript using {method_name} with User-Agent: {len(transcript_text)} characters")
-                    return transcript_text
+                if transcript_data:
+                    full_text = ' '.join([item['text'] for item in transcript_data])
+                    logger.info(f"✅ {method_name} transcript found for {video_id}: {len(full_text)} characters")
+                    logger.info(f"📝 First 200 chars: {full_text[:200]}...")
+                    return full_text
+                else:
+                    logger.warning(f"❌ {method_name} returned empty transcript data for {video_id}")
                     
-            except Exception as e:
-                logger.warning(f"Transcript method {method_name} failed for {video_id}: {str(e)[:100]}...")
+            except Exception as method_error:
+                logger.error(f"❌ {method_name} method failed for {video_id}: {str(method_error)}")
+                logger.error(f"🔍 Error type: {type(method_error).__name__}")
                 continue
         
-        logger.error(f"All transcript methods failed for {video_id} even with browser User-Agent")
+        # Try one more comprehensive attempt with all available transcripts
+        try:
+            logger.info(f"🔍 Final attempt: listing ALL available transcripts for {video_id}")
+            transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+            available_transcripts = []
+            
+            for transcript in transcript_list:
+                try:
+                    lang_info = f"{transcript.language} ({transcript.language_code})"
+                    if hasattr(transcript, 'is_generated'):
+                        lang_info += f" [Generated: {transcript.is_generated}]"
+                    available_transcripts.append(lang_info)
+                except:
+                    available_transcripts.append(f"Unknown transcript")
+            
+            logger.info(f"📋 ALL available transcripts for {video_id}: {available_transcripts}")
+            
+            # Try the first available transcript
+            if transcript_list:
+                first_transcript = list(transcript_list)[0]
+                logger.info(f"🎯 Attempting to fetch first available transcript: {first_transcript.language_code}")
+                transcript_data = first_transcript.fetch()
+                
+                if transcript_data:
+                    full_text = ' '.join([item['text'] for item in transcript_data])
+                    logger.info(f"✅ SUCCESS! First available transcript retrieved: {len(full_text)} characters")
+                    return full_text
+            
+        except Exception as comprehensive_error:
+            logger.error(f"❌ Comprehensive transcript listing failed for {video_id}: {str(comprehensive_error)}")
+            logger.error(f"🔍 Comprehensive error type: {type(comprehensive_error).__name__}")
+        
+        logger.error(f"❌ ALL transcript methods failed for {video_id}")
         return None
         
-    finally:
-        # Restore original requests methods
-        requests.get = original_get
-        requests.post = original_post
+    except Exception as e:
+        logger.error(f"❌ Critical error in transcript fetching for {video_id}: {str(e)}")
+        logger.error(f"🔍 Critical error type: {type(e).__name__}")
+        return None
 
 def get_video_info_with_user_agent(url: str) -> dict:
     """Get video information using yt-dlp with browser User-Agent headers"""
@@ -328,7 +463,17 @@ def get_video_info_with_user_agent(url: str) -> dict:
         return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
 
 def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
-    """Get transcript for a YouTube video using proxy (fallback method)"""
+    """Get transcript with proxy support and detailed error logging"""
+    
+    # First try the user-agent method with detailed logging
+    logger.info(f"🔍 Attempting transcript fetch with browser User-Agent for {video_id}")
+    transcript = get_video_transcript_with_user_agent(video_id)
+    if transcript:
+        return transcript
+    
+    # If proxy list is available, try proxy method
+    if proxy_list:
+        logger.info(f"🔄 Fallback to proxy method for {video_id}")
     
     transcript_methods = [
         (['en'], 'English'),
@@ -340,11 +485,11 @@ def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
     
     for languages, method_name in transcript_methods:
         try:
-            logger.info(f"Trying transcript method: {method_name} for video {video_id} via proxy")
+            logger.info(f"🔍 Trying proxy transcript method: {method_name} for video {video_id}")
             
             proxy = get_next_proxy()
             if proxy:
-                logger.info(f"Using proxy for transcript: {proxy[:20]}...")
+                logger.info(f"🌐 Using proxy for transcript: {proxy[:20]}...")
                 # Configure session with proxy
                 session = requests.Session()
                 session.proxies = {
@@ -357,7 +502,20 @@ def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
                 
                 # Monkey patch requests temporarily
                 original_get = requests.get
-                requests.get = lambda *args, **kwargs: session.get(*args, **kwargs)
+                original_post = requests.post
+                
+                def patched_get(*args, **kwargs):
+                    kwargs.setdefault('headers', {}).update(session.headers)
+                    kwargs['proxies'] = session.proxies
+                    return original_get(*args, **kwargs)
+                
+                def patched_post(*args, **kwargs):
+                    kwargs.setdefault('headers', {}).update(session.headers)
+                    kwargs['proxies'] = session.proxies
+                    return original_post(*args, **kwargs)
+                
+                requests.get = patched_get
+                requests.post = patched_post
                 
                 try:
                     transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
@@ -366,12 +524,19 @@ def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
                     if transcript_text and len(transcript_text.strip()) > 50:
                         logger.info(f"✅ Successfully retrieved transcript using {method_name} via proxy: {len(transcript_text)} characters")
                         return transcript_text
+                except Exception as proxy_method_error:
+                    logger.warning(f"❌ Proxy {method_name} method failed for {video_id}: {str(proxy_method_error)}")
                 finally:
                     requests.get = original_get
+                    requests.post = original_post
+            else:
+                logger.warning(f"🚫 No proxy available for {method_name} method")
             
         except Exception as e:
-            logger.warning(f"Proxy transcript method {method_name} failed for {video_id}: {str(e)[:100]}...")
+            logger.error(f"❌ Proxy transcript method {method_name} failed for {video_id}: {str(e)}")
             continue
+    else:
+        logger.warning(f"🚫 No proxy available for fallback transcript fetch for {video_id}")
     
     return None
 
@@ -413,14 +578,28 @@ def get_video_info_with_proxy(url: str) -> dict:
         return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
 
 def get_video_transcript_with_summary_fallback(video_id: str, video_info: dict) -> Optional[str]:
-    """Try to get transcript with proxy, fallback to generating summary from video info"""
+    """Try to get actual transcript, return None if not available (for RAG quality)"""
     
     # Try to get actual transcript with proxy
     transcript = get_video_transcript_with_proxy(video_id)
-    if transcript:
+    if transcript and len(transcript.strip()) > 100:  # Ensure it's a substantial transcript
+        logger.info(f"✅ Using full transcript for {video_id} ({len(transcript)} characters)")
         return transcript
     
-    # Fallback: Create a basic "transcript" from video metadata
+    # If no actual transcript available, return None instead of fallback
+    logger.warning(f"❌ No actual transcript available for {video_id}. Returning None for RAG quality.")
+    return None
+
+def get_video_content_with_fallback(video_id: str, video_info: dict) -> str:
+    """Get video content with fallback to metadata (for non-RAG purposes like /enhance-video)"""
+    
+    # Try to get actual transcript first
+    transcript = get_video_transcript_with_proxy(video_id)
+    if transcript and len(transcript.strip()) > 100:
+        logger.info(f"✅ Using full transcript for {video_id} ({len(transcript)} characters)")
+        return transcript
+    
+    # Fallback: Create content from video metadata
     title = video_info.get('title', 'Unknown Video')
     description = video_info.get('description', '')
     uploader = video_info.get('uploader', 'Unknown')
@@ -483,6 +662,7 @@ class ProcessVideosRequest(BaseModel):
 class RAGAnswerRequest(BaseModel):
     question: str
     userId: str
+    video_ids: Optional[List[str]] = None
 
 class HealthResponse(BaseModel):
     status: str
@@ -539,7 +719,7 @@ async def process_videos(request: ProcessVideosRequest):
             # Check if already processed
             existing = db.transcripts.find_one({
                 "video_id": video_id,
-                "user_id": request.userId
+                "userId": request.userId
             })
             
             if existing:
@@ -555,19 +735,33 @@ async def process_videos(request: ProcessVideosRequest):
             transcript = get_video_transcript_with_summary_fallback(video_id, video_info)
             
             if not transcript:
-                failed_videos.append({"url": url, "error": "No transcript available"})
+                logger.warning(f"No actual transcript available for {url}. Skipping RAG-ready storage.")
+                failed_videos.append({"url": url, "error": "No actual transcript available for RAG"})
                 continue
             
-            # Store in database
+            # Generate chunks and embeddings for semantic search
+            chunks_with_embeddings = []
+            try:
+                if lightweight_bert:
+                    logger.info(f"Generating semantic chunks for video {video_id}")
+                    chunks_with_embeddings = generate_chunks_and_embeddings(transcript, lightweight_bert)
+                    logger.info(f"Successfully created {len(chunks_with_embeddings)} semantic chunks for {video_id}")
+                else:
+                    logger.warning(f"Lightweight BERT not available for chunking video {video_id}")
+            except Exception as chunk_error:
+                logger.error(f"Error generating chunks for {video_id}: {chunk_error}")
+            
+            # Store in database with chunks
             transcript_doc = {
                 "video_id": video_id,
-                "user_id": request.userId,
+                "userId": request.userId,
                 "url": url,
                 "title": video_info['title'],
                 "transcript": transcript,
                 "metadata": video_info,
                 "processed_at": datetime.utcnow(),
-                "transcript_hash": hashlib.md5(transcript.encode()).hexdigest()
+                "transcript_hash": hashlib.md5(transcript.encode()).hexdigest(),
+                "chunks": chunks_with_embeddings  # Add semantic chunks with embeddings
             }
             
             db.transcripts.insert_one(transcript_doc)
@@ -602,44 +796,119 @@ async def rag_answer(request: RAGAnswerRequest):
         raise HTTPException(status_code=500, detail="AI service not available")
     
     try:
-        # Get user's transcripts
+        logger.info(f"RAG request: userId={request.userId}, question='{request.question}', video_ids={request.video_ids}")
+        
+        mongo_query = {"userId": request.userId}
+        if request.video_ids:
+            mongo_query["video_id"] = {"$in": request.video_ids}
+            logger.info(f"Filtering RAG context for video_ids: {request.video_ids}")
+        else:
+            logger.warning("No video_ids provided for RAG request, using all transcripts for user. This might lead to mixed contexts.")
+
         user_transcripts = list(db.transcripts.find(
-            {"user_id": request.userId},
+            mongo_query,
             {"transcript": 1, "title": 1, "video_id": 1}
         ))
         
+        logger.info(f"Found {len(user_transcripts)} transcripts for RAG context (query: {mongo_query})")
+        
         if not user_transcripts:
-            return {
-                "answer": "I don't have any video transcripts to search through. Please process some videos first.",
-                "sources": [],
-                "sourceType": "no_data"
-            }
-        
-        # Simple text search (basic RAG without embeddings)
-        relevant_transcripts = []
-        question_lower = request.question.lower()
-        
-        for transcript_doc in user_transcripts:
-            transcript_text = transcript_doc.get('transcript', '')
-            if any(word in transcript_text.lower() for word in question_lower.split()):
-                relevant_transcripts.append(transcript_doc)
-        
-        if not relevant_transcripts:
-            # Use all transcripts if no specific matches
-            relevant_transcripts = user_transcripts[:3]  # Limit to first 3
-        
-        # Prepare context for Gemini
+            logger.warning(f"No transcripts found for userId {request.userId} and video_ids {request.video_ids}. Cannot answer question.")
+            return {"answer": "I couldn't find any relevant processed video transcripts for the current context to answer your question. Please ensure the videos have been processed and transcripts are available.", "sources": [], "sourceType": "no_content"}
+
+        logger.info(f"Building RAG context with the following video transcripts:")
+        for t_doc_log in user_transcripts:
+            logger.info(f"  - Title: {t_doc_log.get('title', 'Unknown')}, ID: {t_doc_log.get('video_id', 'Unknown')}, Length: {len(t_doc_log.get('transcript', ''))}")
+
+        # Semantic search for relevant chunks
         context_parts = []
         sources = []
         
-        for i, doc in enumerate(relevant_transcripts[:3]):  # Limit to 3 most relevant
-            context_parts.append(f"Video {i+1}: {doc['title']}\nTranscript: {doc['transcript'][:2000]}...")  # Limit transcript length
-            sources.append({
-                "title": doc['title'],
-                "video_id": doc['video_id']
-            })
+        if lightweight_bert:
+            logger.info("Using semantic search for RAG context building")
+            
+            # Generate question embedding
+            if hasattr(lightweight_bert, 'encode'):
+                question_embedding = lightweight_bert.encode(request.question)
+            elif hasattr(lightweight_bert, 'get_embeddings'):
+                question_embedding = lightweight_bert.get_embeddings(request.question)
+            else:
+                logger.error("Model does not have encode or get_embeddings method")
+                raise HTTPException(status_code=500, detail="Embedding model not properly configured")
+            logger.info(f"Generated question embedding with shape: {question_embedding.shape}")
+            
+            all_relevant_chunks = []
+            
+            for doc in user_transcripts:
+                video_chunks = doc.get('chunks', [])
+                
+                if not video_chunks:
+                    # Fallback to prefix-based approach for videos without chunks
+                    logger.warning(f"No chunks found for video {doc['video_id']}, using fallback prefix method")
+                    context_parts.append(f"Video: {doc['title']}\nTranscript: {doc['transcript'][:5000]}...")
+                    sources.append({
+                        "video_id": doc['video_id'],
+                        "title": doc['title']
+                    })
+                    continue
+                
+                logger.info(f"Processing {len(video_chunks)} chunks for video {doc['video_id']}")
+                
+                # Calculate similarity for each chunk
+                chunk_similarities = []
+                for chunk in video_chunks:
+                    try:
+                        chunk_embedding = np.array(chunk['embedding'])
+                        similarity = calculate_cosine_similarity(question_embedding, chunk_embedding)
+                        chunk_similarities.append({
+                            'chunk': chunk,
+                            'similarity': similarity,
+                            'video_id': doc['video_id'],
+                            'video_title': doc['title']
+                        })
+                    except Exception as e:
+                        logger.error(f"Error calculating similarity for chunk {chunk.get('chunk_id', 'unknown')}: {e}")
+                        continue
+                
+                # Add top chunks from this video
+                video_top_chunks = sorted(chunk_similarities, key=lambda x: x['similarity'], reverse=True)[:2]  # Top 2 chunks per video
+                all_relevant_chunks.extend(video_top_chunks)
+                
+                logger.info(f"Selected {len(video_top_chunks)} top chunks from video {doc['video_id']}")
+                for chunk_info in video_top_chunks:
+                    logger.info(f"  - Chunk {chunk_info['chunk']['chunk_id']}: similarity={chunk_info['similarity']:.3f}")
+            
+            # Sort all chunks by similarity and take the top N overall
+            all_relevant_chunks.sort(key=lambda x: x['similarity'], reverse=True)
+            top_chunks = all_relevant_chunks[:5]  # Top 5 chunks overall
+            
+            logger.info(f"Selected {len(top_chunks)} most relevant chunks for RAG context")
+            
+            # Build context from top chunks
+            for i, chunk_info in enumerate(top_chunks):
+                chunk_text = chunk_info['chunk']['text']
+                similarity_score = chunk_info['similarity']
+                context_parts.append(f"Video: {chunk_info['video_title']}\nRelevant Content (similarity: {similarity_score:.3f}):\n{chunk_text}")
+                
+                # Add to sources if not already present
+                source_exists = any(s['video_id'] == chunk_info['video_id'] for s in sources)
+                if not source_exists:
+                    sources.append({
+                        "video_id": chunk_info['video_id'],
+                        "title": chunk_info['video_title']
+                    })
+        else:
+            logger.warning("Lightweight BERT not available, falling back to prefix-based RAG")
+            # Fallback to the original prefix-based approach
+            for i, doc in enumerate(user_transcripts[:3]):  # Limit to 3 most relevant
+                context_parts.append(f"Video {i+1}: {doc['title']}\nTranscript: {doc['transcript'][:10000]}...")
+                sources.append({
+                    "video_id": doc['video_id'],
+                    "title": doc['title']
+                })
         
         context = "\n\n".join(context_parts)
+        logger.info(f"Final RAG context contains {len(context)} characters from {len(sources)} videos")
         
         # Generate answer using Gemini
         model = genai.GenerativeModel('gemini-1.5-flash')
@@ -677,28 +946,7 @@ async def enhance_video(request: EnhanceVideoRequest):
         
         # Get video info and transcript
         video_info = get_video_info(request.youtube_url)
-        transcript = get_video_transcript_with_summary_fallback(video_id, video_info)
-        
-        if not transcript:
-            # Return fallback response
-            return {
-                "enhanced_summary": "Educational video analysis completed with fallback processing. The content appears to contain valuable learning material.",
-                "multimodal_data": {
-                    "summary": video_info.get('title', 'Educational Video'),
-                    "detailed_summary": f"## {video_info.get('title', 'Educational Video')}\n\n{video_info.get('description', 'Educational content analysis completed.')}",
-                    "key_topics": ["Educational Content", "Learning Material", "Video Analysis"],
-                    "visual_insights": ["Visual content supports learning objectives"],
-                    "timestamp_highlights": [
-                        {"timestamp": 30, "description": "Introduction", "importance_score": 0.8},
-                        {"timestamp": 120, "description": "Main content", "importance_score": 0.9}
-                    ],
-                    "processing_stats": {
-                        "transcript_length": 0,
-                        "summary_word_count": 20
-                    }
-                },
-                "processing_method": "fallback"
-            }
+        transcript = get_video_content_with_fallback(video_id, video_info)
         
         # Generate enhanced summary using Gemini
         if GEMINI_API_KEY:

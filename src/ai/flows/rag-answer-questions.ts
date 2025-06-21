@@ -87,6 +87,23 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000);
     
+    // Try to get userId from localStorage or use a consistent default
+    let userId = 'anonymous_user';
+    try {
+      if (typeof window !== 'undefined') {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+          const user = JSON.parse(storedUser);
+          userId = user.id || user.userId || 'anonymous_user';
+        }
+      }
+    } catch (e) {
+      console.warn('Could not get user from localStorage:', e);
+    }
+    
+    console.log('Using userId for RAG:', userId);
+    console.log('Using videoIds for RAG:', videoIds);
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/rag-answer`, {
       method: 'POST',
       headers: {
@@ -94,7 +111,8 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
       },
       body: JSON.stringify({
         question: input.question,
-        userId: 'anonymous_user', // Add userId for backend compatibility
+        userId: userId, // Use the actual userId instead of hardcoded 'anonymous_user'
+        video_ids: videoIds // Pass the determined videoIds
       }),
       signal: controller.signal,
     });
@@ -193,30 +211,57 @@ export async function processVideosForRAG(videoUrls: string[], videoTitles?: str
       return url;
     });
     
-    console.log("Processed URLs:", processedUrls);
+    console.log("Processed URLs for RAG:", processedUrls);
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/process-videos`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        urls: processedUrls,
-        userId: 'anonymous_user', // Add userId for backend compatibility
-      }),
-    });
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const targetUrl = `${apiUrl}/process-videos`;
+    const requestBody = {
+      urls: processedUrls,
+      userId: 'anonymous_user', // TODO: Replace with actual userId if available and needed by backend
+    };
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Backend processing error:", errorText);
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+    console.log('Attempting to POST to URL:', targetUrl);
+    console.log('Request body for /process-videos:', JSON.stringify(requestBody, null, 2));
+
+    try {
+      const response = await fetch(targetUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      console.log('Fetch response received, status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Backend processing error. Status:", response.status, "Response:", errorText);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      }
+
+      const result = await response.json();
+      console.log("Processing result from backend:", result);
+      return result;
+
+    } catch (fetchError) {
+      // This catch block is for errors specifically from the fetch() call itself or network issues
+      console.error('Fetch to /process-videos FAILED:', fetchError);
+      if (fetchError instanceof Error) {
+        console.error('Fetch Error Name:', fetchError.name);
+        console.error('Fetch Error Message:', fetchError.message);
+        console.error('Fetch Error Stack:', fetchError.stack);
+      }
+      throw fetchError; // Re-throw to be caught by the outer try-catch
     }
 
-    const result = await response.json();
-    console.log("Processing result:", result);
-    return result;
   } catch (error) {
-    console.error('Error processing videos for RAG:', error);
-    throw error;
+    // This is the outer catch block
+    console.error('Error in processVideosForRAG main try-catch:', error);
+    if (error instanceof Error && error.message.includes("Failed to fetch")) {
+        // Provide a more user-friendly message or handle as "cannot connect"
+        console.error("This looks like a 'Failed to fetch' error. The backend might be down or unreachable.");
+    }
+    throw error; // Re-throw so the calling UI can handle it
   }
 }
