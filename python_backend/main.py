@@ -23,6 +23,9 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from nltk.tokenize import sent_tokenize
+import json
+import hashlib
+from datetime import datetime
 
 # Import lightweight BERT with graceful fallback
 try:
@@ -1079,6 +1082,351 @@ async def get_lightweight_bert_stats():
     except Exception as e:
         logger.error(f"Error getting stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/generate-mindmap")
+async def generate_mindmap(request: dict):
+    """Generate mind map using Gemini API from video transcript"""
+    if not GEMINI_API_KEY:
+        raise HTTPException(status_code=500, detail="Gemini AI service not available")
+    
+    if not mongodb_client:
+        raise HTTPException(status_code=500, detail="Database not available")
+    
+    try:
+        video_id = request.get("video_id")
+        user_id = request.get("userId")
+        
+        if not video_id:
+            raise HTTPException(status_code=400, detail="video_id is required")
+        
+        if not user_id:
+            raise HTTPException(status_code=400, detail="userId is required")
+        
+        logger.info(f"🧠 Generating mind map for video {video_id}, user {user_id}")
+        
+        # First, try to get transcript from database
+        transcript_doc = db.transcripts.find_one({
+            "video_id": video_id,
+            "userId": user_id
+        })
+        
+        transcript_text = None
+        video_title = "Educational Video"
+        
+        if transcript_doc:
+            transcript_text = transcript_doc.get("transcript")
+            video_title = transcript_doc.get("title", video_title)
+            logger.info(f"📝 Found stored transcript for {video_id}: {len(transcript_text) if transcript_text else 0} characters")
+        
+        # If no transcript in database, try to fetch it directly
+        if not transcript_text:
+            logger.info(f"📝 No stored transcript found, attempting direct fetch for {video_id}")
+            transcript_text = get_video_transcript_with_user_agent(video_id)
+            
+            # Try to get video title from YouTube API if available
+            try:
+                video_url = f"https://www.youtube.com/watch?v={video_id}"
+                video_info = get_video_info(video_url)
+                video_title = video_info.get("title", video_title)
+            except Exception as e:
+                logger.warning(f"Could not fetch video info for {video_id}: {e}")
+        
+        if not transcript_text or len(transcript_text.strip()) < 100:
+            logger.error(f"❌ No valid transcript available for {video_id}")
+            raise HTTPException(
+                status_code=404, 
+                detail="No transcript available for this video. Please process the video first."
+            )
+        
+        logger.info(f"✅ Using transcript of {len(transcript_text)} characters for mind map generation")
+        
+        # Prepare optimized transcript (limit to prevent token overflow)
+        max_transcript_length = 8000  # Limit transcript to prevent token overflow
+        optimized_transcript = transcript_text[:max_transcript_length]
+        if len(transcript_text) > max_transcript_length:
+            optimized_transcript += "... [transcript truncated for processing]"
+        
+        # Prepare the detailed prompt for Gemini
+        mindmap_prompt = f"""You are an expert in analyzing educational content and structuring it into a hierarchical mind map.
+Given the following transcript from a YouTube video, please generate a mind map.
+
+CRITICAL: Your response must be ONLY a valid JSON object. Do not include any explanatory text, markdown formatting, or comments before or after the JSON.
+
+The mind map should be structured with a clear root topic, main themes, key concepts under each theme, and further detailed sub-concepts where appropriate.
+The goal is to create a visually intuitive and informative mind map that helps users understand the core ideas and relationships within the video content.
+
+Return ONLY a complete, valid JSON object with "nodes" and "edges" arrays.
+
+**Nodes:**
+Each node object in the "nodes" array should strictly adhere to the following structure:
+- id: (String) A unique string identifier for the node (e.g., "1", "node-abc", "theme-1-concept-2"). Ensure IDs are unique across all nodes.
+- type: (String) Always set to "collapsible".
+- data: (Object) An object containing:
+    - label: (String) A concise and descriptive string for the node's title. Aim for clarity and brevity (e.g., max 60 characters, shorter for deeper levels).
+    - description: (String, Optional) A brief string explaining the node's content in more detail if the label is very short (e.g., max 150 characters).
+    - level: (Integer) An integer representing the hierarchy level (0 for the root topic, 1 for main themes, 2 for key concepts, 3 for sub-concepts/details, etc.).
+    - childrenIds: (Array of Strings, Optional) An array of string IDs of its direct child nodes. This helps define the hierarchy. If a node has no children, this can be an empty array or omitted.
+    - parentId: (String, Optional) The string ID of its parent node. The root node will not have a parentId.
+    - width: (Integer, Optional) Suggested initial width for the node (e.g., 250 for level 0, 200 for level 1, 180 for level 2+). The frontend may adjust this.
+    - height: (Integer, Optional) Suggested initial height for the node (e.g., 90 for level 0, 80 for level 1, 70 for level 2+). The frontend may adjust this.
+- position: (Object) An object {{"x": 0, "y": 0}}. The frontend layout engine (ELK.js) will calculate the actual positions.
+
+**Edges:**
+Each edge object in the "edges" array should strictly adhere to the following structure:
+- id: (String) A unique string identifier for the edge (e.g., "e_1-2", "edge_theme1_concept1a"). Ensure IDs are unique across all edges.
+- source: (String) The string ID of the source node (parent).
+- target: (String) The string ID of the target node (child).
+- type: (String, Optional) Default to "curved" for aesthetically pleasing lines.
+- animated: (Boolean, Optional) Set to true for edges connecting the root node to level 1 themes to draw attention. Otherwise, false or omit.
+- style: (Object, Optional) An object for custom styles. For example:
+    - {{"stroke": "#4F46E5", "strokeWidth": 3}} for root-to-theme edges.
+    - {{"stroke": "#059669", "strokeWidth": 2.5}} for theme-to-concept edges.
+    - {{"stroke": "#9CA3AF", "strokeWidth": 2}} for concept-to-detail edges.
+    Adjust colors and strokeWidths to create a clear visual hierarchy.
+
+**Hierarchy and Content Guidelines:**
+1.  **Root Topic (Level 0):** Identify the single, overarching central theme or title of the video. This will be the only node at level 0.
+2.  **Main Themes (Level 1):** Extract 3-5 major themes, sections, or primary arguments from the transcript. These should be direct children of the root topic.
+3.  **Key Concepts (Level 2):** For each main theme, identify 3-7 key concepts, supporting ideas, important terminologies, or significant points discussed. These should be children of their respective themes.
+4.  **Sub-Concepts/Details (Level 3+):** If a key concept is particularly complex or has multiple distinct sub-points, examples, or elaborations, break it down further. Aim for a maximum depth of 4-5 levels to maintain clarity and prevent visual clutter.
+5.  **Conciseness & Clarity:** Node labels must be concise. Use the optional `description` field for more detailed explanations if needed, especially if the label has to be very short to fit.
+6.  **Logical Flow & Relationships:** Edges must represent clear, logical relationships (e.g., a theme is composed of several concepts; a concept is elaborated by details).
+7.  **Coverage:** The mind map should comprehensively cover the most important and salient information from the transcript, providing a good overview of the video's content.
+8.  **Node and Edge Count:** Strive for a balanced mind map. Too few nodes might be uninformative, while too many (e.g., > 70-100 nodes for a typical 10-20 min video) can become overwhelming. Adjust the level of detail accordingly.
+
+**Video Title:** {video_title}
+
+**Video Transcript for Mind Map Generation:**
+---
+{optimized_transcript}
+---
+
+Generate the complete mind map JSON based on the provided transcript. Output ONLY the JSON object with no additional text."""
+
+        # Generate mind map using Gemini
+        logger.info(f"🤖 Sending transcript to Gemini for mind map generation...")
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        # Configure generation for better JSON output with higher limits
+        generation_config = genai.types.GenerationConfig(
+            temperature=0.2,  # Even lower temperature for more consistent JSON structure
+            top_p=0.9,
+            top_k=40,
+            max_output_tokens=16384,  # Increased token limit to prevent truncation
+            candidate_count=1,  # Ensure single response
+            stop_sequences=None  # No stop sequences to prevent early termination
+        )
+        
+        response = model.generate_content(
+            mindmap_prompt,
+            generation_config=generation_config
+        )
+        
+        if not response.text:
+            raise HTTPException(status_code=500, detail="Gemini returned empty response")
+        
+        # Clean and parse the JSON response with robust error handling
+        raw_response = response.text.strip()
+        logger.info(f"📊 Gemini response received: {len(raw_response)} characters")
+        
+        # Remove potential markdown formatting
+        if raw_response.startswith("```json"):
+            raw_response = raw_response[7:]
+        if raw_response.endswith("```"):
+            raw_response = raw_response[:-3]
+        raw_response = raw_response.strip()
+        
+        # Parse JSON with multiple fallback strategies
+        mindmap_data = None
+        
+        try:
+            # First attempt: Direct JSON parsing
+            mindmap_data = json.loads(raw_response)
+            logger.info(f"✅ Successfully parsed mind map JSON with {len(mindmap_data.get('nodes', []))} nodes and {len(mindmap_data.get('edges', []))} edges")
+            
+        except json.JSONDecodeError as e:
+            logger.warning(f"⚠️ First JSON parse failed: {e}")
+            
+            # Second attempt: Try to fix common JSON issues
+            try:
+                # Find the last complete closing brace
+                last_brace = raw_response.rfind('}')
+                if last_brace > 0:
+                    truncated_response = raw_response[:last_brace + 1]
+                    logger.info(f"🔧 Attempting to parse truncated response: {len(truncated_response)} characters")
+                    mindmap_data = json.loads(truncated_response)
+                    logger.info(f"✅ Successfully parsed truncated JSON with {len(mindmap_data.get('nodes', []))} nodes and {len(mindmap_data.get('edges', []))} edges")
+                
+            except json.JSONDecodeError as e2:
+                logger.warning(f"⚠️ Truncated JSON parse failed: {e2}")
+                
+                # Third attempt: Extract JSON from text using regex
+                try:
+                    import re
+                    json_match = re.search(r'\{.*\}', raw_response, re.DOTALL)
+                    if json_match:
+                        extracted_json = json_match.group(0)
+                        logger.info(f"🔧 Attempting regex-extracted JSON: {len(extracted_json)} characters")
+                        mindmap_data = json.loads(extracted_json)
+                        logger.info(f"✅ Successfully parsed regex-extracted JSON with {len(mindmap_data.get('nodes', []))} nodes and {len(mindmap_data.get('edges', []))} edges")
+                
+                except (json.JSONDecodeError, AttributeError) as e3:
+                    logger.error(f"❌ All JSON parsing attempts failed. Final error: {e3}")
+                    logger.error(f"Raw response preview: {raw_response[:1000]}...")
+                    logger.error(f"Raw response ending: ...{raw_response[-500:]}")
+                    
+                    # Fourth attempt: Generate a simple fallback mind map
+                    logger.info("🔧 Generating fallback mind map structure...")
+                    mindmap_data = {
+                        "nodes": [
+                            {
+                                "id": "root",
+                                "type": "collapsible",
+                                "data": {
+                                    "label": video_title or "Educational Content",
+                                    "description": "AI-generated mind map from video transcript",
+                                    "level": 0,
+                                    "width": 300,
+                                    "height": 100,
+                                    "childrenIds": ["theme-1", "theme-2", "theme-3"]
+                                },
+                                "position": {"x": 0, "y": 0}
+                            },
+                            {
+                                "id": "theme-1",
+                                "type": "collapsible",
+                                "data": {
+                                    "label": "Main Concepts",
+                                    "description": "Key ideas from the video",
+                                    "level": 1,
+                                    "width": 220,
+                                    "height": 80,
+                                    "parentId": "root",
+                                    "childrenIds": []
+                                },
+                                "position": {"x": 0, "y": 0}
+                            },
+                            {
+                                "id": "theme-2",
+                                "type": "collapsible",
+                                "data": {
+                                    "label": "Learning Objectives",
+                                    "description": "Educational goals and outcomes",
+                                    "level": 1,
+                                    "width": 220,
+                                    "height": 80,
+                                    "parentId": "root",
+                                    "childrenIds": []
+                                },
+                                "position": {"x": 0, "y": 0}
+                            },
+                            {
+                                "id": "theme-3",
+                                "type": "collapsible",
+                                "data": {
+                                    "label": "Practical Applications",
+                                    "description": "Real-world uses and examples",
+                                    "level": 1,
+                                    "width": 220,
+                                    "height": 80,
+                                    "parentId": "root",
+                                    "childrenIds": []
+                                },
+                                "position": {"x": 0, "y": 0}
+                            }
+                        ],
+                        "edges": [
+                            {
+                                "id": "e_root-theme1",
+                                "source": "root",
+                                "target": "theme-1",
+                                "type": "curved",
+                                "animated": True,
+                                "style": {"stroke": "#4F46E5", "strokeWidth": 3}
+                            },
+                            {
+                                "id": "e_root-theme2",
+                                "source": "root",
+                                "target": "theme-2",
+                                "type": "curved",
+                                "animated": True,
+                                "style": {"stroke": "#4F46E5", "strokeWidth": 3}
+                            },
+                            {
+                                "id": "e_root-theme3",
+                                "source": "root",
+                                "target": "theme-3",
+                                "type": "curved",
+                                "animated": True,
+                                "style": {"stroke": "#4F46E5", "strokeWidth": 3}
+                            }
+                        ]
+                    }
+                    logger.info("✅ Generated fallback mind map structure")
+        
+        if not mindmap_data:
+            raise HTTPException(
+                status_code=500, 
+                detail="Failed to generate mind map data from AI response"
+            )
+        
+        # Validate the structure
+        if not isinstance(mindmap_data, dict) or 'nodes' not in mindmap_data or 'edges' not in mindmap_data:
+            logger.error("❌ Invalid mind map structure from Gemini")
+            raise HTTPException(
+                status_code=500, 
+                detail="Invalid mind map structure received from AI"
+            )
+        
+        nodes = mindmap_data.get('nodes', [])
+        edges = mindmap_data.get('edges', [])
+        
+        if not nodes:
+            logger.error("❌ No nodes in mind map from Gemini")
+            raise HTTPException(
+                status_code=500, 
+                detail="No mind map nodes generated"
+            )
+        
+        # Store the generated mind map in database for caching
+        try:
+            mindmap_doc = {
+                "video_id": video_id,
+                "userId": user_id,
+                "video_title": video_title,
+                "mindmap_data": mindmap_data,
+                "generated_at": datetime.utcnow(),
+                "transcript_hash": hashlib.md5(transcript_text.encode()).hexdigest(),
+                "node_count": len(nodes),
+                "edge_count": len(edges)
+            }
+            
+            # Upsert the mind map (replace if exists)
+            db.mindmaps.replace_one(
+                {"video_id": video_id, "userId": user_id},
+                mindmap_doc,
+                upsert=True
+            )
+            logger.info(f"💾 Stored mind map in database for {video_id}")
+        except Exception as store_error:
+            logger.warning(f"⚠️ Could not store mind map in database: {store_error}")
+        
+        # Return the mind map data
+        return {
+            "success": True,
+            "video_id": video_id,
+            "video_title": video_title,
+            "mindmap_data": mindmap_data,
+            "node_count": len(nodes),
+            "edge_count": len(edges),
+            "generated_at": datetime.utcnow().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error generating mind map: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating mind map: {str(e)}")
 
 # Initialize proxy system when module loads
 initialize_proxies()

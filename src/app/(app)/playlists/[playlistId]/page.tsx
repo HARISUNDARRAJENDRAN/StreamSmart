@@ -585,8 +585,12 @@ export default function PlaylistDetailPage() {
                       />
                     )}
                     
-                    {/* Traditional Mind Map for Playlist Overview */}
-                    <MindMapDisplay playlistTitle={playlist.title} playlistId={playlist.id} enhancedSummaryData={enhancedSummaryData}/>
+                    {/* Traditional Mind Map for Current Video */}
+                    <MindMapDisplay 
+                      playlistTitle={playlist.title} 
+                      currentVideo={currentVideo} 
+                      enhancedSummaryData={enhancedSummaryData}
+                    />
                   </div>
                 </TabsContent>
                 

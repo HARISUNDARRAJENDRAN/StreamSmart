@@ -455,4 +455,43 @@ class BertRecommendationService {
 
 // Export singleton instance
 export const bertRecommendationService = new BertRecommendationService();
-export default bertRecommendationService; 
+export default bertRecommendationService;
+
+export const mindMapService = {
+  async generateMindMap(videoId: string, userId: string): Promise<{
+    success: boolean;
+    video_id: string;
+    video_title: string;
+    mindmap_data: {
+      nodes: any[];
+      edges: any[];
+    };
+    node_count: number;
+    edge_count: number;
+    generated_at: string;
+  }> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/generate-mindmap`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          video_id: videoId,
+          userId: userId
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || `HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error generating mind map:', error);
+      throw error;
+    }
+  }
+}; 

@@ -83,7 +83,7 @@ const SplitText: React.FC<SplitTextProps> = ({
           style={{ 
             display: 'inline-block',
             whiteSpace: 'nowrap',
-            color: index === 0 ? '#D90429' : 'inherit', // First letter red
+            color: index === 0 ? '#FF0000' : 'inherit', // First letter bright YouTube red
             verticalAlign: 'baseline',
             lineHeight: 'inherit'
           }}

@@ -4,8 +4,10 @@ import React, { useState, useEffect, useCallback, useRef, useMemo, memo } from '
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { BrainIcon, ExpandIcon, DownloadIcon, XIcon, Loader2Icon, RotateCcwIcon, ImageIcon, FileTextIcon, MinimizeIcon, MaximizeIcon, AlertCircleIcon, RefreshCwIcon, ChevronRightIcon, ChevronDownIcon } from 'lucide-react';
+import { BrainIcon, ExpandIcon, DownloadIcon, XIcon, Loader2Icon, RotateCcwIcon, ImageIcon, FileTextIcon, MinimizeIcon, MaximizeIcon, AlertCircleIcon, RefreshCwIcon, ChevronRightIcon, ChevronDownIcon, UserIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { mindMapService } from "@/services/bertRecommendationService";
+import { useAuth } from "@/contexts/AuthContext";
 import ReactFlow, {
   Controls,
   Background,
@@ -33,7 +35,7 @@ const focusStyles = `
   /* Focus-based node styling */
   .node-container.focused {
     transform: scale(1.05) !important;
-    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 8px 25px #4f46e5, 0 4px 16px #3b82f6 !important;
     border: 2px solid #4F46E5 !important;
     z-index: 10 !important;
   }
@@ -43,9 +45,9 @@ const focusStyles = `
     transform: scale(1.02) !important;
   }
 
-  .node-container:not(.in-focus-path):not(.focused) {
-    opacity: 0.6 !important;
-    filter: grayscale(0.3) !important;
+      .node-container:not(.in-focus-path):not(.focused) {
+      opacity: 1 !important;
+      filter: none !important;
   }
 
   .node-container {
@@ -55,21 +57,21 @@ const focusStyles = `
 
   .node-container:hover:not(.focused) {
     transform: scale(1.03) !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 15px #000000 !important;
   }
 
   /* Smooth edge transitions */
   .react-flow__edge {
-    transition: opacity 0.4s ease !important;
+    transition: none !important;
   }
 
   .react-flow__edge.dimmed {
-    opacity: 0.3 !important;
+    opacity: 1 !important;
   }
 
   /* Enhanced focus path highlighting */
   .node-container.in-focus-path:not(.focused) {
-    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.4), 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0 0 2px #22c55e, 0 6px 20px #000000 !important;
   }
 
   /* Smooth transitions for all interactive elements */
@@ -97,15 +99,15 @@ const focusStyles = `
   @keyframes focusPulse {
     0% {
       transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4);
+      box-shadow: 0 0 0 0 #4f46e5;
     }
     50% {
       transform: scale(1.08);
-      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.6), 0 0 0 4px rgba(79, 70, 229, 0.2);
+      box-shadow: 0 8px 25px #4f46e5, 0 0 0 4px #4f46e5;
     }
     100% {
       transform: scale(1.05);
-      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3);
+      box-shadow: 0 8px 25px #4f46e5, 0 4px 16px #3b82f6;
     }
   }
 
@@ -117,7 +119,7 @@ const focusStyles = `
 
   /* Smooth dimming transition for non-focused elements */
   .react-flow__edge.dimmed path {
-    stroke-opacity: 0.3 !important;
+    stroke-opacity: 1 !important;
     stroke-width: 1.5px !important;
   }
 
@@ -144,7 +146,7 @@ const focusStyles = `
 
   .breadcrumb-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px #000000;
   }
 
   .breadcrumb-button:active {
@@ -156,8 +158,8 @@ const focusStyles = `
   }
 
   @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 1; }
   }
 
   /* Compact breadcrumb mode */
@@ -220,11 +222,11 @@ const CustomCurvedEdge: React.FC<EdgeProps> = ({
   } else if (isInFocusPath) {
     strokeColor = '#059669'; // Emerald for focus path
     strokeWidth = 3;
-    opacity = 0.9;
+    opacity = 1;
   } else {
     strokeColor = '#9CA3AF'; // Light gray for non-focused
     strokeWidth = 2;
-    opacity = 0.4;
+    opacity = 1;
   }
 
   return (
@@ -236,7 +238,7 @@ const CustomCurvedEdge: React.FC<EdgeProps> = ({
           stroke={strokeColor}
           strokeWidth={strokeWidth + 2}
           fill="none"
-          opacity={0.3}
+          opacity={1}
           className="react-flow__edge-path-bg"
           style={{
             filter: 'blur(2px)',
@@ -255,7 +257,7 @@ const CustomCurvedEdge: React.FC<EdgeProps> = ({
         className="react-flow__edge-path"
         markerEnd={markerEnd}
         style={{
-          transition: 'stroke 0.4s ease, stroke-width 0.4s ease, opacity 0.4s ease',
+          transition: 'stroke 0.4s ease, stroke-width 0.4s ease',
           strokeLinecap: 'round',
           strokeLinejoin: 'round',
           ...style
@@ -511,14 +513,14 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
     const labelWords = label.split(' ').length;
     const labelLength = label.length;
     
-    // Calculate optimal width based on content and level
+    // Calculate optimal width based on content and level (increased sizes)
     let baseWidth: number;
     if (labelLength <= 20) {
-      baseWidth = Math.max(180, labelLength * 9);
+      baseWidth = Math.max(220, labelLength * 11);
     } else if (labelLength <= 40) {
-      baseWidth = Math.max(220, labelLength * 8);
+      baseWidth = Math.max(280, labelLength * 10);
     } else {
-      baseWidth = Math.max(280, Math.min(360, labelLength * 7));
+      baseWidth = Math.max(350, Math.min(450, labelLength * 9));
     }
     
     // Account for multi-line text
@@ -532,51 +534,51 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
       descriptionHeight = Math.min(60, Math.max(20, descLines * 14));
     }
     
-    // Level-based scaling with better proportions
+    // Level-based scaling with enhanced proportions for progressive disclosure
     const levelConfigs = {
-      0: { // Root
+      0: { // Root - Larger and more prominent
+        widthMultiplier: 1.8,
+        heightMultiplier: 1.6,
+        fontSize: '18px',
+        fontWeight: '700',
+        padding: '24px 32px',
+        minHeight: 120,
+        lineHeight: '1.3'
+      },
+      1: { // First level themes - Prominent but smaller than root
         widthMultiplier: 1.5,
         heightMultiplier: 1.4,
         fontSize: '16px',
-        fontWeight: '700',
+        fontWeight: '600',
         padding: '20px 24px',
         minHeight: 100,
-        lineHeight: '1.3'
-      },
-      1: { // Themes
-        widthMultiplier: 1.3,
-        heightMultiplier: 1.25,
-        fontSize: '15px',
-        fontWeight: '600',
-        padding: '16px 20px',
-        minHeight: 80,
         lineHeight: '1.25'
       },
-      2: { // Concepts
+      2: { // Second level concepts - Well-sized for readability
+        widthMultiplier: 1.3,
+        heightMultiplier: 1.2,
+        fontSize: '15px',
+        fontWeight: '500',
+        padding: '18px 22px',
+        minHeight: 85,
+        lineHeight: '1.2'
+      },
+      3: { // Third level details - Balanced size
         widthMultiplier: 1.1,
         heightMultiplier: 1.1,
         fontSize: '14px',
-        fontWeight: '500',
-        padding: '14px 18px',
-        minHeight: 70,
+        fontWeight: '400',
+        padding: '16px 20px',
+        minHeight: 75,
         lineHeight: '1.2'
       },
-      3: { // Details
+      4: { // Fourth level sub-details - Compact but readable
         widthMultiplier: 1.0,
         heightMultiplier: 1.0,
         fontSize: '13px',
         fontWeight: '400',
-        padding: '12px 16px',
-        minHeight: 60,
-        lineHeight: '1.2'
-      },
-      4: { // Sub-details
-        widthMultiplier: 0.9,
-        heightMultiplier: 0.9,
-        fontSize: '12px',
-        fontWeight: '400',
-        padding: '10px 14px',
-        minHeight: 50,
+        padding: '14px 18px',
+        minHeight: 65,
         lineHeight: '1.15'
       }
     };
@@ -605,47 +607,52 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
   data.width = dimensions.width;
   data.height = dimensions.height;
 
-  // Enhanced visual styles with better color harmony and depth
+  // Enhanced visual styles with solid colors and no transparency
   const levelStyles = {
     0: { 
       background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #60a5fa 100%)', 
       color: 'white', 
       border: '3px solid #1e40af', 
       borderRadius: '18px', 
-      boxShadow: '0 12px 32px rgba(30, 58, 138, 0.4), 0 4px 16px rgba(59, 130, 246, 0.3)',
-      textAlign: 'center' as const
+      boxShadow: '0 8px 24px #1e3a8a, 0 4px 12px #3b82f6',
+      textAlign: 'center' as const,
+      opacity: 1
     },
     1: { 
       background: 'linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%)', 
       color: 'white', 
       border: '2px solid #0e7490', 
       borderRadius: '14px', 
-      boxShadow: '0 8px 24px rgba(8, 145, 178, 0.35), 0 3px 12px rgba(6, 182, 212, 0.25)',
-      textAlign: 'center' as const
+      boxShadow: '0 6px 20px #0891b2, 0 3px 10px #06b6d4',
+      textAlign: 'center' as const,
+      opacity: 1
     },
     2: { 
       background: 'linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%)', 
-      color: '#003d3d', 
+      color: '#ffffff', 
       border: '2px solid #0f766e', 
       borderRadius: '12px', 
-      boxShadow: '0 6px 20px rgba(13, 148, 136, 0.3), 0 2px 8px rgba(20, 184, 166, 0.2)',
-      textAlign: 'center' as const
+      boxShadow: '0 5px 18px #0d9488, 0 2px 8px #14b8a6',
+      textAlign: 'center' as const,
+      opacity: 1
     },
     3: { 
       background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fde047 100%)', 
-      color: '#78350f', 
+      color: '#000000', 
       border: '2px solid #d97706', 
       borderRadius: '10px', 
-      boxShadow: '0 4px 16px rgba(245, 158, 11, 0.25), 0 2px 6px rgba(251, 191, 36, 0.2)',
-      textAlign: 'center' as const
+      boxShadow: '0 4px 16px #f59e0b, 0 2px 6px #fbbf24',
+      textAlign: 'center' as const,
+      opacity: 1
     },
     4: { 
       background: 'linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fed7aa 100%)', 
-      color: '#9a3412', 
-      border: '1px solid #ea580c', 
+      color: '#000000', 
+      border: '2px solid #ea580c', 
       borderRadius: '8px', 
-      boxShadow: '0 3px 12px rgba(249, 115, 22, 0.2), 0 1px 4px rgba(251, 146, 60, 0.15)',
-      textAlign: 'center' as const
+      boxShadow: '0 3px 12px #f97316, 0 1px 4px #fb923c',
+      textAlign: 'center' as const,
+      opacity: 1
     },
   };
 
@@ -705,13 +712,13 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
         ...(data.isFocused && {
           transform: 'scale(1.1)',
           zIndex: 10,
-          boxShadow: '0 0 0 3px rgba(59, 130, 246, 0.5), 0 20px 40px rgba(0, 0, 0, 0.3)'
+          boxShadow: '0 0 0 4px #3b82f6, 0 8px 20px #1e40af'
         }),
         ...(data.isInFocusPath && !data.isFocused && {
-          boxShadow: '0 0 0 2px rgba(34, 197, 94, 0.4), 0 8px 24px rgba(0, 0, 0, 0.2)'
+          boxShadow: '0 0 0 3px #22c55e, 0 6px 16px #16a34a'
         })
       }}
-      className={`node-container hover:scale-105 hover:shadow-lg transition-all duration-300 ${
+      className={`node-container hover:scale-[1.02] hover:shadow-xl transition-all duration-500 ease-out transform-gpu will-change-transform ${
         data.isFocused ? 'focused' : ''
       } ${data.isInFocusPath ? 'in-focus-path' : ''}`}
       onClick={handleNodeClick}
@@ -749,14 +756,15 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
         {/* Description */}
         {displayDescription && (
           <div 
-            className="text-center opacity-90 leading-tight"
+            className="text-center leading-tight"
             style={{
               fontSize: `calc(${dimensions.fontSize} * 0.8)`,
               lineHeight: '1.15',
               marginTop: '4px',
               wordBreak: 'break-word',
               hyphens: 'auto',
-              maxWidth: '100%'
+              maxWidth: '100%',
+              opacity: 1
             }}
             title={data.description}
           >
@@ -773,10 +781,11 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
                 (data as any).onToggleExpansion(id);
               }
             }}
-            className="expand-button absolute top-2 right-2 p-1.5 hover:bg-white/30 rounded-full transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
+            className="expand-button absolute top-2 right-2 p-1.5 hover:bg-white/50 rounded-full transition-all duration-200 border-2 border-white hover:border-gray-200 hover:scale-110"
             style={{
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(4px)'
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(4px)',
+              color: '#000000'
             }}
             title={`${(data as any).isGloballyExpanded ? 'Collapse' : 'Expand'} children (${data.childrenIds.length})`}
           >
@@ -821,587 +830,31 @@ const nodeTypes = {
 
 interface MindMapDisplayProps {
   playlistTitle: string;
-  playlistId: string; 
+  currentVideo: {
+    id: string;
+    title: string;
+    youtubeURL: string;
+    thumbnail?: string;
+    duration?: string;
+    summary?: string;
+  } | null; 
   keyConceptsFromSummary?: string[];
   enhancedSummaryData?: any;
 }
 
-const generateAgenticAIMindMap = (keyConceptsFromSummary?: string[]): { nodes: Node<CollapsibleNodeData>[], edges: Edge[] } => {
-  const nodes: Node<CollapsibleNodeData>[] = [
-    { id: '1', type: 'collapsible', data: { label: 'Agentic AI', description: 'AI systems capable of autonomous decision-making and goal achievement.', expanded: true, childrenIds: ['2', '3', '4', '5'], level: 0 }, position: { x: 0, y: 0 } },
-    { id: '2', type: 'collapsible', data: { label: 'Theme 1: Defining Agentic AI', expanded: true, childrenIds: ['6', '7', '8'], level: 1 }, position: { x: 0, y: 0 } },
-    { id: '3', type: 'collapsible', data: { label: 'Theme 2: Capabilities & Distinctions', expanded: true, childrenIds: ['9', '10', '11'], level: 1 }, position: { x: 0, y: 0 } },
-    { id: '4', type: 'collapsible', data: { label: 'Theme 3: Applications', expanded: true, childrenIds: ['12', '13'], level: 1 }, position: { x: 0, y: 0 } },
-    { id: '5', type: 'collapsible', data: { label: 'Theme 4: Implementation', expanded: true, childrenIds: ['14', '15'], level: 1 }, position: { x: 0, y: 0 } },
-    { id: '6', type: 'collapsible', data: { label: 'Autonomous Goal Achievement', description: 'Multi-step planning, no explicit instructions.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '7', type: 'collapsible', data: { label: 'Decision-Making Process', description: 'Access to tools, contextual memory.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '8', type: 'collapsible', data: { label: 'Autonomous Reasoning', description: 'Independent problem-solving.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '9', type: 'collapsible', data: { label: 'vs. RAG Systems', description: 'Beyond simple retrieval/generation.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '10', type: 'collapsible', data: { label: 'vs. Tool-Augmented Chatbots', description: 'More than reactive Q&A.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '11', type: 'collapsible', data: { label: 'LLM as Component', description: 'Integrated with other tools/knowledge.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '12', type: 'collapsible', data: { label: 'Real-World Examples', description: 'Coding assistants, travel, research.', childrenIds: ['16','17'], level: 2 }, position: { x: 0, y: 0 } },
-    { id: '13', type: 'collapsible', data: { label: 'Business Use Cases', description: 'Complex scenario handling & automation.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '14', type: 'collapsible', data: { label: 'Code Demonstrations', description: 'Practical implementation insights.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '15', type: 'collapsible', data: { label: 'Framework Integration', description: 'Leveraging AGNO, Zapier, n8n.', level: 2 }, position: { x: 0, y: 0 } },
-    { id: '16', type: 'collapsible', data: { label: 'Replit / Lobe (Coding)', level: 3 }, position: { x: 0, y: 0 } },
-    { id: '17', type: 'collapsible', data: { label: 'Intelligent Travel Assistants', level: 3 }, position: { x: 0, y: 0 } },
-  ];
-  const initialEdges: Edge[] = [
-    { id: 'e1-2', source: '1', target: '2', animated: true, style: { stroke: '#0080a3', strokeWidth: 3, strokeDasharray: '5,5'} },
-    { id: 'e1-3', source: '1', target: '3', animated: true, style: { stroke: '#0080a3', strokeWidth: 3, strokeDasharray: '5,5' } },
-    { id: 'e1-4', source: '1', target: '4', animated: true, style: { stroke: '#0080a3', strokeWidth: 3, strokeDasharray: '5,5' } },
-    { id: 'e1-5', source: '1', target: '5', animated: true, style: { stroke: '#0080a3', strokeWidth: 3, strokeDasharray: '5,5' } },
-    { id: 'e2-6', source: '2', target: '6', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e2-7', source: '2', target: '7', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e2-8', source: '2', target: '8', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e3-9', source: '3', target: '9', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e3-10', source: '3', target: '10', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e3-11', source: '3', target: '11', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e4-12', source: '4', target: '12', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e4-13', source: '4', target: '13', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e5-14', source: '5', target: '14', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e5-15', source: '5', target: '15', style: { stroke: '#66b3cc', strokeWidth: 2.5 } },
-    { id: 'e12-16', source: '12', target: '16', style: { stroke: '#ffdd99', strokeWidth: 2 } }, // Lighter yellow for details
-    { id: 'e12-17', source: '12', target: '17', style: { stroke: '#ffdd99', strokeWidth: 2 } },
-  ];
-  if (keyConceptsFromSummary && keyConceptsFromSummary.length > 0) {
-    keyConceptsFromSummary.slice(0,3).forEach((concept, index) => {
-      const dynamicNodeId = `dynamic-concept-${index}`;
-      nodes.push({
-        id: dynamicNodeId,
-        type: 'collapsible',
-        data: { label: concept, level: 2 }, 
-        position: { x: 0, y: 0 }, 
-      });
-      initialEdges.push({
-        id: `e1-${dynamicNodeId}`,
-        source: '1', 
-        target: dynamicNodeId,
-        animated: true,
-        style: { stroke: '#00a6cc', strokeWidth: 2, strokeDasharray: '5,5' }
-      });
-      const parentNode = nodes.find(n => n.id === '1');
-      if (parentNode?.data.childrenIds) parentNode.data.childrenIds.push(dynamicNodeId);
-      else if (parentNode) parentNode.data.childrenIds = [dynamicNodeId];
-    });
-  }
-  return { nodes, edges: initialEdges };
-};
+// Removed old client-side mind map generation - now using Gemini API
 
-const generateDynamicMindMap = (playlistTitle: string, enhancedSummaryData?: any): { nodes: Node<CollapsibleNodeData>[], edges: Edge[] } => {
-  // DEBUG: Log function call and parameters
-  console.log('🎯 [generateDynamicMindMap] Called with:', {
-    playlistTitle,
-    hasEnhancedData: !!enhancedSummaryData,
-    enhancedSummaryData: enhancedSummaryData,
-    hasMultimodalData: !!(enhancedSummaryData?.multimodal_data)
-  });
+// Removed old client-side dynamic mind map generation - now using Gemini API
 
-  // If no enhanced data is available, return empty structure - no placeholder nodes
-  if (!enhancedSummaryData || !enhancedSummaryData.multimodal_data) {
-    console.log('⚠️ [generateDynamicMindMap] No enhanced data - returning empty structure');
-    return { nodes: [], edges: [] };
-  }
-
-  const multiModalData = enhancedSummaryData.multimodal_data;
-  const rootTopic = multiModalData.ROOT_TOPIC || playlistTitle || 'Video Analysis';
-  const keyConcepts = multiModalData.key_concepts || multiModalData.KEY_CONCEPTS || [];
-  const keyTopics = multiModalData.key_topics || [];
-  const learningObjectives = multiModalData.learning_objectives || [];
-  const visualInsights = multiModalData.visual_insights || [];
-  const timestampHighlights = multiModalData.timestamp_highlights || [];
-  const terminologies = multiModalData.terminologies || [];
-
-  const nodes: Node<CollapsibleNodeData>[] = [];
-  const edges: Edge[] = [];
-  let nodeIdCounter = 1;
-
-  // Helper function to create meaningful sub-nodes from content
-  const createMeaningfulSubNodes = (parentContent: any, parentId: string, parentLabel: string, startLevel: number): { childIds: string[], maxLevel: number } => {
-    const childIds: string[] = [];
-    let currentLevel = startLevel;
-    let maxLevel = startLevel;
-
-    if (typeof parentContent === 'string') {
-      // Intelligent content analysis for meaningful breakdowns
-      const content = parentContent.trim();
-      
-      // Look for structured patterns in the content
-      const patterns = {
-        // Key features or characteristics (look for bullet points, lists, or "includes" patterns)
-        features: content.match(/(?:includes?|features?|consists? of|contains?)[:\s]([^.!?]*)/gi),
-        // Benefits or advantages
-        benefits: content.match(/(?:benefits?|advantages?|helps?|allows?|enables?)[:\s]([^.!?]*)/gi),
-        // Examples or applications
-        examples: content.match(/(?:examples?|such as|like|including|for instance)[:\s]([^.!?]*)/gi),
-        // Steps or processes
-        steps: content.match(/(?:steps?|process|procedure|how to)[:\s]([^.!?]*)/gi),
-        // Technical details
-        technical: content.match(/(?:technically|specifically|implementation|details?)[:\s]([^.!?]*)/gi),
-      };
-
-      // Create meaningful categories based on detected patterns
-      Object.entries(patterns).forEach(([category, matches]) => {
-        if (matches && matches.length > 0) {
-          matches.slice(0, 3).forEach((match, index) => {
-            const cleanMatch = match.replace(/^(?:includes?|features?|consists? of|contains?|benefits?|advantages?|helps?|allows?|enables?|examples?|such as|like|including|for instance|steps?|process|procedure|how to|technically|specifically|implementation|details?)[:\s]*/i, '').trim();
-            
-            if (cleanMatch.length > 15) {
-              const detailNodeId = nodeIdCounter.toString();
-              const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
-              
-              nodes.push({
-                id: detailNodeId,
-                type: 'collapsible',
-                data: {
-                  label: `${categoryLabel}: ${cleanMatch.length > 45 ? cleanMatch.substring(0, 42) + '...' : cleanMatch}`,
-                  description: cleanMatch.length > 45 ? cleanMatch : `${categoryLabel} related to ${parentLabel}`,
-                  childrenIds: [],
-                parentId: parentId,
-                  level: currentLevel + 1
-                },
-                position: { x: 0, y: 0 }
-              });
-
-              childIds.push(detailNodeId);
-              maxLevel = Math.max(maxLevel, currentLevel + 1);
-
-              edges.push({
-                id: `e${parentId}-${detailNodeId}`,
-                source: parentId,
-                target: detailNodeId,
-                type: 'curved', // Phase 4.2: Use custom curved edge
-                style: { 
-                  stroke: '#14b8a6', 
-                  strokeWidth: 2.5,
-                  strokeLinecap: 'round',
-                  opacity: 0.9
-                },
-                data: {
-                  isInFocusPath: false,
-                  isFocused: false
-                }
-              });
-
-              nodeIdCounter++;
-            }
-          });
-        }
-      });
-
-      // If no patterns found, create logical topic breakdowns
-      if (childIds.length === 0 && content.length > 50) {
-        // Split by meaningful delimiters and create logical sub-topics
-        const meaningfulSentences = content
-          .split(/[.!?]+/)
-          .map(s => s.trim())
-          .filter(s => s.length > 20 && s.length < 200);
-
-        // Group related sentences or create key point extractions
-        const keyPoints = meaningfulSentences.slice(0, 3).map((sentence, index) => {
-          // Extract the main concept from each sentence
-          const mainConcept = sentence.split(/(?:,|;|\s(?:and|or|but|because|since|although)\s)/)[0].trim();
-          return {
-            concept: mainConcept.length > 8 ? mainConcept : sentence.substring(0, 50),
-            detail: sentence
-          };
-        });
-
-        keyPoints.forEach((point, index) => {
-          if (point.concept.length > 8) {
-            const conceptNodeId = nodeIdCounter.toString();
-            
-            nodes.push({
-              id: conceptNodeId,
-              type: 'collapsible',
-              data: {
-                label: point.concept.length > 50 ? point.concept.substring(0, 47) + '...' : point.concept,
-                description: point.detail !== point.concept ? point.detail : `Key aspect of ${parentLabel}`,
-                parentId: parentId,
-                level: currentLevel + 1
-              },
-              position: { x: 0, y: 0 }
-            });
-
-            childIds.push(conceptNodeId);
-            maxLevel = Math.max(maxLevel, currentLevel + 1);
-
-            edges.push({
-              id: `e${parentId}-${conceptNodeId}`,
-              source: parentId,
-              target: conceptNodeId,
-              type: 'curved', // Phase 4.2: Use custom curved edge
-              style: { 
-                stroke: '#0d9488', 
-                strokeWidth: 3,
-                strokeLinecap: 'round',
-                opacity: 0.85
-              },
-              data: {
-                isInFocusPath: false,
-                isFocused: false
-              }
-            });
-
-            nodeIdCounter++;
-          }
-        });
-      }
-    } else if (Array.isArray(parentContent)) {
-      // Handle arrays by creating logical groupings
-      const groupSize = Math.ceil(parentContent.length / 3);
-      const groups = [];
-      
-      for (let i = 0; i < parentContent.length; i += groupSize) {
-        groups.push(parentContent.slice(i, i + groupSize));
-      }
-
-      groups.slice(0, 4).forEach((group, groupIndex) => {
-        if (group.length > 0) {
-          const groupNodeId = nodeIdCounter.toString();
-          const groupLabel = `${parentLabel} Group ${groupIndex + 1}`;
-          
-          nodes.push({
-            id: groupNodeId,
-            type: 'collapsible',
-            data: {
-              label: groupLabel,
-              description: `Contains ${group.length} related items`,
-              childrenIds: [],
-              parentId: parentId,
-              level: currentLevel + 1
-            },
-            position: { x: 0, y: 0 }
-          });
-
-          childIds.push(groupNodeId);
-          maxLevel = Math.max(maxLevel, currentLevel + 1);
-
-          edges.push({
-            id: `e${parentId}-${groupNodeId}`,
-            source: parentId,
-            target: groupNodeId,
-            style: { stroke: '#ccf2ff', strokeWidth: 2 }
-          });
-
-          nodeIdCounter++;
-
-          // Add items to this group
-          const itemChildIds: string[] = [];
-          group.slice(0, 4).forEach((item: any) => {
-            const itemNodeId = nodeIdCounter.toString();
-            const itemLabel = typeof item === 'string' ? item : 
-                             typeof item === 'object' && item?.title ? item.title :
-                             String(item);
-
-            if (itemLabel.length > 5) {
-              nodes.push({
-                id: itemNodeId,
-                type: 'collapsible',
-                data: {
-                  label: itemLabel.length > 40 ? itemLabel.substring(0, 37) + '...' : itemLabel,
-                  description: typeof item === 'object' && item?.description ? item.description : undefined,
-                  level: currentLevel + 2
-                },
-                position: { x: 0, y: 0 }
-              });
-
-              itemChildIds.push(itemNodeId);
-              maxLevel = Math.max(maxLevel, currentLevel + 2);
-
-              edges.push({
-                id: `e${groupNodeId}-${itemNodeId}`,
-                source: groupNodeId,
-                target: itemNodeId,
-                style: { stroke: '#e6f7ff', strokeWidth: 1.5 }
-              });
-
-              nodeIdCounter++;
-            }
-          });
-
-          // Update group node with its children
-          const groupNode = nodes.find(n => n.id === groupNodeId);
-          if (groupNode) {
-            groupNode.data.childrenIds = itemChildIds;
-          }
-        }
-      });
-    } else if (typeof parentContent === 'object' && parentContent !== null) {
-      // Handle objects by creating meaningful property categories
-      const propertyEntries = Object.entries(parentContent).slice(0, 5);
-      
-      propertyEntries.forEach(([key, value]) => {
-        const objNodeId = nodeIdCounter.toString();
-        const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        
-        nodes.push({
-          id: objNodeId,
-          type: 'collapsible',
-          data: {
-            label: formattedKey,
-            description: typeof value === 'string' && value.length > 10 ? 
-                        value.substring(0, 80) + (value.length > 80 ? '...' : '') : 
-                        `${formattedKey} details for ${parentLabel}`,
-            childrenIds: [],
-            parentId: parentId,
-            level: currentLevel + 1
-          },
-          position: { x: 0, y: 0 }
-        });
-
-        childIds.push(objNodeId);
-        maxLevel = Math.max(maxLevel, currentLevel + 1);
-
-        edges.push({
-          id: `e${parentId}-${objNodeId}`,
-          source: parentId,
-          target: objNodeId,
-          style: { stroke: '#b3d9ff', strokeWidth: 2 }
-        });
-
-        nodeIdCounter++;
-
-        // Only recurse if the value is meaningful and we're not too deep
-        if (currentLevel < 4 && ((typeof value === 'string' && value.length > 30) || Array.isArray(value))) {
-          const subResult = createMeaningfulSubNodes(value, objNodeId, formattedKey, currentLevel + 1);
-          const objNode = nodes.find(n => n.id === objNodeId);
-          if (objNode) {
-            objNode.data.childrenIds = subResult.childIds;
-          }
-          maxLevel = Math.max(maxLevel, subResult.maxLevel);
-        }
-      });
-    }
-
-    return { childIds, maxLevel };
-  };
-
-  // Root node
-  const rootNodeId = nodeIdCounter.toString();
-  nodes.push({
-    id: rootNodeId,
-    type: 'collapsible',
-    data: {
-      label: rootTopic,
-      description: 'AI-generated mind map based on comprehensive video content analysis.',
-      expanded: true,
-      childrenIds: [],
-      level: 0
-    },
-    position: { x: 0, y: 0 }
-  });
-  nodeIdCounter++;
-
-  // Create comprehensive theme categories with detailed breakdowns
-  const comprehensiveCategories = [
-    { title: 'Core Concepts', items: keyConcepts, color: '#0080a3', description: 'Fundamental ideas and principles' },
-    { title: 'Key Topics', items: keyTopics, color: '#00a6cc', description: 'Main subject areas covered' },
-    { title: 'Learning Objectives', items: learningObjectives, color: '#66b3cc', description: 'Educational goals and outcomes' },
-    { title: 'Visual Elements', items: visualInsights, color: '#80ccdd', description: 'Important visual content and imagery' },
-    { title: 'Timeline Highlights', items: timestampHighlights, color: '#99d6ea', description: 'Key moments and timestamps' },
-    { title: 'Terminology', items: terminologies, color: '#b3e0f0', description: 'Important terms and definitions' }
-  ].filter(category => category.items && category.items.length > 0);
-
-  // If we have detailed summary, add it as a category too
-  if (multiModalData.detailed_summary) {
-    comprehensiveCategories.unshift({
-      title: 'Detailed Analysis',
-      items: [multiModalData.detailed_summary],
-      color: '#004d66',
-      description: 'Comprehensive content breakdown'
-    });
-  }
-
-  comprehensiveCategories.forEach((category, categoryIndex) => {
-    const themeNodeId = nodeIdCounter.toString();
-    nodes.push({
-      id: themeNodeId,
-      type: 'collapsible',
-      data: {
-        label: category.title,
-        description: category.description,
-        expanded: true,
-        childrenIds: [],
-        parentId: rootNodeId,
-        level: 1
-      },
-      position: { x: 0, y: 0 }
-    });
-
-    // Add to root node's children
-    const rootNode = nodes.find(n => n.id === rootNodeId);
-    if (rootNode?.data.childrenIds) {
-      rootNode.data.childrenIds.push(themeNodeId);
-    }
-
-    // Create edge from root to theme
-    edges.push({
-      id: `e${rootNodeId}-${themeNodeId}`,
-      source: rootNodeId,
-      target: themeNodeId,
-      type: 'curved', // Phase 4.2: Use custom curved edge
-      animated: true,
-      style: { 
-        stroke: category.color, 
-        strokeWidth: 4, 
-        strokeDasharray: '8,4',
-        strokeLinecap: 'round',
-        filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-      },
-      markerEnd: {
-        type: MarkerType.ArrowClosed,
-        width: 12,
-        height: 12,
-        color: category.color
-      },
-      data: {
-        isInFocusPath: false,
-        isFocused: false
-      }
-    });
-
-    nodeIdCounter++;
-
-    // Create detailed concept nodes under this theme with infinite levels
-    const themeChildIds: string[] = [];
-    category.items.slice(0, 8).forEach((item: any, itemIndex: number) => {
-      const conceptNodeId = nodeIdCounter.toString();
-      const itemLabel = typeof item === 'string' ? item : 
-                       typeof item === 'object' && item?.title ? item.title :
-                       typeof item === 'object' && item?.text ? item.text :
-                       String(item);
-
-      nodes.push({
-        id: conceptNodeId,
-        type: 'collapsible',
-        data: {
-          label: itemLabel.length > 60 ? itemLabel.substring(0, 57) + '...' : itemLabel,
-          description: typeof item === 'object' && item?.description ? item.description : 
-                      itemLabel.length > 60 ? itemLabel : undefined,
-          childrenIds: [],
-          parentId: themeNodeId,
-          level: 2
-        },
-        position: { x: 0, y: 0 }
-      });
-
-      themeChildIds.push(conceptNodeId);
-
-      // Create edge from theme to concept
-      edges.push({
-        id: `e${themeNodeId}-${conceptNodeId}`,
-        source: themeNodeId,
-        target: conceptNodeId,
-        type: 'curved', // Phase 4.2: Use custom curved edge
-        style: { 
-          stroke: '#0d9488', 
-          strokeWidth: 3,
-          strokeLinecap: 'round',
-          opacity: 0.85
-        },
-        data: {
-          isInFocusPath: false,
-          isFocused: false
-        }
-      });
-
-      nodeIdCounter++;
-
-      // Create detailed sub-nodes for this concept (infinite levels)
-      const detailResult = createMeaningfulSubNodes(item, conceptNodeId, itemLabel, 2);
-      const conceptNode = nodes.find(n => n.id === conceptNodeId);
-      if (conceptNode) {
-        conceptNode.data.childrenIds = detailResult.childIds;
-      }
-    });
-
-    // Update theme node with its children
-    const themeNode = nodes.find(n => n.id === themeNodeId);
-    if (themeNode) {
-      themeNode.data.childrenIds = themeChildIds;
-    }
-  });
-
-  // Add a comprehensive insights node if we have enough data
-  if (nodes.length > 10) {
-    const insightsNodeId = nodeIdCounter.toString();
-    nodes.push({
-      id: insightsNodeId,
-      type: 'collapsible',
-      data: {
-        label: 'Deep Insights & Connections',
-        description: 'Advanced analysis connecting different concepts and themes',
-        expanded: true,
-        childrenIds: [],
-        level: 1
-      },
-      position: { x: 0, y: 0 }
-    });
-
-    // Add to root
-    const rootNode = nodes.find(n => n.id === rootNodeId);
-    if (rootNode?.data.childrenIds) {
-      rootNode.data.childrenIds.push(insightsNodeId);
-    }
-
-    edges.push({
-      id: `e${rootNodeId}-${insightsNodeId}`,
-      source: rootNodeId,
-      target: insightsNodeId,
-      animated: true,
-      style: { stroke: '#ff9999', strokeWidth: 3, strokeDasharray: '5,5' }
-    });
-
-    nodeIdCounter++;
-
-    // Create cross-connections and relationships
-    const insightChildIds: string[] = [];
-    
-    // Connection insights
-    ['Concept Relationships', 'Learning Pathways', 'Practical Applications', 'Advanced Topics'].forEach((insightType, index) => {
-      const insightDetailId = nodeIdCounter.toString();
-      nodes.push({
-        id: insightDetailId,
-        type: 'collapsible',
-        data: {
-          label: insightType,
-          description: `Exploring ${insightType.toLowerCase()} within the video content`,
-          level: 2
-        },
-        position: { x: 0, y: 0 }
-      });
-
-      insightChildIds.push(insightDetailId);
-
-      edges.push({
-        id: `e${insightsNodeId}-${insightDetailId}`,
-        source: insightsNodeId,
-        target: insightDetailId,
-        style: { stroke: '#ffb3b3', strokeWidth: 2 }
-      });
-
-      nodeIdCounter++;
-    });
-
-    // Update insights node with children
-    const insightsNode = nodes.find(n => n.id === insightsNodeId);
-    if (insightsNode) {
-      insightsNode.data.childrenIds = insightChildIds;
-    }
-  }
-
-  console.log(`🌳 [generateDynamicMindMap] Generated ${nodes.length} nodes with multiple levels of detail`);
-  return { nodes, edges };
-};
-
-export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, playlistId, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
+export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, currentVideo, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
   // Performance: Reduced debug logging
   const renderCount = useRef(0);
   renderCount.current++;
 
   const [isFullScreenOpen, setIsFullScreenOpen] = useState(false);
   const { toast } = useToast();
+  // Simplified: Remove auth dependency for mind map generation
+  // const { user, isLoading: authIsLoading } = useAuth();
   
   const [allNodes, setAllNodes] = useState<Node<CollapsibleNodeData>[]>([]);
   const [allEdges, setAllEdges] = useState<Edge[]>([]);
@@ -1409,7 +862,11 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
   const [displayedEdges, setDisplayedEdges] = useState<Edge[]>([]);
   
   // Start with no nodes expanded, root will be added by getVisibleNodesAndEdges if needed
-  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set()); 
+  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set());
+  
+  // Progressive disclosure state
+  const [currentLevel, setCurrentLevel] = useState<number>(0);
+  const [levelHistory, setLevelHistory] = useState<string[]>([]); 
 
   const [isLoading, setIsLoading] = useState(true);
   const [generatedTitle, setGeneratedTitle] = useState('Generating Mind Map...');
@@ -1426,6 +883,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
   const mindMapContainerRef = useRef<HTMLDivElement>(null);
   const fullScreenContainerRef = useRef<HTMLDivElement>(null);
   const rfInstanceRef = useRef<any>(null);
+  const fullScreenRfInstanceRef = useRef<any>(null); // Separate ref for fullscreen
   const layoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastLayoutTime = useRef<number>(0);
 
@@ -1700,18 +1158,44 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
     setLastInteractedNodeId(nodeId); // Update last interacted node for focusing
   }, [allNodes]);
 
-  // Phase 2: Click-to-Focus Navigation - Focus handler for NotebookLM-style navigation
-  const handleNodeFocus = useCallback((nodeId: string) => {
-    if (focusedNodeId === nodeId) return; // Already focused
+  // Progressive disclosure navigation handler
+  const handleNodeClick = useCallback((nodeId: string) => {
+    const clickedNode = allNodes.find(n => n.id === nodeId);
+    if (!clickedNode) return;
+    
+    const nodeLevel = clickedNode.data.level || 0;
     
     setIsTransitioning(true);
-    setFocusedNodeId(nodeId);
     
-    // Add to history for breadcrumb navigation
-    setFocusHistory(prev => [...prev.filter(id => id !== nodeId), nodeId]);
+          // Progressive disclosure logic
+      if (nodeLevel === currentLevel) {
+        // Clicking on current level node - expand to show children
+        if (clickedNode.data.childrenIds && clickedNode.data.childrenIds.length > 0) {
+          setExpandedNodeIds(prev => new Set([...prev, nodeId]));
+          setCurrentLevel(nodeLevel + 1);
+          setLevelHistory(prev => {
+            // Ensure no duplicates in history
+            const newHistory = [...prev];
+            if (!newHistory.includes(nodeId)) {
+              newHistory.push(nodeId);
+            }
+            return newHistory;
+          });
+          setFocusedNodeId(nodeId);
+        }
+      } else if (nodeLevel === currentLevel + 1) {
+        // Clicking on child node - move focus to this level
+        setFocusedNodeId(nodeId);
+        setLevelHistory(prev => {
+          // Create clean history up to this level
+          const newHistory = prev.slice(0, nodeLevel);
+          newHistory.push(nodeId);
+          return newHistory;
+        });
+      }
     
-    setTimeout(() => setIsTransitioning(false), 600);
-  }, [focusedNodeId]);
+    setTimeout(() => setIsTransitioning(false), 800);
+  }, [allNodes, currentLevel]);
 
   // Phase 5.2: Enhanced node data creator for consistent focus state passing
   const createEnhancedNodes = useCallback((nodes: Node<CollapsibleNodeData>[]): Node<CollapsibleNodeData>[] => {
@@ -1721,152 +1205,77 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
       ...node,
       data: {
         ...node.data,
-        onNodeClick: handleNodeFocus,
+        onNodeClick: handleNodeClick,
         onToggleExpansion: handleToggleNodeExpansion,
         isFocused: node.id === focusedNodeId,
         isInFocusPath: relevantNodeIds.has(node.id),
         isGloballyExpanded: expandedNodeIds.has(node.id)
       }
     }));
-  }, [focusedNodeId, getRelevantNodeIds, handleNodeFocus, handleToggleNodeExpansion, expandedNodeIds]);
+  }, [focusedNodeId, getRelevantNodeIds, handleNodeClick, handleToggleNodeExpansion, expandedNodeIds]);
 
-  // Phase 3: Focus-Based Layout Algorithm - Calculate layout for focused node  
-  const calculateFocusedLayout = useCallback((focusedNodeId: string) => {
-    const focusedNode = allNodes.find(n => n.id === focusedNodeId);
-    if (!focusedNode) return;
-    
-    // Store current positions before transition
-    const currentPositions: Record<string, { x: number; y: number }> = {};
-    displayedNodes.forEach(node => {
-      currentPositions[node.id] = { x: node.position.x, y: node.position.y };
-    });
-    setNodePositions(currentPositions);
-    
-    // Create a new layout configuration for ELK - NotebookLM style
-    const focusedLayoutOptions = {
-      'elk.algorithm': 'layered',
-      'elk.direction': 'RIGHT', // Change to horizontal for NotebookLM style
-      'elk.spacing.nodeNode': '80',
-      'elk.layered.spacing.nodeNodeBetweenLayers': '200',
-      'elk.spacing.componentComponent': '100',
-      'elk.alignment': 'CENTER',
-      'elk.edgeRouting': 'POLYLINE',
-      'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
-      'elk.layered.nodePlacement.favorStraightEdges': 'true',
-      'elk.padding': '[top=60,left=60,bottom=60,right=60]'
-    };
-    
-    // Filter nodes to show focused node + its immediate connections
-    const relevantNodeIds = new Set([
-      focusedNodeId,
-      ...(focusedNode.data.childrenIds || []),
-      ...(focusedNode.data.parentId ? [focusedNode.data.parentId] : [])
-    ]);
-    
-    // Add siblings if we have a parent (for better context)
-    if (focusedNode.data.parentId) {
-      const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
-      if (parentNode?.data.childrenIds) {
-        parentNode.data.childrenIds.forEach(siblingId => {
-          relevantNodeIds.add(siblingId);
-        });
-      }
-    }
-    
-    // Update displayed nodes with focus context using enhanced node creator
-    const filteredNodes = allNodes.filter(node => relevantNodeIds.has(node.id));
-    const focusedNodes = createEnhancedNodes(filteredNodes);
-    
-    const focusedEdges = allEdges.filter(edge => 
-      relevantNodeIds.has(edge.source) && relevantNodeIds.has(edge.target)
-    ).map(edge => {
-      const sourceNode = allNodes.find(n => n.id === edge.source);
-      const targetNode = allNodes.find(n => n.id === edge.target);
-      const isSourceFocused = sourceNode?.id === focusedNodeId;
-      const isTargetFocused = targetNode?.id === focusedNodeId;
-      const isFocused = isSourceFocused || isTargetFocused;
-      const isInFocusPath = relevantNodeIds.has(edge.source) && relevantNodeIds.has(edge.target);
-      
-      return {
-        ...edge,
-        type: edge.type || 'curved', // Ensure curved type
-        className: `${edge.className || ''} focus-edge`.trim(),
-        data: {
-          ...edge.data,
-          isFocused,
-          isInFocusPath
-        }
-      };
-    });
-    
-    // Apply new layout with debouncing for better performance
-    debouncedApplyELKLayout(focusedNodes, focusedEdges, focusedLayoutOptions);
-    
-  }, [allNodes, allEdges, displayedNodes, createEnhancedNodes, debouncedApplyELKLayout]);
+  
 
-  // Effect to handle layout calculation when focused node changes
-  useEffect(() => {
-    if (focusedNodeId && allNodes.length > 0) {
-      calculateFocusedLayout(focusedNodeId);
-    }
-  }, [focusedNodeId, calculateFocusedLayout, allNodes.length]);
-
-
-
+  // Progressive disclosure: Get visible nodes and edges based on current state
   const getVisibleNodesAndEdges = useCallback(() => {
     if (allNodes.length === 0) {
+      console.log('📊 getVisibleNodesAndEdges: No nodes available');
       return { visibleNodes: [], visibleEdges: [] };
     }
 
     const visibleNodesAccumulator: Node<CollapsibleNodeData>[] = [];
-    const nodesToProcess = new Set<string>();
-
-    // Find the actual root node (level 0) instead of hardcoding '1'
+    
+    // Progressive disclosure: Show nodes based on current level and history
     const rootNode = allNodes.find(node => node.data.level === 0);
     if (!rootNode) {
+      console.log('📊 getVisibleNodesAndEdges: No root node found');
       return { visibleNodes: [], visibleEdges: [] };
     }
 
-    function findVisibleRecursive(nodeId: string) {
-      if (nodesToProcess.has(nodeId)) return; // Already added or scheduled
-      nodesToProcess.add(nodeId);
-
-      const node = allNodes.find(n => n.id === nodeId);
-      if (!node) return;
-
-      // Add the node itself to visible list (root is always added here first)
-      visibleNodesAccumulator.push(node);
-
-      // If this node is expanded, recursively process its children
-      if (expandedNodeIds.has(nodeId) && node.data.childrenIds) {
-        node.data.childrenIds.forEach(childId => {
-          findVisibleRecursive(childId);
-        });
+    // Always show root node
+    visibleNodesAccumulator.push(rootNode);
+    const addedNodeIds = new Set([rootNode.id]);
+    
+    // Show nodes up to current level + 1 (to show next generation when expanded)
+    for (let level = 0; level <= currentLevel + 1; level++) {
+      const nodesAtLevel = allNodes.filter(node => node.data.level === level);
+      
+      for (const node of nodesAtLevel) {
+        // Skip if already added (prevents duplicates)
+        if (addedNodeIds.has(node.id)) continue;
+        
+        // Check if this node should be visible based on parent expansion
+        const parentId = node.data.parentId;
+        if (parentId && expandedNodeIds.has(parentId)) {
+          visibleNodesAccumulator.push(node);
+          addedNodeIds.add(node.id);
+        }
       }
     }
-
-    // Start traversal from the actual root node
-    findVisibleRecursive(rootNode.id); 
     
     const visibleNodeIds = new Set(visibleNodesAccumulator.map(n => n.id));
     const visibleEdges = allEdges.filter(edge => 
       visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target)
     ).map(edge => {
-      // Phase 4.1 & 4.2: Add focus-based edge styling and curved edge data
       const sourceNode = visibleNodesAccumulator.find(n => n.id === edge.source);
       const targetNode = visibleNodesAccumulator.find(n => n.id === edge.target);
-      const isSourceFocused = sourceNode?.data.isFocused || false;
-      const isTargetFocused = targetNode?.data.isFocused || false;
-      const isSourceInPath = sourceNode?.data.isInFocusPath || false;
-      const isTargetInPath = targetNode?.data.isInFocusPath || false;
+      const isSourceFocused = sourceNode?.id === focusedNodeId;
+      const isTargetFocused = targetNode?.id === focusedNodeId;
+      const isSourceInHistory = levelHistory.includes(sourceNode?.id || '');
+      const isTargetInHistory = levelHistory.includes(targetNode?.id || '');
       
-      const isFocused = isSourceFocused && isTargetFocused;
-      const isInFocusPath = (isSourceInPath || isSourceFocused) && (isTargetInPath || isTargetFocused);
+      const isFocused = isSourceFocused || isTargetFocused;
+      const isInFocusPath = isSourceInHistory || isTargetInHistory || isFocused;
       
       return {
         ...edge,
-        type: edge.type || 'curved', // Default to curved if no type specified
-        className: `${edge.className || ''} ${!isInFocusPath ? 'dimmed' : ''}`.trim(),
+        type: edge.type || 'curved',
+        className: '', // Remove dimming classes for better visibility
+        style: {
+          stroke: isFocused ? '#10b981' : '#64748b', // Green for focused, gray for others
+          strokeWidth: isFocused ? 3 : 2,
+          opacity: 1, // Remove transparency
+        },
         data: {
           ...edge.data,
           isFocused,
@@ -1875,11 +1284,175 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
       };
     });
 
-    // Phase 5.2: Use enhanced node data creator for consistent focus state
     const enhancedVisibleNodes = createEnhancedNodes(visibleNodesAccumulator);
     
+    console.log(`📊 Progressive disclosure summary:`, {
+      currentLevel,
+      totalNodes: allNodes.length,
+      expandedNodes: expandedNodeIds.size,
+      visibleNodes: enhancedVisibleNodes.length,
+      levelHistory: levelHistory.length,
+      focusedNodeId
+    });
+    
     return { visibleNodes: enhancedVisibleNodes, visibleEdges };
-  }, [allNodes, allEdges, expandedNodeIds, createEnhancedNodes]);
+  }, [allNodes, allEdges, expandedNodeIds, currentLevel, levelHistory, focusedNodeId, createEnhancedNodes]);
+
+  // Progressive disclosure layout calculation with enhanced auto-fit
+  const calculateProgressiveLayout = useCallback(() => {
+    if (allNodes.length === 0) return;
+    
+    // Get visible nodes based on current progressive disclosure state
+    const { visibleNodes, visibleEdges } = getVisibleNodesAndEdges();
+    
+    if (visibleNodes.length === 0) return;
+    
+    // Enhanced layout configuration for progressive disclosure
+    const progressiveLayoutOptions = {
+      'elk.algorithm': 'layered',
+      'elk.direction': 'DOWN',
+      'elk.spacing.nodeNode': '120', // Increased spacing for better visibility
+      'elk.layered.spacing.nodeNodeBetweenLayers': '150', // More vertical space
+      'elk.spacing.componentComponent': '100',
+      'elk.alignment': 'CENTER',
+      'elk.edgeRouting': 'POLYLINE',
+      'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
+      'elk.layered.nodePlacement.favorStraightEdges': 'true',
+      'elk.padding': '[top=80,left=80,bottom=80,right=80]', // More padding
+      'elk.layered.compaction.postCompaction.strategy': 'BALANCED'
+    };
+    
+    // Apply layout with smooth transitions
+    debouncedApplyELKLayout(visibleNodes, visibleEdges, progressiveLayoutOptions, true);
+    
+  }, [allNodes, getVisibleNodesAndEdges, debouncedApplyELKLayout]);
+
+  // Enhanced auto-fit function for progressive disclosure
+  const autoFitProgressiveView = useCallback((forceFullscreen?: boolean) => {
+    const useFullscreen = forceFullscreen || isFullScreenOpen;
+    const currentInstance = useFullscreen ? fullScreenRfInstanceRef.current : rfInstanceRef.current;
+    console.log(`🎯 AutoFit called: fullscreen=${useFullscreen}, instance=${!!currentInstance}, currentLevel=${currentLevel}`);
+    
+    if (!currentInstance) {
+      console.warn('⚠️ No ReactFlow instance available for auto-fit');
+      return;
+    }
+    
+    // Get the currently visible nodes
+    const { visibleNodes } = getVisibleNodesAndEdges();
+    console.log(`👀 Visible nodes for level ${currentLevel}:`, visibleNodes.length);
+    if (visibleNodes.length === 0) {
+      console.warn('⚠️ No visible nodes for auto-fit');
+      return;
+    }
+    
+    // Different fitting strategies based on current level and node count
+    const nodeCount = visibleNodes.length;
+    const focusedNode = focusedNodeId ? visibleNodes.find(n => n.id === focusedNodeId) : null;
+    
+    // Calculate appropriate zoom and padding based on generation
+    let fitOptions = {
+      padding: 0.2,
+      duration: 1000,
+      maxZoom: 1.2,
+      minZoom: 0.1
+    };
+    
+    if (currentLevel === 0) {
+      // Root level - show just the root node prominently
+      fitOptions = {
+        padding: 0.4,
+        duration: 800,
+        maxZoom: 1.5,
+        minZoom: 0.3
+      };
+    } else if (currentLevel === 1) {
+      // First generation - show root + children
+      fitOptions = {
+        padding: 0.25,
+        duration: 800,
+        maxZoom: 1.3,
+        minZoom: 0.2
+      };
+    } else if (currentLevel >= 2) {
+      // Second generation and beyond - focus on focused node and its children
+      fitOptions = {
+        padding: 0.15,
+        duration: 800,
+        maxZoom: 1.1,
+        minZoom: 0.15
+      };
+      
+      // If we have a focused node, focus on it and its immediate context
+      if (focusedNode) {
+        const contextNodes = visibleNodes.filter(node => {
+          return node.id === focusedNodeId ||
+                 node.data.parentId === focusedNodeId ||
+                 node.data.parentId === focusedNode.data.parentId ||
+                 (focusedNode.data.childrenIds && focusedNode.data.childrenIds.includes(node.id));
+        });
+        
+        if (contextNodes.length > 0) {
+          setTimeout(() => {
+            currentInstance?.fitView({
+              nodes: contextNodes,
+              ...fitOptions
+            });
+          }, 400);
+          return;
+        }
+      }
+    }
+    
+    // Default fit to all visible nodes
+    setTimeout(() => {
+      currentInstance?.fitView({
+        nodes: visibleNodes,
+        ...fitOptions
+      });
+    }, 400);
+    
+  }, [focusedNodeId, currentLevel, isFullScreenOpen]);
+
+  // Effect to handle layout calculation when progressive disclosure state changes
+  useEffect(() => {
+    if (allNodes.length > 0 && !isTransitioning) {
+      calculateProgressiveLayout();
+      // Auto-fit view after layout calculation
+      const fitTimer = setTimeout(() => {
+        autoFitProgressiveView();
+      }, 600); // Allow time for layout to complete
+      
+      return () => clearTimeout(fitTimer);
+    }
+  }, [currentLevel, expandedNodeIds, focusedNodeId, allNodes, isTransitioning, calculateProgressiveLayout]);
+
+  // Separate effect to handle auto-fitting when focus changes
+  useEffect(() => {
+    if (focusedNodeId && allNodes.length > 0 && !isTransitioning) {
+      const fitTimer = setTimeout(() => {
+        autoFitProgressiveView();
+      }, 100);
+      
+      return () => clearTimeout(fitTimer);
+    }
+  }, [focusedNodeId]);
+
+  // Effect to handle auto-fitting when switching to/from fullscreen
+  useEffect(() => {
+    if (displayedNodes.length > 0) {
+      console.log(`🖥️ Fullscreen state changed to: ${isFullScreenOpen}, triggering auto-fit for ${displayedNodes.length} nodes`);
+      const fitTimer = setTimeout(() => {
+        autoFitProgressiveView(isFullScreenOpen);
+      }, 200); // Give time for fullscreen transition
+      
+      return () => clearTimeout(fitTimer);
+    }
+  }, [isFullScreenOpen]);
+
+
+
+
 
   const onNodesChange: OnNodesChange = useCallback(
     (changes) => setDisplayedNodes((nds) => applyNodeChanges(changes, nds)),
@@ -1890,49 +1463,137 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
     [setDisplayedEdges]
   );
 
-  const loadMindMapData = useCallback(async () => {
+    const loadMindMapData = useCallback(async () => {
+    if (!currentVideo) {
+      console.log('⚠️ No current video available for mind map generation');
+      setIsLoading(false);
+      setGeneratedTitle("No Video Selected");
+      return;
+    }
+
     setIsLoading(true);
-    
-    // Set dynamic title based on available data
-    const dynamicTitle = enhancedSummaryData?.multimodal_data?.ROOT_TOPIC || playlistTitle || 'Mind Map';
-    setGeneratedTitle(`Generating ${dynamicTitle} Mind Map...`);
-    
-    // DEBUG: Log enhancedSummaryData to trace data flow
-    console.log('🔍 [loadMindMapData] enhancedSummaryData:', enhancedSummaryData);
-    console.log('🔍 [loadMindMapData] multimodal_data:', enhancedSummaryData?.multimodal_data);
-    console.log('🔍 [loadMindMapData] playlistTitle:', playlistTitle);
+    setGeneratedTitle("Generating AI Mind Map...");
     
     try {
-      const { nodes: generatedNodes, edges: generatedEdges } = generateDynamicMindMap(playlistTitle, enhancedSummaryData);
+      // Extract video ID from the current video
+      let videoId = currentVideo.id;
       
-      // Find the root node and set it as initially expanded BEFORE setting nodes
-      const rootNode = generatedNodes.find(node => node.data.level === 0);
+      console.log('🔍 Current video data:', {
+        id: currentVideo.id,
+        title: currentVideo.title,
+        youtubeURL: currentVideo.youtubeURL
+      });
+      
+      // Handle different possible formats:
+      // 1. Direct video ID (11 characters)
+      // 2. URL format with video ID
+      // 3. Playlist format that might contain video ID
+      if (currentVideo?.youtubeURL?.includes('watch?v=')) {
+        videoId = currentVideo.youtubeURL.split('watch?v=')[1].split('&')[0];
+      } else if (currentVideo?.youtubeURL?.includes('youtu.be/')) {
+        videoId = currentVideo.youtubeURL.split('youtu.be/')[1].split('?')[0];
+      } else if (currentVideo?.youtubeURL?.includes('youtube.com/watch?v=')) {
+        videoId = currentVideo.youtubeURL.split('youtube.com/watch?v=')[1].split('&')[0];
+      } else if (currentVideo?.id?.length === 11) {
+        // Already a valid YouTube video ID
+        videoId = currentVideo.id;
+      } else {
+        // Try to extract from any URL format or use as-is
+        const urlMatch = currentVideo?.youtubeURL?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+        if (urlMatch) {
+          videoId = urlMatch[1];
+        } else {
+          console.warn('⚠️ Could not extract valid YouTube video ID from:', currentVideo);
+          // Use the original value and let backend handle it
+          videoId = currentVideo?.id;
+        }
+      }
+      
+      console.log('🎯 Extracted video ID:', videoId);
+      
+      // Use a default user ID for transcript processing
+      const defaultUserId = 'default_user';
+      
+      console.log('🧠 Starting Gemini-powered mind map generation for:', { videoId, userId: defaultUserId });
+      
+      toast({
+        title: "🤖 AI Analysis Starting",
+        description: "Gemini AI is analyzing the video transcript to generate your mind map...",
+      });
+
+      // Call the new Gemini-powered mind map service with default user
+      const mindMapResponse = await mindMapService.generateMindMap(videoId, defaultUserId);
+      
+      if (!mindMapResponse.success || !mindMapResponse.mindmap_data) {
+        throw new Error('Invalid mind map response from server');
+      }
+
+      const { nodes: generatedNodes, edges: generatedEdges } = mindMapResponse.mindmap_data;
+      
+      console.log('✅ Received Gemini-generated mind map:', {
+        nodeCount: generatedNodes.length,
+        edgeCount: generatedEdges.length,
+        videoTitle: mindMapResponse.video_title
+      });
+      
+      // Find the root node and initialize progressive disclosure
+      const rootNode = generatedNodes.find((node: any) => node.data.level === 0);
       if (rootNode) {
-        setExpandedNodeIds(new Set([rootNode.id]));
+        // Start with only root node visible (not expanded)
+        setExpandedNodeIds(new Set());
+        setCurrentLevel(0);
+        // Ensure clean initialization of level history
+        setLevelHistory([rootNode.id]);
+        setFocusedNodeId(rootNode.id);
+        // Clear any existing focus history
+        setFocusHistory([rootNode.id]);
+        
+        // Auto-fit to root node after everything is set up
+        setTimeout(() => {
+          autoFitProgressiveView();
+        }, 1000);
       }
       
       setAllNodes(generatedNodes);
       setAllEdges(generatedEdges);
+      setGeneratedTitle(mindMapResponse.video_title || currentVideo.title || playlistTitle || 'AI-Generated Mind Map');
 
-      setGeneratedTitle(dynamicTitle);
         toast({ 
-        title: "Mind Map Structure Ready! 🧠", 
-        description: enhancedSummaryData ? "AI-generated mind map structure loaded. Performing layout..." : "Basic mind map structure loaded. Start AI analysis for enhanced content." 
+        title: "🧠 AI Mind Map Generated!", 
+        description: `Successfully created mind map with ${generatedNodes.length} concepts and ${generatedEdges.length} connections.`
       });
+
     } catch (error: any) {
-      console.error("Error generating mind map:", error);
-      setGeneratedTitle("Error Loading Mind Map");
+      console.error("❌ Error generating Gemini mind map:", error);
+      
+      let errorMessage = "Could not generate AI mind map.";
+      let errorDescription = "Please try again or check if the video has been processed.";
+      
+      if (error.message?.includes("404")) {
+        errorMessage = "Video Not Processed";
+        errorDescription = "Please ensure the video transcript has been processed first.";
+      } else if (error.message?.includes("Gemini AI service not available")) {
+        errorMessage = "AI Service Unavailable";
+        errorDescription = "The AI service is currently unavailable. Please try again later.";
+      } else if (error.message?.includes("No transcript available")) {
+        errorMessage = "No Transcript Available";
+        errorDescription = "This video doesn't have a transcript. Please try a different video.";
+      }
+      
+      setGeneratedTitle("AI Mind Map Generation Failed");
+      setIsLoading(false);
       toast({
-        title: "Mind Map Error",
-        description: "Could not generate the mind map with ELK.",
+        title: errorMessage,
+        description: errorDescription,
         variant: "destructive",
       });
     } finally {
-      // setIsLoading(false); //isLoading will be false after layout in the useEffect
+      // setIsLoading(false); // Will be set to false after layout in useEffect
     }
-  }, [playlistTitle, enhancedSummaryData, toast]);
+  }, [playlistTitle, currentVideo, toast]);
 
   useEffect(() => {
+    // Simplified: Load mind map data directly without auth checks
     loadMindMapData();
   }, [loadMindMapData]);
 
@@ -1961,7 +1622,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
           // Focus on root node with '/' or 'f' key
           const rootNode = allNodes.find(node => node.data.level === 0);
           if (rootNode) {
-            handleNodeFocus(rootNode.id);
+            handleNodeClick(rootNode.id);
             event.preventDefault();
           }
         }
@@ -1982,7 +1643,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
         case 'ArrowRight':
           // Navigate to first child (horizontal model: right = deeper)
           if (focusedNode.data.childrenIds && focusedNode.data.childrenIds.length > 0) {
-            handleNodeFocus(focusedNode.data.childrenIds[0]);
+            handleNodeClick(focusedNode.data.childrenIds[0]);
             event.preventDefault();
           }
           break;
@@ -1990,7 +1651,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
         case 'ArrowLeft':
           // Navigate to parent (horizontal model: left = shallower)
           if (focusedNode.data.parentId) {
-            handleNodeFocus(focusedNode.data.parentId);
+            handleNodeClick(focusedNode.data.parentId);
             event.preventDefault();
           }
           break;
@@ -2005,7 +1666,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
               if (currentIndex !== -1) {
                 const direction = event.key === 'ArrowUp' ? -1 : 1;
                 const newIndex = (currentIndex + direction + parentNode.data.childrenIds.length) % parentNode.data.childrenIds.length;
-                handleNodeFocus(parentNode.data.childrenIds[newIndex]);
+                handleNodeClick(parentNode.data.childrenIds[newIndex]);
                 event.preventDefault();
               }
             }
@@ -2026,7 +1687,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
           // Navigate to root node
           const rootNode = allNodes.find(node => node.data.level === 0);
           if (rootNode && rootNode.id !== focusedNodeId) {
-            handleNodeFocus(rootNode.id);
+            handleNodeClick(rootNode.id);
             event.preventDefault();
           }
           break;
@@ -2044,7 +1705,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
             }
           }
           if (deepestNode.id !== focusedNodeId) {
-            handleNodeFocus(deepestNode.id);
+            handleNodeClick(deepestNode.id);
             event.preventDefault();
           }
           break;
@@ -2054,7 +1715,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
           if (focusedNode.data.parentId) {
             const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
             if (parentNode?.data.childrenIds && parentNode.data.childrenIds.length > 0) {
-              handleNodeFocus(parentNode.data.childrenIds[0]);
+              handleNodeClick(parentNode.data.childrenIds[0]);
               event.preventDefault();
             }
           }
@@ -2066,7 +1727,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
             const parentNode = allNodes.find(n => n.id === focusedNode.data.parentId);
             if (parentNode?.data.childrenIds && parentNode.data.childrenIds.length > 0) {
               const lastChildId = parentNode.data.childrenIds[parentNode.data.childrenIds.length - 1];
-              handleNodeFocus(lastChildId);
+              handleNodeClick(lastChildId);
               event.preventDefault();
             }
           }
@@ -2076,7 +1737,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
           // Navigate back in focus history
           if (focusHistory.length > 1) {
             const previousNodeId = focusHistory[focusHistory.length - 2];
-            handleNodeFocus(previousNodeId);
+            handleNodeClick(previousNodeId);
             event.preventDefault();
           }
           break;
@@ -2094,7 +1755,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
           const childIndex = parseInt(event.key) - 1;
           if (focusedNode.data.childrenIds && 
               childIndex < focusedNode.data.childrenIds.length) {
-            handleNodeFocus(focusedNode.data.childrenIds[childIndex]);
+            handleNodeClick(focusedNode.data.childrenIds[childIndex]);
             event.preventDefault();
           }
           break;
@@ -2152,7 +1813,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, [focusedNodeId, allNodes, handleNodeFocus, handleToggleNodeExpansion, expandedNodeIds, focusHistory]);
+  }, [focusedNodeId, allNodes, handleNodeClick, handleToggleNodeExpansion, expandedNodeIds, focusHistory]);
 
   // Performance: Optimized layout effect with debouncing and better dependency management
   const performLayoutDebounced = useCallback(async () => {
@@ -2312,20 +1973,35 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
         }`}
       >
         {(isLoading && displayedNodes.length === 0) ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10">
-            <div className="relative">
-              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-              <BrainIcon className="absolute inset-0 m-auto h-6 w-6 text-primary animate-pulse" />
+        // Show mind map generation loading state
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10">
+          <div className="relative">
+            <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <BrainIcon className="absolute inset-0 m-auto h-8 w-8 text-primary animate-pulse" />
+          </div>
+          <div className="mt-8 text-center space-y-3 max-w-lg">
+            <h3 className="text-xl font-semibold text-white">🤖 Gemini AI Analyzing...</h3>
+            <p className="text-sm text-gray-300 leading-relaxed">
+              Our AI is reading through the video transcript and creating a comprehensive mind map structure with themes, concepts, and relationships.
+            </p>
+            <div className="flex items-center justify-center space-x-6 mt-6 text-xs text-gray-400">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                <span>Analyzing transcript</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                <span>Identifying themes</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <span>Building structure</span>
+              </div>
             </div>
-            <div className="mt-6 text-center space-y-2">
-              <h3 className="text-lg font-semibold text-white">Generating Mind Map...</h3>
-              <p className="text-sm text-gray-300 max-w-md">
-                {enhancedSummaryData ? 'Structuring AI-analyzed content with ELK layout...' : 'Preparing mind map structure...'}
-              </p>
-            </div>
+          </div>
          </div>
       ) : displayedNodes.length === 0 ? (
-        // Show "Start Analysis" message when no nodes are available
+        // Show ready for generation state (when not loading)
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className="text-center space-y-6 max-w-md">
             <div className="relative mx-auto">
@@ -2337,46 +2013,76 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
               </div>
             </div>
             <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-white">AI Mind Map Ready</h3>
+              <h3 className="text-xl font-semibold text-white">
+                {currentVideo ? "Ready for AI Mind Map" : "No Video Selected"}
+              </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Click <span className="font-medium text-primary">"Start AI Analysis"</span> above to generate an intelligent mind map based on the video content.
+                {currentVideo ? (
+                  <>
+                    Click the <span className="font-medium text-primary">"Regenerate"</span> button above to create an AI-powered mind map from this video's content.
+                  </>
+                ) : (
+                  "Please select a video from the playlist to generate an AI mind map."
+                )}
               </p>
-              <div className="text-xs text-muted-foreground/80 space-y-1">
-                <p>✨ AI will analyze video transcript and visual content</p>
-                <p>🧠 Generate key concepts and learning objectives</p>
-                <p>🗺️ Create an interactive knowledge map</p>
-              </div>
+              {currentVideo && (
+                <div className="text-xs text-muted-foreground/80 space-y-1">
+                  <p>🤖 Powered by Gemini AI for intelligent analysis</p>
+                  <p>🧠 Automatically extracts key concepts and themes</p>
+                  <p>🗺️ Creates interactive hierarchical knowledge maps</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
       ) : (
         <ReactFlow
-          nodes={createEnhancedNodes(displayedNodes)} // Phase 5.2: Use enhanced node data
-          edges={displayedEdges.map(edge => ({
-            ...edge,
-            type: 'curved', // Phase 5.1: Ensure all edges use custom curved type
-            data: {
-              ...edge.data,
-              // Enhanced focus path detection
-              isInFocusPath: focusedNodeId ? (
-                edge.source === focusedNodeId || 
-                edge.target === focusedNodeId ||
-                focusHistory.includes(edge.source) ||
-                focusHistory.includes(edge.target)
-              ) : (edge.data?.isInFocusPath || false),
-              isFocused: focusedNodeId ? (
-                edge.source === focusedNodeId && edge.target === focusedNodeId
-              ) : (edge.data?.isFocused || false)
+          nodes={(() => {
+            const enhancedNodes = createEnhancedNodes(displayedNodes);
+            // Defensive programming: ensure no duplicate node IDs
+            const uniqueNodes = enhancedNodes.filter((node, index, arr) => 
+              arr.findIndex(n => n.id === node.id) === index
+            );
+            if (enhancedNodes.length !== uniqueNodes.length) {
+              console.warn('Duplicate nodes detected and removed:', enhancedNodes.length - uniqueNodes.length);
             }
-          }))}
+            return uniqueNodes;
+          })()} // Phase 5.2: Use enhanced node data with duplicate protection
+          edges={(() => {
+            const processedEdges = displayedEdges.map(edge => ({
+              ...edge,
+              type: 'curved', // Phase 5.1: Ensure all edges use custom curved type
+              data: {
+                ...edge.data,
+                // Enhanced focus path detection
+                isInFocusPath: focusedNodeId ? (
+                  edge.source === focusedNodeId || 
+                  edge.target === focusedNodeId ||
+                  focusHistory.includes(edge.source) ||
+                  focusHistory.includes(edge.target)
+                ) : (edge.data?.isInFocusPath || false),
+                isFocused: focusedNodeId ? (
+                  edge.source === focusedNodeId && edge.target === focusedNodeId
+                ) : (edge.data?.isFocused || false)
+              }
+            }));
+            // Ensure no duplicate edge IDs
+            const uniqueEdges = processedEdges.filter((edge, index, arr) => 
+              arr.findIndex(e => e.id === edge.id) === index
+            );
+            if (processedEdges.length !== uniqueEdges.length) {
+              console.warn('Duplicate edges detected and removed:', processedEdges.length - uniqueEdges.length);
+            }
+            return uniqueEdges;
+          })()}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           nodeTypes={nodeTypes}
           edgeTypes={edgeTypes} // Phase 4.2: Add custom curved edge types
           onNodeClick={(event, node) => {
-            // Phase 5.1: Integrate focus behavior with node clicks
+            // Progressive disclosure: Integrate with node clicks
             event.preventDefault();
-            handleNodeFocus(node.id);
+            handleNodeClick(node.id);
           }}
           onPaneClick={(event) => {
             // Phase 5.1: Clear focus when clicking on empty space
@@ -2385,20 +2091,36 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
               setFocusHistory([]);
             }
           }}
-          onInit={setRfInstance}
-          fitView
+          onInit={(instance) => {
+            if (isFullScreenContext) {
+              fullScreenRfInstanceRef.current = instance;
+            } else {
+              rfInstanceRef.current = instance;
+              setRfInstance(instance);
+            }
+            
+            // Initial fit after ReactFlow is ready
+            setTimeout(() => {
+              if (displayedNodes.length > 0) {
+                autoFitProgressiveView(isFullScreenContext);
+              }
+            }, 100);
+          }}
+          fitView={false}
           fitViewOptions={{ padding: 0.2, duration: 800, maxZoom: 1.2 }}
           minZoom={0.05}
           maxZoom={2.5}
-          className="bg-[#18181b]"
-            proOptions={{ hideAttribution: true }}
+          className="bg-gray-900 transition-all duration-700 ease-in-out"
+          proOptions={{ hideAttribution: true }}
+          defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+          attributionPosition="bottom-left"
           >
             <Background 
               variant={BackgroundVariant.Dots} 
             gap={28} 
             size={1.2}
-            color="#3a3a3a" 
-            className="opacity-60"
+            color="#4a5568" 
+            className="opacity-100"
             />
             <Controls 
             className={`${isFullScreenContext ? 'block' : 'hidden'} bg-neutral-800/90 backdrop-blur-sm border border-neutral-700 rounded-lg`}
@@ -2414,48 +2136,13 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
               return nodeStylesForMiniMap[level as keyof typeof nodeStylesForMiniMap] || '#80ccdd';
             }}
             nodeStrokeWidth={3}
-            maskColor="rgba(100, 100, 100, 0.15)"
+            maskColor="rgb(60, 60, 60)"
             pannable zoomable
             />
             
-            {/* Phase 5.1: Focus Status and Keyboard Shortcuts Panel */}
-            {focusedNodeId && (
-              <Panel position="top-right" className="bg-neutral-800/95 backdrop-blur-sm border border-neutral-600 rounded-lg p-3 text-white text-xs space-y-2 max-w-xs">
-                <div className="font-medium text-primary">Focus Mode Active</div>
-                <div className="text-neutral-300">
-                  Focused: <span className="text-white font-medium">
-                    {allNodes.find(n => n.id === focusedNodeId)?.data.label.substring(0, 30)}
-                    {(allNodes.find(n => n.id === focusedNodeId)?.data.label.length || 0) > 30 ? '...' : ''}
-                  </span>
-                </div>
-                                <div className="border-t border-neutral-600 pt-2 space-y-1">
-                  <div className="font-medium text-neutral-200">Keyboard Navigation:</div>
-                  <div className="space-y-0.5 text-neutral-400">
-                    <div><kbd className="bg-neutral-700 px-1 rounded">←</kbd> Parent <kbd className="bg-neutral-700 px-1 rounded">→</kbd> Child</div>
-                    <div><kbd className="bg-neutral-700 px-1 rounded">↑↓</kbd> Siblings</div>
-                    <div><kbd className="bg-neutral-700 px-1 rounded">1-9</kbd> Quick Child</div>
-                    <div><kbd className="bg-neutral-700 px-1 rounded">Home</kbd> Root <kbd className="bg-neutral-700 px-1 rounded">End</kbd> Deepest</div>
-                    <div><kbd className="bg-neutral-700 px-1 rounded">Enter</kbd> Expand <kbd className="bg-neutral-700 px-1 rounded">-</kbd> Collapse</div>
-                    <div><kbd className="bg-neutral-700 px-1 rounded">Esc</kbd> Clear Focus</div>
-                  </div>
-                  <div className="text-xs text-neutral-500 mt-1">
-                    <kbd className="bg-neutral-700 px-1 rounded text-xs">/ or f</kbd> to start navigation
-                  </div>
-                </div>
-               </Panel>
-             )}
 
-            {/* Phase 6.1: Enhanced Breadcrumb Navigation Component */}
-            {focusHistory.length > 0 && (
-              <Panel position="top-left" className="bg-neutral-800/95 backdrop-blur-sm border border-neutral-600 rounded-lg p-3 text-white">
-                <BreadcrumbNavigation
-                  history={focusHistory}
-                  allNodes={allNodes}
-                  focusedNodeId={focusedNodeId}
-                  onNavigate={handleNodeFocus}
-                />
-              </Panel>
-            )}
+
+
 
             {/* Phase 6.2: Comprehensive Keyboard Help Panel */}
             {showKeyboardHelp && (
@@ -2536,40 +2223,99 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
                 Mind Map: {generatedTitle}
             </CardTitle>
               <CardDescription className="text-sm text-muted-foreground mt-1">
-                {isLoading && displayedNodes.length === 0 ? 'AI is structuring your mind map...' : displayedNodes.length === 0 ? 'Click "Start AI Analysis" above to generate your mind map' : enhancedSummaryData ? 'Interactive AI-Generated Mind Map' : 'Interactive Mind Map - Start AI Analysis for Dynamic Content'}
+                {!currentVideo ? 'Select a video to generate an AI mind map' :
+                 isLoading && displayedNodes.length === 0 ? 'Gemini AI is analyzing the video transcript and creating your mind map...' : 
+                 displayedNodes.length === 0 ? 'Click "Regenerate" to generate your AI-powered mind map' : 
+                 'Interactive AI-Generated Mind Map powered by Gemini'}
               </CardDescription>
+              
+              {/* Progressive disclosure breadcrumb */}
+              {levelHistory.length > 1 && allNodes.length > 0 && (
+                <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                  <span className="font-medium">Path:</span>
+                  {levelHistory.map((nodeId, index) => {
+                     const node = allNodes.find(n => n.id === nodeId);
+                     const isLast = index === levelHistory.length - 1;
+                     const isClickable = index < levelHistory.length - 1;
+                     
+                     return (
+                       <React.Fragment key={`breadcrumb-${index}-${nodeId}`}>
+                         <button
+                           className={`px-2 py-1 rounded text-xs transition-colors ${
+                             isLast 
+                               ? 'bg-primary/20 text-primary' 
+                               : isClickable
+                                 ? 'hover:bg-primary/10 cursor-pointer text-muted-foreground hover:text-primary'
+                                 : 'cursor-default'
+                           }`}
+                           onClick={() => {
+                             if (isClickable) {
+                               // Navigate back to this level
+                               setCurrentLevel(index);
+                               setLevelHistory(prev => prev.slice(0, index + 1));
+                               setFocusedNodeId(nodeId);
+                               // Remove expansions beyond this level
+                               const nodesToKeepExpanded = new Set<string>();
+                               for (let i = 0; i <= index; i++) {
+                                 if (levelHistory[i]) {
+                                   nodesToKeepExpanded.add(levelHistory[i]);
+                                 }
+                               }
+                               setExpandedNodeIds(nodesToKeepExpanded);
+                               
+                               // Auto-fit after navigation
+                               setTimeout(() => {
+                                 autoFitProgressiveView();
+                               }, 200);
+                             }
+                           }}
+                           disabled={!isClickable}
+                         >
+                           {node?.data.label?.substring(0, 15) || 'Unknown'}
+                           {node?.data.label && node.data.label.length > 15 && '...'}
+                         </button>
+                         {!isLast && <span className="text-muted-foreground/50">→</span>}
+                       </React.Fragment>
+                     );
+                  })}
+                </div>
+              )}
             </div>
         </div>
           
-          {!isLoading && displayedNodes.length > 0 && (
+          {!isLoading && currentVideo && (
             <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm" onClick={() => downloadAsSVG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
-                <DownloadIcon className="h-4 w-4 mr-2" />SVG
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => downloadAsPNG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
-                <DownloadIcon className="h-4 w-4 mr-2" />PNG
-          </Button>
-          <Dialog open={isFullScreenOpen} onOpenChange={setIsFullScreenOpen}>
-            <DialogTrigger asChild>
-                  <Button variant="outline" size="sm" className="text-white hover:bg-primary/20 border-primary/40">
-                    <MaximizeIcon className="h-4 w-4 mr-2" />Fullscreen
+              {displayedNodes.length > 0 && (
+                <>
+                  <Button variant="outline" size="sm" onClick={() => downloadAsSVG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
+                    <DownloadIcon className="h-4 w-4 mr-2" />SVG
                   </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-none w-[95vw] h-[90vh] flex flex-col p-0 bg-neutral-900 border-primary/30">
-                  <DialogHeader className="p-4 border-b border-neutral-700 flex flex-row items-center justify-between">
-                    <DialogTitle className="flex items-center truncate text-white">
-                      <BrainIcon className="h-6 w-6 mr-2 text-primary shrink-0" /><span className="truncate">Mind Map: {generatedTitle}</span>
-                    </DialogTitle>
-                    <DialogClose asChild><Button variant="ghost" size="icon" className="text-neutral-400 hover:text-white"><XIcon className="h-5 w-5" /></Button></DialogClose>
-              </DialogHeader>
-                  <div className="flex-grow p-2 overflow-hidden" ref={fullScreenContainerRef}>
-                {renderReactFlowContent(true)}
-              </div>
-            </DialogContent>
-          </Dialog>
+                  <Button variant="outline" size="sm" onClick={() => downloadAsPNG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
+                    <DownloadIcon className="h-4 w-4 mr-2" />PNG
+                  </Button>
+                  <Dialog open={isFullScreenOpen} onOpenChange={setIsFullScreenOpen}>
+                    <DialogTrigger asChild>
+                      <Button variant="outline" size="sm" className="text-white hover:bg-primary/20 border-primary/40">
+                        <MaximizeIcon className="h-4 w-4 mr-2" />Fullscreen
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-none w-[95vw] h-[90vh] flex flex-col p-0 bg-neutral-900 border-primary/30">
+                      <DialogHeader className="p-4 border-b border-neutral-700 flex flex-row items-center justify-between">
+                        <DialogTitle className="flex items-center truncate text-white">
+                          <BrainIcon className="h-6 w-6 mr-2 text-primary shrink-0" /><span className="truncate">Mind Map: {generatedTitle}</span>
+                        </DialogTitle>
+                        <DialogClose asChild><Button variant="ghost" size="icon" className="text-neutral-400 hover:text-white"><XIcon className="h-5 w-5" /></Button></DialogClose>
+                      </DialogHeader>
+                      <div className="flex-grow p-2 overflow-hidden" ref={fullScreenContainerRef}>
+                        {renderReactFlowContent(true)}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </>
+              )}
               <Button variant="outline" size="sm" onClick={loadMindMapData} className="text-white hover:bg-accent/20 border-accent/40">
                 <RefreshCwIcon className="h-4 w-4 mr-2" />Regenerate
-          </Button>
+              </Button>
             </div>
           )}
         </div>
@@ -2583,7 +2329,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, play
   // Performance: Memoization for expensive mind map re-renders
   return (
     prevProps.playlistTitle === nextProps.playlistTitle &&
-    prevProps.playlistId === nextProps.playlistId &&
+    prevProps.currentVideo === nextProps.currentVideo &&
     JSON.stringify(prevProps.keyConceptsFromSummary) === JSON.stringify(nextProps.keyConceptsFromSummary) &&
     JSON.stringify(prevProps.enhancedSummaryData) === JSON.stringify(nextProps.enhancedSummaryData)
   );
