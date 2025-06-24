@@ -45,7 +45,7 @@ const focusStyles = `
     transform: scale(1.02) !important;
   }
 
-      .node-container:not(.in-focus-path):not(.focused) {
+  .node-container:not(.in-focus-path):not(.focused) {
       opacity: 1 !important;
       filter: none !important;
   }
@@ -862,7 +862,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
   const [displayedEdges, setDisplayedEdges] = useState<Edge[]>([]);
   
   // Start with no nodes expanded, root will be added by getVisibleNodesAndEdges if needed
-  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set());
+  const [expandedNodeIds, setExpandedNodeIds] = useState<Set<string>>(() => new Set()); 
   
   // Progressive disclosure state
   const [currentLevel, setCurrentLevel] = useState<number>(0);
@@ -1181,7 +1181,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
             }
             return newHistory;
           });
-          setFocusedNodeId(nodeId);
+    setFocusedNodeId(nodeId);
         }
       } else if (nodeLevel === currentLevel + 1) {
         // Clicking on child node - move focus to this level
@@ -1283,7 +1283,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
         }
       };
     });
-
+    
     const enhancedVisibleNodes = createEnhancedNodes(visibleNodesAccumulator);
     
     console.log(`📊 Progressive disclosure summary:`, {
@@ -1463,7 +1463,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
     [setDisplayedEdges]
   );
 
-    const loadMindMapData = useCallback(async () => {
+  const loadMindMapData = useCallback(async () => {
     if (!currentVideo) {
       console.log('⚠️ No current video available for mind map generation');
       setIsLoading(false);
@@ -1974,11 +1974,11 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
       >
         {(isLoading && displayedNodes.length === 0) ? (
         // Show mind map generation loading state
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10">
-          <div className="relative">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm z-10">
+            <div className="relative">
             <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
             <BrainIcon className="absolute inset-0 m-auto h-8 w-8 text-primary animate-pulse" />
-          </div>
+            </div>
           <div className="mt-8 text-center space-y-3 max-w-lg">
             <h3 className="text-xl font-semibold text-white">🤖 Gemini AI Analyzing...</h3>
             <p className="text-sm text-gray-300 leading-relaxed">
@@ -1998,7 +1998,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
                 <span>Building structure</span>
               </div>
             </div>
-          </div>
+            </div>
          </div>
       ) : displayedNodes.length === 0 ? (
         // Show ready for generation state (when not loading)
@@ -2026,11 +2026,11 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
                 )}
               </p>
               {currentVideo && (
-                <div className="text-xs text-muted-foreground/80 space-y-1">
+              <div className="text-xs text-muted-foreground/80 space-y-1">
                   <p>🤖 Powered by Gemini AI for intelligent analysis</p>
                   <p>🧠 Automatically extracts key concepts and themes</p>
                   <p>🗺️ Creates interactive hierarchical knowledge maps</p>
-                </div>
+              </div>
               )}
             </div>
           </div>
@@ -2050,21 +2050,21 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
           })()} // Phase 5.2: Use enhanced node data with duplicate protection
           edges={(() => {
             const processedEdges = displayedEdges.map(edge => ({
-              ...edge,
-              type: 'curved', // Phase 5.1: Ensure all edges use custom curved type
-              data: {
-                ...edge.data,
-                // Enhanced focus path detection
-                isInFocusPath: focusedNodeId ? (
-                  edge.source === focusedNodeId || 
-                  edge.target === focusedNodeId ||
-                  focusHistory.includes(edge.source) ||
-                  focusHistory.includes(edge.target)
-                ) : (edge.data?.isInFocusPath || false),
-                isFocused: focusedNodeId ? (
-                  edge.source === focusedNodeId && edge.target === focusedNodeId
-                ) : (edge.data?.isFocused || false)
-              }
+            ...edge,
+            type: 'curved', // Phase 5.1: Ensure all edges use custom curved type
+            data: {
+              ...edge.data,
+              // Enhanced focus path detection
+              isInFocusPath: focusedNodeId ? (
+                edge.source === focusedNodeId || 
+                edge.target === focusedNodeId ||
+                focusHistory.includes(edge.source) ||
+                focusHistory.includes(edge.target)
+              ) : (edge.data?.isInFocusPath || false),
+              isFocused: focusedNodeId ? (
+                edge.source === focusedNodeId && edge.target === focusedNodeId
+              ) : (edge.data?.isFocused || false)
+            }
             }));
             // Ensure no duplicate edge IDs
             const uniqueEdges = processedEdges.filter((edge, index, arr) => 
@@ -2111,7 +2111,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
           minZoom={0.05}
           maxZoom={2.5}
           className="bg-gray-900 transition-all duration-700 ease-in-out"
-          proOptions={{ hideAttribution: true }}
+            proOptions={{ hideAttribution: true }}
           defaultViewport={{ x: 0, y: 0, zoom: 1 }}
           attributionPosition="bottom-left"
           >
@@ -2287,35 +2287,35 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
             <div className="flex items-center space-x-2">
               {displayedNodes.length > 0 && (
                 <>
-                  <Button variant="outline" size="sm" onClick={() => downloadAsSVG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
-                    <DownloadIcon className="h-4 w-4 mr-2" />SVG
+              <Button variant="outline" size="sm" onClick={() => downloadAsSVG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
+                <DownloadIcon className="h-4 w-4 mr-2" />SVG
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => downloadAsPNG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
+                <DownloadIcon className="h-4 w-4 mr-2" />PNG
+          </Button>
+          <Dialog open={isFullScreenOpen} onOpenChange={setIsFullScreenOpen}>
+            <DialogTrigger asChild>
+                  <Button variant="outline" size="sm" className="text-white hover:bg-primary/20 border-primary/40">
+                    <MaximizeIcon className="h-4 w-4 mr-2" />Fullscreen
                   </Button>
-                  <Button variant="outline" size="sm" onClick={() => downloadAsPNG(mindMapContainerRef)} className="text-white hover:bg-primary/20 border-primary/40">
-                    <DownloadIcon className="h-4 w-4 mr-2" />PNG
-                  </Button>
-                  <Dialog open={isFullScreenOpen} onOpenChange={setIsFullScreenOpen}>
-                    <DialogTrigger asChild>
-                      <Button variant="outline" size="sm" className="text-white hover:bg-primary/20 border-primary/40">
-                        <MaximizeIcon className="h-4 w-4 mr-2" />Fullscreen
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-none w-[95vw] h-[90vh] flex flex-col p-0 bg-neutral-900 border-primary/30">
-                      <DialogHeader className="p-4 border-b border-neutral-700 flex flex-row items-center justify-between">
-                        <DialogTitle className="flex items-center truncate text-white">
-                          <BrainIcon className="h-6 w-6 mr-2 text-primary shrink-0" /><span className="truncate">Mind Map: {generatedTitle}</span>
-                        </DialogTitle>
-                        <DialogClose asChild><Button variant="ghost" size="icon" className="text-neutral-400 hover:text-white"><XIcon className="h-5 w-5" /></Button></DialogClose>
-                      </DialogHeader>
-                      <div className="flex-grow p-2 overflow-hidden" ref={fullScreenContainerRef}>
-                        {renderReactFlowContent(true)}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                </DialogTrigger>
+                <DialogContent className="max-w-none w-[95vw] h-[90vh] flex flex-col p-0 bg-neutral-900 border-primary/30">
+                  <DialogHeader className="p-4 border-b border-neutral-700 flex flex-row items-center justify-between">
+                    <DialogTitle className="flex items-center truncate text-white">
+                      <BrainIcon className="h-6 w-6 mr-2 text-primary shrink-0" /><span className="truncate">Mind Map: {generatedTitle}</span>
+                    </DialogTitle>
+                    <DialogClose asChild><Button variant="ghost" size="icon" className="text-neutral-400 hover:text-white"><XIcon className="h-5 w-5" /></Button></DialogClose>
+              </DialogHeader>
+                  <div className="flex-grow p-2 overflow-hidden" ref={fullScreenContainerRef}>
+                {renderReactFlowContent(true)}
+              </div>
+            </DialogContent>
+          </Dialog>
                 </>
               )}
               <Button variant="outline" size="sm" onClick={loadMindMapData} className="text-white hover:bg-accent/20 border-accent/40">
                 <RefreshCwIcon className="h-4 w-4 mr-2" />Regenerate
-              </Button>
+          </Button>
             </div>
           )}
         </div>

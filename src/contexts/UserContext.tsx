@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { userService } from '@/services/userService';
 import { playlistService } from '@/services/playlistService';
 
@@ -81,8 +81,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
       
       if (result.success) {
-        // Update stats after recording activity
-        updateUserStats();
+        // Update stats after recording activity (but don't force it)
+        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
       } else {
         // Fallback to localStorage if MongoDB fails
         console.log('Falling back to localStorage for activity recording');
@@ -98,7 +98,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const trimmedLog = activityLog.slice(0, 100);
         
         localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-        updateUserStats();
+        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
       }
     } catch (error) {
       console.error('Error recording activity:', error);
@@ -118,7 +118,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const trimmedLog = activityLog.slice(0, 100);
         
         localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-        updateUserStats();
+        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
       } catch (fallbackError) {
         console.error('Error with localStorage fallback:', fallbackError);
       }
@@ -126,12 +126,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   // Update user statistics with throttling
-  const updateUserStats = async (forceUpdate = false) => {
+  const updateUserStats = useCallback(async (forceUpdate = false) => {
     if (!user) return;
 
-    // Throttle updates to prevent excessive API calls (minimum 10 seconds between updates)
+    // Throttle updates to prevent excessive API calls (minimum 30 seconds between updates, 5 seconds for force)
     const now = Date.now();
-    if (!forceUpdate && now - lastStatsUpdate < 10000) {
+    const minInterval = forceUpdate ? 5000 : 30000; // 5s for force, 30s for regular
+    if (!forceUpdate && now - lastStatsUpdate < minInterval) {
+      console.log('Skipping stats update due to throttling');
       return;
     }
 
@@ -185,11 +187,47 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const weeklyTarget = user.weeklyGoal || 15;
       const weeklyProgress = Math.min(Math.round((weeklyCompleted / weeklyTarget) * 100), 100);
 
-      // Calculate total learning time (rough estimate)
-      const totalMinutes = completedVideos * 8; // Assume 8 minutes average per video
+      // Calculate total learning time based on actual video durations
+      const totalSeconds = playlists.reduce((sum: number, playlist: any) => {
+        return sum + (playlist.videos?.reduce((videoSum: number, video: any) => {
+          // Only count completed videos (100% completion)
+          if (video.completionStatus !== 100) return videoSum;
+          
+          // Parse video duration (e.g., "10:30", "1:30:45", "2:18")
+          if (!video.duration || video.duration === 'N/A') return videoSum;
+          
+          const parts = video.duration.split(':').map(Number);
+          let videoSeconds = 0;
+          
+          if (parts.length === 3) {
+            // Format: "H:MM:SS"
+            const [hours, minutes, seconds] = parts;
+            videoSeconds = (hours * 3600) + (minutes * 60) + seconds;
+          } else if (parts.length === 2) {
+            // Format: "MM:SS"
+            const [minutes, seconds] = parts;
+            videoSeconds = (minutes * 60) + seconds;
+          } else if (parts.length === 1) {
+            // Format: "SS" (just seconds)
+            videoSeconds = parts[0];
+          }
+          
+          return videoSum + videoSeconds;
+        }, 0) || 0);
+      }, 0);
+
+      // Convert total seconds to hours and minutes
+      const totalMinutes = Math.floor(totalSeconds / 60);
       const hours = Math.floor(totalMinutes / 60);
       const minutes = totalMinutes % 60;
-      const totalLearningTime = `${hours}h ${minutes}m`;
+      
+      // Format time string
+      let totalLearningTime;
+      if (hours > 0) {
+        totalLearningTime = `${hours}h ${minutes}m`;
+      } else {
+        totalLearningTime = `${minutes}m`;
+      }
 
       const newStats: UserStats = {
         totalPlaylists: playlists.length,
@@ -215,7 +253,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         totalVideosCompleted: 0,
         currentStreak: user.learningStreak || 0,
         overallProgress: 0,
-        totalLearningTime: '0h 0m',
+        totalLearningTime: '0m',
         weeklyGoal: {
           target: user.weeklyGoal || 15,
           completed: 0,
@@ -225,7 +263,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       };
       setUserStats(defaultStats);
     }
-  };
+  }, [user]); // Add dependency array for useCallback
 
   // Login with API
   const loginWithAPI = async (

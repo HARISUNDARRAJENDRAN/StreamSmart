@@ -18,11 +18,7 @@ export default function AppLayout({
           <SidebarInset className="flex flex-col overflow-hidden">
             <AppHeader />
             <main 
-              className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8" 
-              style={{
-                background: 'linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 26, 0.8) 50%, rgba(15, 15, 15, 0.8) 100%)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-black via-gray-900 to-black" 
             >
               <div className="max-w-full overflow-x-hidden">
                 {children}

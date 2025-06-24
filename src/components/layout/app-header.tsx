@@ -28,14 +28,10 @@ export function AppHeader() {
 
   return (
     <header 
-      className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b px-4 backdrop-blur sm:px-6"
-      style={{
-        background: 'rgba(10, 10, 10, 0.8)',
-        borderColor: 'rgba(255, 255, 255, 0.1)'
-      }}
+      className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-gray-800 px-4 backdrop-blur sm:px-6 bg-gradient-to-r from-black to-gray-900"
     >
       {isMobile && (
-         <Button variant="ghost" size="icon" onClick={toggleSidebar} className="sm:hidden">
+         <Button variant="ghost" size="icon" onClick={toggleSidebar} className="sm:hidden text-gray-300 hover:text-white hover:bg-white/10">
             <GripVerticalIcon className="h-6 w-6" />
             <span className="sr-only">Toggle Sidebar</span>
           </Button>
@@ -49,41 +45,41 @@ export function AppHeader() {
       </div>
       
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <BellIcon className="h-5 w-5 text-primary" />
+        <Button variant="ghost" size="icon" className="rounded-full text-gray-300 hover:text-white hover:bg-white/10">
+          <BellIcon className="h-5 w-5 text-red-400" />
           <span className="sr-only">Notifications</span>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+            <Button variant="ghost" className="relative h-9 w-9 rounded-full hover:bg-white/10">
               <Avatar className="h-9 w-9">
                 <AvatarImage 
                   src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
                   alt={user?.name || "User Avatar"} 
                   data-ai-hint="user avatar" 
                 />
-                <AvatarFallback style={{ backgroundColor: '#D90429', color: 'white' }}>
+                <AvatarFallback className="bg-red-600 text-white">
                   {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end">
+          <DropdownMenuContent className="w-56 bg-gray-900 border-gray-800" align="end">
             <DropdownMenuLabel>
               <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">{user?.name || 'User'}</p>
-                <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                <p className="text-sm font-medium leading-none text-white">{user?.name || 'User'}</p>
+                <p className="text-xs leading-none text-gray-400">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
+            <DropdownMenuSeparator className="bg-gray-800" />
+            <DropdownMenuItem asChild className="text-gray-300 hover:text-white hover:bg-white/10">
               <Link href="/settings">
                 <SettingsIcon className="mr-2 h-4 w-4" />
                 <span>Settings</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
+            <DropdownMenuSeparator className="bg-gray-800" />
+            <DropdownMenuItem onClick={handleLogout} className="text-gray-300 hover:text-white hover:bg-red-600/20">
                 <LogOutIcon className="mr-2 h-4 w-4" />
                 <span>Log out</span>
             </DropdownMenuItem>

@@ -138,17 +138,19 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="w-full max-w-md shadow-2xl bg-card">
+    <Card className="w-full max-w-md shadow-2xl bg-gradient-to-br from-black to-gray-900 border-gray-800">
       <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-bold text-primary">StreamSmart</CardTitle>
-        <CardDescription>Sign in to your personalized learning hub</CardDescription>
+        <CardTitle className="text-3xl font-bold text-white">
+          Stream<span className="text-red-600">Smart</span>
+        </CardTitle>
+        <CardDescription className="text-gray-300">Sign in to your personalized learning hub</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <form onSubmit={handleLogin} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-white">Email</Label>
             <div className="relative">
-              <MailIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <MailIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <Input
                 id="email"
                 type="email"
@@ -156,15 +158,15 @@ export function LoginForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="pl-10"
+                className="pl-10 bg-white/10 border-gray-600 text-white placeholder:text-gray-400 focus:border-red-500"
                 disabled={isLoading}
               />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-white">Password</Label>
             <div className="relative">
-              <KeyRoundIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+              <KeyRoundIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
               <Input
                 id="password"
                 type="password"
@@ -172,39 +174,39 @@ export function LoginForm() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="pl-10"
+                className="pl-10 bg-white/10 border-gray-600 text-white placeholder:text-gray-400 focus:border-red-500"
                 disabled={isLoading}
               />
             </div>
           </div>
-          <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold" disabled={isLoading}>
             {isLoading ? <><Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> Signing In...</> : 'Sign In'}
           </Button>
         </form>
         
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+            <span className="w-full border-t border-gray-600" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            <span className="bg-black px-2 text-gray-400">Or continue with</span>
           </div>
         </div>
         
         <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" onClick={handleGoogleSignIn} disabled={isLoading}>
+          <Button variant="outline" onClick={handleGoogleSignIn} disabled={isLoading} className="border-gray-600 text-gray-300 hover:bg-white/10 hover:text-white">
             <ChromeIcon className="mr-2 h-4 w-4" />
             Google
           </Button>
-          <Button variant="outline" onClick={handleDemoLogin} disabled={isLoading}>
+          <Button variant="outline" onClick={handleDemoLogin} disabled={isLoading} className="border-gray-600 text-gray-300 hover:bg-white/10 hover:text-white">
             Demo
           </Button>
         </div>
       </CardContent>
       <CardFooter className="text-center">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-gray-400">
           Don't have an account?{' '}
-          <Link href="/register" className="font-medium text-primary hover:underline">
+          <Link href="/register" className="font-medium text-red-400 hover:text-red-300 hover:underline">
             Sign up
           </Link>
         </p>

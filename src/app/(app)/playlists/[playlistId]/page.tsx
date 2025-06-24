@@ -227,10 +227,10 @@ export default function PlaylistDetailPage() {
         throw new Error(result.error || 'Failed to update playlist');
       }
       
-      // Update user stats after saving
+      // Update user stats after saving (delayed to prevent excessive calls)
       setTimeout(() => {
-        updateUserStats();
-      }, 100);
+        updateUserStats(false); // Non-forced update
+      }, 3000);
     } catch (error) {
       console.error("Error updating playlist:", error);
       toast({
@@ -287,10 +287,10 @@ export default function PlaylistDetailPage() {
         description: `"${targetVideo.title}" has been removed from the playlist.`,
       });
       
-      // Update user stats after saving
+      // Update user stats after saving (delayed to prevent excessive calls)
       setTimeout(() => {
-        updateUserStats();
-      }, 100);
+        updateUserStats(false); // Non-forced update
+      }, 3000);
     } catch (error) {
       console.error("Error deleting video from playlist:", error);
       toast({

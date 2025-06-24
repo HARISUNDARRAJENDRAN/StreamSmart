@@ -66,7 +66,8 @@ export async function GET(request: NextRequest) {
           youtubeId: playlists[0].videos[0].youtubeId,
           youtubeURL: playlists[0].videos[0].youtubeURL,
           url: playlists[0].videos[0].url,
-          title: playlists[0].videos[0].title
+          title: playlists[0].videos[0].title,
+          completionStatus: playlists[0].videos[0].completionStatus
         });
       }
     }
@@ -86,16 +87,20 @@ export async function GET(request: NextRequest) {
         createdAt: p.createdAt,
         updatedAt: p.updatedAt,
         userId: p.userId,
-        // Include first video for thumbnail
-        videos: p.videos.length > 0 ? [{
-          id: p.videos[0].id,
-          title: p.videos[0].title,
-          thumbnail: p.videos[0].thumbnail,
-          youtubeURL: p.videos[0].youtubeURL || p.videos[0].url,
-          youtubeId: p.videos[0].youtubeId, // Include the actual youtubeId
-          duration: p.videos[0].duration,
-          channelTitle: p.videos[0].channelTitle,
-        }] : []
+        // Include ALL videos with complete data for progress calculation
+        videos: p.videos.map(video => ({
+          id: video.id,
+          title: video.title,
+          thumbnail: video.thumbnail,
+          youtubeURL: video.youtubeURL || video.url,
+          youtubeId: video.youtubeId,
+          duration: video.duration,
+          channelTitle: video.channelTitle,
+          completionStatus: video.completionStatus || 0, // CRITICAL: Include completion status
+          addedAt: video.addedAt,
+          addedBy: video.addedBy,
+          description: video.description || ''
+        }))
       }))
     });
   } catch (error) {

@@ -176,11 +176,11 @@ export default function PlaylistsPage() {
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">My Learning Playlists</h1>
-          <p className="text-muted-foreground">Organize your YouTube learning journey.</p>
+                          <h1 className="text-3xl font-bold tracking-tight text-white">My Learning Playlists</h1>
+          <p className="text-gray-600">Organize your YouTube learning journey.</p>
         </div>
         <Link href="/playlists/create">
-          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+          <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold">
             <PlusCircleIcon className="mr-2 h-5 w-5" />
             Create New Playlist
           </Button>
@@ -190,7 +190,7 @@ export default function PlaylistsPage() {
       {playlists.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {playlists.map((playlist) => (
-            <Card key={playlist.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-primary/50 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
+            <Card key={playlist.id} className="flex flex-col overflow-hidden shadow-lg hover:shadow-red-500/20 border-gray-200 hover:border-red-300 transition-all duration-300 ease-in-out transform hover:-translate-y-1">
               <Link href={`/playlists/${playlist.id}`} className="block group">
                 <CardHeader className="relative p-0">
                   <Image
@@ -277,23 +277,23 @@ export default function PlaylistsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 flex-grow">
-                  <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary">{playlist.title}</CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground mb-2 line-clamp-3">{playlist.description}</CardDescription>
+                  <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-red-600 text-black">{playlist.title}</CardTitle>
+                  <CardDescription className="text-sm text-gray-600 mb-2 line-clamp-3">{playlist.description}</CardDescription>
                   <div className="flex flex-wrap gap-1 mb-2">
                     {playlist.tags && playlist.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-xs bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full">{tag}</span>
+                      <span key={tag} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{tag}</span>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground">{playlist.videoCount || 0} videos</p>
+                  <p className="text-xs text-gray-500">{playlist.videoCount || 0} videos</p>
                   {playlist.overallProgress > 0 && (
                     <div className="mt-2">
-                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div 
-                          className="h-full bg-primary transition-all duration-300"
+                          className="h-full bg-red-600 transition-all duration-300"
                           style={{ width: `${playlist.overallProgress}%` }}
                         />
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">{playlist.overallProgress}% complete</p>
+                      <p className="text-xs text-gray-500 mt-1">{playlist.overallProgress}% complete</p>
                     </div>
                   )}
                 </CardContent>

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target } from 'lucide-react';
+import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Zap, MessageSquare, Bot, Trophy, Medal } from 'lucide-react';
 import SplitText from '@/components/ui/split-text';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -512,7 +512,7 @@ export default function LandingPage() {
 
   return (
     <div 
-      className="relative"
+      className="relative bg-white"
       style={{
         scrollSnapType: 'y mandatory',
         scrollBehavior: 'smooth'
@@ -884,101 +884,203 @@ export default function LandingPage() {
           id="features"
           ref={featuresRef}
           data-section="1"
-          className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
+          className="min-h-screen py-20 relative overflow-hidden bg-white"
           style={{ 
-            scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #121212 0%, #1a1a1a 50%, #0f0f0f 100%)'
+            scrollSnapAlign: 'start'
           }}
           initial="hidden"
           animate={featuresInView ? "visible" : "hidden"}
           variants={featuresSectionVariants}
         >
+          {/* Geometric Background Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-red-50 rounded-full opacity-30"></div>
+            <div className="absolute top-40 right-20 w-24 h-24 bg-black/5 rounded-lg rotate-45"></div>
+            <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-red-100 rounded-full opacity-20"></div>
+            <div className="absolute bottom-20 right-10 w-20 h-20 bg-black/10 rounded-lg -rotate-12"></div>
+          </div>
+
           <div className="container mx-auto px-6 max-w-7xl relative z-10">
             {/* Header */}
             <motion.div
               variants={featuresHeaderVariants}
-              className="text-center mb-16 md:mb-20"
+              className="text-left mb-16 md:mb-20 ml-8"
             >
-              <Badge 
-                variant="outline" 
-                className="mb-4 px-4 py-2 text-sm font-medium border-white/20 text-white/80 bg-white/5 backdrop-blur-sm"
-              >
-                Core Capabilities
-              </Badge>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-white font-poppins">
-                Unlock Your Learning Potential with{' '}
-                <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
-                >
-                  StreamSmart
+              <h2 className="text-5xl md:text-6xl font-bold mb-4 leading-tight text-black">
+                Smart Learning{' '}
+                <span className="text-red-600">
+                  Made Visual
                 </span>
               </h2>
-              <p className="text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed font-poppins">
-                Discover a smarter way to learn from YouTube. Our AI-driven features transform scattered videos into structured knowledge.
+              <p className="text-xl text-gray-600 max-w-2xl leading-relaxed">
+                Experience the future of education through intuitive design and intelligent features
               </p>
             </motion.div>
 
-            {/* Features Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {features.map((feature, index) => (
+            {/* Creative Visual Features Layout */}
+            <div className="space-y-12">
+              
+              {/* AI Mind Maps - Large Feature Card */}
                   <motion.div
-                    key={feature.title}
                     variants={featuresCardVariants}
-                  custom={index}
-                  className="group cursor-pointer h-full"
-                  whileHover={{ y: -8, scale: 1.03 }}
+                custom={0}
+                className="group cursor-pointer"
+                whileHover={{ scale: 1.02 }}
                   transition={{ type: 'spring', stiffness: 300 }}
                   >
-                    <div 
-                    className="h-full p-8 rounded-2xl transition-all duration-300 relative overflow-hidden flex flex-col"
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.04)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                        backdropFilter: 'blur(15px)',
-                      boxShadow: '0 10px 35px rgba(0, 0, 0, 0.2)'
-                      }}
-                    >
-                      {/* Hover glow effect */}
-                      <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 rounded-2xl"
-                        style={{
-                        background: 'linear-gradient(135deg, rgba(217, 4, 41, 0.08) 0%, rgba(169, 29, 58, 0.04) 100%)',
-                        }}
-                      />
-                    <div className="relative z-10 flex flex-col flex-grow">
-                        {/* Icon */}
-                      <div className="mb-6">
-                          <div 
-                          className="w-16 h-16 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-[-6deg]"
-                            style={{
-                              background: 'rgba(217, 4, 41, 0.15)',
-                            border: '1px solid rgba(217, 4, 41, 0.3)'
-                            }}
-                          >
-                              {React.cloneElement(feature.icon as React.ReactElement, {
-                            className: "h-8 w-8 transition-all duration-300",
-                            style: { color: '#D90429' }
-                              })}
+                <div className="grid grid-cols-12 gap-8 items-center bg-white border-2 border-gray-200 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="col-span-12 md:col-span-7 order-2 md:order-1">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4">
+                        <Brain className="h-6 w-6 text-red-600" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-black">AI Mind Maps</h3>
+                    </div>
+                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                      Transform any video into interactive visual knowledge maps. Our AI analyzes content and creates structured learning paths that make complex topics easy to understand.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">Visual Learning</span>
+                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">AI Powered</span>
+                      <span className="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">Interactive</span>
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-5 order-1 md:order-2">
+                    <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 h-64 flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute top-4 left-4 w-8 h-8 bg-red-200 rounded-full"></div>
+                      <div className="absolute top-8 right-8 w-6 h-6 bg-red-300 rounded-full"></div>
+                      <div className="absolute bottom-6 left-8 w-4 h-4 bg-red-400 rounded-full"></div>
+                      <Share2 className="h-16 w-16 text-red-600" />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Smart Recommendations & Video Chat */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                
+                {/* Smart Recommendations */}
+                <motion.div
+                  variants={featuresCardVariants}
+                  custom={1}
+                  className="group cursor-pointer"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div className="text-right mb-6">
+                      <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center ml-auto">
+                        <Zap className="h-6 w-6 text-white" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-black mb-4 text-right">Smart Recommendations</h3>
+                    <p className="text-gray-600 leading-relaxed text-right mb-6">
+                      Netflix-level AI that learns your preferences and suggests perfect educational content tailored to your learning style.
+                    </p>
+                    <div className="bg-gray-50 rounded-xl p-6 h-32 flex items-center justify-center">
+                      <Target className="h-12 w-12 text-red-600" />
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Video Chat */}
+                <motion.div
+                  variants={featuresCardVariants}
+                  custom={2}
+                  className="group cursor-pointer"
+                  whileHover={{ y: -8 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div className="mb-6">
+                      <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center">
+                        <MessageSquare className="h-6 w-6 text-white" />
                             </div>
                           </div>
-                        {/* Content */}
-                      <div className="flex flex-col flex-grow">
-                        <h3 className="text-2xl font-bold mb-3 font-poppins text-white">
-                            {feature.title}
-                          </h3>
-                        <p className="leading-relaxed text-base font-poppins text-white/70 flex-grow">
-                            {feature.description}
-                          </p>
-                        {feature.dataAiHint && (
-                          <p className="text-xs mt-4 text-white/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            AI Focus: {feature.dataAiHint}
-                          </p>
-                        )}
+                    <h3 className="text-2xl font-bold text-black mb-4">Video Chat</h3>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      Ask questions about any video and get instant, contextual answers. Like having a personal tutor for every YouTube lesson.
+                    </p>
+                    <div className="bg-black rounded-xl p-6 h-32 flex items-center justify-center">
+                      <Bot className="h-12 w-12 text-red-600" />
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Progress Tracking & Achievements */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                {/* Progress Tracking */}
+                <motion.div
+                  variants={featuresCardVariants}
+                  custom={3}
+                  className="group cursor-pointer lg:col-span-2"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <div className="bg-gradient-to-r from-black to-gray-900 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300 text-white">
+                    <div className="flex items-center justify-between mb-6">
+                      <div>
+                        <h3 className="text-2xl font-bold mb-2">Progress Tracking</h3>
+                        <p className="text-gray-300">
+                          Visual analytics that show your learning journey and help you stay motivated.
+                        </p>
+                      </div>
+                      <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center">
+                        <TrendingUp className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 mt-8">
+                      <div className="bg-white/10 rounded-xl p-4 text-center">
+                        <div className="text-2xl font-bold text-red-400">87%</div>
+                        <div className="text-sm text-gray-300">Completion</div>
+                      </div>
+                      <div className="bg-white/10 rounded-xl p-4 text-center">
+                        <div className="text-2xl font-bold text-red-400">24</div>
+                        <div className="text-sm text-gray-300">Videos</div>
+                      </div>
+                      <div className="bg-white/10 rounded-xl p-4 text-center">
+                        <div className="text-2xl font-bold text-red-400">12h</div>
+                        <div className="text-sm text-gray-300">Watched</div>
                         </div>
                       </div>
                     </div>
                   </motion.div>
-                ))}
+
+                {/* Achievements */}
+                <motion.div
+                  variants={featuresCardVariants}
+                  custom={4}
+                  className="group cursor-pointer"
+                  whileHover={{ y: -8, rotate: 2 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
+                >
+                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-red-50 rounded-bl-3xl"></div>
+                    <div className="mb-6">
+                      <div className="w-12 h-12 bg-yellow-400 rounded-2xl flex items-center justify-center">
+                        <Award className="h-6 w-6 text-yellow-800" />
+                      </div>
+                    </div>
+                    <h3 className="text-2xl font-bold text-black mb-4">Achievements</h3>
+                    <p className="text-gray-600 leading-relaxed mb-6">
+                      Gamified learning with badges, streaks, and milestones.
+                    </p>
+                    <div className="flex justify-center space-x-2">
+                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                        <Star className="h-4 w-4 text-yellow-800" />
+                      </div>
+                      <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center">
+                        <Trophy className="h-4 w-4 text-red-800" />
+                      </div>
+                      <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
+                        <Medal className="h-4 w-4 text-blue-800" />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
             </div>
           </div>
           
@@ -1000,145 +1102,97 @@ export default function LandingPage() {
           id="about"
           ref={aboutRef}
           data-section="2"
-          className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
+          className="min-h-screen py-20 relative overflow-hidden bg-white"
           style={{ 
-            scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
+            scrollSnapAlign: 'start'
           }}
           initial="hidden"
           animate={aboutInView ? "visible" : "hidden"}
           variants={aboutSectionVariants}
         >
-          <div className="container mx-auto px-6 max-w-7xl">
-            <div className="text-center">
+          <div className="container mx-auto px-6 max-w-7xl flex items-center justify-center min-h-screen">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
               
-              {/* Badge */}
-              <motion.div variants={aboutItemVariants} className="mb-6">
-                <Badge 
-                  variant="outline" 
-                  className="px-4 py-2 text-sm font-medium border-white/20 text-white/80 bg-white/5 backdrop-blur-sm"
-                >
-                  About StreamSmart
-                </Badge>
-              </motion.div>
-              
-              {/* Main heading */}
-              <motion.h2 
-                className="text-3xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight text-white font-poppins"
-                variants={aboutItemVariants}
-              >
-                The Future of{' '}
-                <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
-                >
-                  YouTube Learning
+              {/* Left side - Content */}
+              <motion.div variants={aboutItemVariants} className="space-y-8">
+                <h2 className="text-5xl md:text-6xl font-bold leading-tight text-black">
+                  Why Choose{' '}
+                  <span className="text-red-600">
+                    StreamSmart?
                 </span>
-              </motion.h2>
-              
-              {/* Visual description */}
-              <motion.div 
-                className="text-xl leading-relaxed mb-12 max-w-3xl mx-auto font-poppins"
-                variants={aboutItemVariants}
-                style={{ color: 'rgba(255, 255, 255, 0.8)' }}
-              >
+                </h2>
+                <p className="text-xl text-gray-600 leading-relaxed">
+                  We're not just another learning platform. We're revolutionizing how you discover, organize, and learn from educational content.
+                </p>
+                
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-6 py-8">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-red-600">50K+</div>
+                    <div className="text-sm text-gray-500">Active Learners</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-black">1M+</div>
+                    <div className="text-sm text-gray-500">Videos Organized</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-red-600">98%</div>
+                    <div className="text-sm text-gray-500">Satisfaction Rate</div>
+                  </div>
+                </div>
               </motion.div>
               
-              {/* Three-column layout */}
-              <motion.div 
-                className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                variants={aboutItemVariants}
-              >
-                <motion.div 
-                  className="text-center group"
-                  variants={aboutColumnVariants}
-                  whileHover={{ y: -10, scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="rounded-2xl p-8 h-full shadow-lg group-hover:shadow-xl transition-all duration-300"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  >
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
-                      style={{
-                        background: 'rgba(217, 4, 41, 0.15)',
-                        border: '1px solid rgba(217, 4, 41, 0.3)'
-                      }}
-                    >
-                      <Award className="h-8 w-8" style={{ color: '#D90429' }} />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white font-poppins">Our Mission</h3>
-                    <p className="text-base leading-relaxed font-poppins" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      Empowering learners to achieve their educational goals faster through AI-powered organization and personalized learning paths.
-                    </p>
-                  </div>
-                </motion.div>
+                            {/* Right side - Visual Cards */}
+              <motion.div variants={aboutItemVariants} className="space-y-6">
                 
-                <motion.div 
-                  className="text-center group"
-                  variants={aboutColumnVariants}
-                  whileHover={{ y: -10, scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="rounded-2xl p-8 h-full shadow-lg group-hover:shadow-xl transition-all duration-300"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  >
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
-                      style={{
-                        background: 'rgba(217, 4, 41, 0.15)',
-                        border: '1px solid rgba(217, 4, 41, 0.3)'
-                      }}
-                    >
-                      <Users className="h-8 w-8" style={{ color: '#D90429' }} />
+                {/* AI Technology Card */}
+                <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 border-2 border-red-200">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                      <Brain className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white font-poppins">Our Community</h3>
-                    <p className="text-base leading-relaxed font-poppins" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      A passionate group of educators, technologists, and lifelong learners united by the vision of transforming how we learn from digital content.
-                    </p>
+                    <div>
+                      <h3 className="text-lg font-bold text-black">AI-Powered</h3>
+                      <p className="text-sm text-gray-600">Advanced machine learning algorithms</p>
                   </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="text-center group"
-                  variants={aboutColumnVariants}
-                  whileHover={{ y: -10, scale: 1.05 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="rounded-2xl p-8 h-full shadow-lg group-hover:shadow-xl transition-all duration-300"
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  >
-                    <div 
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300"
-                      style={{
-                        background: 'rgba(217, 4, 41, 0.15)',
-                        border: '1px solid rgba(217, 4, 41, 0.3)'
-                      }}
-                    >
-                      <TrendingUp className="h-8 w-8" style={{ color: '#D90429' }} />
+                  </div>
+                </div>
+
+                {/* Community Card */}
+                <div className="bg-black rounded-2xl p-6 text-white">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                      <Users className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-4 text-white font-poppins">Our Impact</h3>
-                    <p className="text-base leading-relaxed font-poppins" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-                      Helping thousands of learners achieve their educational goals faster through AI-powered organization and personalized learning paths.
-                    </p>
+                    <div>
+                      <h3 className="text-lg font-bold">Global Community</h3>
+                      <p className="text-sm text-gray-300">Learn with peers worldwide</p>
                   </div>
-                </motion.div>
+                  </div>
+                </div>
+
+                {/* Personalized Card */}
+                <div className="bg-white border-2 border-gray-200 rounded-2xl p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
+                      <Target className="h-6 w-6 text-red-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-black">Personalized</h3>
+                      <p className="text-sm text-gray-600">Tailored to your learning style</p>
+                    </div>
+                  </div>
+                  </div>
               </motion.div>
             </div>
+          </div>
+          
+          {/* Geometric Background Elements */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-red-50 rounded-full opacity-30"></div>
+            <div className="absolute top-40 right-20 w-24 h-24 bg-black/5 rounded-lg rotate-45"></div>
+            <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-red-100 rounded-full opacity-20"></div>
+            <div className="absolute bottom-20 right-10 w-20 h-20 bg-black/10 rounded-lg -rotate-12"></div>
           </div>
           
           {/* Decorative background elements */}
@@ -1173,10 +1227,9 @@ export default function LandingPage() {
         {/* Testimonials Section */}
         <section 
           data-section="3"
-          className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden"
+          className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden bg-white"
           style={{ 
-            scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
+            scrollSnapAlign: 'start'
           }}
         >
           <div className="container mx-auto px-4 md:px-6">
@@ -1189,11 +1242,11 @@ export default function LandingPage() {
             >
               <Badge 
                 variant="outline" 
-                className="mb-4 px-4 py-2 border-white/20 text-white/80 bg-white/5 backdrop-blur-sm"
+                className="mb-4 px-4 py-2 border-black/20 text-black/80 bg-black/5 backdrop-blur-sm"
               >
                 What our users say
               </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white font-poppins">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black font-poppins">
                 Loved by learners{' '}
                 <span 
                   className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
@@ -1231,7 +1284,7 @@ export default function LandingPage() {
                           <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <p className="italic font-poppins" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                      <p className="italic font-poppins" style={{ color: 'rgba(0, 0, 0, 0.8)' }}>
                         &quot;{testimonial.content}&quot;
                       </p>
                       <div className="flex items-center gap-3">
@@ -1245,8 +1298,8 @@ export default function LandingPage() {
                           {testimonial.avatar}
                         </div>
                         <div>
-                          <div className="font-semibold text-white font-poppins">{testimonial.name}</div>
-                          <div className="text-sm font-poppins" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+                          <div className="font-semibold text-black font-poppins">{testimonial.name}</div>
+                          <div className="text-sm font-poppins" style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
                             {testimonial.role}
                           </div>
                         </div>
@@ -1283,7 +1336,7 @@ export default function LandingPage() {
           className="h-screen flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #121212 100%)'
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)'
           }}
           initial="hidden"
           animate={howItWorksInView ? "visible" : "hidden"}
@@ -1298,11 +1351,11 @@ export default function LandingPage() {
             >
               <Badge 
                 variant="outline" 
-                className="mb-6 px-4 py-2 text-sm font-medium border-white/20 text-white/80 bg-white/5 backdrop-blur-sm"
+                className="mb-6 px-4 py-2 text-sm font-medium border-black/20 text-black/80 bg-black/5 backdrop-blur-sm"
               >
                 How it works
               </Badge>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-white font-poppins">
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-black font-poppins">
                 Start learning in{' '}
                 <span 
                   className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
@@ -1363,10 +1416,10 @@ export default function LandingPage() {
                   <div 
                     className="relative h-full p-8 transition-all duration-500 rounded-3xl group-hover:shadow-2xl"
                     style={{
-                      background: 'rgba(255, 255, 255, 0.05)',
+                      background: 'rgba(255, 255, 255, 0.9)',
                       backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)',
+                      border: '1px solid rgba(0, 0, 0, 0.1)',
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
                     }}
                   >
                     {/* Crimson glow overlay for hover effect */}
@@ -1413,13 +1466,13 @@ export default function LandingPage() {
                     <div className="relative z-10 text-center">
                       <h3 
                         className="text-2xl md:text-3xl font-bold mb-6 transition-colors duration-300 font-poppins"
-                        style={{ color: '#ffffff' }}
+                        style={{ color: '#000000' }}
                       >
                         {step.title}
                       </h3>
                       <p 
                         className="leading-relaxed text-lg font-poppins"
-                        style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                        style={{ color: 'rgba(0, 0, 0, 0.7)' }}
                       >
                         {step.description}
                       </p>
@@ -1498,7 +1551,7 @@ export default function LandingPage() {
           className="h-screen flex items-center justify-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)'
+            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)'
           }}
           initial="hidden"
           animate={contactInView ? "visible" : "hidden"}
@@ -1510,7 +1563,7 @@ export default function LandingPage() {
             <motion.div variants={contactItemVariants} className="mb-16">
               <h2 
                 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-                style={{ color: '#E0E0E0' }}
+                style={{ color: '#000000' }}
               >
                 Get in{' '}
                 <span 
@@ -1524,7 +1577,7 @@ export default function LandingPage() {
               </h2>
               <p 
                 className="text-xl md:text-2xl mb-12 leading-relaxed"
-                style={{ color: '#B0B0B0' }}
+                style={{ color: '#333333' }}
               >
                 Have questions or want to connect? Reach out!
               </p>
@@ -1540,9 +1593,9 @@ export default function LandingPage() {
                 href="mailto:hsundar080506@gmail.com"
                 className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                 }}
               >
                 <div 
@@ -1563,13 +1616,13 @@ export default function LandingPage() {
                 <div className="text-left">
                   <div 
                     className="text-sm font-medium mb-1"
-                    style={{ color: '#B0B0B0' }}
+                    style={{ color: '#666666' }}
                   >
                     Email
                   </div>
                   <div 
                     className="text-lg font-semibold group-hover:text-[#A91D3A] transition-colors duration-300"
-                    style={{ color: '#E0E0E0' }}
+                    style={{ color: '#000000' }}
                   >
                     hsundar080506@gmail.com
                   </div>
@@ -1587,9 +1640,9 @@ export default function LandingPage() {
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(0, 0, 0, 0.1)',
                 }}
               >
                 <div 
@@ -1610,13 +1663,13 @@ export default function LandingPage() {
                 <div className="text-left">
                   <div 
                     className="text-sm font-medium mb-1"
-                    style={{ color: '#B0B0B0' }}
+                    style={{ color: '#666666' }}
                   >
                     LinkedIn
                   </div>
                   <div 
                     className="text-lg font-semibold group-hover:text-[#A91D3A] transition-colors duration-300"
-                    style={{ color: '#E0E0E0' }}
+                    style={{ color: '#000000' }}
                   >
                     LinkedIn Profile
                   </div>
@@ -1631,11 +1684,11 @@ export default function LandingPage() {
             {/* Copyright */}
             <motion.div 
               variants={contactItemVariants}
-              className="pt-12 border-t border-white/10"
+              className="pt-12 border-t border-black/10"
             >
               <p 
                 className="text-sm"
-                style={{ color: '#888888' }}
+                style={{ color: '#666666' }}
               >
                 © 2025 StreamSmart. All rights reserved.
               </p>

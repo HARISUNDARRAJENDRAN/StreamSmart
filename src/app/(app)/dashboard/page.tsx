@@ -94,16 +94,99 @@ export default function DashboardPage() {
   const [userFeedbackMap, setUserFeedbackMap] = useState<Record<string, any>>({});
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [selectedRecommendation, setSelectedRecommendation] = useState<any>(null);
-  const { user, userStats, isAuthenticated, recordActivity } = useUser();
+  const [lastWatchedVideo, setLastWatchedVideo] = useState<any>(null);
+  const { user, userStats, isAuthenticated, recordActivity, updateUserStats } = useUser();
   const { toast } = useToast();
   const router = useRouter();
+
+  // Function to get the last watched video from user's playlists
+  const getLastWatchedVideo = async () => {
+    if (!user || !playlists.length) return null;
+
+    try {
+      // Get all completed videos from all playlists with timestamps from recent activities
+      let lastCompletedVideo = null;
+      let latestTimestamp = new Date(0);
+
+      // Check recent activities for completed videos
+      if (userStats?.recentActivity) {
+        for (const activity of userStats.recentActivity) {
+          if (activity.type === 'completed' || activity.type === 'started') {
+            // Find this video in playlists
+            for (const playlist of playlists) {
+              const video = playlist.videos?.find(v => 
+                v.title === activity.item || 
+                v.title.includes(activity.item) ||
+                activity.item.includes(v.title)
+              );
+              if (video && activity.timestamp > latestTimestamp) {
+                lastCompletedVideo = {
+                  ...video,
+                  playlistTitle: playlist.title,
+                  playlistId: playlist.id,
+                  activityTimestamp: activity.timestamp
+                };
+                latestTimestamp = activity.timestamp;
+              }
+            }
+          }
+        }
+      }
+
+      // If no activity found, get the most recently completed or in-progress video
+      if (!lastCompletedVideo) {
+        // First try to find any video with progress > 0
+        for (const playlist of playlists) {
+          const inProgressVideos = playlist.videos?.filter(v => v.completionStatus > 0) || [];
+          if (inProgressVideos.length > 0) {
+            // Sort by completion status (in-progress videos first, then completed)
+            const sortedVideos = inProgressVideos.sort((a, b) => {
+              if (a.completionStatus === 100 && b.completionStatus < 100) return 1;
+              if (a.completionStatus < 100 && b.completionStatus === 100) return -1;
+              return b.completionStatus - a.completionStatus;
+            });
+            
+            const video = sortedVideos[0];
+            lastCompletedVideo = {
+              ...video,
+              playlistTitle: playlist.title,
+              playlistId: playlist.id,
+              activityTimestamp: new Date()
+            };
+            break;
+          }
+        }
+        
+        // If still no video found, just take the first video from the most recent playlist
+        if (!lastCompletedVideo && playlists.length > 0) {
+          const firstPlaylist = playlists[0];
+          if (firstPlaylist.videos && firstPlaylist.videos.length > 0) {
+            const video = firstPlaylist.videos[0];
+            lastCompletedVideo = {
+              ...video,
+              playlistTitle: firstPlaylist.title,
+              playlistId: firstPlaylist.id,
+              activityTimestamp: new Date()
+            };
+          }
+        }
+      }
+
+      return lastCompletedVideo;
+    } catch (error) {
+      console.error('Error getting last watched video:', error);
+      return null;
+    }
+  };
 
   // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
     if (user) {
       console.log('User ID available for tracking:', user.id);
+      // Update user stats when user loads - only once
+      updateUserStats(true);
     }
-  }, [user]);
+  }, [user?.id]); // Only depend on user.id, not the entire user object or updateUserStats function
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -135,6 +218,18 @@ export default function DashboardPage() {
 
     loadPlaylists();
   }, [user, isAuthenticated]);
+
+  // Load last watched video when playlists and userStats are available
+  useEffect(() => {
+    const loadLastWatchedVideo = async () => {
+      if (playlists.length > 0 && userStats) {
+        const lastVideo = await getLastWatchedVideo();
+        setLastWatchedVideo(lastVideo);
+      }
+    };
+
+    loadLastWatchedVideo();
+  }, [playlists, userStats]);
 
   // Load user feedback for recommendations
   useEffect(() => {
@@ -1260,113 +1355,479 @@ export default function DashboardPage() {
       {/* Netflix-Style Hero Section */}
       <motion.div 
         variants={fadeInUp}
-        className="relative overflow-hidden rounded-3xl h-[70vh] flex items-end"
+        className="relative overflow-hidden rounded-3xl h-[70vh] flex items-end group/hero cursor-pointer"
         style={{
           backgroundImage: `
             linear-gradient(to right, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.6) 100%),
             linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 40%, rgba(0, 0, 0, 0.1) 100%),
-            url('https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg')
+            url('${lastWatchedVideo?.thumbnail || 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg'}')
           `,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}
+        whileHover={{ 
+          scale: 1.02,
+          transition: { duration: 0.6, ease: "easeOut" }
+        }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0,
+          transition: { duration: 0.8, ease: "easeOut" }
+        }}
       >
+        {/* Animated Background Overlay */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-r from-red-600/20 via-transparent to-purple-600/20"
+          initial={{ opacity: 0 }}
+          animate={{ 
+            opacity: [0, 0.3, 0],
+            transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+          }}
+        />
+        
+        {/* Floating Particles */}
+        {Array.from({ length: 6 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-white/30 rounded-full"
+            style={{
+              left: `${20 + i * 15}%`,
+              top: `${30 + (i % 3) * 20}%`,
+            }}
+            animate={{
+              y: [-10, 10, -10],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+
+        {/* Shimmer Effect */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          initial={{ x: '-100%' }}
+          animate={{ 
+            x: '100%',
+            transition: { 
+              duration: 3, 
+              repeat: Infinity, 
+              repeatDelay: 2,
+              ease: "easeInOut" 
+            }
+          }}
+        />
         {/* Hero Content */}
-        <div className="relative z-10 p-12 max-w-2xl">
+        <motion.div 
+          className="relative z-10 p-12 max-w-2xl"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            transition: { duration: 1, delay: 0.3, ease: "easeOut" }
+          }}
+        >
           {/* Netflix-style badge */}
-          <div className="flex items-center gap-4 mb-6">
-            <div className="bg-purple-500 text-white px-3 py-1 rounded text-sm font-bold tracking-wider">
-              FEATURED
-            </div>
-            <Badge className="bg-purple-200 text-purple-800 font-semibold">
-              🔥 Trending
-            </Badge>
-            <div className="text-purple-300 font-semibold text-sm">97% Match</div>
-          </div>
+          <motion.div 
+            className="flex items-center gap-4 mb-6"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.6, delay: 0.5 }
+            }}
+          >
+            <motion.div 
+              className="bg-red-600 text-white px-3 py-1 rounded text-sm font-bold tracking-wider"
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(220, 38, 38, 0.6)",
+                transition: { duration: 0.2 }
+              }}
+              animate={{
+                boxShadow: ["0 0 0px rgba(220, 38, 38, 0)", "0 0 15px rgba(220, 38, 38, 0.4)", "0 0 0px rgba(220, 38, 38, 0)"],
+                transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+              }}
+            >
+              {lastWatchedVideo ? 'CONTINUE WATCHING' : 'GET STARTED'}
+            </motion.div>
+            {lastWatchedVideo && (
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ 
+                  scale: 1, 
+                  opacity: 1,
+                  transition: { duration: 0.4, delay: 0.7, type: "spring", stiffness: 200 }
+                }}
+                whileHover={{ scale: 1.1 }}
+              >
+                <Badge className="bg-green-200 text-green-800 font-semibold">
+                  {lastWatchedVideo.completionStatus === 100 ? '✓ Completed' : '⏳ In Progress'}
+                </Badge>
+              </motion.div>
+            )}
+            {lastWatchedVideo && (
+              <motion.div 
+                className="text-red-300 font-semibold text-sm"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  x: 0,
+                  transition: { duration: 0.5, delay: 0.9 }
+                }}
+              >
+                From {lastWatchedVideo.playlistTitle}
+              </motion.div>
+            )}
+          </motion.div>
 
           {/* Title */}
-          <h1 className="text-6xl font-black text-white mb-4 drop-shadow-2xl">
-            Master React in 2024
-          </h1>
+          <motion.h1 
+            className="text-6xl font-black text-white mb-4 drop-shadow-2xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.8, delay: 0.6, ease: "easeOut" }
+            }}
+            whileHover={{ 
+              scale: 1.02,
+              textShadow: "0 0 30px rgba(255, 255, 255, 0.3)",
+              transition: { duration: 0.3 }
+            }}
+          >
+            {lastWatchedVideo ? lastWatchedVideo.title : 'Continue Your Learning Journey'}
+          </motion.h1>
 
           {/* Description */}
-          <p className="text-xl text-gray-200 mb-6 max-w-lg leading-relaxed drop-shadow-lg">
-            Complete React development course covering hooks, context, performance optimization, and modern patterns. Build real-world projects and master the most in-demand frontend framework.
-          </p>
+          <motion.p 
+            className="text-xl text-gray-200 mb-6 max-w-lg leading-relaxed drop-shadow-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.7, delay: 0.8 }
+            }}
+          >
+            {lastWatchedVideo 
+              ? `Continue where you left off with "${lastWatchedVideo.title}" from your "${lastWatchedVideo.playlistTitle}" playlist.`
+              : 'Start your educational journey by creating your first playlist and adding videos to watch.'
+            }
+          </motion.p>
 
           {/* Video Info */}
-          <div className="flex items-center gap-6 mb-8 text-gray-300">
-            <div className="flex items-center gap-2">
+          <motion.div 
+            className="flex items-center gap-6 mb-8 text-gray-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.6, delay: 1 }
+            }}
+          >
+            <motion.div 
+              className="flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                transition: { duration: 0.4, delay: 1.1 }
+              }}
+            >
               <ClockIcon className="h-5 w-5" />
-              <span>4h 23min</span>
-            </div>
-            <div className="flex items-center gap-2">
+              <span>{lastWatchedVideo?.duration || 'N/A'}</span>
+            </motion.div>
+            <motion.div 
+              className="flex items-center gap-2"
+              whileHover={{ scale: 1.05 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                transition: { duration: 0.4, delay: 1.2 }
+              }}
+            >
               <UsersIcon className="h-5 w-5" />
-              <span>2.1M students</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <StarIcon className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-              <span>4.8 rating</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="bg-black/50 text-green-400 border-green-400">
-                Advanced
+              <span>{lastWatchedVideo?.channelTitle || 'Unknown Channel'}</span>
+            </motion.div>
+            {lastWatchedVideo?.completionStatus === 100 && (
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ 
+                  scale: 1, 
+                  opacity: 1,
+                  transition: { duration: 0.5, delay: 1.3, type: "spring", stiffness: 200 }
+                }}
+                whileHover={{ scale: 1.1 }}
+              >
+                <CircleCheck className="h-5 w-5 fill-green-400 text-green-400" />
+                <span>Completed</span>
+              </motion.div>
+            )}
+            <motion.div 
+              className="flex items-center gap-2"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                transition: { duration: 0.4, delay: 1.4 }
+              }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <Badge variant="outline" className="bg-black/50 text-blue-400 border-blue-400">
+                {lastWatchedVideo ? 'Recently Watched' : 'Get Started'}
               </Badge>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-4">
-            <Button 
-              size="lg"
-              className="bg-white text-black hover:bg-gray-200 font-bold px-8 py-4 rounded-lg text-lg flex items-center gap-3 shadow-2xl"
-              onClick={() => window.open('https://youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
-            >
-              <CirclePlay className="h-6 w-6" />
-              Start Learning
-            </Button>
-            <Button 
-              size="lg"
-              variant="outline"
-              className="bg-black/60 text-white border-gray-400 hover:bg-black/80 font-semibold px-8 py-4 rounded-lg text-lg flex items-center gap-3 backdrop-blur-sm"
-            >
-              <Bookmark className="h-5 w-5" />
-              Add to Playlist
-            </Button>
-          </div>
-        </div>
+          <motion.div 
+            className="flex items-center gap-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.7, delay: 1.2 }
+            }}
+          >
+            {lastWatchedVideo ? (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { duration: 0.5, delay: 1.4 }
+                  }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-200 font-bold px-8 py-4 rounded-lg text-lg flex items-center gap-3 shadow-2xl hover:shadow-3xl transition-all duration-300"
+                    onClick={() => window.open(lastWatchedVideo.youtubeURL || `https://youtube.com/watch?v=${lastWatchedVideo.id}`, '_blank')}
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, 360] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                    >
+                      <CirclePlay className="h-6 w-6" />
+                    </motion.div>
+                    Watch Again
+                  </Button>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { duration: 0.5, delay: 1.6 }
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    y: -2,
+                    boxShadow: "0 0 25px rgba(255, 255, 255, 0.2)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg"
+                    variant="outline"
+                    className="bg-black/60 text-white border-gray-400 hover:bg-black/80 font-semibold px-8 py-4 rounded-lg text-lg flex items-center gap-3 backdrop-blur-sm transition-all duration-300 hover:border-white"
+                    onClick={() => router.push(`/playlists/${lastWatchedVideo.playlistId}`)}
+                  >
+                    <motion.div
+                      whileHover={{ 
+                        rotate: [0, -10, 10, -10, 0],
+                        transition: { duration: 0.5 }
+                      }}
+                    >
+                      <Bookmark className="h-5 w-5" />
+                    </motion.div>
+                    View Playlist
+                  </Button>
+                </motion.div>
+              </>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { duration: 0.5, delay: 1.4 }
+                  }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg"
+                    className="bg-white text-black hover:bg-gray-200 font-bold px-8 py-4 rounded-lg text-lg flex items-center gap-3 shadow-2xl hover:shadow-3xl transition-all duration-300"
+                    onClick={() => router.push('/playlists/create')}
+                  >
+                    <motion.div
+                      whileHover={{ 
+                        rotate: 90,
+                        transition: { duration: 0.3 }
+                      }}
+                    >
+                      <PlusCircleIcon className="h-6 w-6" />
+                    </motion.div>
+                    Create Playlist
+                  </Button>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ 
+                    opacity: 1, 
+                    x: 0,
+                    transition: { duration: 0.5, delay: 1.6 }
+                  }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    y: -2,
+                    boxShadow: "0 0 25px rgba(255, 255, 255, 0.2)"
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg"
+                    variant="outline"
+                    className="bg-black/60 text-white border-gray-400 hover:bg-black/80 font-semibold px-8 py-4 rounded-lg text-lg flex items-center gap-3 backdrop-blur-sm transition-all duration-300 hover:border-white"
+                    onClick={() => router.push('/playlists')}
+                  >
+                    <motion.div
+                      animate={{ 
+                        y: [0, -2, 0],
+                        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                      }}
+                    >
+                      <BookOpenCheckIcon className="h-5 w-5" />
+                    </motion.div>
+                    Browse Playlists
+                  </Button>
+                </motion.div>
+              </>
+            )}
+          </motion.div>
+        </motion.div>
 
         {/* Floating User Stats */}
-        <div className="absolute top-8 right-8 bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-[#D90429]/30">
-          <div className="flex items-center gap-4 mb-4">
-            <Avatar className="h-12 w-12 border-2 border-[#D90429]">
-              <AvatarImage 
-                src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
-                alt={user?.name || "User Avatar"} 
-              />
-              <AvatarFallback className="bg-[#D90429] text-white font-bold">
-                {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
-              </AvatarFallback>
-            </Avatar>
-            <div>
+        <motion.div 
+          className="absolute top-8 right-8 bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-[#D90429]/30"
+          initial={{ opacity: 0, x: 100, scale: 0.8 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0, 
+            scale: 1,
+            transition: { duration: 0.8, delay: 0.5, ease: "easeOut" }
+          }}
+          whileHover={{ 
+            scale: 1.05,
+            boxShadow: "0 0 30px rgba(217, 4, 41, 0.3)",
+            transition: { duration: 0.3 }
+          }}
+        >
+          <motion.div 
+            className="flex items-center gap-4 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.6, delay: 0.8 }
+            }}
+          >
+            <motion.div
+              whileHover={{ 
+                scale: 1.1,
+                rotate: [0, -5, 5, -5, 0],
+                transition: { duration: 0.5 }
+              }}
+            >
+              <Avatar className="h-12 w-12 border-2 border-[#D90429]">
+                <AvatarImage 
+                  src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
+                  alt={user?.name || "User Avatar"} 
+                />
+                <AvatarFallback className="bg-[#D90429] text-white font-bold">
+                  {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                </AvatarFallback>
+              </Avatar>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ 
+                opacity: 1, 
+                x: 0,
+                transition: { duration: 0.5, delay: 1 }
+              }}
+            >
               <p className="text-white font-semibold">{user?.name || 'Learner'}</p>
               <p className="text-gray-400 text-sm">Level {Math.floor((userStats?.overallProgress || 0) / 10) + 1}</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           
           {/* Mini Stats */}
-          <div className="grid grid-cols-2 gap-4 text-center">
-            <div>
-              <p className="text-2xl font-bold text-[#D90429]">{userStats?.currentStreak || 0}</p>
+          <motion.div 
+            className="grid grid-cols-2 gap-4 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              y: 0,
+              transition: { duration: 0.6, delay: 1.2 }
+            }}
+          >
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1,
+                transition: { duration: 0.4, delay: 1.4, type: "spring", stiffness: 200 }
+              }}
+            >
+              <motion.p 
+                className="text-2xl font-bold text-[#D90429]"
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                  transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                }}
+              >
+                {userStats?.currentStreak || 0}
+              </motion.p>
               <p className="text-xs text-gray-400">Day Streak</p>
-            </div>
-            <div>
-              <p className="text-2xl font-bold text-[#D90429]">{userStats?.totalPlaylists || 0}</p>
+            </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1,
+                transition: { duration: 0.4, delay: 1.6, type: "spring", stiffness: 200 }
+              }}
+            >
+              <motion.p 
+                className="text-2xl font-bold text-[#D90429]"
+                animate={{ 
+                  scale: [1, 1.05, 1],
+                  transition: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }
+                }}
+              >
+                {userStats?.totalPlaylists || 0}
+              </motion.p>
               <p className="text-xs text-gray-400">Playlists</p>
-            </div>
-          </div>
-        </div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </motion.div>
 
       {/* Skill-Based Genres */}
@@ -1420,37 +1881,45 @@ export default function DashboardPage() {
 
 
 
-      {/* Netflix-Style Quick Stats Bar */}
+      {/* Progress Tracking Dashboard */}
       <motion.section variants={fadeInUp} className="px-4">
-        <div className="flex items-center justify-between bg-gradient-to-r from-gray-900 to-black rounded-2xl p-6 border border-gray-800">
-          <div className="flex items-center gap-8">
-            <div className="text-center">
-              <p className="text-3xl font-bold text-[#D90429]">{userStats?.totalPlaylists || 0}</p>
-              <p className="text-sm text-gray-400">Playlists</p>
+        <div className="bg-gradient-to-r from-black to-gray-900 rounded-2xl p-8 border border-gray-800 shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                <TrendingUpIcon className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white">Progress Tracking</h2>
+                <p className="text-gray-300">Visual analytics that show your learning journey and help you stay motivated.</p>
+              </div>
             </div>
-            <div className="w-px h-12 bg-gray-700"></div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-green-500">{userStats?.totalVideosCompleted || 0}</p>
-              <p className="text-sm text-gray-400">Completed</p>
-            </div>
-            <div className="w-px h-12 bg-gray-700"></div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-yellow-500">{userStats?.currentStreak || 0}</p>
-              <p className="text-sm text-gray-400">Day Streak</p>
-            </div>
-            <div className="w-px h-12 bg-gray-700"></div>
-            <div className="text-center">
-              <p className="text-3xl font-bold text-blue-500">{userStats?.overallProgress || 0}%</p>
-              <p className="text-sm text-gray-400">Progress</p>
-            </div>
+            <Link href="/playlists/create">
+              <Button className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2">
+                <PlusCircleIcon className="h-5 w-5" />
+                Create Playlist
+              </Button>
+            </Link>
           </div>
           
-          <Link href="/playlists/create">
-            <Button className="bg-[#D90429] hover:bg-[#C80021] text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2">
-              <PlusCircleIcon className="h-5 w-5" />
-              Create Playlist
-            </Button>
-          </Link>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="bg-white/10 rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold text-red-400">{userStats?.overallProgress || 0}%</div>
+              <div className="text-sm text-gray-300">Completion</div>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold text-red-400">{userStats?.totalVideosCompleted || 0}</div>
+              <div className="text-sm text-gray-300">Videos</div>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold text-red-400">{userStats?.totalLearningTime || '0m'}</div>
+              <div className="text-sm text-gray-300">Watched</div>
+            </div>
+            <div className="bg-white/10 rounded-xl p-4 text-center">
+              <div className="text-3xl font-bold text-red-400">{userStats?.currentStreak || 0}</div>
+              <div className="text-sm text-gray-300">Day Streak</div>
+            </div>
+          </div>
         </div>
       </motion.section>
 

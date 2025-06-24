@@ -37,25 +37,27 @@ export default function AchievementsPage() {
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
-          <div className="p-3 bg-yellow-100 rounded-full">
-            <Trophy className="h-8 w-8 text-yellow-600" />
+          <div className="p-3 bg-red-600 rounded-full">
+            <Trophy className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-primary">Achievements</h1>
+          <h1 className="text-4xl font-bold text-black">Achievements</h1>
         </div>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
           Track your learning journey and unlock achievements as you progress. 
           Complete videos, maintain streaks, and explore AI features to earn points and badges!
         </p>
       </div>
 
       {/* Achievement Categories */}
-      <Card>
+      <Card className="bg-gradient-to-r from-black to-gray-900 border-gray-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Filter className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+              <Filter className="h-4 w-4 text-white" />
+            </div>
             Categories
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-gray-300">
             Filter achievements by category to focus on specific goals
           </CardDescription>
         </CardHeader>
@@ -67,7 +69,11 @@ export default function AchievementsPage() {
                 variant={selectedCategory === category.id ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(category.id)}
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${
+                  selectedCategory === category.id 
+                    ? "bg-red-600 hover:bg-red-700 text-white border-red-600" 
+                    : "border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
+                }`}
               >
                 {category.icon}
                 {category.label}
@@ -78,41 +84,51 @@ export default function AchievementsPage() {
       </Card>
 
       {/* Achievement Tips */}
-      <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+      <Card className="bg-white border-2 border-gray-200">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-800">
-            <Brain className="h-5 w-5" />
+          <CardTitle className="flex items-center gap-2 text-black">
+            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+              <Brain className="h-4 w-4 text-white" />
+            </div>
             Pro Tips for Earning Achievements
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div className="flex items-start gap-2">
-              <Flame className="h-4 w-4 text-orange-500 mt-0.5 shrink-0" />
+              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mt-0.5 shrink-0">
+                <Flame className="h-4 w-4 text-red-600" />
+              </div>
               <div>
-                <p className="font-medium text-blue-800">Maintain Daily Streaks</p>
-                <p className="text-blue-600">Complete at least one video daily to build learning streaks</p>
+                <p className="font-medium text-black">Maintain Daily Streaks</p>
+                <p className="text-gray-600">Complete at least one video daily to build learning streaks</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <Zap className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mt-0.5 shrink-0">
+                <Zap className="h-4 w-4 text-red-400" />
+              </div>
               <div>
-                <p className="font-medium text-blue-800">Speed Learning Days</p>
-                <p className="text-blue-600">Complete multiple videos in one day for speed achievements</p>
+                <p className="font-medium text-black">Speed Learning Days</p>
+                <p className="text-gray-600">Complete multiple videos in one day for speed achievements</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <Brain className="h-4 w-4 text-purple-500 mt-0.5 shrink-0" />
+              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mt-0.5 shrink-0">
+                <Brain className="h-4 w-4 text-red-600" />
+              </div>
               <div>
-                <p className="font-medium text-blue-800">Explore AI Features</p>
-                <p className="text-blue-600">Use quizzes, mind maps, and AI chat to unlock special achievements</p>
+                <p className="font-medium text-black">Explore AI Features</p>
+                <p className="text-gray-600">Use quizzes, mind maps, and AI chat to unlock special achievements</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <Target className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
+              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mt-0.5 shrink-0">
+                <Target className="h-4 w-4 text-red-400" />
+              </div>
               <div>
-                <p className="font-medium text-blue-800">Set Weekly Goals</p>
-                <p className="text-blue-600">Customize and achieve your weekly learning targets</p>
+                <p className="font-medium text-black">Set Weekly Goals</p>
+                <p className="text-gray-600">Customize and achieve your weekly learning targets</p>
               </div>
             </div>
           </div>
