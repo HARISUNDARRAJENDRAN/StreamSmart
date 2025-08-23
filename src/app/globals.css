@@ -4,53 +4,55 @@
 
 @layer base {
   :root {
-    /* Dark Theme: Black & Red (matching landing page) */
-    --background: 240 10% 3.9%; /* Very Dark Gray (Near Black) - matching landing page */
-    --foreground: 0 0% 98%; /* Off-white */
+    /* Dark + Purple theme to match /landing */
+    --background: 240 10% 3.5%; /* near-black */
+    --foreground: 0 0% 98%;
 
-    --card: 240 6% 10%; /* Darker Gray for Cards */
+    --card: 240 6% 8%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 6% 10%;
+    --popover: 240 6% 8%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 349 92% 42%; /* Red #D90429 - matching landing page */
-    --primary-foreground: 0 0% 100%; /* White */
+    /* Primary purple (#8B5CF6) */
+    --primary: 256 86% 66%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 349 60% 20%; /* Muted/Darker Red */
-    --secondary-foreground: 0 0% 80%; /* Light Gray */
+    /* Secondary deeper purple (#7C3AED) */
+    --secondary: 262 83% 58%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 4% 20%; /* Dark Gray for muted elements */
-    --muted-foreground: 0 0% 60%; /* Mid-Light Gray for muted text */
+    --muted: 240 4% 18%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 349 92% 42%; /* Same red as primary for consistency */
-    --accent-foreground: 0 0% 100%; /* White for contrast on accent */
+    --accent: 256 86% 66%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 50.6%; /* Default destructive red */
+    --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 4% 16%; /* Subtle Dark Border */
-    --input: 240 4% 12%; /* Dark input background */
-    --ring: 349 92% 42%; /* Red for rings/focus - matching primary */
+    --border: 240 4% 14%;
+    --input: 240 4% 12%;
+    --ring: 256 86% 66%;
 
     --radius: 0.5rem;
 
-    /* Chart colors - Dark Theme with Red accents */
-    --chart-1: 349 92% 42%;  /* Primary Red */
-    --chart-2: 349 80% 55%; /* Lighter Red */
-    --chart-3: 0 0% 60%;    /* Light Gray */
-    --chart-4: 349 70% 35%;   /* Darker Red */
-    --chart-5: 349 60% 50%; /* Medium Red */
+    /* Chart colors - purple palette */
+    --chart-1: 256 86% 66%;
+    --chart-2: 270 91% 65%;
+    --chart-3: 292 84% 61%;
+    --chart-4: 262 83% 58%;
+    --chart-5: 316 73% 57%;
 
-    /* Sidebar specific colors - Dark Theme with Red accents */
-    --sidebar-background: 0 0% 6%; /* Very dark background - matching landing page gradient */
-    --sidebar-foreground: 0 0% 80%; /* Light Gray Text */
-    --sidebar-primary: 349 92% 42%; /* Red for active item BG */
-    --sidebar-primary-foreground: 0 0% 100%; /* White text on red BG */
-    --sidebar-accent: 240 4% 15%; /* Slightly lighter dark gray for hover BG */
-    --sidebar-accent-foreground: 0 0% 98%; /* Off-white text on hover */
-    --sidebar-border: 240 4% 20%;
-    --sidebar-ring: 349 92% 42%; /* Red for focus */
+    /* Sidebar colors aligned to landing */
+    --sidebar-background: 240 10% 3.5%;
+    --sidebar-foreground: 0 0% 85%;
+    --sidebar-primary: 256 86% 66%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 6% 10%;
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 240 4% 16%;
+    --sidebar-ring: 256 86% 66%;
   }
 }
 
@@ -60,9 +62,10 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Add gradient background similar to landing page */
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+    /* Landing-like hero gradient */
+    background: linear-gradient(135deg, #0A0A0B 0%, #1A1A2E 50%, #16213E 100%);
     min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }
 }
 
@@ -183,7 +186,7 @@
 }
 
 .wave-bg {
-  background: linear-gradient(45deg, #D90429, #A91D3A);
+  background: linear-gradient(45deg, #8B5CF6, #A855F7);
   background-size: 200% 200%;
   animation: wave 15s linear infinite;
 }

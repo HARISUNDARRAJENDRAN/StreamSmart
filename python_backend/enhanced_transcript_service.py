@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Enhanced transcript service with multiple fallback methods
+Enhanced transcript service with multiple fallback methods and robust error handling
 """
 
 import asyncio
@@ -8,7 +8,9 @@ import requests
 import time
 import json
 import re
-from typing import Optional, List, Dict, Any
+import os
+from pathlib import Path
+from typing import Optional, List, Dict, Any, Tuple
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, VideoUnavailable, NoTranscriptFound
 import logging
@@ -23,6 +25,61 @@ class EnhancedTranscriptService:
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         })
+        
+        # Setup absolute paths for Windows compatibility
+        self.base_dir = Path(__file__).parent.absolute()
+        self.transcripts_dir = self.base_dir / "transcripts"
+        self.vector_db_dir = self.base_dir / "vector_db"
+        
+        # Ensure directories exist
+        self._ensure_directories()
+    
+    def _ensure_directories(self) -> None:
+        """Create necessary directories if they don't exist"""
+        try:
+            self.transcripts_dir.mkdir(exist_ok=True)
+            self.vector_db_dir.mkdir(exist_ok=True)
+            logger.info(f"📁 Transcript directory: {self.transcripts_dir}")
+            logger.info(f"📁 Vector DB directory: {self.vector_db_dir}")
+        except Exception as e:
+            logger.error(f"❌ Failed to create directories: {e}")
+            raise
+    
+    def get_transcript_path(self, video_id: str) -> Path:
+        """Get absolute path for transcript file"""
+        return self.transcripts_dir / f"{video_id}.txt"
+    
+    def get_vector_store_path(self, video_id: str) -> Path:
+        """Get absolute path for vector store directory"""
+        return self.vector_db_dir / f"faiss_store_{video_id}"
+    
+    def save_transcript_to_file(self, video_id: str, transcript: str) -> bool:
+        """Save transcript to file with error handling"""
+        try:
+            transcript_path = self.get_transcript_path(video_id)
+            with open(transcript_path, 'w', encoding='utf-8') as f:
+                f.write(transcript)
+            logger.info(f"💾 Saved transcript to: {transcript_path}")
+            return True
+        except Exception as e:
+            logger.error(f"❌ Failed to save transcript for {video_id}: {e}")
+            return False
+    
+    def load_transcript_from_file(self, video_id: str) -> Optional[str]:
+        """Load transcript from file if it exists"""
+        try:
+            transcript_path = self.get_transcript_path(video_id)
+            if transcript_path.exists():
+                with open(transcript_path, 'r', encoding='utf-8') as f:
+                    transcript = f.read()
+                logger.info(f"📖 Loaded existing transcript from: {transcript_path}")
+                return transcript
+            else:
+                logger.info(f"📄 No existing transcript found at: {transcript_path}")
+                return None
+        except Exception as e:
+            logger.error(f"❌ Failed to load transcript for {video_id}: {e}")
+            return None
 
     def extract_video_id(self, url: str) -> Optional[str]:
         """Extract video ID from YouTube URL"""
@@ -163,40 +220,86 @@ class EnhancedTranscriptService:
         
         return None
 
-    async def get_transcript(self, video_url: str) -> Optional[str]:
+    async def get_transcript(self, video_url: str) -> Tuple[Optional[str], str]:
         """
         Try multiple methods to get transcript, falling back through each method
+        Returns (transcript, error_message)
         """
         video_id = self.extract_video_id(video_url)
         if not video_id:
-            logger.error(f"Could not extract video ID from {video_url}")
-            return None
+            error_msg = f"Could not extract video ID from {video_url}"
+            logger.error(error_msg)
+            return None, error_msg
         
         logger.info(f"🎥 Getting transcript for video: {video_id}")
+        logger.info(f"📍 Transcript path: {self.get_transcript_path(video_id)}")
+        logger.info(f"📍 Vector store path: {self.get_vector_store_path(video_id)}")
+        
+        # First, try to load existing transcript
+        existing_transcript = self.load_transcript_from_file(video_id)
+        if existing_transcript:
+            return existing_transcript, "Loaded from existing file"
+        
+        # If no existing transcript, try to fetch new one
+        transcript = None
+        error_details = []
         
         # Method 1: YouTube Transcript API
-        result = self.method1_youtube_transcript_api(video_id)
-        if result and len(result) > 100:  # Valid transcript should be substantial
-            return result
+        try:
+            result = self.method1_youtube_transcript_api(video_id)
+            if result and len(result) > 100:  # Valid transcript should be substantial
+                transcript = result
+                logger.info(f"✅ Successfully fetched transcript via Method 1")
+        except Exception as e:
+            error_details.append(f"Method 1 (YouTube API): {str(e)}")
+            logger.warning(f"❌ Method 1 failed: {e}")
         
-        # Method 2: Direct YouTube API calls
-        result = self.method2_direct_youtube_api(video_id)
-        if result and result != "POTENTIAL_TRANSCRIPT_FOUND":
-            return result
+        # Method 2: Direct YouTube API calls (if Method 1 failed)
+        if not transcript:
+            try:
+                result = self.method2_direct_youtube_api(video_id)
+                if result and result != "POTENTIAL_TRANSCRIPT_FOUND":
+                    transcript = result
+                    logger.info(f"✅ Successfully fetched transcript via Method 2")
+            except Exception as e:
+                error_details.append(f"Method 2 (Direct API): {str(e)}")
+                logger.warning(f"❌ Method 2 failed: {e}")
         
-        # Method 3: Alternative libraries
-        result = self.method3_alternative_libraries(video_id)
-        if result:
-            return result
+        # Method 3: Alternative libraries (if previous methods failed)
+        if not transcript:
+            try:
+                result = self.method3_alternative_libraries(video_id)
+                if result:
+                    transcript = result
+                    logger.info(f"✅ Successfully fetched transcript via Method 3")
+            except Exception as e:
+                error_details.append(f"Method 3 (Alternative): {str(e)}")
+                logger.warning(f"❌ Method 3 failed: {e}")
+        
+        # If we got a transcript, save it
+        if transcript:
+            saved = self.save_transcript_to_file(video_id, transcript)
+            if saved:
+                return transcript, "Successfully fetched and saved transcript"
+            else:
+                return transcript, "Fetched transcript but failed to save to file"
         
         # Method 4: Mock transcript as last resort
         logger.warning(f"⚠️  All transcript methods failed for {video_id}, generating mock transcript")
-        result = self.method4_mock_transcript(video_id)
-        if result:
-            return result
+        try:
+            result = self.method4_mock_transcript(video_id)
+            if result:
+                saved = self.save_transcript_to_file(video_id, result)
+                error_msg = "No captions available. Generated mock transcript based on video metadata. " + "; ".join(error_details)
+                return result, error_msg
+        except Exception as e:
+            error_details.append(f"Method 4 (Mock): {str(e)}")
+            logger.error(f"❌ Method 4 failed: {e}")
         
-        logger.error(f"❌ All methods failed for {video_id}")
-        return None
+        # All methods failed
+        error_msg = f"All transcript methods failed for video {video_id}: " + "; ".join(error_details)
+        logger.error(error_msg)
+        return None, error_msg
 
     def test_all_methods(self, video_url: str):
         """Test all methods for debugging"""

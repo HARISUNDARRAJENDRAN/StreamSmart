@@ -1190,7 +1190,7 @@ export default function DashboardPage() {
     <motion.section key={sectionTitle} variants={fadeInUp} className="space-y-6 w-full">
       <div className="flex items-center justify-between px-4">
         <h2 className="text-4xl font-bold text-white flex items-center gap-3 tracking-tight">
-          <div className="p-2 bg-[#D90429] rounded-xl">
+          <div className="p-2 rounded-xl" style={{ background: 'hsl(var(--primary))' }}>
             {iconComponent}
           </div>
           {sectionTitle}
@@ -1220,7 +1220,8 @@ export default function DashboardPage() {
                   style={{ width: '320px' }}
                 >
                   <Card 
-                    className="w-full h-56 cursor-pointer transition-all duration-300 hover:scale-105 hover:z-10 bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-[#D90429]/50 group/card relative overflow-hidden shadow-xl hover:shadow-[#D90429]/20"
+                    className="w-full h-56 cursor-pointer transition-all duration-300 hover:scale-105 hover:z-10 bg-gradient-to-br from-gray-900 to-black border border-gray-800 group/card relative overflow-hidden shadow-xl"
+                    style={{ boxShadow: '0 20px 25px -5px rgba(139, 92, 246, 0.15), 0 10px 10px -5px rgba(139, 92, 246, 0.08)' }}
                     onClick={() => handleGenreClick(genre.id)}
                   >
                     {/* Background Image */}
@@ -1241,10 +1242,10 @@ export default function DashboardPage() {
                     <CardContent className="p-5 h-full flex flex-col relative z-10">
                       {/* Top Section */}
                       <div className="flex items-start justify-between mb-4">
-                        <div className="bg-[#D90429] p-2.5 rounded-xl group-hover/card:bg-[#C80021] transition-colors shadow-lg">
+                        <div className="p-2.5 rounded-xl transition-colors shadow-lg" style={{ background: 'hsl(var(--primary))' }}>
                           <IconComponent className="h-5 w-5 text-white" />
                         </div>
-                        <Badge className="bg-[#D90429]/20 text-[#D90429] border-[#D90429]/30 font-medium backdrop-blur-sm text-xs">
+                        <Badge className="font-medium backdrop-blur-sm text-xs" style={{ background: 'color-mix(in hsl, hsl(var(--primary)) 20%, transparent)', color: 'hsl(var(--primary))', borderColor: 'color-mix(in hsl, hsl(var(--primary)) 30%, transparent)' }}>
                           {genre.count} Videos
                         </Badge>
                       </div>
@@ -1252,7 +1253,7 @@ export default function DashboardPage() {
                       {/* Content Section - Takes up most space */}
                       <div className="flex-1 flex flex-col justify-between min-h-0">
                         <div className="space-y-2">
-                          <h3 className="font-bold text-xl text-white leading-tight group-hover/card:text-[#D90429] transition-colors drop-shadow-lg line-clamp-2">
+                          <h3 className="font-bold text-xl text-white leading-tight transition-colors drop-shadow-lg line-clamp-2 group-hover/card:text-primary">
                             {genre.title}
                           </h3>
                           <p className="text-sm text-gray-300 line-clamp-3 leading-relaxed">
@@ -1277,8 +1278,8 @@ export default function DashboardPage() {
                     
                     {/* Hover Glow Effect */}
                     <div className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#D90429]/20 via-transparent to-[#D90429]/20" />
-                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#D90429]" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-transparent to-primary/20" />
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary" />
                     </div>
                   </Card>
                 </motion.div>
@@ -1723,7 +1724,8 @@ export default function DashboardPage() {
 
         {/* Floating User Stats */}
         <motion.div 
-          className="absolute top-8 right-8 bg-black/80 backdrop-blur-md rounded-2xl p-6 border border-[#D90429]/30"
+          className="absolute top-8 right-8 bg-black/80 backdrop-blur-md rounded-2xl p-6 border"
+          style={{ borderColor: 'color-mix(in hsl, hsl(var(--primary)) 30%, transparent)' }}
           initial={{ opacity: 0, x: 100, scale: 0.8 }}
           animate={{ 
             opacity: 1, 
@@ -1753,12 +1755,12 @@ export default function DashboardPage() {
                 transition: { duration: 0.5 }
               }}
             >
-              <Avatar className="h-12 w-12 border-2 border-[#D90429]">
+              <Avatar className="h-12 w-12 border-2" style={{ borderColor: 'hsl(var(--primary))' }}>
                 <AvatarImage 
                   src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
                   alt={user?.name || "User Avatar"} 
                 />
-                <AvatarFallback className="bg-[#D90429] text-white font-bold">
+                <AvatarFallback className="text-white font-bold" style={{ background: 'hsl(var(--primary))' }}>
                   {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
                 </AvatarFallback>
               </Avatar>
@@ -1796,7 +1798,7 @@ export default function DashboardPage() {
               }}
             >
               <motion.p 
-                className="text-2xl font-bold text-[#D90429]"
+                className="text-2xl font-bold text-primary"
                 animate={{ 
                   scale: [1, 1.05, 1],
                   transition: { duration: 2, repeat: Infinity, ease: "easeInOut" }
@@ -1816,7 +1818,7 @@ export default function DashboardPage() {
               }}
             >
               <motion.p 
-                className="text-2xl font-bold text-[#D90429]"
+                className="text-2xl font-bold text-primary"
                 animate={{ 
                   scale: [1, 1.05, 1],
                   transition: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }

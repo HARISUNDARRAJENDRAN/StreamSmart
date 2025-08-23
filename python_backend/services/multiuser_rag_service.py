@@ -95,12 +95,38 @@ class MultiUserRAGService:
             separators=["\n\n", "\n", ". ", " ", ""]
         )
         
-        # Storage paths
-        self.base_storage_path = Path("user_data")
-        self.base_storage_path.mkdir(exist_ok=True)
+        # Storage paths - use absolute paths for Windows compatibility
+        self.base_dir = Path(__file__).parent.parent.absolute()
+        self.base_storage_path = self.base_dir / "user_data"
+        self.transcripts_dir = self.base_dir / "transcripts"
+        self.vector_db_dir = self.base_dir / "vector_db"
+        
+        # Ensure directories exist
+        self._ensure_directories()
         
         # Create indexes
         self._create_indexes()
+    
+    def _ensure_directories(self) -> None:
+        """Create necessary directories if they don't exist"""
+        try:
+            self.base_storage_path.mkdir(exist_ok=True)
+            self.transcripts_dir.mkdir(exist_ok=True)
+            self.vector_db_dir.mkdir(exist_ok=True)
+            logger.info(f"📁 Base storage: {self.base_storage_path}")
+            logger.info(f"📁 Transcripts: {self.transcripts_dir}")
+            logger.info(f"📁 Vector DB: {self.vector_db_dir}")
+        except Exception as e:
+            logger.error(f"❌ Failed to create directories: {e}")
+            raise
+    
+    def get_vector_store_path(self, video_id: str) -> Path:
+        """Get absolute path for vector store directory"""
+        return self.vector_db_dir / f"faiss_store_{video_id}"
+    
+    def get_transcript_path(self, video_id: str) -> Path:
+        """Get absolute path for transcript file"""
+        return self.transcripts_dir / f"{video_id}.txt"
     
     def _create_indexes(self):
         """Create necessary database indexes"""

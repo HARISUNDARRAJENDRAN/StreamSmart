@@ -223,12 +223,13 @@ export default function ProductivityTimer() {
   return (
     <div className="w-full h-full relative overflow-hidden">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-red-950/20 to-black">
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-violet-950/20 to-black">
         {/* Floating particles */}
         {[...Array(30)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-red-500/30 rounded-full"
+            className="absolute w-1 h-1 rounded-full"
+            style={{ background: 'rgba(139, 92, 246, 0.3)' }}
             initial={{
               x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
               y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
@@ -249,7 +250,8 @@ export default function ProductivityTimer() {
         {[...Array(5)].map((_, i) => (
           <motion.div
             key={`circle-${i}`}
-            className="absolute rounded-full border border-red-500/10"
+            className="absolute rounded-full border"
+            style={{ borderColor: 'rgba(139, 92, 246, 0.1)' }}
             style={{
               width: `${200 + i * 100}px`,
               height: `${200 + i * 100}px`,
@@ -272,7 +274,8 @@ export default function ProductivityTimer() {
 
       {/* Top Bar */}
       <motion.div 
-        className="relative z-20 flex items-center justify-between px-8 py-6 mt-4 border-b border-red-500/20 backdrop-blur-sm"
+        className="relative z-20 flex items-center justify-between px-8 py-6 mt-4 backdrop-blur-sm"
+        style={{ borderBottom: '1px solid rgba(139, 92, 246, 0.2)' }}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -285,7 +288,7 @@ export default function ProductivityTimer() {
           transition={{ delay: 0.2, duration: 0.5 }}
         >
           <motion.h1 
-            className="text-xl font-bold bg-gradient-to-r from-red-500 via-white to-red-500 bg-clip-text text-transparent"
+            className="text-xl font-bold bg-gradient-to-r from-purple-400 via-white to-purple-400 bg-clip-text text-transparent"
             animate={{ 
               backgroundPosition: ["0%", "100%", "0%"],
             }}
@@ -309,17 +312,19 @@ export default function ProductivityTimer() {
           transition={{ delay: 0.3, duration: 0.5 }}
         >
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'pomodoro' | 'stopwatch')} className="w-auto">
-            <TabsList className="grid w-full grid-cols-2 bg-red-950/30 border border-red-500/30">
+            <TabsList className="grid w-full grid-cols-2 border" style={{ background: 'rgba(139, 92, 246, 0.08)', borderColor: 'rgba(139, 92, 246, 0.3)' }}>
               <TabsTrigger 
                 value="pomodoro" 
-                className="data-[state=active]:bg-red-600 data-[state=active]:text-white text-gray-300 hover:bg-red-500/20 transition-all duration-300 font-medium"
+                className="text-gray-300 transition-all duration-300 font-medium data-[state=active]:text-white"
+                style={{ background: 'transparent' }}
               >
                 <Timer className="w-4 h-4 mr-2" />
                 Pomodoro
               </TabsTrigger>
               <TabsTrigger 
                 value="stopwatch" 
-                className="data-[state=active]:bg-red-600 data-[state=active]:text-white text-gray-300 hover:bg-red-500/20 transition-all duration-300 font-medium"
+                className="text-gray-300 transition-all duration-300 font-medium data-[state=active]:text-white"
+                style={{ background: 'transparent' }}
               >
                 <Coffee className="w-4 h-4 mr-2" />
                 Stopwatch
@@ -351,9 +356,10 @@ export default function ProductivityTimer() {
                 <Button 
                   className={`w-full justify-start transition-all duration-300 py-3 ${
                     pomodoroMode === 'work' 
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-500/30' 
-                      : 'bg-red-950/30 text-gray-300 hover:bg-red-500/20 border border-red-500/30'
+                      ? 'text-white shadow-lg' 
+                      : 'text-gray-300 border'
                   }`}
+                  style={pomodoroMode === 'work' ? { background: 'hsl(var(--primary))', boxShadow: '0 10px 30px rgba(139,92,246,0.3)' } : { background: 'rgba(139,92,246,0.08)', borderColor: 'rgba(139,92,246,0.3)' }}
                   onClick={() => changePomodoroMode('work')}
                 >
                   Work (25m)
@@ -363,9 +369,10 @@ export default function ProductivityTimer() {
                 <Button 
                   className={`w-full justify-start transition-all duration-300 py-3 ${
                     pomodoroMode === 'short-break' 
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-500/30' 
-                      : 'bg-red-950/30 text-gray-300 hover:bg-red-500/20 border border-red-500/30'
+                      ? 'text-white shadow-lg' 
+                      : 'text-gray-300 border'
                   }`}
+                  style={pomodoroMode === 'short-break' ? { background: 'hsl(var(--primary))', boxShadow: '0 10px 30px rgba(139,92,246,0.3)' } : { background: 'rgba(139,92,246,0.08)', borderColor: 'rgba(139,92,246,0.3)' }}
                   onClick={() => changePomodoroMode('short-break')}
                 >
                   Short Break (5m)
@@ -375,9 +382,10 @@ export default function ProductivityTimer() {
                 <Button 
                   className={`w-full justify-start transition-all duration-300 py-3 ${
                     pomodoroMode === 'long-break' 
-                      ? 'bg-red-600 text-white shadow-lg shadow-red-500/30' 
-                      : 'bg-red-950/30 text-gray-300 hover:bg-red-500/20 border border-red-500/30'
+                      ? 'text-white shadow-lg' 
+                      : 'text-gray-300 border'
                   }`}
+                  style={pomodoroMode === 'long-break' ? { background: 'hsl(var(--primary))', boxShadow: '0 10px 30px rgba(139,92,246,0.3)' } : { background: 'rgba(139,92,246,0.08)', borderColor: 'rgba(139,92,246,0.3)' }}
                   onClick={() => changePomodoroMode('long-break')}
                 >
                   Long Break (15m)
@@ -397,7 +405,8 @@ export default function ProductivityTimer() {
                 value={currentSessionName}
                 onChange={(e) => setCurrentSessionName(e.target.value)}
                 placeholder="Name your session"
-                className="bg-red-950/20 border-2 border-red-500/30 text-white placeholder-gray-400 focus:bg-red-950/30 focus:border-red-400 transition-all duration-300 text-sm py-2 backdrop-blur-sm"
+                className="text-white placeholder-gray-400 transition-all duration-300 text-sm py-2 backdrop-blur-sm"
+                style={{ background: 'rgba(139, 92, 246, 0.08)', border: '2px solid rgba(139, 92, 246, 0.3)' }}
               />
             </motion.div>
 
@@ -410,7 +419,8 @@ export default function ProductivityTimer() {
             >
               <Button
                 variant="outline"
-                className="w-full border-red-500/30 text-red-400 hover:bg-red-950/30 hover:border-red-400 transition-all duration-300"
+                className="w-full transition-all duration-300"
+                style={{ borderColor: 'rgba(139,92,246,0.3)', color: 'hsl(var(--primary))' }}
               >
                 <History className="w-4 h-4 mr-2" />
                 View Session History ({pomodoroSessions.length})
@@ -437,7 +447,8 @@ export default function ProductivityTimer() {
               >
                 {/* Outer Circle */}
                 <motion.div
-                  className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] rounded-full border-4 border-red-500/30 relative"
+                  className="w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 xl:w-[28rem] xl:h-[28rem] rounded-full relative"
+                  style={{ border: '4px solid rgba(139,92,246,0.3)' }}
                   animate={{ rotate: isPomodoroRunning ? 360 : 0 }}
                   transition={{ duration: 60, repeat: isPomodoroRunning ? Infinity : 0, ease: "linear" }}
                 >
@@ -456,7 +467,7 @@ export default function ProductivityTimer() {
                       cy="50"
                       r="45"
                       fill="none"
-                      stroke="url(#redGradient)"
+                      stroke="url(#purpleGradient)"
                       strokeWidth="3"
                       strokeLinecap="round"
                       strokeDasharray={`${2 * Math.PI * 45}`}
@@ -464,18 +475,18 @@ export default function ProductivityTimer() {
                       className="transition-all duration-1000 ease-out"
                       animate={{
                         filter: isPomodoroRunning ? [
-                          "drop-shadow(0 0 10px rgba(239, 68, 68, 0.5))",
-                          "drop-shadow(0 0 20px rgba(239, 68, 68, 0.8))",
-                          "drop-shadow(0 0 10px rgba(239, 68, 68, 0.5))"
-                        ] : "drop-shadow(0 0 5px rgba(239, 68, 68, 0.3))"
+                          "drop-shadow(0 0 10px rgba(139, 92, 246, 0.5))",
+                          "drop-shadow(0 0 18px rgba(139, 92, 246, 0.8))",
+                          "drop-shadow(0 0 10px rgba(139, 92, 246, 0.5))"
+                        ] : "drop-shadow(0 0 5px rgba(139, 92, 246, 0.3))"
                       }}
                       transition={{ duration: 2, repeat: isPomodoroRunning ? Infinity : 0 }}
                     />
                     <defs>
-                      <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#ef4444" />
-                        <stop offset="50%" stopColor="#dc2626" />
-                        <stop offset="100%" stopColor="#b91c1c" />
+                      <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#8B5CF6" />
+                        <stop offset="50%" stopColor="#A855F7" />
+                        <stop offset="100%" stopColor="#7C3AED" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -533,7 +544,8 @@ export default function ProductivityTimer() {
                         </AnimatePresence>
                       </motion.div>
                       <motion.p 
-                        className="text-red-400 text-sm md:text-base lg:text-lg font-semibold mt-2"
+                        className="text-sm md:text-base lg:text-lg font-semibold mt-2"
+                        style={{ color: 'hsl(var(--primary))' }}
                         animate={{ opacity: [0.7, 1, 0.7] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       >
@@ -555,7 +567,8 @@ export default function ProductivityTimer() {
                   <Button
                     onClick={isPomodoroRunning ? pausePomodoroTimer : startPomodoroTimer}
                     size="lg"
-                    className="bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-4 text-lg transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 border-2 border-red-500"
+                    className="text-white font-bold px-8 py-4 text-lg transition-all duration-300 border-2"
+                    style={{ background: 'hsl(var(--primary))', borderColor: 'hsl(var(--primary))', boxShadow: '0 10px 30px rgba(139,92,246,0.3)' }}
                   >
                     <motion.div
                       animate={{ rotate: isPomodoroRunning ? 0 : 360 }}
@@ -572,7 +585,8 @@ export default function ProductivityTimer() {
                     onClick={resetPomodoroTimer}
                     size="lg"
                     variant="outline"
-                    className="border-2 border-red-500/50 text-red-400 hover:bg-red-950/30 hover:border-red-400 font-bold px-8 py-4 text-lg transition-all duration-300 backdrop-blur-sm"
+                    className="border-2 font-bold px-8 py-4 text-lg transition-all duration-300 backdrop-blur-sm"
+                    style={{ borderColor: 'rgba(139,92,246,0.5)', color: 'hsl(var(--primary))' }}
                   >
                     <RotateCcw className="w-5 h-5 mr-2" />
                     Reset
@@ -583,7 +597,8 @@ export default function ProductivityTimer() {
                   <Button
                     onClick={openSpotifyFocus}
                     size="lg"
-                    className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold px-6 py-4 text-lg transition-all duration-300 shadow-lg shadow-red-500/30 hover:shadow-red-500/50 border-2 border-red-500/50 backdrop-blur-sm"
+                    className="text-white font-bold px-6 py-4 text-lg transition-all duration-300 border-2 backdrop-blur-sm"
+                    style={{ background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)', borderColor: 'rgba(139,92,246,0.5)', boxShadow: '0 10px 30px rgba(139,92,246,0.3)' }}
                   >
                     <Music className="w-5 h-5 mr-2" />
                     Focus Music
@@ -599,12 +614,13 @@ export default function ProductivityTimer() {
                 transition={{ delay: 1.2, duration: 0.8 }}
               >
                 <motion.p 
-                  className="text-base italic text-white/80 font-light tracking-wide"
+                  className="text-base italic font-light tracking-wide"
+                  style={{ color: 'rgba(255,255,255,0.8)' }}
                   animate={{
                     textShadow: [
-                      "0 0 10px rgba(239, 68, 68, 0.3)",
-                      "0 0 15px rgba(239, 68, 68, 0.4)",
-                      "0 0 10px rgba(239, 68, 68, 0.3)"
+                      "0 0 10px rgba(139, 92, 246, 0.3)",
+                      "0 0 15px rgba(139, 92, 246, 0.4)",
+                      "0 0 10px rgba(139, 92, 246, 0.3)"
                     ]
                   }}
                   transition={{ duration: 4, repeat: Infinity }}

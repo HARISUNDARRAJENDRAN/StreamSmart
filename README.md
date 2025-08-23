@@ -69,39 +69,87 @@ To get a local copy up and running, follow these simple steps.
 
 *   Node.js (v18 or later recommended)
 *   npm or yarn
+*   Python 3.8+
+*   [Poetry](https://python-poetry.org/docs/#installation)
+*   MongoDB (local or [MongoDB Atlas](https://cloud.mongodb.com/))
+*   Redis (local or cloud instance)
+*   Google Cloud Project with Vertex AI enabled
+*   YouTube Data API Key
 
 ### Installation & Setup
 
 1.  **Clone the repository:**
-    ```bash
+    ```powershell
     git clone https://github.com/HARISUNDARRAJENDRAN/StreamSmart.git
     cd StreamSmart
     ```
 
-2.  **Install NPM packages:**
-    ```bash
-    npm install
-    ```
-    or
-    ```bash
-    yarn install
-    ```
+2.  **Backend Setup (Python/FastAPI)**
 
-3.  **Set up Environment Variables:**
-    Create a `.env` file in the root of your project and add your YouTube Data API v3 key:
-    ```env
-    YOUTUBE_API_KEY=YOUR_ACTUAL_YOUTUBE_API_KEY_HERE
-    ```
-    *   You can obtain a YouTube Data API key from the [Google Cloud Console](https://console.cloud.google.com/). Make sure the "YouTube Data API v3" is enabled for your project.
+    a.  **Navigate to the Backend Directory:**
+        ```powershell
+        cd python_backend
+        ```
 
-4.  **Run the Next.js Development Server:**
-    In another terminal window, run:
-    ```bash
-    npm run dev
-    ```
-    This will start the Next.js application, typically on `http://localhost:9002` (as per your `package.json`).
+    b.  **Install Python Dependencies with Poetry:**
+        ```powershell
+        poetry install
+        ```
 
-Open [http://localhost:9002](http://localhost:9002) (or your configured port) in your browser to see the application. You should be redirected to the landing page.
+    c.  **Set Up Environment Variables:**
+        Create a `.env` file in the `python_backend` directory and populate it with your configuration:
+        ```env
+        MONGODB_CONNECTION_STRING="your_mongodb_connection_string"
+        REDIS_HOST="localhost"
+        REDIS_PORT=6379
+        YOUTUBE_API_KEY="your_youtube_data_api_key"
+        GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/google_cloud_service_account_key.json" # Optional: Only if using a service account key file
+        VERTEX_AI_PROJECT="your_vertex_ai_project_id"
+        VERTEX_AI_LOCATION="your_vertex_ai_region_e.g._us-central1"
+        # Add any other environment variables as needed for authentication or other services
+        ```
+
+    d.  **Run Database Migrations/Initializations:**
+        You might need to run initial setup scripts. For example:
+        ```powershell
+        poetry run python initialize_mongodb_system.py
+        poetry run python populate_sample_videos.py
+        ```
+
+    e.  **Start the Backend Server:**
+        ```powershell
+        poetry run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+        ```
+        The backend should now be running on `http://localhost:8000`.
+
+3.  **Frontend Setup (React/Next.js)**
+
+    a.  **Navigate to the Project Root Directory:**
+        ```powershell
+        cd ..
+        ```
+
+    b.  **Install Node.js Dependencies:**
+        ```powershell
+        npm install
+        # or
+        yarn install
+        ```
+
+    c.  **Set up Frontend Environment Variables:**
+        Create a `.env` file in the root of your project (if not already present) and add your YouTube Data API v3 key:
+        ```env
+        NEXT_PUBLIC_YOUTUBE_API_KEY=YOUR_ACTUAL_YOUTUBE_API_KEY_HERE
+        ```
+        *   You can obtain a YouTube Data API key from the [Google Cloud Console](https://console.cloud.google.com/). Make sure the "YouTube Data API v3" is enabled for your project.
+
+    d.  **Run the Next.js Development Server:**
+        ```powershell
+        npm run dev
+        ```
+        This will start the Next.js application, typically on `http://localhost:3000` (or `http://localhost:9002` as previously noted in the README).
+
+Open [http://localhost:3000](http://localhost:3000) (or your configured port) in your browser to see the application. You should be redirected to the landing page.
 
 ## Project Structure (Simplified)
 

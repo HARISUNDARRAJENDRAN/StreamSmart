@@ -1,7 +1,7 @@
 import os
 import json
 import logging
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 import asyncio
 from datetime import datetime
@@ -17,6 +17,9 @@ from sentence_transformers import SentenceTransformer
 from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from langchain_core.embeddings import Embeddings
+
+# Import enhanced transcript service
+from enhanced_transcript_service import EnhancedTranscriptService
 
 # Pydantic models
 from pydantic import BaseModel
@@ -56,12 +59,23 @@ class RAGChatbot:
     def __init__(self, api_key: str):
         """Initialize the RAG chatbot with Gemini API key."""
         
+        # Setup logging first
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(__name__)
+        
         # Configure Gemini
         genai.configure(api_key=api_key)
         self.model = genai.GenerativeModel('gemini-1.5-flash-latest')
         
-        # Initialize local embeddings
+        # Initialize local embeddings with health check
+        try:
         self.embeddings = LocalLangchainEmbeddings(model_name="all-MiniLM-L6-v2")
+            # Test embedding model
+            test_result = self.embeddings.embed_query("test")
+            self.logger.info(f"✅ Embeddings model loaded successfully (dimension: {len(test_result)})")
+        except Exception as e:
+            self.logger.error(f"❌ Failed to load embeddings model: {e}")
+            raise
         
         # Text splitter for chunking
         self.text_splitter = RecursiveCharacterTextSplitter(
@@ -71,20 +85,188 @@ class RAGChatbot:
             separators=["\n\n", "\n", ". ", " ", ""]
         )
         
-        # Storage paths
-        self.transcript_dir = Path("transcripts")
-        self.vector_db_dir = Path("vector_db")
+        # Initialize enhanced transcript service
+        self.transcript_service = EnhancedTranscriptService()
         
-        # Create directories
-        self.transcript_dir.mkdir(exist_ok=True)
-        self.vector_db_dir.mkdir(exist_ok=True)
+        # Storage paths - use absolute paths for Windows compatibility
+        self.base_dir = Path(__file__).parent.absolute()
+        self.transcript_dir = self.base_dir / "transcripts"
+        self.vector_db_dir = self.base_dir / "vector_db"
+        
+        # Ensure directories exist
+        self._ensure_directories()
+        
+        # In-memory storage for loaded vector stores
+        self.loaded_stores = {}
         
         # Vector store
         self.vector_store = None
         
-        # Setup logging
-        logging.basicConfig(level=logging.INFO)
-        self.logger = logging.getLogger(__name__)
+    def _ensure_directories(self) -> None:
+        """Create necessary directories if they don't exist"""
+        try:
+            self.transcript_dir.mkdir(exist_ok=True)
+            self.vector_db_dir.mkdir(exist_ok=True)
+            self.logger.info(f"📁 Transcript directory: {self.transcript_dir}")
+            self.logger.info(f"📁 Vector DB directory: {self.vector_db_dir}")
+        except Exception as e:
+            self.logger.error(f"❌ Failed to create directories: {e}")
+            raise
+    
+    def get_vector_store_path(self, video_id: str) -> Path:
+        """Get absolute path for vector store directory"""
+        return self.vector_db_dir / f"faiss_store_{video_id}"
+    
+    def health_check(self) -> Dict[str, Any]:
+        """Perform comprehensive health check"""
+        health_status = {
+            "status": "healthy",
+            "components": {},
+            "errors": []
+        }
+        
+        # Check embeddings model
+        try:
+            test_embedding = self.embeddings.embed_query("test")
+            health_status["components"]["embeddings"] = {
+                "status": "healthy",
+                "model_dimension": len(test_embedding)
+            }
+        except Exception as e:
+            health_status["components"]["embeddings"] = {
+                "status": "unhealthy",
+                "error": str(e)
+            }
+            health_status["errors"].append(f"Embeddings: {e}")
+            health_status["status"] = "unhealthy"
+        
+        # Check FAISS import
+        try:
+            from langchain_community.vectorstores import FAISS
+            health_status["components"]["faiss"] = {"status": "healthy"}
+        except Exception as e:
+            health_status["components"]["faiss"] = {
+                "status": "unhealthy",
+                "error": str(e)
+            }
+            health_status["errors"].append(f"FAISS: {e}")
+            health_status["status"] = "unhealthy"
+        
+        # Check directories
+        try:
+            directories = {
+                "transcripts": self.transcript_dir.exists() and self.transcript_dir.is_dir(),
+                "vector_db": self.vector_db_dir.exists() and self.vector_db_dir.is_dir()
+            }
+            health_status["components"]["directories"] = {
+                "status": "healthy" if all(directories.values()) else "unhealthy",
+                "details": directories
+            }
+            if not all(directories.values()):
+                health_status["errors"].append("Some directories are missing")
+                health_status["status"] = "unhealthy"
+        except Exception as e:
+            health_status["components"]["directories"] = {
+                "status": "unhealthy",
+                "error": str(e)
+            }
+            health_status["errors"].append(f"Directories: {e}")
+            health_status["status"] = "unhealthy"
+        
+        # Check Gemini model
+        try:
+            test_response = self.model.generate_content("Hello")
+            health_status["components"]["gemini"] = {"status": "healthy"}
+        except Exception as e:
+            health_status["components"]["gemini"] = {
+                "status": "unhealthy",
+                "error": str(e)
+            }
+            health_status["errors"].append(f"Gemini: {e}")
+            health_status["status"] = "unhealthy"
+        
+        self.logger.info(f"🏥 Health check completed: {health_status['status']}")
+        return health_status
+
+    async def process_video_robustly(self, video_url: str) -> Tuple[bool, str]:
+        """Process a video robustly: get transcript and create vector store.
+        Returns (success, detailed_message)"""
+        try:
+            self.logger.info(f"🎬 Processing video robustly: {video_url}")
+            
+            # Get video ID
+            video_id = self.get_video_id(video_url)
+            self.logger.info(f"📹 Video ID: {video_id}")
+            self.logger.info(f"📍 Vector store path: {self.get_vector_store_path(video_id)}")
+            
+            # Check if vector store already exists
+            vector_store_path = self.get_vector_store_path(video_id)
+            if vector_store_path.exists() and (vector_store_path / "index.faiss").exists():
+                self.logger.info(f"✅ Vector store already exists for {video_id}")
+                return True, f"Vector store already exists for video {video_id}"
+            
+            # Get transcript using enhanced service
+            transcript, error_msg = await self.transcript_service.get_transcript(video_url)
+            if not transcript:
+                error_message = f"Could not get transcript for video {video_id}: {error_msg}"
+                self.logger.error(f"❌ {error_message}")
+                # Return a helpful message about trying videos with captions
+                fallback_message = f"{error_message}. Try asking about videos with available captions like those in the pre-indexed collection."
+                return False, fallback_message
+            
+            self.logger.info(f"📝 Got transcript ({len(transcript)} characters): {error_msg}")
+            
+            # Create vector store using the enhanced method
+            success, vector_msg = await self.create_vector_store_robustly(video_id, transcript)
+            if success:
+                success_message = f"Successfully processed video {video_id}. {error_msg}. {vector_msg}"
+                self.logger.info(f"✅ {success_message}")
+                return True, success_message
+            else:
+                error_message = f"Failed to create vector store for {video_id}: {vector_msg}"
+                self.logger.error(f"❌ {error_message}")
+                return False, error_message
+                
+        except Exception as e:
+            error_message = f"Error processing video {video_url}: {str(e)}"
+            self.logger.error(f"❌ {error_message}")
+            return False, error_message
+
+    async def create_vector_store_robustly(self, video_id: str, transcript: str) -> Tuple[bool, str]:
+        """Create FAISS vector store with robust error handling"""
+        try:
+            vector_store_path = self.get_vector_store_path(video_id)
+            
+            # Create directory if it doesn't exist
+            vector_store_path.mkdir(parents=True, exist_ok=True)
+            
+            # Split text into chunks
+            chunks = self.text_splitter.split_text(transcript)
+            self.logger.info(f"📄 Split transcript into {len(chunks)} chunks")
+            
+            if not chunks:
+                return False, "No chunks created from transcript"
+            
+            # Create documents
+            documents = [Document(page_content=chunk, metadata={"video_id": video_id, "chunk_id": i}) 
+                        for i, chunk in enumerate(chunks)]
+            
+            # Create FAISS vector store
+            vector_store = FAISS.from_documents(documents, self.embeddings)
+            
+            # Save vector store
+            vector_store.save_local(str(vector_store_path))
+            
+            # Verify the save was successful
+            if (vector_store_path / "index.faiss").exists() and (vector_store_path / "index.pkl").exists():
+                self.logger.info(f"💾 Vector store saved successfully to {vector_store_path}")
+                return True, f"Created vector store with {len(chunks)} chunks"
+            else:
+                return False, "Vector store files were not created successfully"
+                
+        except Exception as e:
+            self.logger.error(f"❌ Error creating vector store for {video_id}: {e}")
+            return False, f"Vector store creation failed: {str(e)}"
 
     def get_video_id(self, url: str) -> str:
         """Extract video ID from YouTube URL."""
@@ -316,22 +498,28 @@ class RAGChatbot:
             self.logger.error(f"Error chunking and embedding transcript for {video_id}: {str(e)}")
             raise
 
-    async def load_combined_vector_store(self, video_ids: List[str]) -> FAISS:
-        """Load and combine vector stores for multiple videos."""
+    async def load_combined_vector_store(self, video_ids: List[str]) -> Tuple[Optional[FAISS], List[str], List[str]]:
+        """Load and combine vector stores for multiple videos.
+        Returns (combined_store, loaded_video_ids, missing_video_ids)"""
         try:
             combined_store = None
+            loaded_video_ids = []
+            missing_video_ids = []
             
             for video_id in video_ids:
-                vector_store_path = self.vector_db_dir / f"faiss_store_{video_id}"
+                vector_store_path = self.get_vector_store_path(video_id)
                 
-                if not vector_store_path.exists():
-                    self.logger.warning(f"Vector store not found for video {video_id}, skipping...")
+                if not vector_store_path.exists() or not (vector_store_path / "index.faiss").exists():
+                    self.logger.warning(f"Vector store not found for video {video_id} at {vector_store_path}")
+                    missing_video_ids.append(video_id)
                     continue
                 
+                try:
                 # Load vector store
                 vector_store = FAISS.load_local(
                     str(vector_store_path), 
-                    self.embeddings
+                        self.embeddings,
+                        allow_dangerous_deserialization=True
                 )
                 
                 if combined_store is None:
@@ -340,27 +528,37 @@ class RAGChatbot:
                     # Merge vector stores
                     combined_store.merge_from(vector_store)
                 
-                self.logger.info(f"Loaded vector store for video {video_id}")
+                    loaded_video_ids.append(video_id)
+                    self.logger.info(f"✅ Loaded vector store for video {video_id}")
+                    
+                except Exception as e:
+                    self.logger.error(f"❌ Failed to load vector store for video {video_id}: {e}")
+                    missing_video_ids.append(video_id)
+                    continue
             
-            if combined_store is None:
-                raise ValueError("No vector stores found for the provided video IDs")
-            
-            return combined_store
+            self.logger.info(f"📊 Vector store loading summary: {len(loaded_video_ids)} loaded, {len(missing_video_ids)} missing")
+            return combined_store, loaded_video_ids, missing_video_ids
             
         except Exception as e:
             self.logger.error(f"Error loading combined vector store: {str(e)}")
-            raise
+            return None, [], video_ids
 
-    async def retrieve_relevant_chunks(self, query: str, video_ids: List[str], top_k: int = 5) -> List[Dict[str, Any]]:
-        """Retrieve relevant chunks from FAISS vector database using similarity search."""
+    async def retrieve_relevant_chunks(self, query: str, video_ids: List[str], top_k: int = 5) -> Tuple[List[Dict[str, Any]], List[str], List[str]]:
+        """Retrieve relevant chunks from FAISS vector database using similarity search.
+        Returns (chunks, loaded_video_ids, missing_video_ids)"""
         try:
             # Load combined vector store
-            vector_store = await self.load_combined_vector_store(video_ids)
+            vector_store, loaded_video_ids, missing_video_ids = await self.load_combined_vector_store(video_ids)
+            
+            relevant_chunks = []
+            
+            if vector_store is None:
+                self.logger.warning(f"No vector stores available for videos: {video_ids}")
+                return relevant_chunks, loaded_video_ids, missing_video_ids
             
             # Perform similarity search
             results = vector_store.similarity_search_with_score(query, k=top_k)
             
-            relevant_chunks = []
             for doc, score in results:
                 chunk_info = {
                     'content': doc.page_content,
@@ -372,11 +570,11 @@ class RAGChatbot:
                 relevant_chunks.append(chunk_info)
             
             self.logger.info(f"Retrieved {len(relevant_chunks)} relevant chunks for query: {query[:50]}...")
-            return relevant_chunks
+            return relevant_chunks, loaded_video_ids, missing_video_ids
             
         except Exception as e:
             self.logger.error(f"Error retrieving relevant chunks: {str(e)}")
-            raise
+            return [], [], video_ids
 
     async def generate_augmented_response(self, query: str, relevant_chunks: List[Dict[str, Any]]) -> str:
         """Generate response using Gemini with retrieved context."""
@@ -520,6 +718,26 @@ RESPONSE:"""
                 source_chunks=[],
                 video_sources=[]
             )
+
+# Add robust methods to RAGChatbot class
+async def process_video_query_robust(self, query: str, video_id: str) -> Dict[str, Any]:
+    """Process a query for a specific video with robust error handling."""
+    try:
+        # Use the robust answer method
+        result = await self.answer_question_robustly(query, [video_id])
+        return result
+    except Exception as e:
+        self.logger.error(f"Error in process_video_query: {e}")
+        return {
+            "answer": f"I encountered an error while processing your question. This might be due to missing transcript data or a configuration issue: {str(e)}",
+            "status": "error",
+            "details": str(e),
+            "loaded_videos": [],
+            "missing_videos": [video_id]
+        }
+
+# Add the robust methods to the RAGChatbot class
+RAGChatbot.process_video_query_robust = process_video_query_robust
 
 # Initialize the chatbot (to be used in other modules)
 def create_rag_chatbot(api_key: str = None) -> RAGChatbot:

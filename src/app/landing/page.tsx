@@ -4,83 +4,41 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Zap, MessageSquare, Bot, Trophy, Medal } from 'lucide-react';
+import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Zap, MessageSquare, Bot, Trophy, Medal, Code, Layers, Globe, Cpu } from 'lucide-react';
 import SplitText from '@/components/ui/split-text';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import Particles from '@tsparticles/react';
-import { Engine } from '@tsparticles/engine';
-import { loadLinksPreset } from '@tsparticles/preset-links';
+import { motion, AnimatePresence } from 'framer-motion';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
-const features = [
-  {
-    icon: <BrainIcon className="h-8 w-8 text-primary" />,
-    title: 'AI-Powered Learning',
-    description: 'Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.',
-    dataAiHint: 'AI learning technology',
+// Dark theme color palette
+const colors = {
+  background: {
+    base: '#0A0A0B',
+    surface: '#111113',
+    elevated: '#1C1C1E',
   },
-  {
-    icon: <ListVideoIcon className="h-8 w-8 text-primary" />,
-    title: 'Smart Playlists',
-    description: 'Automatically curate and organize YouTube videos into coherent learning sequences tailored to your goals.',
-    dataAiHint: 'playlist organization',
+  text: {
+    primary: '#FFFFFF',
+    secondary: '#B3B3B3',
+    tertiary: '#8A8A8A',
   },
-  {
-    icon: <LightbulbIcon className="h-8 w-8 text-primary" />,
-    title: 'Interactive Quizzes',
-    description: 'Test your knowledge with AI-generated quizzes that adapt to your learning progress and reinforce key concepts.',
-    dataAiHint: 'interactive assessment',
+  purple: {
+    primary: '#8B5CF6',
+    secondary: '#A855F7',
+    subtle: '#C084FC',
+    glow: 'rgba(139, 92, 246, 0.2)',
+    dark: '#7C3AED',
   },
-  {
-    icon: <BarChart3Icon className="h-8 w-8 text-primary" />,
-    title: 'Progress Analytics',
-    description: 'Track your learning journey with detailed analytics, completion rates, and personalized insights.',
-    dataAiHint: 'learning analytics dashboard',
-  },
-  {
-    icon: <UsersIcon className="h-8 w-8 text-primary" />,
-    title: 'Community Learning',
-    description: 'Connect with fellow learners, share playlists, and learn together in collaborative study groups.',
-    dataAiHint: 'collaborative learning community',
-  },
-  {
-    icon: <Shield className="h-8 w-8 text-primary" />,
-    title: 'Quality Assurance',
-    description: 'AI-powered content curation ensures you only learn from high-quality, verified educational content.',
-    dataAiHint: 'content quality verification',
-  },
-];
-
-const testimonials = [
-  {
-    name: "Naveen Sekhar",
-    role: "CyberSecurity Student",
-    content: "Fantastic work! The way you've integrated AI to turn YouTube videos into interactive lessons with mind maps and quizzes is super impressive. The platform feels fresh and genuinely useful for learners. I loved the interface it's clean and engaging and since it's still in the testing stage, it's totally understandable and expected. It's clear you've put a lot of thought and effort into this. Big kudos on building something impactful.",
-    avatar: "NS"
-  },
-  {
-    name: "Anandavalli",
-    role: "MBBS UG Student",
-    content: "I've increased my learning efficiency by 300%. The personalized quizzes ensure I actually retain what I watch.",
-    avatar: "AV"
-  },
-  {
-    name: "Dhanushya Sai",
-    role: "Data Science Student",
-    content: "Overall Impressive work!",
-    avatar: "DS"
+  gradients: {
+    hero: 'linear-gradient(135deg, #0A0A0B 0%, #1A1A2E 50%, #16213E 100%)',
+    card: 'linear-gradient(145deg, #111113 0%, #1C1C1E 100%)',
+    purple: 'linear-gradient(90deg, #8B5CF6 0%, #A855F7 100%)',
+    purpleRadial: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
   }
-];
+};
 
-const stats = [
-  { number: "10+", label: "Active Learners", icon: Users },
-  { number: "50+", label: "Videos Organized", icon: PlayCircle },
-  { number: "93%", label: "User Satisfaction", icon: Star },
-  { number: "5x", label: "Faster Learning", icon: TrendingUp },
-];
-
+// Enhanced animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -102,181 +60,166 @@ const itemVariants = {
   },
 };
 
-const fadeInUpVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-// About section specific animations
-const aboutSectionVariants = {
+const heroVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
       duration: 0.8,
       staggerChildren: 0.2,
-    },
-  },
-};
-
-const aboutItemVariants = {
-  hidden: { y: 50, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-const aboutColumnVariants = {
-  hidden: { y: 40, opacity: 0, scale: 0.95 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: "easeOut",
-    },
-  },
-};
-
-// Features section specific animations
-const featuresSectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const featuresCardVariants = {
-  hidden: { y: 60, opacity: 0, scale: 0.9 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.6,
-      ease: [0.23, 1, 0.32, 1], // Custom easing curve for smooth animation
-    },
-  },
-};
-
-const featuresHeaderVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-// How It Works section specific animations
-const howItWorksSectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const howItWorksStepVariants = {
-  hidden: { y: 80, opacity: 0, scale: 0.8 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.7,
-      ease: [0.23, 1, 0.32, 1],
-    },
-  },
-};
-
-const howItWorksHeaderVariants = {
-  hidden: { y: 40, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-// Contact section specific animations
-const contactSectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const contactItemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
-
-// Hero section specific animations
-const heroSectionVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.15,
     },
   },
 };
 
 const heroItemVariants = {
-  hidden: { y: 20, opacity: 0 },
+  hidden: { y: 30, opacity: 0 },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.5,
+      duration: 0.6,
+      ease: "easeOut",
     },
   },
 };
+
+// Particle component for background effects
+const ParticleSystem = ({ count = 50, className = "" }) => {
+  return (
+    <div className={`absolute inset-0 pointer-events-none ${className}`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute w-1 h-1 rounded-full animate-float-gentle"
+          style={{
+            background: colors.purple.subtle,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${4 + Math.random() * 6}s`,
+            opacity: 0.3 + Math.random() * 0.4,
+            filter: 'blur(0.5px)',
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Floating geometric shapes component
+const FloatingShapes = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Purple geometric shapes */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute opacity-20"
+          style={{
+            left: `${15 + i * 12}%`,
+            top: `${20 + (i % 4) * 20}%`,
+            background: colors.purple.subtle,
+            filter: 'blur(1px)',
+          }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 180, 360],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 8 + i * 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 0.5,
+          }}
+        >
+          {i % 2 === 0 ? (
+            <div className="w-8 h-8 rounded-full" />
+          ) : (
+            <div className="w-6 h-6 rotate-45 rounded-sm" />
+          )}
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+const features = [
+  {
+    icon: <Brain className="h-8 w-8" />,
+    title: 'AI-Powered Learning',
+    description: 'Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.',
+    gradient: 'from-purple-500/20 to-blue-500/20',
+  },
+  {
+    icon: <Code className="h-8 w-8" />,
+    title: 'Smart Code Analysis',
+    description: 'Automatically analyze programming tutorials and create interactive coding exercises tailored to your skill level.',
+    gradient: 'from-purple-500/20 to-pink-500/20',
+  },
+  {
+    icon: <Layers className="h-8 w-8" />,
+    title: 'Visual Mind Maps',
+    description: 'Convert complex topics into beautiful, interactive mind maps that make learning intuitive and memorable.',
+    gradient: 'from-purple-500/20 to-cyan-500/20',
+  },
+  {
+    icon: <BarChart3Icon className="h-8 w-8" />,
+    title: 'Progress Analytics',
+    description: 'Track your learning journey with detailed analytics, completion rates, and personalized insights.',
+    gradient: 'from-purple-500/20 to-green-500/20',
+  },
+  {
+    icon: <Globe className="h-8 w-8" />,
+    title: 'Global Community',
+    description: 'Connect with learners worldwide, share knowledge, and collaborate on learning projects.',
+    gradient: 'from-purple-500/20 to-orange-500/20',
+  },
+  {
+    icon: <Cpu className="h-8 w-8" />,
+    title: 'Neural Processing',
+    description: 'Advanced AI models understand context and provide relevant, personalized learning recommendations.',
+    gradient: 'from-purple-500/20 to-red-500/20',
+  },
+];
+
+const testimonials = [
+  {
+    name: "Naveen Sekhar",
+    role: "CyberSecurity Student",
+    content: "Fantastic work! The way you've integrated AI to turn YouTube videos into interactive lessons with mind maps and quizzes is super impressive. The platform feels fresh and genuinely useful for learners.",
+    avatar: "NS",
+    rating: 5
+  },
+  {
+    name: "Anandavalli",
+    role: "MBBS UG Student", 
+    content: "I've increased my learning efficiency by 300%. The personalized quizzes ensure I actually retain what I watch.",
+    avatar: "AV",
+    rating: 5
+  },
+  {
+    name: "Dhanushya Sai",
+    role: "Data Science Student",
+    content: "Overall impressive work! The AI recommendations are spot-on and save me hours of searching for quality content.",
+    avatar: "DS",
+    rating: 5
+  }
+];
+
+const stats = [
+  { number: "50+", label: "Active Learners", icon: Users },
+  { number: "1K+", label: "Videos Organized", icon: PlayCircle },
+  { number: "98%", label: "User Satisfaction", icon: Star },
+  { number: "5x", label: "Faster Learning", icon: TrendingUp },
+];
 
 export default function LandingPage() {
   const [pushTransitionComplete, setPushTransitionComplete] = useState(false);
   const [canNavbarAppear, setCanNavbarAppear] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Intersection observers for different sections
   const aboutRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
@@ -291,52 +234,43 @@ export default function LandingPage() {
   const contactInView = contactRef.inView;
   const howItWorksInView = howItWorksRef.inView;
 
-  // Simulate splash screen completion
+  // Initialize page
   useEffect(() => {
+    setIsLoaded(true);
     const timer = setTimeout(() => {
       setPushTransitionComplete(true);
-    }, 1500); // Duration of the splash screen push up
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
-  // Effect to determine if the navbar *can* appear (after splash and initial delay)
+  // Navbar visibility logic
   useEffect(() => {
     if (pushTransitionComplete) {
       const timer = setTimeout(() => {
         setCanNavbarAppear(true);
-      }, 300); // Original delay for first appearance
+      }, 300);
       return () => clearTimeout(timer);
     } else {
-      setCanNavbarAppear(false); // Reset if splash isn't complete
+      setCanNavbarAppear(false);
     }
   }, [pushTransitionComplete]);
 
-  // Effect to handle scroll-based visibility *after* navbar is allowed to appear
   useEffect(() => {
     const handleScrollBasedNavbar = () => {
       if (!canNavbarAppear) {
-        setShowNavbar(false); // Navbar stays hidden if it's not yet time for its first appearance
+        setShowNavbar(false);
         return;
       }
-
-      // Navbar is eligible to appear; now check scroll position
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > 50) { // Scrolled down a bit
-        setShowNavbar(false); // Hide navbar
-      } else { // At the very top (or close to it)
-        setShowNavbar(true); // Show navbar
-      }
+      setShowNavbar(scrollTop <= 50);
     };
 
-    handleScrollBasedNavbar(); // Call once to set initial state based on current conditions
-
+    handleScrollBasedNavbar();
     window.addEventListener('scroll', handleScrollBasedNavbar);
-    return () => {
-      window.removeEventListener('scroll', handleScrollBasedNavbar);
-    };
-  }, [canNavbarAppear]); // This effect depends on whether the navbar is ready for scroll-based logic
+    return () => window.removeEventListener('scroll', handleScrollBasedNavbar);
+  }, [canNavbarAppear]);
 
-  // Side navigation scroll detection (for dots) - remains separate
+  // Section navigation
   useEffect(() => {
     const handleSideNavScroll = () => {
       const sections = document.querySelectorAll('section[data-section]');
@@ -357,31 +291,6 @@ export default function LandingPage() {
     window.addEventListener('scroll', handleSideNavScroll);
     return () => window.removeEventListener('scroll', handleSideNavScroll);
   }, []);
-
-  // Add scroll-snap to html/body and handle splash screen
-  useEffect(() => {
-    document.documentElement.style.scrollSnapType = 'y mandatory';
-    document.documentElement.style.scrollBehavior = 'smooth';
-    document.body.style.scrollSnapType = 'y mandatory';
-    document.body.style.scrollBehavior = 'smooth';
-    
-    // Handle splash screen animation
-    const timer = setTimeout(() => {
-      setPushTransitionComplete(true);
-      // Show navbar after push transition
-      setTimeout(() => {
-        setShowNavbar(true);
-      }, 800); // Delay for navbar reveal
-    }, 500);
-    
-    return () => {
-      clearTimeout(timer);
-      document.documentElement.style.scrollSnapType = '';
-      document.documentElement.style.scrollBehavior = '';
-      document.body.style.scrollSnapType = '';
-      document.body.style.scrollBehavior = '';
-    };
-  }, []);
   
   const sections = [
     { id: 'hero', name: 'Hero' },
@@ -392,116 +301,8 @@ export default function LandingPage() {
     { id: 'contact', name: 'Contact' }
   ];
 
-  // Particles initialization
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadLinksPreset(engine);
-  }, []);
-
-  // Knowledge Graph particles configuration
-  const particlesOptions = {
-    preset: "links",
-    background: {
-      color: {
-        value: "transparent",
-      },
-    },
-    particles: {
-      color: {
-        value: ["#8B5CF6", "#A855F7", "#C084FC", "#DDD6FE"], // Purple accent variations
-      },
-      links: {
-        color: "#8B5CF6",
-        distance: 150,
-        enable: true,
-        opacity: 0.3,
-        width: 1,
-        triangles: {
-          enable: false,
-        },
-      },
-      move: {
-        direction: "none" as const,
-        enable: true,
-        outModes: {
-          default: "bounce" as const,
-        },
-        random: true,
-        speed: 0.5,
-        straight: false,
-      },
-      number: {
-        density: {
-          enable: true,
-          area: 2000,
-        },
-        value: 60,
-      },
-      opacity: {
-        value: 0.6,
-        random: true,
-        animation: {
-          enable: true,
-          speed: 0.5,
-          minimumValue: 0.3,
-        },
-      },
-      size: {
-        value: { min: 1, max: 3 },
-        animation: {
-          enable: true,
-          speed: 2,
-          minimumValue: 1,
-        },
-      },
-    },
-    detectRetina: true,
-    interactivity: {
-      events: {
-        onHover: {
-          enable: true,
-          mode: "grab",
-        },
-        resize: {
-          enable: true,
-        },
-      },
-      modes: {
-        grab: {
-          distance: 200,
-          links: {
-            opacity: 0.8,
-          },
-        },
-      },
-    },
-  };
-
-  // Scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = document.querySelectorAll('section[data-section]');
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-
-      sections.forEach((section, index) => {
-        const sectionTop = (section as HTMLElement).offsetTop;
-        const sectionHeight = (section as HTMLElement).offsetHeight;
-        
-        if (scrollTop >= sectionTop - windowHeight / 2 && 
-            scrollTop < sectionTop + sectionHeight - windowHeight / 2) {
-          setCurrentSection(index);
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Navigate to section
   const navigateToSection = (sectionIndex: number) => {
     const targetSection = document.querySelector(`section[data-section="${sectionIndex}"]`) as HTMLElement;
-    
     if (targetSection) {
       window.scrollTo({
         top: targetSection.offsetTop,
@@ -512,28 +313,17 @@ export default function LandingPage() {
 
   return (
     <div 
-      className="relative bg-white"
+      className="relative min-h-screen"
       style={{
+        background: colors.background.base,
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
         scrollSnapType: 'y mandatory',
         scrollBehavior: 'smooth'
       }}
     >
-      {/* Splash Screen Overlay */}
-      <motion.div
-        className="fixed inset-0 z-[100]"
-        style={{ background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%)' }}
-        initial={{ y: 0 }}
-        animate={{ 
-          y: pushTransitionComplete ? '-100%' : 0 
-        }}
-        transition={{ 
-          duration: 1.2, 
-          ease: [0.25, 0.1, 0.25, 1],
-          delay: 0.5 
-        }}
-      />
+      {/* Splash screen removed for a seamless entry experience */}
 
-      {/* Top Navigation */}
+      {/* Enhanced Navigation */}
       <motion.nav 
         className="fixed top-0 left-0 right-0 z-50 p-6"
         initial={{ opacity: 0, y: -20 }}
@@ -542,48 +332,65 @@ export default function LandingPage() {
           y: showNavbar ? 0 : -20
         }}
         transition={{ duration: 0.6, ease: "easeOut" }}
+        style={{
+          background: showNavbar ? 'rgba(10, 10, 11, 0.9)' : 'transparent',
+          backdropFilter: showNavbar ? 'blur(20px)' : 'none',
+          borderBottom: showNavbar ? `1px solid ${colors.background.elevated}` : 'none'
+        }}
       >
         <div className="container mx-auto flex items-center justify-between">
-          {/* Left side - Logo */}
-          <Link href="/" className="text-white font-bold text-2xl font-poppins">
-            <span style={{ color: '#D90429' }}>S</span>treamSmart
+          <Link href="/" className="text-white font-bold text-2xl flex items-center gap-2">
+            <div 
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: colors.gradients.purple }}
+            >
+              <Brain className="h-5 w-5 text-white" />
+            </div>
+            <span style={{ color: colors.text.primary }}>StreamSmart</span>
           </Link>
           
-          {/* Right side - Navigation & Buttons */}
         <div className="flex items-center gap-6">
+            {['About', 'Features', 'Demo'].map((item) => (
           <Link 
-            href="#about" 
-              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
-          >
-            About
-              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link 
-            href="#features" 
-              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
-          >
-            Features
-              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link 
-            href="/demo" 
-              className="text-white font-medium relative group transition-all duration-300 hover:text-white/90 text-sm"
-          >
-            Demo
-              <span className="absolute left-0 bottom-[-2px] w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-            <Link href="/signup">
-              <Button 
-                variant="default"
-                className="bg-[#D90429] text-white font-medium px-5 py-2 text-sm transition-all duration-300 hover:bg-[#C80021] font-poppins rounded-md"
+                key={item}
+                href={`#${item.toLowerCase()}`}
+                className="relative group transition-all duration-300 text-sm font-medium"
+                style={{ color: colors.text.secondary }}
               >
-                Get Started Free
+                {item}
+                <span 
+                  className="absolute left-0 bottom-[-2px] w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                  style={{ background: colors.purple.primary }}
+                />
+          </Link>
+            ))}
+            <Link href="/register">
+              <Button 
+                className="font-medium px-6 py-2 text-sm transition-all duration-300 rounded-lg relative overflow-hidden group"
+                style={{
+                  background: colors.gradients.purple,
+                  color: colors.text.primary,
+                  border: 'none'
+                }}
+              >
+                <span className="relative z-10">Get Started Free</span>
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                  }}
+                />
               </Button>
           </Link>
           <Link href="/login">
             <Button 
                 variant="outline"
-                className="text-white border-white/50 font-medium px-5 py-2 text-sm transition-all duration-300 hover:bg-white/10 hover:text-white font-poppins rounded-md"
+                className="font-medium px-6 py-2 text-sm transition-all duration-300 rounded-lg border"
+                style={{
+                  color: colors.text.primary,
+                  borderColor: colors.purple.primary,
+                  background: 'transparent'
+                }}
             >
                 Login
             </Button>
@@ -592,7 +399,7 @@ export default function LandingPage() {
         </div>
       </motion.nav>
 
-      {/* Side Navigation */}
+      {/* Side Navigation Dots */}
       <nav className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
         <div className="flex flex-col space-y-4">
           {sections.map((section, index) => (
@@ -601,12 +408,27 @@ export default function LandingPage() {
               onClick={() => navigateToSection(index)}
               className={`group relative w-3 h-3 rounded-full transition-all duration-300 ${
                 currentSection === index 
-                  ? 'bg-primary scale-125' 
-                  : 'bg-muted-foreground/30 hover:bg-primary/60'
+                  ? 'scale-125' 
+                  : 'hover:scale-110'
               }`}
+              style={{
+                background: currentSection === index 
+                  ? colors.purple.primary 
+                  : colors.purple.glow,
+                boxShadow: currentSection === index 
+                  ? `0 0 15px ${colors.purple.glow}` 
+                  : 'none'
+              }}
               aria-label={`Navigate to ${section.name}`}
             >
-              <span className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-card border border-border rounded-md px-2 py-1 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+              <span 
+                className="absolute right-6 top-1/2 transform -translate-y-1/2 rounded-md px-2 py-1 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none"
+                style={{
+                  background: colors.background.surface,
+                  color: colors.text.primary,
+                  border: `1px solid ${colors.background.elevated}`,
+                }}
+              >
                 {section.name}
               </span>
             </button>
@@ -616,484 +438,371 @@ export default function LandingPage() {
 
       {/* Main Content */}
       <main className="relative">
-        {/* Hero Section */}
+        {/* Hero Section - Completely Redesigned with Video Background */}
         <section 
           id="hero"
           data-section="0"
           className="relative h-screen flex items-center justify-center overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
+            background: colors.background.base,
           }}
         >
-          {/* Dynamic Animated Background */}
-          <div className="absolute inset-0 w-full h-full">
-            {/* Base gradient with smooth transitions */}
-            <div 
-              className="absolute inset-0 w-full h-full animate-gradient-shift"
-              style={{
-                background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2a0a0a 50%, #1a1a1a 75%, #0f0f0f 100%)',
-                backgroundSize: '200% 200%'
-              }}
-            />
-            
-            {/* Radial glow effects */}
-            <div 
-              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full animate-pulse-glow"
-              style={{
-                background: 'radial-gradient(circle, rgba(217, 4, 41, 0.15) 0%, transparent 70%)',
-                filter: 'blur(40px)',
-              }}
-            />
-            <div 
-              className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full animate-pulse-glow"
-              style={{
-                background: 'radial-gradient(circle, rgba(169, 29, 58, 0.12) 0%, transparent 70%)',
-                filter: 'blur(35px)',
-                animationDelay: '2s'
-              }}
-            />
-            
-            {/* Floating particles */}
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-1 h-1 bg-white/20 rounded-full animate-float-particles"
-                style={{
-                  left: `${15 + i * 12}%`,
-                  top: `${20 + (i % 3) * 25}%`,
-                  animationDelay: `${i * 0.8}s`,
-                  animationDuration: `${6 + (i % 3)}s`
-                }}
-              />
-            ))}
-            
-            {/* Seamless light streaks */}
-            <div 
-              className="absolute inset-0 w-full h-full opacity-40"
-              style={{
-                background: `
-                  linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.03) 20%, transparent 40%),
-                  linear-gradient(-45deg, transparent 60%, rgba(217, 4, 41, 0.08) 80%, transparent 100%)
-                `,
-                animation: 'shimmer 12s ease-in-out infinite'
-              }}
-            />
-            
-            {/* Edge vignette for depth */}
+          {/* Video Background */}
+          <div className="absolute inset-0 w-full h-full z-0">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/StreamSmart.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {/* Dark Overlay */}
             <div 
               className="absolute inset-0 w-full h-full"
-              style={{
-                background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.3) 100%)'
-              }}
+              style={{ background: 'rgba(0, 0, 0, 0.6)' }}
             />
           </div>
-          {/* Split Screen Content */}
-          <div className="relative h-full w-full flex">
             
-            {/* Left Half - Preview */}
-            <motion.div 
-              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pl-16 xl:pl-32 py-12"
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : -50 }}
-              transition={{ duration: 0.8, delay: 2.0, ease: "easeOut" }}
-            >
-              <div className="flex flex-col items-center text-center space-y-4 w-full max-w-lg">
-                
-                {/* StreamSmart Preview text */}
-                <p 
-                  className="text-base md:text-lg text-white/70 font-medium"
-                          style={{
-                            fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
-                          }}
-                        >
-                  StreamSmart Preview
-                </p>
-
-                {/* Video Preview Container - Simplified */}
-                <div 
-                  className="relative w-full aspect-[16/10] rounded-xl overflow-hidden group"
-                      style={{
-                    background: '#1C1C1E',
-                    border: '1px solid rgba(255, 255, 255, 0.08)'
-                      }}
-                    >
-                  {/* Simple Play button icon */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <PlayCircle className="w-16 h-16 text-white/40 group-hover:text-white/60 transition-colors duration-300" />
-                      </div>
-                  
-                  {/* Corner brackets - Matched to target image */}
-                  <div className="absolute top-3 left-3 w-5 h-5 border-l-2 border-t-2 border-white/20 rounded-tl-sm" />
-                  <div className="absolute top-3 right-3 w-5 h-5 border-r-2 border-t-2 border-white/20 rounded-tr-sm" />
-                  <div className="absolute bottom-3 left-3 w-5 h-5 border-l-2 border-b-2 border-white/20 rounded-bl-sm" />
-                  <div className="absolute bottom-3 right-3 w-5 h-5 border-r-2 border-b-2 border-white/20 rounded-br-sm" />
-          </div>
-          </div>
-            </motion.div>
-
-            {/* Right Half - Content */}
-            <motion.div 
-              className="relative z-10 w-full lg:w-1/2 flex items-center justify-center px-6 lg:pr-16 xl:pr-32 py-12"
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: pushTransitionComplete ? 1 : 0, x: pushTransitionComplete ? 0 : 50 }}
-              transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
-            >
-              <div className="flex flex-col items-center text-center space-y-6 max-w-xl">
-                
-                {/* Main Heading with Split Text Animation */}
+          {/* Hero Content - Centered */}
+          <div className="relative z-10 h-full w-full flex flex-col items-center justify-center text-center">
+            <div className="container mx-auto px-6 max-w-4xl">
+              <motion.div 
+                className="flex flex-col items-center justify-center space-y-8"
+                style={{ position: 'relative', top: '50px' }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 50 }}
+                transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+              >
+                {/* Main Headline with Typewriter Effect */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: pushTransitionComplete ? 1 : 0 }}
-                  transition={{ delay: 2.0, duration: 0.8 }}
-                  className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight uppercase font-poppins text-white"
+                  transition={{ delay: 1.4, duration: 0.8 }}
+                >
+                  <h1 
+                    className="font-extrabold leading-tight mb-4"
                   style={{
-                    fontWeight: 700,
-                    letterSpacing: '-0.02em',
-                  }}
-                >
-                  <SplitText
-                    text="STREAMSMART"
-                    trigger={pushTransitionComplete}
-                    delay={2.2}
-                    duration={0.8}
-                    stagger={0.08}
-                    ease="power3.out"
-                    from={{ opacity: 0, y: 60, rotationX: 90 }}
-                    to={{ opacity: 1, y: 0, rotationX: 0 }}
-                    className="inline-block"
-                    onLetterAnimationComplete={() => {
-                      console.log('STREAMSMART animation completed!');
-                    }}
-                  />
-                </motion.div>
-
-                {/* Subtitle with red underline */}
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 10 }}
-                  transition={{ delay: 2.2, duration: 0.8, ease: "easeOut" }}
-                  className="flex flex-col items-center"
-                >
-                  <p
-                    className="text-base md:text-lg text-white/90 font-normal tracking-wide"
-                    style={{
-                      fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-                      fontWeight: 400,
+                      fontSize: '70px',
+                      color: colors.text.primary,
+                      letterSpacing: '-0.02em',
+                      textShadow: '0 4px 20px rgba(0,0,0,0.5)'
                     }}
                   >
-                    Your Simplified <span style={{ color: '#D90429', fontWeight: 500 }}>Youtube Learning</span>
-                  </p>
-                  
-                  {/* Seamless glowing line with center peak brightness */}
-                  <div className="relative mt-1 w-48 h-[2px]">
-                    {/* Base line with sharp ends */}
-                    <div
-                      className="w-full h-full relative"
+                    Turn Every Video into{' '}
+                    <span 
                       style={{
-                        background: 'linear-gradient(90deg, transparent 0%, #A91D3A 15%, #D90429 50%, #A91D3A 85%, transparent 100%)',
+                        background: colors.gradients.purple,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text'
                       }}
                     >
-                      {/* Brightness gradient overlay - peaks at center */}
-                      <div 
-                        className="absolute inset-0 w-full h-full"
-                        style={{
-                          background: 'linear-gradient(90deg, transparent 0%, rgba(255, 23, 68, 0.3) 20%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 23, 68, 0.3) 80%, transparent 100%)',
-                        }}
-                      />
-                      
-                      {/* Center glow effect - seamless integration */}
-                      <div 
-                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-glow"
-                        style={{
-                          width: '20px',
-                          height: '6px',
-                          background: 'radial-gradient(ellipse, rgba(255, 255, 255, 0.9) 0%, rgba(255, 23, 68, 0.6) 40%, transparent 70%)',
-                          filter: 'blur(0.5px)',
-                        }}
-                      />
-                      
-                      {/* Shimmer effect */}
-                      <div 
-                        className="absolute inset-0 w-full h-full opacity-60 animate-shimmer"
-                        style={{
-                          background: 'linear-gradient(90deg, transparent 0%, transparent 40%, rgba(255, 255, 255, 0.6) 50%, transparent 60%, transparent 100%)',
-                        }}
-                      />
-                    </div>
-                    
-                    {/* Extended glow for sharp ends effect */}
-                    <div 
-                      className="absolute inset-0 w-full h-full"
-                      style={{
-                        background: 'linear-gradient(90deg, rgba(217, 4, 41, 0.1) 0%, transparent 25%, transparent 75%, rgba(217, 4, 41, 0.1) 100%)',
-                        filter: 'blur(1px)',
-                      }}
-                    />
-                  </div>
+                      Knowledge
+                    </span>
+                  </h1>
                 </motion.div>
 
-                {/* Main Description */}
+                {/* Description */}
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 10 }}
-                  transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
-                  className="text-lg md:text-xl text-white/80 leading-relaxed mt-4 max-w-md"
-                  style={{
-                    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif',
-                    fontWeight: 400,
-                    lineHeight: '1.7'
+                  transition={{ delay: 2.0, duration: 0.8, ease: "easeOut" }}
+                  className="text-lg md:text-xl leading-relaxed max-w-2xl"
+                    style={{
+                    color: colors.text.secondary,
+                    fontSize: '18px',
+                    lineHeight: '1.7',
+                    position: 'relative',
+                    top: '-15px'
                   }}
                 >
-                  Turn disorganized YouTube videos into smart, structured learning journeys — powered by{' '}
-                  <span 
-                    style={{
-                      color: '#D90429',
-                      fontWeight: 600 
-                    }}
-                  >
-                    AI
-                  </span>
-                  {' '}and personalized tracking.
+                  StreamSmart transforms passive watching into active, goal-driven learning with AI-curated 
+                  learning paths, smart summaries, and personalized playlists.
                 </motion.p>
 
-                {/* Simplified CTA Button */}
+                {/* CTA Buttons */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 20 }}
-                  transition={{ delay: 2.6, duration: 0.8, ease: "easeOut" }}
-                  className="mt-6"
+                  transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
+                  className="flex flex-col sm:flex-row gap-4 justify-center"
                 >
                   <Link href="/register">
                     <Button
-                      variant="default"
-                      className="group bg-white text-[#D90429] font-poppins font-semibold px-7 py-3 text-base transition-all duration-300 hover:bg-gray-100 shadow-md hover:shadow-lg rounded-lg flex items-center gap-2.5"
-                        >
-                      <Target className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
-                      <span>Start Learning Now</span>
-                          <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      className="group relative font-semibold px-8 py-4 text-base transition-all duration-300 rounded-xl overflow-hidden"
+                      style={{
+                        background: colors.gradients.purple,
+                        color: colors.text.primary,
+                        border: 'none',
+                        boxShadow: `0 8px 25px ${colors.purple.glow}`
+                      }}
+                    >
+                      <span className="relative z-10 flex items-center gap-2">
+                        <Sparkles className="w-5 h-5" />
+                        Start Learning Now
+                        <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </span>
+                      <motion.div 
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.1)',
+                        }}
+                      />
                     </Button>
                   </Link>
+                  
+                  <Button
+                    variant="outline"
+                    className="font-medium px-8 py-4 text-base transition-all duration-300 rounded-xl group"
+                        style={{
+                      color: colors.text.primary,
+                      borderColor: colors.purple.primary,
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    <PlayCircle className="w-5 h-5 mr-2 transition-transform duration-300 group-hover:scale-110" />
+                    Watch Demo
+                  </Button>
                 </motion.div>
+              </motion.div>
+                    </div>
+                  </div>
+
+          {/* Scroll Indicator */}
+          <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 3, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
+          >
+                  <span 
+              className="text-sm font-medium"
+              style={{ color: colors.text.tertiary }}
+            >
+              Scroll to explore
+                  </span>
+            <div 
+              className="w-6 h-10 border-2 rounded-full flex justify-center"
+              style={{ borderColor: colors.purple.primary }}
+            >
+              <motion.div
+                className="w-1 h-3 rounded-full mt-2"
+                style={{ background: colors.purple.primary }}
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              />
               </div>
             </motion.div>
-          </div>
         </section>
 
-        {/* Features Section */}
+        {/* Features Section - Bento Grid Style */}
         <motion.section 
           id="features"
           ref={featuresRef}
           data-section="1"
-          className="min-h-screen py-20 relative overflow-hidden bg-white"
+          className="min-h-screen py-20 relative overflow-hidden"
           style={{ 
-            scrollSnapAlign: 'start'
+            scrollSnapAlign: 'start',
+            background: colors.background.base
           }}
           initial="hidden"
           animate={featuresInView ? "visible" : "hidden"}
-          variants={featuresSectionVariants}
+          variants={containerVariants}
         >
-          {/* Geometric Background Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-20 left-10 w-32 h-32 bg-red-50 rounded-full opacity-30"></div>
-            <div className="absolute top-40 right-20 w-24 h-24 bg-black/5 rounded-lg rotate-45"></div>
-            <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-red-100 rounded-full opacity-20"></div>
-            <div className="absolute bottom-20 right-10 w-20 h-20 bg-black/10 rounded-lg -rotate-12"></div>
+          {/* Background Grid */}
+          <div className="absolute inset-0">
+            <div 
+              className="absolute inset-0 opacity-[0.02]"
+              style={{
+                backgroundImage: `
+                  linear-gradient(${colors.purple.primary} 1px, transparent 1px),
+                  linear-gradient(90deg, ${colors.purple.primary} 1px, transparent 1px)
+                `,
+                backgroundSize: '40px 40px'
+              }}
+            />
+            <ParticleSystem count={20} />
           </div>
 
           <div className="container mx-auto px-6 max-w-7xl relative z-10">
             {/* Header */}
             <motion.div
-              variants={featuresHeaderVariants}
-              className="text-left mb-16 md:mb-20 ml-8"
+              variants={itemVariants}
+              className="text-center mb-16"
             >
-              <h2 className="text-5xl md:text-6xl font-bold mb-4 leading-tight text-black">
+              <Badge 
+                className="mb-6 px-4 py-2 text-sm font-medium border"
+                style={{
+                  background: 'rgba(139, 92, 246, 0.1)',
+                  borderColor: colors.purple.primary,
+                  color: colors.purple.primary
+                }}
+              >
+                ✨ Features
+              </Badge>
+              <h2 
+                className="font-bold mb-6 leading-tight"
+                style={{
+                  fontSize: 'clamp(2rem, 5vw, 4rem)',
+                  fontWeight: 700,
+                  color: colors.text.primary
+                }}
+              >
                 Smart Learning{' '}
-                <span className="text-red-600">
+                <span 
+                  style={{
+                    background: colors.gradients.purple,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
                   Made Visual
                 </span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-2xl leading-relaxed">
-                Experience the future of education through intuitive design and intelligent features
+              <p 
+                className="text-xl leading-relaxed max-w-2xl mx-auto"
+                style={{ color: colors.text.secondary }}
+              >
+                Experience the future of education through AI-powered features that adapt to your learning style
               </p>
             </motion.div>
 
-            {/* Creative Visual Features Layout */}
-            <div className="space-y-12">
+            {/* Bento Grid Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               
-              {/* AI Mind Maps - Large Feature Card */}
+              {/* Large Feature Card - AI Mind Maps */}
                   <motion.div
-                    variants={featuresCardVariants}
-                custom={0}
-                className="group cursor-pointer"
-                whileHover={{ scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                  >
-                <div className="grid grid-cols-12 gap-8 items-center bg-white border-2 border-gray-200 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <div className="col-span-12 md:col-span-7 order-2 md:order-1">
-                    <div className="flex items-center mb-4">
-                      <div className="w-12 h-12 bg-red-100 rounded-2xl flex items-center justify-center mr-4">
-                        <Brain className="h-6 w-6 text-red-600" />
+                variants={itemVariants}
+                className="md:col-span-2 lg:col-span-2 group cursor-pointer"
+                whileHover={{ y: -5 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div 
+                  className="h-full p-8 rounded-3xl border backdrop-blur-xl relative overflow-hidden"
+                  style={{
+                    background: colors.gradients.card,
+                    borderColor: colors.background.elevated,
+                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                  }}
+                >
+                  {/* Hover glow effect */}
+                  <div 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+                    style={{
+                      background: colors.purple.glow,
+                      filter: 'blur(20px)',
+                    }}
+                  />
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center mb-6">
+                      <div 
+                        className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4"
+                        style={{
+                          background: colors.purple.glow,
+                          border: `1px solid ${colors.purple.primary}`
+                        }}
+                      >
+                        <Brain className="h-7 w-7" style={{ color: colors.purple.primary }} />
                       </div>
-                      <h3 className="text-3xl font-bold text-black">AI Mind Maps</h3>
+                      <h3 
+                        className="text-3xl font-bold"
+                        style={{ color: colors.text.primary }}
+                      >
+                        AI Mind Maps
+                      </h3>
                     </div>
-                    <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                      Transform any video into interactive visual knowledge maps. Our AI analyzes content and creates structured learning paths that make complex topics easy to understand.
+                    <p 
+                      className="text-lg leading-relaxed mb-6"
+                      style={{ color: colors.text.secondary }}
+                    >
+                      Transform any video into interactive visual knowledge maps. Our AI analyzes content 
+                      and creates structured learning paths that make complex topics intuitive.
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">Visual Learning</span>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">AI Powered</span>
-                      <span className="px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">Interactive</span>
-                    </div>
-                  </div>
-                  <div className="col-span-12 md:col-span-5 order-1 md:order-2">
-                    <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-8 h-64 flex items-center justify-center relative overflow-hidden">
-                      <div className="absolute top-4 left-4 w-8 h-8 bg-red-200 rounded-full"></div>
-                      <div className="absolute top-8 right-8 w-6 h-6 bg-red-300 rounded-full"></div>
-                      <div className="absolute bottom-6 left-8 w-4 h-4 bg-red-400 rounded-full"></div>
-                      <Share2 className="h-16 w-16 text-red-600" />
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Smart Recommendations & Video Chat */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
-                {/* Smart Recommendations */}
-                <motion.div
-                  variants={featuresCardVariants}
-                  custom={1}
-                  className="group cursor-pointer"
-                  whileHover={{ y: -8 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="text-right mb-6">
-                      <div className="w-12 h-12 bg-black rounded-2xl flex items-center justify-center ml-auto">
-                        <Zap className="h-6 w-6 text-white" />
+                      {['Visual Learning', 'AI Powered', 'Interactive'].map((tag) => (
+                        <span 
+                          key={tag}
+                          className="px-3 py-1 rounded-full text-sm font-medium"
+                          style={{
+                            background: colors.purple.glow,
+                            color: colors.purple.primary
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
                       </div>
                     </div>
-                    <h3 className="text-2xl font-bold text-black mb-4 text-right">Smart Recommendations</h3>
-                    <p className="text-gray-600 leading-relaxed text-right mb-6">
-                      Netflix-level AI that learns your preferences and suggests perfect educational content tailored to your learning style.
-                    </p>
-                    <div className="bg-gray-50 rounded-xl p-6 h-32 flex items-center justify-center">
-                      <Target className="h-12 w-12 text-red-600" />
+                  
+                  {/* Decorative visualization */}
+                  <div className="absolute top-4 right-4 opacity-20">
+                    <Share2 className="h-16 w-16" style={{ color: colors.purple.primary }} />
                     </div>
                   </div>
                 </motion.div>
 
-                {/* Video Chat */}
+              {/* Smaller Feature Cards */}
+              {features.slice(0, 4).map((feature, index) => (
                 <motion.div
-                  variants={featuresCardVariants}
-                  custom={2}
-                  className="group cursor-pointer"
-                  whileHover={{ y: -8 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+                  key={feature.title}
+                  variants={itemVariants}
+                  className={`group cursor-pointer ${index === 0 ? 'md:col-span-1' : ''}`}
+                  whileHover={{ y: -5, scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div className="mb-6">
-                      <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center">
-                        <MessageSquare className="h-6 w-6 text-white" />
-                            </div>
-                          </div>
-                    <h3 className="text-2xl font-bold text-black mb-4">Video Chat</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">
-                      Ask questions about any video and get instant, contextual answers. Like having a personal tutor for every YouTube lesson.
-                    </p>
-                    <div className="bg-black rounded-xl p-6 h-32 flex items-center justify-center">
-                      <Bot className="h-12 w-12 text-red-600" />
+                  <div 
+                    className="h-full p-6 rounded-2xl border backdrop-blur-xl relative overflow-hidden"
+                    style={{
+                      background: colors.gradients.card,
+                      borderColor: colors.background.elevated,
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+                    }}
+                  >
+                    {/* Hover glow */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: colors.purple.glow,
+                        filter: 'blur(15px)',
+                      }}
+                    />
+                    
+                    <div className="relative z-10">
+                      <div 
+                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                        style={{
+                          background: colors.purple.glow,
+                          border: `1px solid ${colors.purple.primary}`
+                        }}
+                      >
+                        {React.cloneElement(feature.icon, { 
+                          style: { color: colors.purple.primary }
+                        })}
+                      </div>
+                      <h3 
+                        className="text-xl font-bold mb-3"
+                        style={{ color: colors.text.primary }}
+                      >
+                        {feature.title}
+                      </h3>
+                      <p 
+                        className="text-sm leading-relaxed"
+                        style={{ color: colors.text.secondary }}
+                      >
+                        {feature.description}
+                      </p>
                     </div>
                   </div>
                 </motion.div>
+              ))}
               </div>
-
-              {/* Progress Tracking & Achievements */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                {/* Progress Tracking */}
-                <motion.div
-                  variants={featuresCardVariants}
-                  custom={3}
-                  className="group cursor-pointer lg:col-span-2"
-                  whileHover={{ scale: 1.02 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <div className="bg-gradient-to-r from-black to-gray-900 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300 text-white">
-                    <div className="flex items-center justify-between mb-6">
-                      <div>
-                        <h3 className="text-2xl font-bold mb-2">Progress Tracking</h3>
-                        <p className="text-gray-300">
-                          Visual analytics that show your learning journey and help you stay motivated.
-                        </p>
-                      </div>
-                      <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center">
-                        <TrendingUp className="h-8 w-8 text-white" />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-3 gap-4 mt-8">
-                      <div className="bg-white/10 rounded-xl p-4 text-center">
-                        <div className="text-2xl font-bold text-red-400">87%</div>
-                        <div className="text-sm text-gray-300">Completion</div>
-                      </div>
-                      <div className="bg-white/10 rounded-xl p-4 text-center">
-                        <div className="text-2xl font-bold text-red-400">24</div>
-                        <div className="text-sm text-gray-300">Videos</div>
-                      </div>
-                      <div className="bg-white/10 rounded-xl p-4 text-center">
-                        <div className="text-2xl font-bold text-red-400">12h</div>
-                        <div className="text-sm text-gray-300">Watched</div>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-
-                {/* Achievements */}
-                <motion.div
-                  variants={featuresCardVariants}
-                  custom={4}
-                  className="group cursor-pointer"
-                  whileHover={{ y: -8, rotate: 2 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
-                >
-                  <div className="bg-white border-2 border-gray-200 rounded-3xl p-8 h-full shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-red-50 rounded-bl-3xl"></div>
-                    <div className="mb-6">
-                      <div className="w-12 h-12 bg-yellow-400 rounded-2xl flex items-center justify-center">
-                        <Award className="h-6 w-6 text-yellow-800" />
-                      </div>
-                    </div>
-                    <h3 className="text-2xl font-bold text-black mb-4">Achievements</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">
-                      Gamified learning with badges, streaks, and milestones.
-                    </p>
-                    <div className="flex justify-center space-x-2">
-                      <div className="w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                        <Star className="h-4 w-4 text-yellow-800" />
-                      </div>
-                      <div className="w-8 h-8 bg-red-400 rounded-full flex items-center justify-center">
-                        <Trophy className="h-4 w-4 text-red-800" />
-                      </div>
-                      <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
-                        <Medal className="h-4 w-4 text-blue-800" />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Background decorative elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-            <div 
-              className="absolute -top-1/4 -left-1/4 w-96 h-96 rounded-full blur-3xl opacity-[0.07]"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 1) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute -bottom-1/4 -right-1/4 w-80 h-80 rounded-full blur-3xl opacity-[0.06]"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 1) 0%, transparent 70%)' }}
-            ></div>
           </div>
         </motion.section>
 
@@ -1102,154 +811,198 @@ export default function LandingPage() {
           id="about"
           ref={aboutRef}
           data-section="2"
-          className="min-h-screen py-20 relative overflow-hidden bg-white"
+          className="min-h-screen py-20 relative overflow-hidden flex items-center"
           style={{ 
-            scrollSnapAlign: 'start'
+            scrollSnapAlign: 'start',
+            background: colors.background.base
           }}
           initial="hidden"
           animate={aboutInView ? "visible" : "hidden"}
-          variants={aboutSectionVariants}
+          variants={containerVariants}
         >
-          <div className="container mx-auto px-6 max-w-7xl flex items-center justify-center min-h-screen">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
+          {/* Background Effects */}
+          <div className="absolute inset-0">
+            {/* Animated constellation pattern */}
+            <div className="absolute inset-0">
+              {Array.from({ length: 12 }).map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full"
+                  style={{
+                    background: colors.purple.primary,
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    opacity: 0.3,
+                  }}
+                  animate={{
+                    scale: [1, 1.5, 1],
+                    opacity: [0.3, 0.8, 0.3],
+                  }}
+                  transition={{
+                    duration: 3 + Math.random() * 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2,
+                  }}
+                />
+              ))}
+            </div>
+            <ParticleSystem count={15} />
+          </div>
+
+          <div className="container mx-auto px-6 max-w-7xl relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               
-              {/* Left side - Content */}
-              <motion.div variants={aboutItemVariants} className="space-y-8">
-                <h2 className="text-5xl md:text-6xl font-bold leading-tight text-black">
+              {/* Left Content */}
+              <motion.div variants={itemVariants} className="space-y-8">
+                <h2 
+                  className="font-bold leading-tight"
+                  style={{
+                    fontSize: 'clamp(2rem, 5vw, 4rem)',
+                    fontWeight: 700,
+                    color: colors.text.primary
+                  }}
+                >
                   Why Choose{' '}
-                  <span className="text-red-600">
+                  <span 
+                    style={{
+                      background: colors.gradients.purple,
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text'
+                    }}
+                  >
                     StreamSmart?
                 </span>
                 </h2>
-                <p className="text-xl text-gray-600 leading-relaxed">
-                  We're not just another learning platform. We're revolutionizing how you discover, organize, and learn from educational content.
+                <p 
+                  className="text-xl leading-relaxed"
+                  style={{ color: colors.text.secondary }}
+                >
+                  We're not just another learning platform. We're revolutionizing how you discover, 
+                  organize, and master educational content with cutting-edge AI technology.
                 </p>
                 
-                {/* Stats */}
+                {/* Animated Stats */}
                 <div className="grid grid-cols-3 gap-6 py-8">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-red-600">50K+</div>
-                    <div className="text-sm text-gray-500">Active Learners</div>
+                  {stats.map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.2 }}
+                      className="text-center"
+                    >
+                      <div 
+                        className="text-3xl font-bold mb-1"
+                        style={{ color: colors.purple.primary }}
+                      >
+                        {stat.number}
                   </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-black">1M+</div>
-                    <div className="text-sm text-gray-500">Videos Organized</div>
+                      <div 
+                        className="text-sm"
+                        style={{ color: colors.text.tertiary }}
+                      >
+                        {stat.label}
                   </div>
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-red-600">98%</div>
-                    <div className="text-sm text-gray-500">Satisfaction Rate</div>
-                  </div>
+                    </motion.div>
+                  ))}
                 </div>
               </motion.div>
               
-                            {/* Right side - Visual Cards */}
-              <motion.div variants={aboutItemVariants} className="space-y-6">
-                
-                {/* AI Technology Card */}
-                <div className="bg-gradient-to-r from-red-50 to-red-100 rounded-2xl p-6 border-2 border-red-200">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                      <Brain className="h-6 w-6 text-white" />
+              {/* Right Visual Cards */}
+              <motion.div variants={itemVariants} className="space-y-6">
+                {[
+                  { icon: Brain, title: "AI-Powered", desc: "Advanced machine learning", color: colors.purple.primary },
+                  { icon: Users, title: "Global Community", desc: "Learn with peers worldwide", color: colors.purple.secondary },
+                  { icon: Target, title: "Personalized", desc: "Tailored to your learning style", color: colors.purple.subtle }
+                ].map((card, index) => (
+                  <motion.div
+                    key={card.title}
+                    className="p-6 rounded-2xl border backdrop-blur-xl"
+                    style={{
+                      background: colors.gradients.card,
+                      borderColor: colors.background.elevated,
+                    }}
+                    whileHover={{ x: 10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div 
+                        className="w-12 h-12 rounded-xl flex items-center justify-center"
+                        style={{
+                          background: colors.purple.glow,
+                          border: `1px solid ${card.color}`
+                        }}
+                      >
+                        <card.icon className="h-6 w-6" style={{ color: card.color }} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-black">AI-Powered</h3>
-                      <p className="text-sm text-gray-600">Advanced machine learning algorithms</p>
+                        <h3 
+                          className="text-lg font-bold mb-1"
+                          style={{ color: colors.text.primary }}
+                        >
+                          {card.title}
+                        </h3>
+                        <p 
+                          className="text-sm"
+                          style={{ color: colors.text.secondary }}
+                        >
+                          {card.desc}
+                        </p>
                   </div>
                   </div>
-                </div>
-
-                {/* Community Card */}
-                <div className="bg-black rounded-2xl p-6 text-white">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                      <Users className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold">Global Community</h3>
-                      <p className="text-sm text-gray-300">Learn with peers worldwide</p>
-                  </div>
-                  </div>
-                </div>
-
-                {/* Personalized Card */}
-                <div className="bg-white border-2 border-gray-200 rounded-2xl p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center">
-                      <Target className="h-6 w-6 text-red-600" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-bold text-black">Personalized</h3>
-                      <p className="text-sm text-gray-600">Tailored to your learning style</p>
-                    </div>
-                  </div>
-                  </div>
+                  </motion.div>
+                ))}
               </motion.div>
             </div>
-          </div>
-          
-          {/* Geometric Background Elements */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-20 left-10 w-32 h-32 bg-red-50 rounded-full opacity-30"></div>
-            <div className="absolute top-40 right-20 w-24 h-24 bg-black/5 rounded-lg rotate-45"></div>
-            <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-red-100 rounded-full opacity-20"></div>
-            <div className="absolute bottom-20 right-10 w-20 h-20 bg-black/10 rounded-lg -rotate-12"></div>
-          </div>
-          
-          {/* Decorative background elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-20 right-20 w-64 h-64 rounded-full blur-3xl opacity-20"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.3) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-20 left-20 w-80 h-80 rounded-full blur-3xl opacity-15"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.2) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full blur-3xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.15) 0%, transparent 70%)' }}
-            ></div>
-            
-            {/* Subtle grid pattern overlay */}
-            <div 
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(217, 4, 41, 0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(217, 4, 41, 0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: '60px 60px'
-              }}
-            ></div>
           </div>
         </motion.section>
 
         {/* Testimonials Section */}
-        <section 
+        <motion.section 
+          ref={testimonialsRef}
           data-section="3"
-          className="min-h-screen py-20 flex items-center justify-center relative overflow-hidden bg-white"
+          className="min-h-screen py-20 flex items-center relative overflow-hidden"
           style={{ 
-            scrollSnapAlign: 'start'
+            scrollSnapAlign: 'start',
+            background: colors.background.base
           }}
-        >
-          <div className="container mx-auto px-4 md:px-6">
-            <motion.div
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+          animate={testimonialsInView ? "visible" : "hidden"}
               variants={containerVariants}
-              className="text-center mb-12"
-            >
+        >
+          <div className="absolute inset-0">
+            <ParticleSystem count={25} />
+          </div>
+
+          <div className="container mx-auto px-6 max-w-6xl relative z-10">
+            <motion.div variants={itemVariants} className="text-center mb-16">
               <Badge 
-                variant="outline" 
-                className="mb-4 px-4 py-2 border-black/20 text-black/80 bg-black/5 backdrop-blur-sm"
+                className="mb-6 px-4 py-2 text-sm font-medium border"
+                style={{
+                  background: 'rgba(139, 92, 246, 0.1)',
+                  borderColor: colors.purple.primary,
+                  color: colors.purple.primary
+                }}
               >
-                What our users say
+                💬 Testimonials
               </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black font-poppins">
+              <h2 
+                className="font-bold mb-6 leading-tight"
+                style={{
+                  fontSize: 'clamp(2rem, 5vw, 4rem)',
+                  fontWeight: 700,
+                  color: colors.text.primary
+                }}
+              >
                 Loved by learners{' '}
                 <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
+                  style={{
+                    background: colors.gradients.purple,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
                 >
                   worldwide
                 </span>
@@ -1258,48 +1011,69 @@ export default function LandingPage() {
 
             <motion.div
               variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
               {testimonials.map((testimonial, index) => (
                 <motion.div
                   key={testimonial.name}
                   variants={itemVariants}
                   className="group"
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <div 
-                    className="p-6 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-1 rounded-2xl"
+                    className="p-6 h-full rounded-2xl border backdrop-blur-xl relative overflow-hidden"
                     style={{
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      backdropFilter: 'blur(10px)',
-                      boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
+                      background: colors.gradients.card,
+                      borderColor: colors.background.elevated,
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
                     }}
                   >
-                    <div className="space-y-4">
+                    {/* Hover glow */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: colors.purple.glow,
+                        filter: 'blur(20px)',
+                      }}
+                    />
+                    
+                    <div className="relative z-10 space-y-4">
                       <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className="h-4 w-4 fill-current" 
+                            style={{ color: '#FFC107' }}
+                          />
                         ))}
                       </div>
-                      <p className="italic font-poppins" style={{ color: 'rgba(0, 0, 0, 0.8)' }}>
-                        &quot;{testimonial.content}&quot;
+                      <p 
+                        className="italic leading-relaxed"
+                        style={{ color: colors.text.secondary }}
+                      >
+                        "{testimonial.content}"
                       </p>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 pt-4">
                         <div 
-                          className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white"
+                          className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm"
                           style={{
-                            background: 'linear-gradient(135deg, #D90429 0%, #A91D3A 100%)',
-                            boxShadow: '0 4px 15px rgba(217, 4, 41, 0.3)'
+                            background: colors.gradients.purple,
                           }}
                         >
                           {testimonial.avatar}
                         </div>
                         <div>
-                          <div className="font-semibold text-black font-poppins">{testimonial.name}</div>
-                          <div className="text-sm font-poppins" style={{ color: 'rgba(0, 0, 0, 0.6)' }}>
+                          <div 
+                            className="font-semibold"
+                            style={{ color: colors.text.primary }}
+                          >
+                            {testimonial.name}
+                          </div>
+                          <div 
+                            className="text-sm"
+                            style={{ color: colors.text.tertiary }}
+                          >
                             {testimonial.role}
                           </div>
                         </div>
@@ -1310,181 +1084,146 @@ export default function LandingPage() {
               ))}
             </motion.div>
           </div>
-          
-          {/* Decorative background elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl opacity-15"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.2) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-20 right-20 w-80 h-80 rounded-full blur-3xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.15) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full blur-3xl opacity-12"
-              style={{ background: 'radial-gradient(circle, rgba(217, 4, 41, 0.18) 0%, transparent 70%)' }}
-            ></div>
-          </div>
-        </section>
+        </motion.section>
 
         {/* How It Works Section */}
         <motion.section 
           id="how-it-works"
           ref={howItWorksRef}
           data-section="4"
-          className="h-screen flex items-center justify-center relative overflow-hidden"
+          className="min-h-screen py-20 flex items-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)'
+            background: colors.background.base
           }}
           initial="hidden"
           animate={howItWorksInView ? "visible" : "hidden"}
-          variants={howItWorksSectionVariants}
+          variants={containerVariants}
         >
+          <div className="absolute inset-0">
+            <ParticleSystem count={20} />
+          </div>
+
           <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            
-            {/* Header */}
-            <motion.div
-              variants={howItWorksHeaderVariants}
-              className="text-center mb-20"
-            >
+            <motion.div variants={itemVariants} className="text-center mb-20">
               <Badge 
-                variant="outline" 
-                className="mb-6 px-4 py-2 text-sm font-medium border-black/20 text-black/80 bg-black/5 backdrop-blur-sm"
+                className="mb-6 px-4 py-2 text-sm font-medium border"
+                style={{
+                  background: 'rgba(139, 92, 246, 0.1)',
+                  borderColor: colors.purple.primary,
+                  color: colors.purple.primary
+                }}
               >
-                How it works
+                🚀 How it works
               </Badge>
-              <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight text-black font-poppins">
+              <h2 
+                className="font-bold mb-8 leading-tight"
+                style={{
+                  fontSize: 'clamp(2rem, 5vw, 4rem)',
+                  fontWeight: 700,
+                  color: colors.text.primary
+                }}
+              >
                 Start learning in{' '}
                 <span 
-                  className="bg-gradient-to-r from-[#D90429] to-[#A91D3A] bg-clip-text text-transparent"
+                  style={{
+                    background: colors.gradients.purple,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
                 >
                   3 simple steps
                 </span>
               </h2>
             </motion.div>
 
-            {/* Three Steps */}
-            <motion.div
-              variants={howItWorksSectionVariants}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto"
-            >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               {[
                 {
-                  stepNumber: "01",
+                  step: "01",
                   icon: <ListVideoIcon className="h-10 w-10" />,
                   title: "Create Your Playlist",
-                  description: "Add YouTube videos manually or let our AI suggest the perfect content based on your learning goals and interests."
+                  description: "Add YouTube videos manually or let our AI suggest perfect content based on your learning goals."
                 },
                 {
-                  stepNumber: "02",
-                  icon: <BrainIcon className="h-10 w-10" />,
+                  step: "02", 
+                  icon: <Brain className="h-10 w-10" />,
                   title: "Learn Interactively",
-                  description: "Engage with AI-generated mind maps, take personalized quizzes, and chat with our AI tutor about your content."
+                  description: "Engage with AI-generated mind maps, take personalized quizzes, and chat with our AI tutor."
                 },
                 {
-                  stepNumber: "03",
+                  step: "03",
                   icon: <BarChart3Icon className="h-10 w-10" />,
                   title: "Track & Master",
-                  description: "Monitor your progress with detailed analytics, celebrate milestones, and watch your understanding grow over time."
+                  description: "Monitor progress with detailed analytics, celebrate milestones, and watch your understanding grow."
                 }
               ].map((step, index) => (
                 <motion.div
                   key={step.title}
-                  variants={howItWorksStepVariants}
-                  className="relative group cursor-pointer"
-                  whileHover={{ 
-                    y: -10,
-                    transition: { duration: 0.3, ease: "easeOut" }
-                  }}
+                  variants={itemVariants}
+                  className="relative group"
+                  whileHover={{ y: -10 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {/* Large Stylized Number */}
+                  {/* Large step number */}
                   <div 
-                    className="absolute -top-8 -left-4 text-8xl md:text-9xl font-bold opacity-10 transition-all duration-500 group-hover:opacity-20"
-                    style={{
-                      color: '#A91D3A',
-                      fontFamily: 'system-ui, -apple-system, sans-serif',
-                      fontWeight: 900,
-                      textShadow: '0 0 20px rgba(169, 29, 58, 0.2)'
-                    }}
+                    className="absolute -top-8 -left-4 text-8xl font-bold opacity-10"
+                    style={{ color: colors.purple.primary }}
                   >
-                    {step.stepNumber}
+                    {step.step}
                   </div>
                   
-                  {/* Content Card */}
                   <div 
-                    className="relative h-full p-8 transition-all duration-500 rounded-3xl group-hover:shadow-2xl"
+                    className="relative p-8 rounded-3xl border backdrop-blur-xl h-full"
                     style={{
-                      background: 'rgba(255, 255, 255, 0.9)',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(0, 0, 0, 0.1)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+                      background: colors.gradients.card,
+                      borderColor: colors.background.elevated,
+                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
                     }}
                   >
-                    {/* Crimson glow overlay for hover effect */}
+                    {/* Hover glow */}
                     <div 
-                      className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(169, 29, 58, 0.08) 0%, rgba(199, 54, 80, 0.04) 100%)'
+                        background: colors.purple.glow,
+                        filter: 'blur(20px)',
                       }}
-                    ></div>
+                    />
                     
-                    {/* Hover border glow */}
+                    <div className="relative z-10">
                     <div 
-                      className="absolute inset-0 rounded-3xl border opacity-0 group-hover:opacity-100 transition-all duration-500"
+                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8"
                       style={{
-                        borderColor: '#A91D3A',
-                        boxShadow: '0 0 25px rgba(169, 29, 58, 0.2)'
-                      }}
-                    ></div>
-                    
-                    {/* Icon */}
-                    <div className="relative z-10 mb-8">
-                      <div 
-                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto transition-all duration-400 group-hover:scale-110"
-                        style={{
-                          background: 'rgba(217, 4, 41, 0.15)',
-                          border: '1px solid rgba(217, 4, 41, 0.3)'
-                        }}
-                      >
-                        <div 
-                          className="transition-all duration-300"
-                          style={{
-                            color: '#D90429',
-                            filter: 'drop-shadow(0 0 8px rgba(217, 4, 41, 0.4))'
+                          background: colors.purple.glow,
+                          border: `1px solid ${colors.purple.primary}`
                           }}
                         >
                           {React.cloneElement(step.icon, {
-                            className: "h-10 w-10 group-hover:drop-shadow-[0_0_15px_rgba(217,4,41,0.6)] transition-all duration-300"
+                          style: { color: colors.purple.primary }
                           })}
-                        </div>
-                      </div>
                     </div>
                     
-                    {/* Content */}
-                    <div className="relative z-10 text-center">
                       <h3 
-                        className="text-2xl md:text-3xl font-bold mb-6 transition-colors duration-300 font-poppins"
-                        style={{ color: '#000000' }}
+                        className="text-2xl font-bold mb-6 text-center"
+                        style={{ color: colors.text.primary }}
                       >
                         {step.title}
                       </h3>
                       <p 
-                        className="leading-relaxed text-lg font-poppins"
-                        style={{ color: 'rgba(0, 0, 0, 0.7)' }}
+                        className="leading-relaxed text-center"
+                        style={{ color: colors.text.secondary }}
                       >
                         {step.description}
                       </p>
                     </div>
                     
-                    {/* Numbered badge in top right */}
+                    {/* Step number badge */}
                     <div 
-                      className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 font-poppins"
+                      className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
                       style={{
-                        background: '#D90429',
-                        color: '#ffffff',
-                        boxShadow: '0 4px 15px rgba(217, 4, 41, 0.4)'
+                        background: colors.purple.primary,
+                        color: colors.text.primary
                       }}
                     >
                       {index + 1}
@@ -1492,54 +1231,7 @@ export default function LandingPage() {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
           </div>
-          
-          {/* Enhanced decorative background elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-20 left-20 w-36 h-36 rounded-full blur-3xl opacity-20"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.3) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-24 right-24 w-44 h-44 rounded-full blur-3xl opacity-15"
-              style={{ background: 'radial-gradient(circle, rgba(199, 54, 80, 0.25) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full blur-2xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.4) 0%, transparent 70%)' }}
-            ></div>
-            
-            {/* Connecting line animation between steps (desktop only) */}
-            <div className="hidden lg:block absolute top-1/2 left-1/4 right-1/4 transform -translate-y-1/2">
-              <div 
-                className="h-px opacity-20 animate-pulse"
-                style={{
-                  background: 'linear-gradient(90deg, transparent 0%, #A91D3A 50%, transparent 100%)',
-                  animationDuration: '3s'
-                }}
-              ></div>
-            </div>
-          </div>
-
-          {/* Floating number particles */}
-          <div className="absolute inset-0 pointer-events-none">
-            {['01', '02', '03'].map((num, i) => (
-              <div
-                key={i}
-                className="absolute text-6xl font-bold opacity-5 animate-pulse"
-                style={{
-                  color: '#A91D3A',
-                  left: `${20 + i * 30}%`,
-                  top: `${10 + Math.sin(i) * 20}%`,
-                  animationDelay: `${i * 1.5}s`,
-                  animationDuration: `${4 + i}s`,
-                  transform: `rotate(${i * 15 - 15}deg)`
-                }}
-              >
-                {num}
-              </div>
-            ))}
           </div>
         </motion.section>
 
@@ -1548,178 +1240,151 @@ export default function LandingPage() {
           id="contact"
           ref={contactRef}
           data-section="5"
-          className="h-screen flex items-center justify-center relative overflow-hidden"
+          className="min-h-screen py-20 flex items-center relative overflow-hidden"
           style={{ 
             scrollSnapAlign: 'start',
-            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 50%, #f1f3f4 100%)'
+            background: `linear-gradient(to bottom, ${colors.background.base}, #000000)`
           }}
           initial="hidden"
           animate={contactInView ? "visible" : "hidden"}
-          variants={contactSectionVariants}
+          variants={containerVariants}
         >
+          <div className="absolute inset-0">
+            <ParticleSystem count={30} />
+          </div>
+
           <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-            
-            {/* Main Content */}
-            <motion.div variants={contactItemVariants} className="mb-16">
+            <motion.div variants={itemVariants} className="mb-16">
               <h2 
-                className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-                style={{ color: '#000000' }}
+                className="font-bold mb-8 leading-tight"
+                style={{
+                  fontSize: 'clamp(2rem, 5vw, 4rem)',
+                  fontWeight: 700,
+                  color: colors.text.primary
+                }}
               >
                 Get in{' '}
                 <span 
-                  className="bg-gradient-to-r from-[#A91D3A] to-[#C73650] bg-clip-text text-transparent"
                   style={{
-                    textShadow: '0 0 30px rgba(169, 29, 58, 0.3)'
+                    background: colors.gradients.purple,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
                   }}
                 >
                   Touch
                 </span>
               </h2>
               <p 
-                className="text-xl md:text-2xl mb-12 leading-relaxed"
-                style={{ color: '#333333' }}
+                className="text-xl leading-relaxed"
+                style={{ color: colors.text.secondary }}
               >
-                Have questions or want to connect? Reach out!
+                Have questions or want to connect? Reach out and let's build the future of learning together!
               </p>
             </motion.div>
             
             {/* Contact Information */}
             <motion.div 
-              variants={contactItemVariants} 
+              variants={itemVariants} 
               className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-16"
             >
-              {/* Email */}
-              <a 
-                href="mailto:hsundar080506@gmail.com"
-                className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105"
+              {[
+                {
+                  icon: Mail,
+                  label: "Email",
+                  value: "hsundar080506@gmail.com",
+                  href: "mailto:hsundar080506@gmail.com"
+                },
+                {
+                  icon: Linkedin,
+                  label: "LinkedIn", 
+                  value: "LinkedIn Profile",
+                  href: "https://www.linkedin.com/in/hari-sundar-237570286/"
+                }
+              ].map((contact) => (
+                <a 
+                  key={contact.label}
+                  href={contact.href}
+                  target={contact.href.startsWith('http') ? '_blank' : undefined}
+                  rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105 border backdrop-blur-xl"
                 style={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
+                    background: colors.gradients.card,
+                    borderColor: colors.background.elevated,
                 }}
               >
                 <div 
-                  className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                    className="w-14 h-14 rounded-xl flex items-center justify-center"
                   style={{
-                    background: 'rgba(169, 29, 58, 0.15)',
-                    border: '1px solid rgba(169, 29, 58, 0.3)'
-                  }}
-                >
-                  <Mail 
-                    className="h-7 w-7 transition-all duration-300"
-                    style={{
-                      color: '#A91D3A',
-                      filter: 'drop-shadow(0 0 8px rgba(169, 29, 58, 0.4))'
+                      background: colors.purple.glow,
+                      border: `1px solid ${colors.purple.primary}`
                     }}
+                  >
+                    <contact.icon 
+                      className="h-7 w-7"
+                      style={{ color: colors.purple.primary }}
                   />
                 </div>
                 <div className="text-left">
                   <div 
                     className="text-sm font-medium mb-1"
-                    style={{ color: '#666666' }}
+                      style={{ color: colors.text.tertiary }}
                   >
-                    Email
+                      {contact.label}
                   </div>
                   <div 
-                    className="text-lg font-semibold group-hover:text-[#A91D3A] transition-colors duration-300"
-                    style={{ color: '#000000' }}
+                      className="text-lg font-semibold group-hover:text-purple-400 transition-colors duration-300"
+                      style={{ color: colors.text.primary }}
                   >
-                    hsundar080506@gmail.com
+                      {contact.value}
                   </div>
                 </div>
                 <ExternalLink 
                   className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ color: '#A91D3A' }}
+                    style={{ color: colors.purple.primary }}
                 />
               </a>
-              
-              {/* LinkedIn */}
-              <a 
-                href="https://www.linkedin.com/in/hari-sundar-237570286/" 
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105"
-                style={{
-                  background: 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(0, 0, 0, 0.1)',
-                }}
-              >
-                <div 
-                  className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                  style={{
-                    background: 'rgba(169, 29, 58, 0.15)',
-                    border: '1px solid rgba(169, 29, 58, 0.3)'
-                  }}
-                >
-                  <Linkedin 
-                    className="h-7 w-7 transition-all duration-300"
-                    style={{
-                      color: '#A91D3A',
-                      filter: 'drop-shadow(0 0 8px rgba(169, 29, 58, 0.4))'
-                    }}
-                  />
-                </div>
-                <div className="text-left">
-                  <div 
-                    className="text-sm font-medium mb-1"
-                    style={{ color: '#666666' }}
-                  >
-                    LinkedIn
-                  </div>
-                  <div 
-                    className="text-lg font-semibold group-hover:text-[#A91D3A] transition-colors duration-300"
-                    style={{ color: '#000000' }}
-                  >
-                    LinkedIn Profile
-                  </div>
-                </div>
-                <ExternalLink 
-                  className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ color: '#A91D3A' }}
-                />
-              </a>
+              ))}
             </motion.div>
             
             {/* Copyright */}
             <motion.div 
-              variants={contactItemVariants}
-              className="pt-12 border-t border-black/10"
+              variants={itemVariants}
+              className="pt-12 border-t"
+              style={{ borderTopColor: colors.background.elevated }}
             >
               <p 
                 className="text-sm"
-                style={{ color: '#666666' }}
+                style={{ color: colors.text.tertiary }}
               >
                 © 2025 StreamSmart. All rights reserved.
               </p>
             </motion.div>
           </div>
-          
-          {/* Subtle decorative background elements */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div 
-              className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full blur-3xl opacity-10"
-              style={{ background: 'radial-gradient(circle, rgba(169, 29, 58, 0.3) 0%, transparent 70%)' }}
-            ></div>
-            <div 
-              className="absolute bottom-1/4 right-1/4 w-40 h-40 rounded-full blur-3xl opacity-8"
-              style={{ background: 'radial-gradient(circle, rgba(199, 54, 80, 0.25) 0%, transparent 70%)' }}
-            ></div>
-            
-            {/* Minimal grid pattern */}
-            <div 
-              className="absolute inset-0 opacity-[0.01]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(169, 29, 58, 0.1) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(169, 29, 58, 0.1) 1px, transparent 1px)
-                `,
-                backgroundSize: '80px 80px'
-              }}
-            ></div>
-          </div>
         </motion.section>
       </main>
+
+      {/* Add custom CSS for animations */}
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        
+        @keyframes float-gentle {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-10px) rotate(180deg); }
+        }
+        
+        .animate-float-gentle {
+          animation: float-gentle 6s ease-in-out infinite;
+        }
+        
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        body {
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+      `}</style>
     </div>
   );
 }

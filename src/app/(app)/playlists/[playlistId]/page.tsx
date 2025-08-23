@@ -371,7 +371,7 @@ export default function PlaylistDetailPage() {
       className="space-y-6"
     >
       {/* Playlist Header */}
-      <motion.div variants={fadeInUp} className="bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-2xl p-8 border">
+      <motion.div variants={fadeInUp} className="rounded-2xl p-8 border" style={{ background: 'linear-gradient(90deg, hsla(var(--primary), 0.08) 0%, hsla(var(--secondary), 0.08) 100%)', borderColor: 'hsl(var(--border))' }}>
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 space-y-4">
             <div className="flex items-start justify-between">
@@ -467,7 +467,7 @@ export default function PlaylistDetailPage() {
           {/* Video Player */}
           {currentVideo && (
             <motion.div variants={fadeInUp}>
-              <Card className="overflow-hidden shadow-lg">
+              <Card className="overflow-hidden shadow-lg bg-card border border-border">
                 <VideoPlayer 
                   key={videoPlayerKey + currentVideo.id} 
                   videoUrl={currentVideo.youtubeURL} 
@@ -480,7 +480,7 @@ export default function PlaylistDetailPage() {
           {/* Interactive Tabs */}
           <motion.div variants={fadeInUp}>
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 bg-muted/50 p-1 rounded-xl">
+              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 p-1 rounded-xl" style={{ background: 'rgba(139,92,246,0.08)' }}>
                 <TabsTrigger value="info" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <InfoIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Info</span>
@@ -509,7 +509,7 @@ export default function PlaylistDetailPage() {
               
               <div className="mt-6">
                 <TabsContent value="info" className="space-y-6">
-                  <Card className="p-6">
+                  <Card className="p-6 bg-card border border-border">
                     {currentVideo && (
                       <div className="space-y-6">
                         <div className="flex items-start justify-between">
@@ -537,7 +537,7 @@ export default function PlaylistDetailPage() {
                         </div>
                         
                         {currentVideo.summary && (
-                          <div className="p-4 bg-accent/20 rounded-lg">
+                          <div className="p-4 rounded-lg" style={{ background: 'rgba(139,92,246,0.08)' }}>
                             <h3 className="font-medium mb-2">Video Summary</h3>
                             <p className="text-muted-foreground leading-relaxed">{currentVideo.summary}</p>
                           </div>
@@ -603,7 +603,7 @@ export default function PlaylistDetailPage() {
                 </TabsContent>
                 
                 <TabsContent value="progress">
-                  <Card className="p-6">
+                  <Card className="p-6 bg-card border border-border">
                     <div className="space-y-6">
                       <div className="text-center">
                         <h3 className="text-2xl font-bold mb-2">{Math.round(overallProgress)}%</h3>
@@ -612,17 +612,17 @@ export default function PlaylistDetailPage() {
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="text-center p-4 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(34,197,94,0.08)' }}>
                           <CircleCheck className="w-8 h-8 text-green-600 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-green-600">{completedVideos}</div>
                           <div className="text-sm text-muted-foreground">Completed</div>
                         </div>
-                        <div className="text-center p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(59,130,246,0.08)' }}>
                           <CircleIcon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-blue-600">{playlist.videos.length - completedVideos}</div>
                           <div className="text-sm text-muted-foreground">Remaining</div>
                         </div>
-                        <div className="text-center p-4 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
+                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(139,92,246,0.08)' }}>
                           <ClockIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
                           <div className="text-2xl font-bold text-purple-600">{formatDuration(totalDuration)}</div>
                           <div className="text-sm text-muted-foreground">Total Time</div>
@@ -638,8 +638,8 @@ export default function PlaylistDetailPage() {
 
         {/* Playlist Videos Sidebar */}
         <motion.div variants={fadeInUp} className="xl:col-span-1 space-y-6">
-          <Card className="shadow-lg h-fit max-h-[calc(100vh-28rem)] flex flex-col">
-            <CardHeader className="border-b bg-accent/20">
+          <Card className="shadow-lg h-fit max-h-[calc(100vh-28rem)] flex flex-col bg-card border border-border">
+            <CardHeader className="border-b" style={{ background: 'rgba(139,92,246,0.08)', borderColor: 'hsl(var(--border))' }}>
               <CardTitle className="flex items-center">
                 <ListIcon className="h-5 w-5 mr-2 text-primary" />
                 Playlist Videos

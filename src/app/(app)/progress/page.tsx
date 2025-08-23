@@ -260,7 +260,7 @@ export default function ProgressPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center">
+        <h1 className="text-3xl font-bold tracking-tight flex items-center" style={{ color: 'hsl(var(--foreground))' }}>
           <BarChart3Icon className="mr-3 h-8 w-8" />
           My Learning Progress
         </h1>
@@ -294,7 +294,7 @@ export default function ProgressPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-card border border-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Playlists Completed</CardTitle>
             <ListChecksIcon className="h-5 w-5 text-green-500" />
@@ -305,7 +305,7 @@ export default function ProgressPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-card border border-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Videos Watched</CardTitle>
             <CheckCircle className="h-5 w-5 text-accent" />
@@ -316,7 +316,7 @@ export default function ProgressPage() {
             </div>
           </CardContent>
         </Card>
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-card border border-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Learning Time</CardTitle>
             <ClockIcon className="h-5 w-5 text-blue-500" />
@@ -328,7 +328,7 @@ export default function ProgressPage() {
             <p className="text-xs text-muted-foreground">(Estimated from completed videos)</p>
           </CardContent>
         </Card>
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-card border border-border">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overall Progress</CardTitle>
             <TrendingUpIcon className="h-5 w-5 text-orange-500" />
@@ -344,7 +344,7 @@ export default function ProgressPage() {
 
       {/* Weekly Goal Progress */}
       {userStats?.weeklyGoal && (
-        <Card className="shadow-md">
+        <Card className="shadow-md bg-card border border-border">
           <CardHeader>
             <CardTitle>Weekly Learning Goal</CardTitle>
             <CardDescription>
@@ -365,7 +365,7 @@ export default function ProgressPage() {
         </Card>
       )}
 
-      <Card className="shadow-lg">
+      <Card className="shadow-lg bg-card border border-border">
         <CardHeader>
           <CardTitle>Recent Playlist Activity</CardTitle>
           <CardDescription>Overview of your progress in ongoing playlists (sorted by last activity).</CardDescription>
@@ -400,7 +400,7 @@ export default function ProgressPage() {
         </CardContent>
       </Card>
       
-      <Card className="shadow-md">
+      <Card className="shadow-md bg-card border border-border">
         <CardHeader>
           <CardTitle>Learning Trends</CardTitle>
            <CardDescription>Videos completed over the last 7 days.</CardDescription>

@@ -37,12 +37,12 @@ export default function AchievementsPage() {
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
-          <div className="p-3 bg-red-600 rounded-full">
+          <div className="p-3 rounded-full" style={{ background: 'hsl(var(--primary))' }}>
             <Trophy className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-black">Achievements</h1>
+          <h1 className="text-4xl font-bold" style={{ color: 'hsl(var(--foreground))' }}>Achievements</h1>
         </div>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p className="text-lg max-w-2xl mx-auto" style={{ color: 'hsl(var(--muted-foreground))' }}>
           Track your learning journey and unlock achievements as you progress. 
           Complete videos, maintain streaks, and explore AI features to earn points and badges!
         </p>
@@ -52,7 +52,7 @@ export default function AchievementsPage() {
       <Card className="bg-gradient-to-r from-black to-gray-900 border-gray-800">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
-            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'hsl(var(--primary))' }}>
               <Filter className="h-4 w-4 text-white" />
             </div>
             Categories
@@ -71,9 +71,10 @@ export default function AchievementsPage() {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`flex items-center gap-2 ${
                   selectedCategory === category.id 
-                    ? "bg-red-600 hover:bg-red-700 text-white border-red-600" 
+                    ? "text-white" 
                     : "border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white"
                 }`}
+                style={selectedCategory === category.id ? { background: 'hsl(var(--primary))', borderColor: 'hsl(var(--primary))' } : undefined}
               >
                 {category.icon}
                 {category.label}
@@ -84,10 +85,10 @@ export default function AchievementsPage() {
       </Card>
 
       {/* Achievement Tips */}
-      <Card className="bg-white border-2 border-gray-200">
+      <Card className="border" style={{ background: 'hsl(var(--card))', borderColor: 'hsl(var(--border))' }}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-black">
-            <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+          <CardTitle className="flex items-center gap-2" style={{ color: 'hsl(var(--foreground))' }}>
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'hsl(var(--primary))' }}>
               <Brain className="h-4 w-4 text-white" />
             </div>
             Pro Tips for Earning Achievements
@@ -96,39 +97,39 @@ export default function AchievementsPage() {
         <CardContent className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div className="flex items-start gap-2">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mt-0.5 shrink-0">
-                <Flame className="h-4 w-4 text-red-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center mt-0.5 shrink-0" style={{ background: 'color-mix(in hsl, hsl(var(--primary)) 15%, white)' }}>
+                <Flame className="h-4 w-4" style={{ color: 'hsl(var(--primary))' }} />
               </div>
               <div>
-                <p className="font-medium text-black">Maintain Daily Streaks</p>
-                <p className="text-gray-600">Complete at least one video daily to build learning streaks</p>
+                <p className="font-medium" style={{ color: 'hsl(var(--foreground))' }}>Maintain Daily Streaks</p>
+                <p className="text-gray-400">Complete at least one video daily to build learning streaks</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mt-0.5 shrink-0">
-                <Zap className="h-4 w-4 text-red-400" />
+                <Zap className="h-4 w-4" style={{ color: 'hsl(var(--primary))' }} />
               </div>
               <div>
-                <p className="font-medium text-black">Speed Learning Days</p>
-                <p className="text-gray-600">Complete multiple videos in one day for speed achievements</p>
+                <p className="font-medium" style={{ color: 'hsl(var(--foreground))' }}>Speed Learning Days</p>
+                <p className="text-gray-400">Complete multiple videos in one day for speed achievements</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mt-0.5 shrink-0">
-                <Brain className="h-4 w-4 text-red-600" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center mt-0.5 shrink-0" style={{ background: 'color-mix(in hsl, hsl(var(--primary)) 15%, white)' }}>
+                <Brain className="h-4 w-4" style={{ color: 'hsl(var(--primary))' }} />
               </div>
               <div>
-                <p className="font-medium text-black">Explore AI Features</p>
-                <p className="text-gray-600">Use quizzes, mind maps, and AI chat to unlock special achievements</p>
+                <p className="font-medium" style={{ color: 'hsl(var(--foreground))' }}>Explore AI Features</p>
+                <p className="text-gray-400">Use quizzes, mind maps, and AI chat to unlock special achievements</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
               <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center mt-0.5 shrink-0">
-                <Target className="h-4 w-4 text-red-400" />
+                <Target className="h-4 w-4" style={{ color: 'hsl(var(--primary))' }} />
               </div>
               <div>
-                <p className="font-medium text-black">Set Weekly Goals</p>
-                <p className="text-gray-600">Customize and achieve your weekly learning targets</p>
+                <p className="font-medium" style={{ color: 'hsl(var(--foreground))' }}>Set Weekly Goals</p>
+                <p className="text-gray-400">Customize and achieve your weekly learning targets</p>
               </div>
             </div>
           </div>
