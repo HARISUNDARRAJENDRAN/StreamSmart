@@ -60,22 +60,31 @@ def install_dependencies():
         return manual_installation()
 
 def manual_installation():
-    """Manual step-by-step installation"""
+    """Manual step-by-step installation following compatibility guidelines"""
     print("\n🛠️  Manual Installation Process")
     print("=" * 50)
     
-    # Core packages first
+    # First, ensure NumPy < 2.0 for TensorFlow compatibility
+    print("📦 Installing compatible NumPy (< 2.0 for TensorFlow 2.15)...")
+    success, output = run_command("pip install \"numpy<2\"")
+    if not success:
+        print(f"❌ Failed to install NumPy constraint")
+        print(f"Error: {output}")
+        return False
+    
+    # Core packages with compatible versions
     core_packages = [
-        "torch==1.13.1",
-        "torchvision==0.14.1", 
-        "torchaudio==0.13.1",
-        "transformers==4.35.0",
+        "torch==2.3.1",
+        "torchvision==0.18.1", 
+        "torchaudio==2.3.1",
+        "tensorflow==2.15.*",
+        "ml-dtypes<0.5",
+        "transformers==4.35.2",
         "sentence-transformers==2.2.2",
         "fastapi==0.104.1",
-        "uvicorn==0.24.0",
-        "numpy==1.24.3",
+        "uvicorn[standard]==0.24.0",
         "opencv-python==4.8.1.78",
-        "pillow==10.0.1",
+        "pillow",
     ]
     
     print("Installing core packages...")
@@ -89,12 +98,16 @@ def manual_installation():
             print(f"pip install {package}")
             return False
     
-    # Try whisper
-    print("\nInstalling Whisper...")
-    success, output = run_command("pip install openai-whisper")
+    # Try whisper-timestamped (required)
+    print("\nInstalling Whisper with timestamps...")
+    success, output = run_command("pip install whisper-timestamped")
     if not success:
-        print("❌ Whisper installation failed")
-        return False
+        print("❌ whisper-timestamped installation failed")
+        print("Trying regular whisper as fallback...")
+        success, output = run_command("pip install openai-whisper")
+        if not success:
+            print("❌ Whisper installation failed")
+            return False
     
     # Try CLIP
     print("\nInstalling CLIP...")
@@ -158,6 +171,19 @@ def verify_installation():
             print(f"✅ {name} - OK")
         except ImportError:
             print(f"⚠️  {name} - MISSING (optional)")
+    
+    # Check NumPy version to ensure < 2.0 for TensorFlow compatibility
+    try:
+        import numpy
+        numpy_version = numpy.__version__
+        print(f"✅ NumPy version: {numpy_version}")
+        if numpy_version.startswith('2.'):
+            print("⚠️  WARNING: NumPy 2.x detected. This may cause issues with TensorFlow 2.15")
+            print("Consider downgrading: pip install \"numpy<2\"")
+        else:
+            print("✅ NumPy version compatible with TensorFlow 2.15")
+    except ImportError:
+        print("❌ NumPy check failed")
     
     return all_good
 

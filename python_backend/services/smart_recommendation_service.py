@@ -15,8 +15,17 @@ import asyncio
 import random
 
 import numpy as np
-from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import DuplicateKeyError
+
+# Optional imports with graceful fallbacks
+try:
+    from motor.motor_asyncio import AsyncIOMotorClient
+    from pymongo.errors import DuplicateKeyError
+    HAS_MONGODB = True
+except ImportError:
+    HAS_MONGODB = False
+    AsyncIOMotorClient = None
+    DuplicateKeyError = None
+    print("⚠️  Motor/PyMongo not available - smart recommendations disabled")
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +37,7 @@ class SmartRecommendationService:
         self.db_name = db_name
         self.client = None
         self.db = None
+        self.available = HAS_MONGODB
         self.videos_collection = None
         self.users_collection = None
         
@@ -39,6 +49,10 @@ class SmartRecommendationService:
     
     async def initialize(self):
         """Initialize MongoDB connection"""
+        if not self.available:
+            logger.warning("MongoDB not available - using in-memory recommendations")
+            return False
+            
         try:
             self.client = AsyncIOMotorClient(self.mongo_uri)
             self.db = self.client[self.db_name]
@@ -55,6 +69,7 @@ class SmartRecommendationService:
             
         except Exception as e:
             logger.error(f"Failed to initialize SmartRecommendationService: {e}")
+            self.available = False
             return False
     
     async def _create_indexes(self):

@@ -9,23 +9,65 @@ from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional
-import google.generativeai as genai
-from pymongo import MongoClient
 import hashlib
 from datetime import datetime
-from youtube_transcript_api import YouTubeTranscriptApi
 import re
-import yt_dlp
 import requests
 from urllib.parse import parse_qs, urlparse
 import time
 import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-import nltk
-from nltk.tokenize import sent_tokenize
 import json
-import hashlib
-from datetime import datetime
+
+# Optional imports with graceful fallbacks
+try:
+    import google.generativeai as genai
+    HAS_GOOGLE_AI = True
+except ImportError:
+    HAS_GOOGLE_AI = False
+    genai = None
+    print("⚠️  Google AI not available - some features disabled")
+
+try:
+    from pymongo import MongoClient
+    HAS_MONGO = True
+except ImportError:
+    HAS_MONGO = False
+    MongoClient = None
+    print("⚠️  MongoDB not available - using in-memory storage")
+
+try:
+    from youtube_transcript_api import YouTubeTranscriptApi
+    HAS_YOUTUBE_API = True
+except ImportError:
+    HAS_YOUTUBE_API = False
+    YouTubeTranscriptApi = None
+    print("⚠️  YouTube Transcript API not available")
+
+try:
+    import yt_dlp
+    HAS_YT_DLP = True
+except ImportError:
+    HAS_YT_DLP = False
+    yt_dlp = None
+    print("⚠️  yt-dlp not available - video processing disabled")
+
+try:
+    from sklearn.metrics.pairwise import cosine_similarity
+    HAS_SKLEARN = True
+except ImportError:
+    HAS_SKLEARN = False
+    cosine_similarity = None
+    print("⚠️  scikit-learn not available - similarity calculations disabled")
+
+try:
+    import nltk
+    from nltk.tokenize import sent_tokenize
+    HAS_NLTK = True
+except ImportError:
+    HAS_NLTK = False
+    nltk = None
+    sent_tokenize = None
+    print("⚠️  NLTK not available - text processing may be limited")
 
 # Import lightweight BERT with graceful fallback
 try:
@@ -93,7 +135,7 @@ proxy_list = []
 # MongoDB client initialization
 mongodb_client = None
 db = None
-if MONGODB_URI:
+if MONGODB_URI and HAS_MONGO:
     try:
         mongodb_client = MongoClient(MONGODB_URI)
         db = mongodb_client.streamsmart
@@ -101,11 +143,13 @@ if MONGODB_URI:
     except Exception as e:
         logger.error(f"MongoDB connection failed: {e}")
         mongodb_client = None
+elif not HAS_MONGO:
+    logger.warning("MongoDB not available. Database features will be disabled.")
 else:
-            logger.warning("MONGO_URI not provided. Database features will be disabled.")
+    logger.warning("MONGO_URI not provided. Database features will be disabled.")
 
 # Initialize Gemini if available
-if GEMINI_API_KEY:
+if GEMINI_API_KEY and HAS_GOOGLE_AI:
     try:
         genai.configure(api_key=GEMINI_API_KEY)
         logger.info("Gemini AI configured successfully")
@@ -113,13 +157,16 @@ if GEMINI_API_KEY:
         logger.error(f"Gemini AI configuration failed: {e}")
 
 # Try to download required NLTK data
-try:
-    nltk.data.find('tokenizers/punkt')
-except LookupError:
+if HAS_NLTK:
     try:
-        nltk.download('punkt', quiet=True)
-    except Exception as e:
-        logger.warning(f"Could not download NLTK punkt tokenizer: {e}")
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        try:
+            nltk.download('punkt', quiet=True)
+        except Exception as e:
+            logger.warning(f"Could not download NLTK punkt tokenizer: {e}")
+else:
+    logger.warning("NLTK not available - text tokenization may be limited")
 
 def initialize_proxies():
     """Initialize proxy list from environment variables"""

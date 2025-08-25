@@ -21,9 +21,9 @@ requests==2.31.0
 httpx==0.25.2
 aiohttp==3.9.1
 
-# Data processing
+# Data processing - NumPy < 2.0 for compatibility
 pandas==2.1.4
-numpy==1.24.4
+numpy<2.0
 
 # Environment and config
 python-dotenv==1.0.0
