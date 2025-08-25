@@ -23,31 +23,64 @@ def check_dependencies():
     """Check if all required dependencies are installed"""
     # Map package names to their import names
     required_packages = {
-        'torch': 'torch',
         'transformers': 'transformers', 
         'sentence_transformers': 'sentence_transformers',
-        'whisper_timestamped': 'whisper_timestamped',
-        'clip': 'clip',
         'fastapi': 'fastapi',
         'uvicorn': 'uvicorn',
-        'yt_dlp': 'yt_dlp',
-        'opencv-python': 'cv2',
         'pillow': 'PIL',
         'numpy': 'numpy'
     }
     
+    # Optional packages (not required for basic functionality)
+    optional_packages = {
+        'torch': 'torch',
+        'whisper_timestamped': 'whisper_timestamped',
+        'clip': 'clip',
+        'yt_dlp': 'yt_dlp',
+        'opencv-python': 'cv2',
+        'pymongo': 'pymongo',
+    }
+    
     missing_packages = []
+    missing_optional = []
+    
+    # Check required packages
     for package_name, import_name in required_packages.items():
         try:
             __import__(import_name)
         except ImportError:
             missing_packages.append(package_name)
     
+    # Check optional packages
+    for package_name, import_name in optional_packages.items():
+        try:
+            __import__(import_name)
+        except ImportError:
+            missing_optional.append(package_name)
+    
+    # Check NumPy version for TensorFlow compatibility
+    try:
+        import numpy
+        numpy_version = numpy.__version__
+        logger.info(f"NumPy version: {numpy_version}")
+        if numpy_version.startswith('2.'):
+            logger.warning("NumPy 2.x detected. This may cause issues with TensorFlow 2.15")
+            logger.warning("Consider downgrading: pip install \"numpy<2\"")
+        else:
+            logger.info("✅ NumPy version compatible with TensorFlow 2.15")
+    except ImportError:
+        logger.error("NumPy not available")
+    
     if missing_packages:
         logger.error(f"Missing required packages: {', '.join(missing_packages)}")
         logger.error("Please install them using: pip install -r requirements.txt")
         return False
     
+    if missing_optional:
+        logger.warning(f"Missing optional packages: {', '.join(missing_optional)}")
+        logger.warning("Some features may not be available")
+    
+    logger.info("✅ All required dependencies are available")
     return True
 
 def create_directories():
