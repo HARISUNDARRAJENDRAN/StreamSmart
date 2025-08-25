@@ -22,8 +22,11 @@ async def startup_event():
     """Initialize the smart recommendation service on startup"""
     try:
         service = await get_smart_recommendation_service()
-        await service.initialize()
-        logger.info("Smart recommendation service initialized")
+        if service.available:
+            await service.initialize()
+            logger.info("Smart recommendation service initialized")
+        else:
+            logger.warning("Smart recommendation service unavailable (MongoDB dependencies missing)")
     except Exception as e:
         logger.error(f"Failed to initialize smart recommendation service: {e}")
 
