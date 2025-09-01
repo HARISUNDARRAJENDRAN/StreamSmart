@@ -19,6 +19,26 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def apply_compatibility_patches():
+    """Apply compatibility patches for dependencies"""
+    try:
+        # Apply huggingface_hub compatibility patch for sentence-transformers
+        from huggingface_hub import cached_download
+        logger.debug("cached_download already available")
+    except ImportError:
+        try:
+            import huggingface_hub
+            from huggingface_hub import hf_hub_download
+            huggingface_hub.cached_download = hf_hub_download
+            import sys
+            sys.modules['huggingface_hub'].cached_download = hf_hub_download
+            logger.info("✅ Applied huggingface_hub compatibility patch")
+        except Exception as e:
+            logger.warning(f"Could not apply huggingface_hub patch: {e}")
+
+# Apply patches early
+apply_compatibility_patches()
+
 def check_dependencies():
     """Check if all required dependencies are installed"""
     # Map package names to their import names
