@@ -6,6 +6,23 @@ Tests compatibility and verifies NumPy < 2.0 for TensorFlow 2.15 compatibility
 
 import sys
 
+def apply_compatibility_patches():
+    """Apply compatibility patches for dependencies"""
+    try:
+        # Apply huggingface_hub compatibility patch for sentence-transformers
+        from huggingface_hub import cached_download
+        print("✅ cached_download already available")
+    except ImportError:
+        try:
+            import huggingface_hub
+            from huggingface_hub import hf_hub_download
+            huggingface_hub.cached_download = hf_hub_download
+            import sys
+            sys.modules['huggingface_hub'].cached_download = hf_hub_download
+            print("✅ Applied huggingface_hub compatibility patch")
+        except Exception as e:
+            print(f"❌ Could not apply huggingface_hub patch: {e}")
+
 def test_numpy_version():
     """Test NumPy version is < 2.0 as required by TensorFlow 2.15"""
     try:
@@ -66,6 +83,10 @@ def main():
     """Run all compatibility tests"""
     print("🔍 StreamSmart Dependency Compatibility Check")
     print("=" * 50)
+    
+    # Apply compatibility patches first
+    print("\n0. Applying compatibility patches:")
+    apply_compatibility_patches()
     
     results = []
     
