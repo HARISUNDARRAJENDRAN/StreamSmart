@@ -41,6 +41,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUser } from '@/contexts/UserContext';
+import { bertRecommendationService, type VideoRecommendation as BertVideoRec } from '@/services/bertRecommendationService';
 
 interface Video {
   _id: string;
@@ -132,7 +133,7 @@ export default function GenrePage() {
 
   const categoryName = categoryMap[slug];
 
-  // Fetch videos from Python backend
+  // Fetch videos from Python backend (BERT-based recommendations only)
   useEffect(() => {
     const fetchVideos = async () => {
       if (!slug) {
@@ -142,50 +143,61 @@ export default function GenrePage() {
       }
 
       try {
-        // Try the new smart recommendation API first
-        let response = await fetch(`http://localhost:8000/api/smart/genre/${slug}?user_id=guest&limit=200`);
-        
-        if (!response.ok) {
-          // Fallback to old API
-          response = await fetch(`http://localhost:8000/genre/${slug}`);
+        // Ensure BERT system is initialized
+        const stats = await bertRecommendationService.getSystemStats();
+        if (!stats.success) {
+          const init = await bertRecommendationService.initializeSystem();
+          if (!init.success) {
+            throw new Error(init.message || 'Failed to initialize BERT system');
+          }
         }
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch videos');
+
+        // Call BERT genre-based endpoint via service
+        const bertResp = await bertRecommendationService.getGenreBasedRecommendations({
+          genre: slug,
+          top_n: 200,
+          user_id: 'guest'
+        });
+
+        if (!bertResp.success) {
+          throw new Error(bertResp.message || 'Failed to load BERT recommendations');
         }
-        
-        const data = await response.json();
-        if (data.success) {
-          // Set algorithm info
-          setAlgorithmUsed(data.algorithm_used || 'unknown');
-          setTotalAvailable(data.total_available || data.videos.length);
-          
-          // Transform backend data to match frontend expectations
-          const transformedVideos = data.videos.map((video: any) => ({
-            _id: video._id || video.youtubeId || `${Date.now()}-${Math.random()}`,
-            youtubeId: video.youtubeId || video.video_id,
-            title: video.title || '',
-            description: video.description || '',
-            thumbnail: video.thumbnail || video.thumbnail_url || 'https://placehold.co/480x360.png?text=Video',
-            duration: video.duration || 'N/A',
-            category: data.genre_name || data.genre,
-            channelTitle: video.channelTitle || video.channel_name || video.channel || '',
-            viewCount: video.viewCount || video.view_count || 0,
-            likeCount: video.likeCount || 0,
-            youtubeURL: video.youtubeURL || video.url || `https://youtube.com/watch?v=${video.youtubeId || video.video_id}`,
-            publishedAt: video.publishedAt || video.published || video.collected_at || '',
-            difficulty: video.difficulty || 'intermediate',
-            tags: video.tags || [],
-            quality_score: video.quality_score || 0,
-            search_query: video.search_query || '',
-            similarity_score: video.similarity_score || 0
-          }));
-          
-          setVideos(transformedVideos);
-          setFilteredVideos(transformedVideos);
-        } else {
-          throw new Error('Failed to fetch videos from backend');
-        }
+
+        // Helper to extract YouTube ID from thumbnail or fallback
+        const extractVideoId = (thumbnailUrl?: string): string => {
+          if (!thumbnailUrl) return '';
+          let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
+          if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
+          if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);
+          return match ? match[1] : '';
+        };
+
+        // Transform BERT response to local Video shape
+        const transformedVideos: Video[] = (bertResp.recommendations as BertVideoRec[]).map((rec) => {
+          const youtubeId = extractVideoId(rec.thumbnail_url);
+          return {
+            _id: `${youtubeId || rec.title}-${Math.random()}`,
+            youtubeId: youtubeId,
+            title: rec.title,
+            description: '',
+            thumbnail: rec.thumbnail_url || 'https://placehold.co/480x360.png?text=Video',
+            duration: 'N/A',
+            category: categoryName || slug,
+            channelTitle: (rec as any).channel_name || (rec as any).channelTitle || '',
+            viewCount: 0,
+            likeCount: rec.likes ?? 0,
+            youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
+            publishedAt: '',
+            difficulty: 'intermediate',
+            tags: [],
+            createdAt: ''
+          };
+        });
+
+        setAlgorithmUsed('bert');
+        setTotalAvailable(transformedVideos.length);
+        setVideos(transformedVideos);
+        setFilteredVideos(transformedVideos);
       } catch (err) {
         console.error('Error fetching videos:', err);
         setError(err instanceof Error ? err.message : 'Failed to load videos');
@@ -262,48 +274,50 @@ export default function GenrePage() {
     setFilteredVideos(filtered);
   }, [videos, searchQuery, sortBy, difficultyFilter]);
 
-  // AI Refresh functionality
+  // AI Refresh functionality (re-fetch via BERT)
   const handleAiRefresh = async () => {
     setAiRefreshLoading(true);
     try {
-      const response = await fetch(`http://localhost:8000/api/smart/ai-refresh/guest?genre=${slug}&limit=51`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        }
+      const resp = await bertRecommendationService.getGenreBasedRecommendations({
+        genre: slug,
+        top_n: 51,
+        user_id: 'guest'
       });
-      
-      if (!response.ok) {
-        throw new Error('Failed to refresh recommendations');
-      }
-      
-      const data = await response.json();
-      if (data.success) {
-        setAlgorithmUsed(data.algorithm_used || 'ai_refreshed');
-        setTotalAvailable(data.total_available || data.videos.length);
-        
-        const transformedVideos = data.videos.map((video: any) => ({
-          _id: video._id || video.youtubeId || `${Date.now()}-${Math.random()}`,
-          youtubeId: video.youtubeId || video.video_id,
-          title: video.title || '',
-          description: video.description || '',
-          thumbnail: video.thumbnail || video.thumbnail_url || `https://img.youtube.com/vi/${video.youtubeId || video.video_id}/maxresdefault.jpg`,
-          duration: video.duration || 'N/A',
+
+      if (!resp.success) throw new Error(resp.message || 'Failed to refresh BERT recommendations');
+
+      const extractVideoId = (thumbnailUrl?: string): string => {
+        if (!thumbnailUrl) return '';
+        let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
+        if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
+        if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);
+        return match ? match[1] : '';
+      };
+
+      const transformedVideos: Video[] = (resp.recommendations as BertVideoRec[]).map((rec) => {
+        const youtubeId = extractVideoId(rec.thumbnail_url);
+        return {
+          _id: `${youtubeId || rec.title}-${Math.random()}`,
+          youtubeId: youtubeId,
+          title: rec.title,
+          description: '',
+          thumbnail: rec.thumbnail_url || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
+          duration: 'N/A',
           category: categoryName || slug,
-          channelTitle: video.channelTitle || video.channel_name || video.channel || '',
-          viewCount: video.viewCount || video.view_count || 0,
-          likeCount: video.likeCount || 0,
-          youtubeURL: video.youtubeURL || video.url || `https://youtube.com/watch?v=${video.youtubeId || video.video_id}`,
-          publishedAt: video.publishedAt || video.published || video.collected_at || '',
-          difficulty: video.difficulty || 'intermediate',
-          tags: video.tags || [],
-          quality_score: video.quality_score || 0,
-          search_query: video.search_query || '',
-          similarity_score: video.similarity_score || 0
-        }));
-        
-        setVideos(transformedVideos);
-      }
+          channelTitle: (rec as any).channel_name || (rec as any).channelTitle || '',
+          viewCount: 0,
+          likeCount: rec.likes ?? 0,
+          youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
+          publishedAt: '',
+          difficulty: 'intermediate',
+          tags: [],
+          createdAt: ''
+        };
+      });
+
+      setAlgorithmUsed('bert');
+      setTotalAvailable(transformedVideos.length);
+      setVideos(transformedVideos);
     } catch (err) {
       console.error('Error refreshing recommendations:', err);
     } finally {

@@ -1,12 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 
-// Note: SplitText is a premium GSAP plugin. 
-// For this implementation, we'll create a fallback that splits text manually
-// If you have GSAP SplitText license, uncomment the lines below:
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import { SplitText as GSAPSplitText } from "gsap/SplitText";
-// gsap.registerPlugin(ScrollTrigger, GSAPSplitText);
+// Note: SplitText is a premium GSAP plugin. We provide a manual fallback.
 
 export interface SplitTextProps {
   text: string;

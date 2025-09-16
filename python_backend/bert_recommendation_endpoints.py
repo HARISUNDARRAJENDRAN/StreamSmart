@@ -86,6 +86,12 @@ async def get_content_based_recommendations(request: RecommendationRequest):
     """Get content-based recommendations using BERT embeddings"""
     try:
         engine = get_bert_recommendation_engine()
+        # Ensure system is initialized
+        if getattr(engine, "df_yt", None) is None or getattr(engine, "embeddings_cache", None) is None:
+            try:
+                engine.initialize_system()
+            except Exception:
+                pass
         
         # Get recommendations
         recommendations_df = engine.recommend_videos(
@@ -122,6 +128,12 @@ async def get_genre_based_recommendations(request: GenreRecommendationRequest):
     """Get genre-based recommendations"""
     try:
         engine = get_bert_recommendation_engine()
+        # Ensure system is initialized
+        if getattr(engine, "df_yt", None) is None:
+            try:
+                engine.initialize_system()
+            except Exception:
+                pass
         
         # Get recommendations
         recommendations_df = engine.get_genre_recommendations(
@@ -157,6 +169,12 @@ async def get_personalized_recommendations(request: PersonalizedRecommendationRe
     """Get personalized recommendations based on user viewing history"""
     try:
         engine = get_bert_recommendation_engine()
+        # Ensure system is initialized
+        if getattr(engine, "df_yt", None) is None:
+            try:
+                engine.initialize_system()
+            except Exception:
+                pass
         
         # Get recommendations
         recommendations_df = engine.get_personalized_recommendations(
@@ -193,6 +211,12 @@ async def get_popular_recommendations(
     """Get popular video recommendations based on likes"""
     try:
         engine = get_bert_recommendation_engine()
+        # Ensure system is initialized
+        if getattr(engine, "df_yt", None) is None:
+            try:
+                engine.initialize_system()
+            except Exception:
+                pass
         
         # Get recommendations
         recommendations_df = engine.get_popular_recommendations(top_n=top_n)
@@ -224,6 +248,12 @@ async def get_available_genres():
     """Get all available genres in the dataset"""
     try:
         engine = get_bert_recommendation_engine()
+        # Ensure system is initialized
+        if getattr(engine, "df_yt", None) is None:
+            try:
+                engine.initialize_system()
+            except Exception:
+                pass
         
         if engine.df_yt is None or engine.df_yt.empty:
             return {

@@ -69,19 +69,12 @@ except ImportError:
     sent_tokenize = None
     print("⚠️  NLTK not available - text processing may be limited")
 
-# Import lightweight BERT with graceful fallback
-try:
-    from services.lightweight_bert_engine import get_lightweight_bert_engine
-    LIGHTWEIGHT_BERT_AVAILABLE = True
-    lightweight_bert = None
-except ImportError as e:
-    print(f"Lightweight BERT service unavailable: {e}")
-    LIGHTWEIGHT_BERT_AVAILABLE = False
+# Lightweight BERT removed; keep placeholder for existing calls to no-op
     lightweight_bert = None
 
 # Import remaining endpoints
 from genre_endpoints import router as genre_router
-# Import BERT router with error handling for free deployment
+# Import BERT router (embeddings-based) with error handling
 try:
     from bert_recommendation_endpoints import router as bert_router
     BERT_AVAILABLE = True
@@ -112,9 +105,10 @@ app.include_router(genre_router)
 # Include BERT router only if available
 if BERT_AVAILABLE and bert_router:
     app.include_router(bert_router)
-    print("✅ BERT recommendation service enabled")
+    print("✅ BERT embeddings recommendation service enabled")
 else:
     print("⚠️ BERT recommendation service disabled (dependencies not available)")
+# Keep smart endpoints registered (not used by frontend)
 app.include_router(smart_router)
 
 # Note: AI content endpoints were removed as part of recommendation engine cleanup
@@ -123,14 +117,8 @@ app.include_router(smart_router)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGODB_URI = os.getenv("MONGO_URI")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
-PROXY_URL = os.getenv("PROXY_URL")  # Format: http://user:pass@proxy-server:port
-PROXY_LIST = os.getenv("PROXY_LIST")  # Comma-separated list of proxies
-ROTATING_PROXY_ENABLED = os.getenv("ROTATING_PROXY_ENABLED", "false").lower() == "true"
-AUTO_FETCH_FREE_PROXIES = os.getenv("AUTO_FETCH_FREE_PROXIES", "false").lower() == "true"
 
-# Global proxy configuration
-current_proxy_index = 0
-proxy_list = []
+
 
 # MongoDB client initialization
 mongodb_client = None
@@ -168,103 +156,7 @@ if HAS_NLTK:
 else:
     logger.warning("NLTK not available - text tokenization may be limited")
 
-def initialize_proxies():
-    """Initialize proxy list from environment variables"""
-    global proxy_list
-    
-    if PROXY_LIST:
-        proxy_list = [proxy.strip() for proxy in PROXY_LIST.split(",") if proxy.strip()]
-        logger.info(f"Loaded {len(proxy_list)} proxies from PROXY_LIST")
-    elif PROXY_URL:
-        proxy_list = [PROXY_URL]
-        logger.info(f"Using single proxy: {PROXY_URL}")
-    else:
-        logger.warning("No proxy configuration found.")
-        # Try auto-fetching if enabled
-        auto_update_proxy_list()
-    
-    if not proxy_list:
-        logger.warning("YouTube may block requests from cloud IPs.")
-    
-    return proxy_list
 
-def get_next_proxy():
-    """Get next proxy in rotation"""
-    global current_proxy_index
-    
-    if not proxy_list:
-        return None
-    
-    if ROTATING_PROXY_ENABLED and len(proxy_list) > 1:
-        proxy = proxy_list[current_proxy_index]
-        current_proxy_index = (current_proxy_index + 1) % len(proxy_list)
-        logger.info(f"Using proxy {current_proxy_index}: {proxy[:20]}...")
-        return proxy
-    else:
-        return proxy_list[0] if proxy_list else None
-
-def fetch_free_proxies_simple() -> List[str]:
-    """Fetch a simple list of free proxies"""
-    free_proxies = [
-        "http://8.219.97.248:80",  # Currently working
-        "http://103.216.207.15:8080",
-        "http://47.74.152.29:8888",
-        "http://103.149.162.194:80",
-        "http://185.162.251.76:80",
-        "http://20.111.54.16:8123",
-        "http://103.127.1.130:80",
-        "http://189.240.60.164:9090",
-        "http://103.178.42.58:8181",
-        "http://103.155.54.26:83",
-        "http://172.67.187.199:80",
-        "http://23.82.137.161:80",
-        "http://47.91.65.23:3128"
-    ]
-    
-    # Try to fetch fresh ones from a simple API
-    try:
-        response = requests.get(
-            "https://proxylist.geonode.com/api/proxy-list?limit=10&page=1&sort_by=lastChecked&sort_type=desc&protocols=http",
-            timeout=5
-        )
-        if response.status_code == 200:
-            data = response.json()
-            for proxy in data.get('data', []):
-                proxy_url = f"http://{proxy['ip']}:{proxy['port']}"
-                free_proxies.append(proxy_url)
-    except:
-        pass
-    
-    return list(set(free_proxies))  # Remove duplicates
-
-def auto_update_proxy_list():
-    """Automatically update proxy list if enabled"""
-    global proxy_list
-    
-    if AUTO_FETCH_FREE_PROXIES and not proxy_list:
-        logger.info("🔄 Auto-fetching free proxies...")
-        fresh_proxies = fetch_free_proxies_simple()
-        
-        # Quick test a few
-        working_proxies = []
-        for proxy in fresh_proxies[:5]:  # Test first 5
-            try:
-                test_response = requests.get(
-                    "https://httpbin.org/ip", 
-                    proxies={'http': proxy, 'https': proxy}, 
-                    timeout=10
-                )
-                if test_response.status_code == 200:
-                    working_proxies.append(proxy)
-                    logger.info(f"✅ Auto-found working proxy: {proxy}")
-                    if len(working_proxies) >= 2:  # Stop after finding 2
-                        break
-            except:
-                continue
-        
-        if working_proxies:
-            proxy_list.extend(working_proxies)
-            logger.info(f"🎉 Auto-loaded {len(working_proxies)} free proxies")
 
 def extract_video_id(url: str) -> Optional[str]:
     """Extract YouTube video ID from URL"""
@@ -512,143 +404,25 @@ def get_video_info_with_user_agent(url: str) -> dict:
         logger.error(f"Error getting video info for {url} even with User-Agent: {e}")
         return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
 
-def get_video_transcript_with_proxy(video_id: str) -> Optional[str]:
-    """Get transcript with proxy support and detailed error logging"""
-    
-    # First try the user-agent method with detailed logging
-    logger.info(f"🔍 Attempting transcript fetch with browser User-Agent for {video_id}")
-    transcript = get_video_transcript_with_user_agent(video_id)
-    if transcript:
-        return transcript
-    
-    # If proxy list is available, try proxy method
-    if proxy_list:
-        logger.info(f"🔄 Fallback to proxy method for {video_id}")
-    
-    transcript_methods = [
-        (['en'], 'English'),
-        (['en-US'], 'English (US)'),
-        (['en-GB'], 'English (UK)'),
-        (['auto'], 'Auto-generated'),
-        (['es', 'fr', 'de', 'it'], 'Other languages')
-    ]
-    
-    for languages, method_name in transcript_methods:
-        try:
-            logger.info(f"🔍 Trying proxy transcript method: {method_name} for video {video_id}")
-            
-            proxy = get_next_proxy()
-            if proxy:
-                logger.info(f"🌐 Using proxy for transcript: {proxy[:20]}...")
-                # Configure session with proxy
-                session = requests.Session()
-                session.proxies = {
-                    'http': proxy,
-                    'https': proxy
-                }
-                session.headers.update({
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-                })
-                
-                # Monkey patch requests temporarily
-                original_get = requests.get
-                original_post = requests.post
-                
-                def patched_get(*args, **kwargs):
-                    kwargs.setdefault('headers', {}).update(session.headers)
-                    kwargs['proxies'] = session.proxies
-                    return original_get(*args, **kwargs)
-                
-                def patched_post(*args, **kwargs):
-                    kwargs.setdefault('headers', {}).update(session.headers)
-                    kwargs['proxies'] = session.proxies
-                    return original_post(*args, **kwargs)
-                
-                requests.get = patched_get
-                requests.post = patched_post
-                
-                try:
-                    transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=languages)
-                    transcript_text = ' '.join([item['text'] for item in transcript_list])
-                    
-                    if transcript_text and len(transcript_text.strip()) > 50:
-                        logger.info(f"✅ Successfully retrieved transcript using {method_name} via proxy: {len(transcript_text)} characters")
-                        return transcript_text
-                except Exception as proxy_method_error:
-                    logger.warning(f"❌ Proxy {method_name} method failed for {video_id}: {str(proxy_method_error)}")
-                finally:
-                    requests.get = original_get
-                    requests.post = original_post
-            else:
-                logger.warning(f"🚫 No proxy available for {method_name} method")
-            
-        except Exception as e:
-            logger.error(f"❌ Proxy transcript method {method_name} failed for {video_id}: {str(e)}")
-            continue
-    else:
-        logger.warning(f"🚫 No proxy available for fallback transcript fetch for {video_id}")
-    
-    return None
 
-def get_video_info_with_proxy(url: str) -> dict:
-    """Get video information using yt-dlp with proxy support (fallback method)"""
-    try:
-        proxy = get_next_proxy()
-        
-        ydl_opts = {
-            'quiet': True,
-            'no_warnings': True,
-            'extractaudio': False,
-            'extract_flat': False,
-            'retries': 3,
-            'fragment_retries': 3,
-            'extractor_retries': 3,
-            'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        }
-        
-        if proxy:
-            logger.info(f"Using proxy for video info: {proxy[:20]}...")
-            ydl_opts['proxy'] = proxy
-        
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
-            result = {
-                'title': info.get('title', 'Unknown Title'),
-                'duration': info.get('duration', 0),
-                'uploader': info.get('uploader', 'Unknown'),
-                'description': info.get('description', '')[:500]
-            }
-            logger.info(f"✅ Successfully retrieved video info via proxy for {url}")
-            return result
-            
-    except Exception as e:
-        logger.error(f"Error getting video info via proxy for {url}: {e}")
-        return {'title': 'Unknown Title', 'duration': 0, 'uploader': 'Unknown', 'description': ''}
+
+
 
 def get_video_transcript_with_summary_fallback(video_id: str, video_info: dict) -> Optional[str]:
     """Try to get actual transcript, return None if not available (for RAG quality)"""
-    
-    # Try to get actual transcript with proxy
-    transcript = get_video_transcript_with_proxy(video_id)
-    if transcript and len(transcript.strip()) > 100:  # Ensure it's a substantial transcript
+    transcript = get_video_transcript_with_user_agent(video_id)
+    if transcript and len(transcript.strip()) > 100:
         logger.info(f"✅ Using full transcript for {video_id} ({len(transcript)} characters)")
         return transcript
-    
-    # If no actual transcript available, return None instead of fallback
     logger.warning(f"❌ No actual transcript available for {video_id}. Returning None for RAG quality.")
     return None
 
 def get_video_content_with_fallback(video_id: str, video_info: dict) -> str:
     """Get video content with fallback to metadata (for non-RAG purposes like /enhance-video)"""
-    
-    # Try to get actual transcript first
-    transcript = get_video_transcript_with_proxy(video_id)
+    transcript = get_video_transcript_with_user_agent(video_id)
     if transcript and len(transcript.strip()) > 100:
         logger.info(f"✅ Using full transcript for {video_id} ({len(transcript)} characters)")
         return transcript
-    
     # Fallback: Create content from video metadata
     title = video_info.get('title', 'Unknown Video')
     description = video_info.get('description', '')
@@ -669,39 +443,18 @@ def get_video_content_with_fallback(video_id: str, video_info: dict) -> str:
     return fallback_content.strip()
 
 def get_video_info(url: str) -> dict:
-    """Get video info - tries User-Agent first, then proxy as fallback"""
-    
-    # Method 1: Try with browser User-Agent headers (free and simple)
+    """Get video info using browser User-Agent headers"""
     logger.info(f"🔍 Attempting video info fetch with browser User-Agent for {url}")
     result = get_video_info_with_user_agent(url)
-    
-    # Check if we got meaningful data
-    if result.get('title') != 'Unknown Title':
-        return result
-    
-    # Method 2: Fallback to proxy method if available
-    if proxy_list:
-        logger.info(f"🔄 Fallback to proxy method for {url}")
-        return get_video_info_with_proxy(url)
-    
     return result
-
-# Update get_video_transcript to use proxy version
-def get_video_transcript(video_id: str) -> Optional[str]:
-    """Get transcript - tries User-Agent first, then proxy as fallback"""
     
-    # Method 1: Try with browser User-Agent headers (free and simple)
+def get_video_transcript(video_id: str) -> Optional[str]:
+    """Get transcript using browser User-Agent method only"""
     logger.info(f"🔍 Attempting transcript fetch with browser User-Agent for {video_id}")
     transcript = get_video_transcript_with_user_agent(video_id)
     if transcript:
         return transcript
-    
-    # Method 2: Fallback to proxy method if available
-    if proxy_list:
-        logger.info(f"🔄 Fallback to proxy method for {video_id}")
-        return get_video_transcript_with_proxy(video_id)
-    
-    logger.warning(f"❌ All transcript methods failed for {video_id}")
+    logger.warning(f"❌ Transcript fetch failed for {video_id}")
     return None
 
 # Pydantic models
@@ -738,9 +491,7 @@ async def health_check():
         "gemini_ai": bool(GEMINI_API_KEY),
         "mongodb": bool(mongodb_client),
         "backend": True,
-        "lightweight_bert": bool(LIGHTWEIGHT_BERT_AVAILABLE and lightweight_bert),
-        "heavy_bert": bool(BERT_AVAILABLE),
-        "proxy_system": bool(proxy_list)
+        "bert_embeddings": bool(BERT_AVAILABLE)
     }
     
     status = "healthy" if services["backend"] else "degraded"
@@ -1050,85 +801,7 @@ async def enhance_video(request: EnhanceVideoRequest):
         logger.error(f"Error in enhance video: {e}")
         raise HTTPException(status_code=500, detail=f"Error enhancing video: {str(e)}")
 
-# Lightweight BERT recommendation endpoints
-@app.get("/api/lightweight-bert/recommendations/{video_title}")
-async def get_lightweight_recommendations(video_title: str, top_n: int = 5, genre_filter: str = None):
-    """Get recommendations using lightweight BERT engine"""
-    if not lightweight_bert:
-        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
-    
-    try:
-        recommendations = lightweight_bert.recommend_videos(
-            title=video_title, 
-            top_n=top_n, 
-            genre_filter=genre_filter
-        )
-        
-        return {
-            "success": True,
-            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
-            "total": len(recommendations),
-            "engine": "lightweight_bert"
-        }
-    except Exception as e:
-        logger.error(f"Error getting lightweight recommendations: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/lightweight-bert/genre/{genre}")
-async def get_lightweight_genre_recommendations(genre: str, top_n: int = 10):
-    """Get genre-based recommendations using lightweight BERT"""
-    if not lightweight_bert:
-        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
-    
-    try:
-        recommendations = lightweight_bert.get_genre_recommendations(genre=genre, top_n=top_n)
-        
-        return {
-            "success": True,
-            "genre": genre,
-            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
-            "total": len(recommendations),
-            "engine": "lightweight_bert"
-        }
-    except Exception as e:
-        logger.error(f"Error getting genre recommendations: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/lightweight-bert/popular")
-async def get_lightweight_popular_recommendations(top_n: int = 10):
-    """Get popular recommendations using lightweight BERT"""
-    if not lightweight_bert:
-        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
-    
-    try:
-        recommendations = lightweight_bert.get_popular_recommendations(top_n=top_n)
-        
-        return {
-            "success": True,
-            "recommendations": recommendations.to_dict('records') if not recommendations.empty else [],
-            "total": len(recommendations),
-            "engine": "lightweight_bert"
-        }
-    except Exception as e:
-        logger.error(f"Error getting popular recommendations: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/lightweight-bert/stats")
-async def get_lightweight_bert_stats():
-    """Get lightweight BERT system stats"""
-    if not lightweight_bert:
-        raise HTTPException(status_code=503, detail="Lightweight BERT service not available")
-    
-    try:
-        stats = lightweight_bert.get_system_stats()
-        return {
-            "success": True,
-            "stats": stats,
-            "engine": "lightweight_bert"
-        }
-    except Exception as e:
-        logger.error(f"Error getting stats: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+## Lightweight BERT endpoints removed
 
 @app.post("/generate-mindmap")
 async def generate_mindmap(request: dict):
@@ -1475,44 +1148,27 @@ Generate the complete mind map JSON based on the provided transcript. Output ONL
         logger.error(f"❌ Error generating mind map: {e}")
         raise HTTPException(status_code=500, detail=f"Error generating mind map: {str(e)}")
 
-# Initialize proxy system when module loads
-initialize_proxies()
+
 
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
-    global lightweight_bert
+    # Initialize BERT embeddings engine on startup
     try:
         logger.info("🚀 StreamSmart Backend starting up...")
-        logger.info(f"📡 Proxy system: {'✅ Enabled' if proxy_list else '❌ Disabled'}")
         logger.info(f"🤖 Gemini AI: {'✅ Available' if GEMINI_API_KEY else '❌ Not configured'}")
         logger.info(f"📊 MongoDB: {'✅ Connected' if mongodb_client else '❌ Not connected'}")
-        logger.info(f"🧠 Heavy BERT Service: {'✅ Available' if BERT_AVAILABLE else '❌ Disabled'}")
-        
-        # Initialize Lightweight BERT Engine as primary recommendation system
-        if LIGHTWEIGHT_BERT_AVAILABLE:
-            try:
-                logger.info("🧠 Initializing Lightweight BERT Engine...")
-                lightweight_bert = get_lightweight_bert_engine()
-                if lightweight_bert.initialize_system():
-                    logger.info("✅ Lightweight BERT Engine: Initialized successfully!")
-                else:
-                    logger.warning("⚠️ Lightweight BERT Engine: Failed to initialize, using fallback")
-            except Exception as e:
-                logger.error(f"❌ Lightweight BERT Engine error: {e}")
-        else:
-            logger.info("⚠️ Lightweight BERT Engine: Not available")
-        
-        # Fallback to heavy BERT if lightweight fails
-        if not lightweight_bert:
+        logger.info(f"🧠 BERT Embeddings Service: {'✅ Available' if BERT_AVAILABLE else '❌ Disabled'}")
+
+        if BERT_AVAILABLE:
             try:
                 from services.bert_recommendation_engine import get_bert_recommendation_engine
-                logger.info("🧠 Fallback: Initializing Heavy BERT recommendation system...")
+                logger.info("🧠 Initializing BERT Embeddings recommendation system...")
                 bert_engine = get_bert_recommendation_engine()
                 bert_engine.initialize_system()
-                logger.info("✅ Heavy BERT recommendation system initialized!")
+                logger.info("✅ BERT Embeddings recommendation system initialized!")
             except Exception as e:
-                logger.error(f"❌ Failed to initialize Heavy BERT system: {e}")
+                logger.error(f"❌ Failed to initialize BERT Embeddings system: {e}")
         
         # Start content collection system
         try:

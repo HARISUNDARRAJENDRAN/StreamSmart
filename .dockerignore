@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+**/.env
+**/.venv
+**/__pycache__
+**/*.pyc
+**/logs
+**/cache
+**/*.csv
+python_backend/vector_db
+python_backend/transcripts
+

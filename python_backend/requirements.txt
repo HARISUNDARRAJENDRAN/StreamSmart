@@ -26,13 +26,8 @@ transformers==4.35.2
 sentence-transformers>=2.3.0
 huggingface-hub>=0.20.0
 
-# PyTorch - CPU-only wheels for compatibility
+# PyTorch - CPU-only wheels for compatibility (only torch needed for sentence-transformers)
 torch==2.3.1
-torchvision==0.18.1
-torchaudio==2.3.1
-
-# Audio processing with timestamps
-whisper-timestamped>=1.14.0
 
 # TensorFlow with compatibility constraints (optional - large download)
 # tensorflow>=2.16,<2.20

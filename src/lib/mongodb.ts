@@ -11,6 +11,11 @@ const DEVELOPMENT_URI = process.env.NODE_ENV === 'development'
 // Use Atlas URI for production, fallback for development
 const connectionString = MONGO_URI || DEVELOPMENT_URI;
 
+// Default DB name if URI omits a database path
+const DEFAULT_DB_NAME = process.env.MONGO_DB_NAME || 'streamsmart';
+// Detect if the URI already includes a db name segment after the host
+const uriHasDbName = /mongodb(?:\+srv)?:\/\/[^\/]+\/(?!\?)([^?\/]+)(?=\?|$)/.test(connectionString);
+
 // Validate connection string
 if (!connectionString) {
   throw new Error(
@@ -79,10 +84,16 @@ async function connectDB(): Promise<typeof mongoose> {
           connectTimeoutMS: 30000,
           heartbeatFrequencyMS: 30000,
         })
-      };
+      } as Parameters<typeof mongoose.connect>[1];
+
+      // If no db name is present in the URI, enforce the intended database
+      const finalOptions = uriHasDbName ? connectionOptions : { ...connectionOptions, dbName: DEFAULT_DB_NAME };
 
       console.log('🚀 Initiating MongoDB Atlas connection...');
-      cached.promise = mongoose.connect(connectionString, connectionOptions);
+      if (!uriHasDbName) {
+        console.log(`🛠️  URI has no database path; forcing dbName='${DEFAULT_DB_NAME}'`);
+      }
+      cached.promise = mongoose.connect(connectionString, finalOptions);
     }
 
     // Wait for connection to complete

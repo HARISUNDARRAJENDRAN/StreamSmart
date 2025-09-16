@@ -5,8 +5,7 @@ import os
 import logging
 from typing import List, Dict, Optional, Tuple
 from sklearn.metrics.pairwise import cosine_similarity
-from transformers import BertTokenizer, TFBertModel
-import tensorflow as tf
+from sentence_transformers import SentenceTransformer
 from pymongo import MongoClient
 from datetime import datetime
 import json
@@ -30,8 +29,7 @@ class BertRecommendationEngine:
         self.client = MongoClient(mongo_uri)
         self.db = self.client[db_name]
         
-        # Initialize BERT model and tokenizer
-        self.tokenizer = None
+        # Initialize embedding model (SentenceTransformer for reliability and speed)
         self.model = None
         self.df_yt = None
         self.embeddings_cache = {}
@@ -43,14 +41,15 @@ class BertRecommendationEngine:
         self._initialize_bert_model()
     
     def _initialize_bert_model(self):
-        """Load BERT model and tokenizer"""
+        """Load sentence-transformer model (BERT-based)"""
         try:
-            logger.info("Loading BERT model and tokenizer...")
-            self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-            self.model = TFBertModel.from_pretrained('bert-base-uncased')
-            logger.info("BERT model loaded successfully")
+            logger.info("Loading sentence-transformer model (BERT-based)...")
+            # A compact BERT-based model; fast and CPU-friendly
+            # Alternatives: 'all-MiniLM-L12-v2' for slightly larger model
+            self.model = SentenceTransformer('all-MiniLM-L6-v2')
+            logger.info("Embedding model loaded successfully")
         except Exception as e:
-            logger.error(f"Error loading BERT model: {e}")
+            logger.error(f"Error loading embedding model: {e}")
             raise
     
     def download_dataset(self):
@@ -194,43 +193,16 @@ class BertRecommendationEngine:
             return False
     
     def get_bert_embeddings(self, text: str) -> np.ndarray:
-        """
-        Get BERT embeddings for a given text
-        
-        Args:
-            text: Input text to get embeddings for
-            
-        Returns:
-            numpy array of embeddings
-        """
+        """Get embeddings using the loaded sentence-transformer model"""
         try:
-            # Check cache first
             if text in self.embeddings_cache:
                 return self.embeddings_cache[text]
-            
-            # Tokenize the text
-            inputs = self.tokenizer(
-                text, 
-                return_tensors='tf',
-                padding=True, 
-                truncation=True, 
-                max_length=512
-            )
-            
-            # Get embeddings from BERT model
-            outputs = self.model(inputs)
-            
-            # Return the pooled output (CLS token representation)
-            embeddings = outputs.pooler_output.numpy()
-            
-            # Cache the embeddings
-            self.embeddings_cache[text] = embeddings
-            
-            return embeddings
-            
+            emb = self.model.encode([text])  # shape (1, d)
+            self.embeddings_cache[text] = emb
+            return emb
         except Exception as e:
-            logger.error(f"Error getting BERT embeddings: {e}")
-            return np.zeros((1, 768))  # Return zero embeddings as fallback
+            logger.error(f"Error getting embeddings: {e}")
+            return np.zeros((1, 384))
     
     def compute_all_embeddings(self):
         """Compute embeddings for all videos in the dataset"""
@@ -239,9 +211,13 @@ class BertRecommendationEngine:
             
             # Load cached embeddings if available
             if os.path.exists(self.embeddings_cache_path):
-                with open(self.embeddings_cache_path, 'rb') as f:
-                    self.embeddings_cache = pickle.load(f)
-                logger.info("Loaded cached embeddings")
+                try:
+                    with open(self.embeddings_cache_path, 'rb') as f:
+                        self.embeddings_cache = pickle.load(f)
+                    logger.info("Loaded cached embeddings")
+                except Exception:
+                    # Ignore cache loading issues
+                    self.embeddings_cache = {}
             
             # Compute embeddings for videos that don't have cached embeddings
             embeddings_list = []
@@ -279,7 +255,7 @@ class BertRecommendationEngine:
         """
         try:
             similarities = cosine_similarity(
-                embedding.reshape(1, -1), 
+                embedding.reshape(1, -1),
                 np.vstack(embeddings)
             ).flatten()
             return similarities

@@ -21,20 +21,22 @@ logger = logging.getLogger(__name__)
 
 def apply_compatibility_patches():
     """Apply compatibility patches for dependencies"""
+    # Avoid importing deprecated symbols; alias only if missing
     try:
-        # Apply huggingface_hub compatibility patch for sentence-transformers
-        from huggingface_hub import cached_download
-        logger.debug("cached_download already available")
-    except ImportError:
-        try:
-            import huggingface_hub
-            from huggingface_hub import hf_hub_download
-            huggingface_hub.cached_download = hf_hub_download
-            import sys
-            sys.modules['huggingface_hub'].cached_download = hf_hub_download
-            logger.info("✅ Applied huggingface_hub compatibility patch")
-        except Exception as e:
-            logger.warning(f"Could not apply huggingface_hub patch: {e}")
+        import huggingface_hub  # type: ignore
+        if getattr(huggingface_hub, 'cached_download', None) is None:
+            hf_hub_download = getattr(huggingface_hub, 'hf_hub_download', None)
+            if hf_hub_download is not None:
+                huggingface_hub.cached_download = hf_hub_download
+                # Ensure the alias is visible to existing imports
+                sys.modules['huggingface_hub'] = huggingface_hub
+                logger.info("✅ Applied huggingface_hub compatibility patch")
+            else:
+                logger.warning("huggingface_hub.hf_hub_download not available; skipping patch")
+        else:
+            logger.debug("cached_download already available")
+    except Exception as e:
+        logger.warning(f"Could not apply huggingface_hub patch: {e}")
 
 # Apply patches early
 apply_compatibility_patches()
@@ -129,11 +131,23 @@ def main():
     
     # Start the server
     try:
+        reload_flag = os.getenv('API_RELOAD', 'true').lower() == 'true'
         uvicorn.run(
             "main:app",
             host=host,
             port=port,
-            reload=True,  # Enable auto-reload for development
+            # Enable auto-reload for development (configurable)
+            reload=reload_flag,
+            # Ignore noisy or heavy paths to reduce spurious reload events
+            reload_excludes=[
+                "**/.venv/**",
+                "**/__pycache__/**",
+                "**/logs/**",
+                "**/cache/**",
+                "**/*.csv",
+                "python_backend/vector_db/**",
+                "python_backend/transcripts/**"
+            ],
             log_level="info",
             access_log=True
         )

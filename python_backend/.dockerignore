@@ -1,0 +1,10 @@
+__pycache__
+.venv
+.env
+*.pyc
+cache
+logs
+vector_db
+transcripts
+*.csv
+

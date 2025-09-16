@@ -39,7 +39,6 @@ python_backend/credentials/
 !tsconfig.json
 !components.json
 !next.config.json
-!vercel.json
 kaggle.json
 
 # Google Cloud credentials (specific patterns)
@@ -103,6 +102,10 @@ htmlcov/
 
 # Cursor IDE
 .cursor/
+
+# Backend-generated artifacts
+python_backend/transcripts/
+python_backend/vector_db/
 
 # Temporary and debug files
 *.tmp
