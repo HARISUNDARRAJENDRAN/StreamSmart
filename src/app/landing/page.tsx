@@ -1,14 +1,11 @@
-'use client';
+﻿'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { ZapIcon, LightbulbIcon, BrainIcon, ListVideoIcon, CircleCheck, BarChart3Icon, BookOpenIcon, UsersIcon, Star, ArrowRight, PlayCircle, Sparkles, Users, Award, TrendingUp, Shield, Clock, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Zap, MessageSquare, Bot, Trophy, Medal, Code, Layers, Globe, Cpu } from 'lucide-react';
-import SplitText from '@/components/ui/split-text';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ListVideoIcon, BarChart3Icon, Star, ArrowRight, PlayCircle, Sparkles, Users, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Code, Layers, Globe, Cpu } from 'lucide-react';
+import { motion } from 'framer-motion';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 
 // Dark theme color palette
@@ -56,29 +53,7 @@ const itemVariants = {
     opacity: 1,
     transition: {
       duration: 0.5,
-    },
-  },
-};
-
-const heroVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.8,
-      staggerChildren: 0.2,
-    },
-  },
-};
-
-const heroItemVariants = {
-  hidden: { y: 30, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
+      ease: 'easeOut',
     },
   },
 };
@@ -106,80 +81,36 @@ const ParticleSystem = ({ count = 50, className = "" }) => {
   );
 };
 
-// Floating geometric shapes component
-const FloatingShapes = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
-      {/* Purple geometric shapes */}
-      {Array.from({ length: 8 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute opacity-20"
-          style={{
-            left: `${15 + i * 12}%`,
-            top: `${20 + (i % 4) * 20}%`,
-            background: colors.purple.subtle,
-            filter: 'blur(1px)',
-          }}
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 180, 360],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 8 + i * 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 0.5,
-          }}
-        >
-          {i % 2 === 0 ? (
-            <div className="w-8 h-8 rounded-full" />
-          ) : (
-            <div className="w-6 h-6 rotate-45 rounded-sm" />
-          )}
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
 const features = [
   {
     icon: <Brain className="h-8 w-8" />,
     title: 'AI-Powered Learning',
     description: 'Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.',
-    gradient: 'from-purple-500/20 to-blue-500/20',
   },
   {
     icon: <Code className="h-8 w-8" />,
     title: 'Smart Code Analysis',
     description: 'Automatically analyze programming tutorials and create interactive coding exercises tailored to your skill level.',
-    gradient: 'from-purple-500/20 to-pink-500/20',
   },
   {
     icon: <Layers className="h-8 w-8" />,
     title: 'Visual Mind Maps',
     description: 'Convert complex topics into beautiful, interactive mind maps that make learning intuitive and memorable.',
-    gradient: 'from-purple-500/20 to-cyan-500/20',
   },
   {
     icon: <BarChart3Icon className="h-8 w-8" />,
     title: 'Progress Analytics',
     description: 'Track your learning journey with detailed analytics, completion rates, and personalized insights.',
-    gradient: 'from-purple-500/20 to-green-500/20',
   },
   {
     icon: <Globe className="h-8 w-8" />,
     title: 'Global Community',
     description: 'Connect with learners worldwide, share knowledge, and collaborate on learning projects.',
-    gradient: 'from-purple-500/20 to-orange-500/20',
   },
   {
     icon: <Cpu className="h-8 w-8" />,
     title: 'Neural Processing',
     description: 'Advanced AI models understand context and provide relevant, personalized learning recommendations.',
-    gradient: 'from-purple-500/20 to-red-500/20',
   },
 ];
 
@@ -208,10 +139,10 @@ const testimonials = [
 ];
 
 const stats = [
-  { number: "50+", label: "Active Learners", icon: Users },
-  { number: "1K+", label: "Videos Organized", icon: PlayCircle },
-  { number: "98%", label: "User Satisfaction", icon: Star },
-  { number: "5x", label: "Faster Learning", icon: TrendingUp },
+  { number: "50+", label: "Active Learners" },
+  { number: "1K+", label: "Videos Organized" },
+  { number: "98%", label: "User Satisfaction" },
+  { number: "5x", label: "Faster Learning" },
 ];
 
 export default function LandingPage() {
@@ -219,7 +150,6 @@ export default function LandingPage() {
   const [canNavbarAppear, setCanNavbarAppear] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [currentSection, setCurrentSection] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   // Intersection observers for different sections
   const aboutRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
@@ -236,7 +166,6 @@ export default function LandingPage() {
 
   // Initialize page
   useEffect(() => {
-    setIsLoaded(true);
     const timer = setTimeout(() => {
       setPushTransitionComplete(true);
     }, 800);
@@ -643,7 +572,7 @@ export default function LandingPage() {
                   color: colors.purple.primary
                 }}
               >
-                ✨ Features
+                âœ¨ Features
               </Badge>
               <h2 
                 className="font-bold mb-6 leading-tight"
@@ -878,18 +807,17 @@ export default function LandingPage() {
                   className="text-xl leading-relaxed"
                   style={{ color: colors.text.secondary }}
                 >
-                  We're not just another learning platform. We're revolutionizing how you discover, 
+                  We&apos;re not just another learning platform. We&apos;re revolutionizing how you discover, 
                   organize, and master educational content with cutting-edge AI technology.
                 </p>
                 
                 {/* Animated Stats */}
                 <div className="grid grid-cols-3 gap-6 py-8">
-                  {stats.map((stat, index) => (
+                  {stats.map((stat) => (
                     <motion.div
                       key={stat.label}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.2 }}
                       className="text-center"
                     >
                       <div 
@@ -915,7 +843,7 @@ export default function LandingPage() {
                   { icon: Brain, title: "AI-Powered", desc: "Advanced machine learning", color: colors.purple.primary },
                   { icon: Users, title: "Global Community", desc: "Learn with peers worldwide", color: colors.purple.secondary },
                   { icon: Target, title: "Personalized", desc: "Tailored to your learning style", color: colors.purple.subtle }
-                ].map((card, index) => (
+                ].map((card) => (
                   <motion.div
                     key={card.title}
                     className="p-6 rounded-2xl border backdrop-blur-xl"
@@ -985,7 +913,7 @@ export default function LandingPage() {
                   color: colors.purple.primary
                 }}
               >
-                💬 Testimonials
+                ðŸ’¬ Testimonials
               </Badge>
               <h2 
                 className="font-bold mb-6 leading-tight"
@@ -1013,7 +941,7 @@ export default function LandingPage() {
               variants={containerVariants}
               className="grid grid-cols-1 md:grid-cols-3 gap-8"
             >
-              {testimonials.map((testimonial, index) => (
+              {testimonials.map((testimonial) => (
                 <motion.div
                   key={testimonial.name}
                   variants={itemVariants}
@@ -1052,7 +980,7 @@ export default function LandingPage() {
                         className="italic leading-relaxed"
                         style={{ color: colors.text.secondary }}
                       >
-                        "{testimonial.content}"
+                        &quot;{testimonial.content}&quot;
                       </p>
                       <div className="flex items-center gap-3 pt-4">
                         <div 
@@ -1114,7 +1042,7 @@ export default function LandingPage() {
                   color: colors.purple.primary
                 }}
               >
-                🚀 How it works
+                ðŸš€ How it works
               </Badge>
               <h2 
                 className="font-bold mb-8 leading-tight"
@@ -1279,7 +1207,7 @@ export default function LandingPage() {
                 className="text-xl leading-relaxed"
                 style={{ color: colors.text.secondary }}
               >
-                Have questions or want to connect? Reach out and let's build the future of learning together!
+                Have questions or want to connect? Reach out and let&apos;s build the future of learning together!
               </p>
             </motion.div>
             
@@ -1357,7 +1285,7 @@ export default function LandingPage() {
                 className="text-sm"
                 style={{ color: colors.text.tertiary }}
               >
-                © 2025 StreamSmart. All rights reserved.
+                Â© 2025 StreamSmart. All rights reserved.
               </p>
             </motion.div>
           </div>

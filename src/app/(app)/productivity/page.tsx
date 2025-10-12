@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Trash2, PlusCircle, CheckCircle2, AlertCircle, History, Timer, CalendarDays } from 'lucide-react';
+import { Trash2, PlusCircle, CheckCircle2, History, Timer, CalendarDays } from 'lucide-react';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -145,15 +145,18 @@ function TasksPanel() {
 }
 
 function SessionsPanel() {
-  const [sessions, setSessions] = useState<any[]>([]);
+  const [sessions, setSessions] = useState<Array<{date: string; completed: number}>>([]);
   useEffect(() => {
     const saved = localStorage.getItem('pomodoroSessions');
     if (saved) setSessions(JSON.parse(saved));
   }, []);
 
   const today = new Date().toDateString();
-  const weekStart = new Date();
-  weekStart.setDate(weekStart.getDate() - 6);
+  const weekStart = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 6);
+    return date;
+  }, []);
 
   const { todayCount, todaySecs, weekCount, weekSecs } = useMemo(() => {
     let tc = 0, ts = 0, wc = 0, ws = 0;

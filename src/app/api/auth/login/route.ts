@@ -8,10 +8,8 @@ export async function POST(request: NextRequest) {
     const { email, password, authProvider, googleId, name, avatarUrl } = await request.json();
 
     // Try to connect to MongoDB
-    let mongoConnected = false;
     try {
       await connectDB();
-      mongoConnected = true;
     } catch (dbError) {
       console.error('MongoDB connection failed:', dbError);
       

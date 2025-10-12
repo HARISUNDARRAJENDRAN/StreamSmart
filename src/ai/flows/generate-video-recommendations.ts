@@ -13,7 +13,7 @@
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from 'zod';
 import { searchVideos } from '@/services/youtube';
-import type { Video as AppVideo } from '@/types'; // Renamed to avoid conflict
+// Video type is imported from @/types // Renamed to avoid conflict
 
 const MODEL_NAME = "gemini-1.5-flash-latest";
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -33,7 +33,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: z.ZodSchema) {
   if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in .env file.");
   }
@@ -60,10 +60,9 @@ async function runChat(promptParts: (string | { text: string } | { inlineData: {
 }
 
 
-const GenerateVideoRecommendationsInputSchema = z.object({
-  playlistTitle: z.string().describe('The title of the playlist for which to recommend videos.'),
-});
-export type GenerateVideoRecommendationsInput = z.infer<typeof GenerateVideoRecommendationsInputSchema>;
+export type GenerateVideoRecommendationsInput = {
+  playlistTitle: string;
+};
 
 const VideoSchema = z.object({
   id: z.string().describe("YouTube video ID."),

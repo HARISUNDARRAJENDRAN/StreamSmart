@@ -33,7 +33,7 @@ export async function POST(
     console.log('Found playlist:', playlist.title);
 
     // Ensure all existing videos have required fields (defensive programming)
-    playlist.videos = playlist.videos.map((video: any) => ({
+    playlist.videos = playlist.videos.map((video: Record<string, unknown>) => ({
       ...video,
       youtubeId: video.youtubeId || video.id || 'unknown',
       youtubeURL: video.youtubeURL || video.url || `https://youtube.com/watch?v=${video.youtubeId || video.id}`,
@@ -50,7 +50,7 @@ export async function POST(
 
     // Check if video already exists in playlist
     const existingVideo = playlist.videos.find(
-      (video: any) => video.youtubeId === videoData.youtubeId
+      (video: Record<string, unknown>) => video.youtubeId === videoData.youtubeId
     );
 
     if (existingVideo) {
@@ -82,7 +82,7 @@ export async function POST(
     playlist.videos.push(newVideo);
     
     // Update overall progress
-    const completedVideos = playlist.videos.filter((v: any) => v.completionStatus === 100).length;
+    const completedVideos = playlist.videos.filter((v: Record<string, unknown>) => v.completionStatus === 100).length;
     const totalVideos = playlist.videos.length;
     playlist.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
     

@@ -203,7 +203,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Transform videos to include all required fields
-    const transformedVideos = (videos || []).map((video: any, index: number) => {
+    const transformedVideos = (videos || []).map((video: Record<string, unknown>, index: number) => {
       // Extract youtubeId from url if not provided
       const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
       
@@ -280,7 +280,7 @@ export async function PUT(request: NextRequest) {
     // Calculate overall progress if videos are being updated
     if (updateData.videos) {
       // Transform videos to include all required fields
-      updateData.videos = updateData.videos.map((video: any, index: number) => {
+      updateData.videos = updateData.videos.map((video: Record<string, unknown>, index: number) => {
         // Extract youtubeId from url if not provided
         const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
         
@@ -300,7 +300,7 @@ export async function PUT(request: NextRequest) {
         };
       });
 
-      const completedVideos = updateData.videos.filter((v: any) => v.completionStatus === 100).length;
+      const completedVideos = updateData.videos.filter((v: Record<string, unknown>) => v.completionStatus === 100).length;
       const totalVideos = updateData.videos.length;
       updateData.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
     }

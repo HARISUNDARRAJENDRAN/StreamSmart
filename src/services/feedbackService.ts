@@ -1,5 +1,3 @@
-const API_BASE_URL = '/api';
-
 export interface FeedbackData {
   userId: string;
   itemId: string;
@@ -32,8 +30,8 @@ export interface WatchlistData {
 }
 
 // Temporary mock data storage until new recommendation system is implemented
-const mockFeedbackData: Record<string, any> = {};
-const mockWatchlistData: Record<string, any[]> = {};
+const mockFeedbackData: Record<string, FeedbackData & { id: string; createdAt: string; updatedAt: string }> = {};
+const mockWatchlistData: Record<string, WatchlistData[]> = {};
 
 export const feedbackService = {
   // Submit feedback (rating, review, not interested) - Mock implementation

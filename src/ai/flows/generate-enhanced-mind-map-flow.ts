@@ -6,7 +6,7 @@
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from 'zod';
-import type { MindMapNode as AppMindMapNode, MindMapEdge as AppMindMapEdge } from '@/types';
+// MindMapNode and MindMapEdge types are imported from @/types
 import { enhanceVideoWithMultiModalAnalysis, type MultiModalSummaryResponse } from '@/services/multimodal-summarizer';
 
 const MODEL_NAME = "gemini-1.5-flash-latest";
@@ -27,7 +27,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: z.ZodSchema) {
   if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in .env file.");
   }
@@ -85,15 +85,14 @@ const EnhancedMindMapEdgeSchema = z.object({
   }).optional(),
 }).describe('Enhanced mind map edge with relationship insights.');
 
-const GenerateEnhancedMindMapInputSchema = z.object({
-  videoId: z.string().describe('The video ID for multi-modal analysis.'),
-  youtubeUrl: z.string().describe('The YouTube URL of the video.'),
-  sourceText: z.string().optional().describe('Additional source text or existing summary.'),
-  maxNodes: z.number().optional().default(15).describe('Maximum number of nodes (enhanced default).'),
-  includeTimestamps: z.boolean().optional().default(true).describe('Whether to include timestamp-based nodes.'),
-  includeVisualInsights: z.boolean().optional().default(true).describe('Whether to include visual analysis nodes.'),
-});
-export type GenerateEnhancedMindMapInput = z.infer<typeof GenerateEnhancedMindMapInputSchema>;
+export type GenerateEnhancedMindMapInput = {
+  videoId: string;
+  youtubeUrl: string;
+  sourceText?: string;
+  maxNodes?: number;
+  includeTimestamps?: boolean;
+  includeVisualInsights?: boolean;
+};
 
 const GenerateEnhancedMindMapOutputSchema = z.object({
   nodes: z.array(EnhancedMindMapNodeSchema).describe('Enhanced mind map nodes.'),

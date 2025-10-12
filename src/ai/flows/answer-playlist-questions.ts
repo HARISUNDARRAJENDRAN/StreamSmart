@@ -29,7 +29,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: z.ZodSchema) {
   if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in .env file.");
   }
@@ -55,17 +55,12 @@ async function runChat(promptParts: (string | { text: string } | { inlineData: {
   }
 }
 
-const AnswerPlaylistQuestionInputSchema = z.object({
-  playlistContent: z
-    .string()
-    .describe('The entire content of the playlist, including video titles, descriptions, and transcripts.'),
-  question: z.string().describe('The user question about the playlist content.'),
-  currentVideoTitle: z.string().optional().describe('The title of the currently playing video, if any.'),
-  currentVideoSummary: z.string().optional().describe('The summary of the currently playing video, if any.'),
-});
-export type AnswerPlaylistQuestionInput = z.infer<
-  typeof AnswerPlaylistQuestionInputSchema
->;
+export type AnswerPlaylistQuestionInput = {
+  playlistContent: string;
+  question: string;
+  currentVideoTitle?: string;
+  currentVideoSummary?: string;
+};
 
 const AnswerPlaylistQuestionOutputSchema = z.object({
   answer: z

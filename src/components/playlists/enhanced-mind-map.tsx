@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Loader2, Brain, Eye, Mic, Clock, Zap } from "lucide-react";
+import { Loader2, Brain, Eye, Mic, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface MindMapNode {
@@ -41,17 +41,30 @@ interface ProcessingStage {
   icon: React.ReactNode;
 }
 
+interface TimestampHighlight {
+  timestamp: number;
+  description: string;
+  importance_score?: number;
+}
+
+interface MultiModalDataType {
+  summary?: string;
+  key_topics?: string[];
+  visual_insights?: string[];
+  timestamp_highlights?: TimestampHighlight[];
+  [key: string]: unknown;
+}
+
 interface EnhancedMindMapProps {
   videoId: string;
   title: string;
   isProcessing?: boolean;
-  multiModalData?: any;
+  multiModalData?: MultiModalDataType;
   onNodeClick?: (node: MindMapNode) => void;
   className?: string;
 }
 
 export function EnhancedMindMap({ 
-  videoId, 
   title, 
   isProcessing = false, 
   multiModalData,
@@ -127,7 +140,7 @@ export function EnhancedMindMap({
     }
   }, [multiModalData, isProcessing]);
 
-  const generateMindMapFromData = (data: any) => {
+  const generateMindMapFromData = (data: MultiModalDataType) => {
     const centerX = 400;
     const centerY = 300;
     const newNodes: MindMapNode[] = [];
@@ -227,7 +240,7 @@ export function EnhancedMindMap({
 
     // Timestamp highlights
     if (data.timestamp_highlights) {
-      data.timestamp_highlights.forEach((highlight: any, index: number) => {
+      data.timestamp_highlights.forEach((highlight: TimestampHighlight, index: number) => {
         const nodeId = `timestamp-${index}`;
         const radius = 200 + index * 30;
         const angle = (index * 2 * Math.PI) / data.timestamp_highlights.length;

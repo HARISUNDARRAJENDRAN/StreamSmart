@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,8 +11,6 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
   type ChartConfig,
 } from '@/components/ui/chart';
 import { useUser } from '@/contexts/UserContext';
@@ -28,6 +26,8 @@ interface RecentPlaylistProgress {
   completedVideoCount: number;
 }
 
+// Unused functions - commented out
+/*
 function parseDurationToSeconds(durationStr?: string): number {
   if (!durationStr || durationStr === 'N/A' || typeof durationStr !== 'string') return 0;
   const parts = durationStr.split(':').map(Number);
@@ -65,9 +65,10 @@ function formatSecondsToHoursMinutes(totalSeconds: number): string {
   }
   return timeString || "0 minutes";
 }
+*/
 
 // Generate learning trends data based on recent activities
-function generateLearningTrends(activities: any[]): any[] {
+function generateLearningTrends(activities: Array<{timestamp: Date; type: string; [key: string]: unknown}>): Array<{name: string; videos: number}> {
   const last7Days = [];
   const today = new Date();
   
@@ -101,7 +102,7 @@ const chartConfig = {
 export default function ProgressPage() {
   const { user, userStats, isLoading: userLoading, updateUserStats } = useUser();
   const [recentPlaylistsProgress, setRecentPlaylistsProgress] = useState<RecentPlaylistProgress[]>([]);
-  const [learningTrendsData, setLearningTrendsData] = useState<any[]>([]);
+  const [learningTrendsData, setLearningTrendsData] = useState<Array<{name: string; videos: number}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const { toast } = useToast();
@@ -130,13 +131,13 @@ export default function ProgressPage() {
       // Process playlist progress
       const processedPlaylistsActivity: RecentPlaylistProgress[] = [];
 
-      playlists.forEach((playlist: any) => {
+      playlists.forEach((playlist: Playlist) => {
         if (!playlist.videos || playlist.videos.length === 0) return;
 
         let playlistCompletedVideos = 0;
         let playlistTotalCompletion = 0;
         
-        playlist.videos.forEach((video: any) => {
+        playlist.videos.forEach((video: Video) => {
           const completion = video.completionStatus || 0;
           playlistTotalCompletion += completion;
           if (completion === 100) {
@@ -181,17 +182,17 @@ export default function ProgressPage() {
       try {
         const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
         const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
-        const userPlaylists = storedPlaylists.filter((p: any) => p.userId === user.id);
+        const userPlaylists = storedPlaylists.filter((p: Playlist) => p.userId === user.id);
         
         const processedPlaylistsActivity: RecentPlaylistProgress[] = [];
 
-        userPlaylists.forEach((playlist: any) => {
+        userPlaylists.forEach((playlist: Playlist) => {
           if (!playlist.videos || playlist.videos.length === 0) return;
 
           let playlistCompletedVideos = 0;
           let playlistTotalCompletion = 0;
           
-          playlist.videos.forEach((video: any) => {
+          playlist.videos.forEach((video: Video) => {
             const completion = video.completionStatus || 0;
             playlistTotalCompletion += completion;
             if (completion === 100) {
@@ -233,7 +234,7 @@ export default function ProgressPage() {
 
   useEffect(() => {
     fetchProgressData();
-  }, [user]); // Removed updateUserStats from dependencies to prevent excessive calls
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (userLoading || isLoading) {
     return (
@@ -274,7 +275,7 @@ export default function ProgressPage() {
             try {
               await fetchProgressData(true); // Force refresh
               toast({
-                title: "Progress Updated! ✅",
+                title: "Progress Updated! âœ…",
                 description: "Your progress data has been refreshed.",
               });
             } catch (error) {
@@ -463,4 +464,5 @@ export default function ProgressPage() {
     </div>
   );
 }
+
 

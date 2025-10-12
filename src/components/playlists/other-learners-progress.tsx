@@ -43,9 +43,9 @@ export const OtherLearnersProgress: FC<OtherLearnersProgressProps> = ({ learners
         <CardHeader>
           <CardTitle className="flex items-center">
             <UsersIcon className="h-6 w-6 mr-2 text-primary" />
-            Fellow Learners on "{playlistTitle}"
+            Fellow Learners on &ldquo;{playlistTitle}&rdquo;
           </CardTitle>
-          <CardDescription>Loading learners' activity...</CardDescription>
+          <CardDescription>Loading learners&apos; activity...</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">Please wait.</p>
@@ -60,9 +60,9 @@ export const OtherLearnersProgress: FC<OtherLearnersProgressProps> = ({ learners
         <CardHeader>
           <CardTitle className="flex items-center">
             <UsersIcon className="h-6 w-6 mr-2 text-primary" />
-            Fellow Learners on "{playlistTitle}"
+            Fellow Learners on &ldquo;{playlistTitle}&rdquo;
           </CardTitle>
-          <CardDescription>No other learners' activity to display for this playlist yet.</CardDescription>
+          <CardDescription>No other learners&apos; activity to display for this playlist yet.</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground">Be the first to make progress!</p>
@@ -77,7 +77,7 @@ export const OtherLearnersProgress: FC<OtherLearnersProgressProps> = ({ learners
       <CardHeader>
         <CardTitle className="flex items-center">
           <UsersIcon className="h-6 w-6 mr-2 text-primary" />
-          Fellow Learners on "{playlistTitle}"
+          Fellow Learners on &quot;{playlistTitle}&quot;
         </CardTitle>
         <CardDescription>See who else is learning this content and their progress.</CardDescription>
       </CardHeader>
@@ -90,13 +90,13 @@ export const OtherLearnersProgress: FC<OtherLearnersProgressProps> = ({ learners
             </Avatar>
             <div className="flex-grow">
               <p className="font-semibold text-sm">{learner.name}</p>
-              <Progress value={learner.progressPercent} className="h-2 mt-1" aria-label={`${learner.name}'s progress`} />
+              <Progress value={learner.progressPercent} className="h-2 mt-1" aria-label={`${learner.name}&apos;s progress`} />
               <p className="text-xs text-muted-foreground mt-0.5">{learner.progressPercent}% complete</p>
             </div>
           </div>
         ))}
          <p className="text-xs text-muted-foreground pt-2 text-center">
-            Note: This is a simulation of other learners' progress. Real-time multi-user features require a backend.
+            Note: This is a simulation of other learners&apos; progress. Real-time multi-user features require a backend.
           </p>
       </CardContent>
     </Card>

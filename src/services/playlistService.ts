@@ -1,3 +1,5 @@
+import type { Video } from '@/types';
+
 const API_BASE_URL = '/api';
 
 export const playlistService = {
@@ -69,7 +71,7 @@ export const playlistService = {
     category: string;
     tags?: string[];
     isPublic?: boolean;
-    videos?: any[];
+    videos?: Video[];
   }) {
     try {
       const response = await fetch(`${API_BASE_URL}/playlists`, {
@@ -95,7 +97,7 @@ export const playlistService = {
   },
 
   // Update a playlist
-  async updatePlaylist(playlistId: string, updateData: any) {
+  async updatePlaylist(playlistId: string, updateData: Partial<{title: string; description: string; category: string; tags: string[]; isPublic: boolean; videos: Video[]}>) {
     try {
       const response = await fetch(`${API_BASE_URL}/playlists`, {
         method: 'PUT',

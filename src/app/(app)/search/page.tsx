@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   SearchIcon, 
@@ -47,7 +47,7 @@ function SearchPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user } = useUser();
-  const { trackSearchQuery, trackSearchClick, trackSearchRefine, endSearch } = useImplicitTracking();
+  const { trackSearchQuery, trackSearchClick, trackSearchRefine } = useImplicitTracking();
   
   const [searchQuery, setSearchQuery] = useState(searchParams?.get('q') || '');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -62,7 +62,7 @@ function SearchPageContent() {
     if (user?.id) {
       loadSearchHistory();
     }
-  }, [user?.id]);
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Perform search when query changes
   useEffect(() => {
@@ -71,7 +71,7 @@ function SearchPageContent() {
       setSearchQuery(query);
       performSearch(query);
     }
-  }, [searchParams]);
+  }, [searchParams]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadSearchHistory = async () => {
     try {
@@ -212,7 +212,7 @@ function SearchPageContent() {
     setSearchHistory([]);
   };
 
-  const useHistoryQuery = (historyItem: SearchHistoryItem) => {
+  const handleHistoryQuery = (historyItem: SearchHistoryItem) => {
     setSearchQuery(historyItem.searchQuery);
     router.push(`/search?q=${encodeURIComponent(historyItem.searchQuery)}`);
   };
@@ -252,7 +252,7 @@ function SearchPageContent() {
                   className="pl-10"
                 />
               </div>
-              <Select value={searchType} onValueChange={(value: any) => setSearchType(value)}>
+              <Select value={searchType} onValueChange={(value: 'content' | 'creator' | 'category') => setSearchType(value)}>
                 <SelectTrigger className="w-40">
                   <SelectValue />
                 </SelectTrigger>
@@ -290,7 +290,7 @@ function SearchPageContent() {
                       key={item.id}
                       variant="secondary"
                       className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
-                      onClick={() => useHistoryQuery(item)}
+                      onClick={() => handleHistoryQuery(item)}
                     >
                       {item.searchQuery}
                       {item.searchSuccessful && (
@@ -311,7 +311,7 @@ function SearchPageContent() {
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-xl font-semibold">
-                  Search results for "{searchQuery}"
+                  Search results for &ldquo;{searchQuery}&rdquo;
                 </h2>
                 <p className="text-muted-foreground">
                   {isLoading ? 'Searching...' : `${filteredResults.length} results found`}
@@ -373,6 +373,7 @@ function SearchPageContent() {
                           onClick={() => handleResultClick(result, index)}
                         >
                           <div className="relative">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                               src={result.thumbnail}
                               alt={result.title}

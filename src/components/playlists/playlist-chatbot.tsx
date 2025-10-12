@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { BotIcon, SendHorizonalIcon, UserIcon, Loader2Icon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { answerWithRAG, processVideosForRAG, type PlaylistRAGInput } from '@/ai/flows/rag-answer-questions';
@@ -17,17 +17,13 @@ function extractVideoIdFromTitle(title?: string): string | undefined {
 }
 
 interface PlaylistChatbotProps {
-  playlistId: string;
   playlistContent: string; // This would be the compiled content for RAG
   currentVideoTitle?: string;
-  currentVideoSummary?: string;
 }
 
 export function PlaylistChatbot({ 
-  playlistId, 
   playlistContent, 
-  currentVideoTitle, 
-  currentVideoSummary
+  currentVideoTitle
 }: PlaylistChatbotProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');

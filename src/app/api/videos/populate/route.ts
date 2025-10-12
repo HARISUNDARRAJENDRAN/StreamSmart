@@ -68,7 +68,7 @@ async function fetchYouTubeVideos(query: string, maxResults: number = 10) {
     }
     
     const searchData = await searchResponse.json();
-    const videoIds = searchData.items.map((item: any) => item.id.videoId).join(',');
+    const videoIds = searchData.items.map((item: {id: {videoId: string}}) => item.id.videoId).join(',');
     
     // Get detailed video information
     const detailsUrl = `${YOUTUBE_API_BASE_URL}/videos?part=snippet,contentDetails,statistics&id=${videoIds}&key=${YOUTUBE_API_KEY}`;
@@ -174,8 +174,8 @@ export async function POST(request: NextRequest) {
             totalUpdated++;
           }
         }
-      } catch (error: any) {
-        const errorMsg = `Error processing ${cat} - ${subGenre}: ${error.message}`;
+      } catch (error) {
+        const errorMsg = `Error processing ${cat} - ${subGenre}: ${error instanceof Error ? error.message : 'Unknown error'}`;
         console.error(errorMsg);
         errors.push(errorMsg);
         
@@ -199,12 +199,12 @@ export async function POST(request: NextRequest) {
       errors: errors.length > 0 ? errors : undefined
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error in populate videos endpoint:', error);
     return NextResponse.json(
       { 
         success: false, 
-        error: error.message || 'Failed to populate videos'
+        error: error instanceof Error ? error.message : 'Unknown error' || 'Failed to populate videos'
       },
       { status: 500 }
     );
@@ -212,7 +212,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET endpoint to check population status
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     await connectDB();
     
@@ -238,7 +238,7 @@ export async function GET(request: NextRequest) {
       hasYouTubeApiKey: !!YOUTUBE_API_KEY
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error checking video stats:', error);
     return NextResponse.json(
       { 

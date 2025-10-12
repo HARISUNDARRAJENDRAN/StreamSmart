@@ -97,7 +97,7 @@ This video contains valuable educational content. While our advanced multi-modal
   }
 }
 
-function combineExistingWithMultiModal(existingSummary: string, multiModalData: any): string {
+function combineExistingWithMultiModal(existingSummary: string, multiModalData: Record<string, unknown>): string {
   return `## Enhanced Summary
 
 ${multiModalData.summary}

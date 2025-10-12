@@ -463,8 +463,8 @@ export const mindMapService = {
     video_id: string;
     video_title: string;
     mindmap_data: {
-      nodes: any[];
-      edges: any[];
+      nodes: Array<Record<string, unknown>>;
+      edges: Array<Record<string, unknown>>;
     };
     node_count: number;
     edge_count: number;

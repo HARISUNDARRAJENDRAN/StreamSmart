@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { generateVideoRecommendations } from '@/ai/flows/generate-video-recommendations';
 import type { GenerateVideoRecommendationsInput, RecommendedVideo } from '@/ai/flows/generate-video-recommendations';
 import { RecommendedVideoCard } from './recommended-video-card';
-import type { Video, Playlist } from '@/types'; 
+import type { Video } from '@/types'; 
 import { useToast } from "@/hooks/use-toast";
 import { getVideoDetails } from '@/services/youtube'; // Import YouTube service
 import { useUser } from '@/contexts/UserContext';
@@ -250,9 +250,9 @@ export function CreatePlaylistForm() {
          toast({ title: "AI Recommendations", description: "No specific video suggestions found for this topic, or an error occurred."});
       }
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error fetching AI recommendations:", error);
-      const detail = error?.message ? `Details: ${error.message}` : "An unexpected error occurred.";
+      const detail = error instanceof Error ? `Details: ${error.message}` : "An unexpected error occurred.";
       toast({
         title: "AI Recommendation Error",
         description: `Could not fetch AI suggestions. ${detail} Please also check if the YouTube API key is configured and valid.`,
@@ -285,43 +285,6 @@ export function CreatePlaylistForm() {
       });
   };
 
-  const handleCopyToClipboard = async (text: string) => {
-    try {
-      if (navigator.clipboard) {
-        await navigator.clipboard.writeText(text);
-        toast({
-          title: "Copied!",
-          description: "Text copied to clipboard",
-        });
-      } else {
-        // Fallback for browsers that don't support clipboard API
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-          document.execCommand('copy');
-          toast({
-            title: "Copied!",
-            description: "Text copied to clipboard",
-          });
-        } catch (err) {
-          toast({
-            title: "Error",
-            description: "Could not copy text. Please copy manually.",
-            variant: "destructive",
-          });
-        }
-        document.body.removeChild(textArea);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Could not copy text. Please copy manually.",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <Form {...form}>

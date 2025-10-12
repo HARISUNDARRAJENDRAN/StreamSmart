@@ -139,7 +139,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
     }
 
     const ragResponse: RAGResponse = await response.json();
-    let finalAnswer = ragResponse.answer;
+    const finalAnswer = ragResponse.answer;
     let determinedSourceType: PlaylistRAGResponse['sourceType'];
 
     // Enhanced error detection
@@ -187,7 +187,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
 }
 
 // Helper function to process videos before answering
-export async function processVideosForRAG(videoUrls: string[], videoTitles?: string[]) {
+export async function processVideosForRAG(videoUrls: string[]) {
   try {
     console.log("Processing videos for RAG:", videoUrls);
     

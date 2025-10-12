@@ -10,7 +10,7 @@
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from 'zod';
-import type { Quiz as AppQuiz, QuizQuestion as AppQuizQuestion } from '@/types'; // Renamed to avoid conflict
+// Quiz and QuizQuestion types are imported from @/types // Renamed to avoid conflict
 
 const MODEL_NAME = "gemini-1.5-flash-latest";
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -30,7 +30,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: z.ZodSchema) {
   if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in .env file.");
   }
@@ -64,13 +64,12 @@ const QuizQuestionSchema = z.object({
   explanation: z.string().optional().describe('A brief explanation for why the correct answer is right, especially if the question is nuanced.'),
 });
 
-const GeneratePlaylistQuizInputSchema = z.object({
-  playlistTitle: z.string().describe('The title of the playlist, to give context to the quiz.'),
-  playlistContent: z.string().describe('The textual content of the playlist (e.g., concatenated titles, descriptions, summaries, or transcripts).'),
-  numQuestions: z.number().min(1).max(10).default(5).describe('The desired number of questions for the quiz.'),
-  difficulty: z.enum(['easy', 'medium', 'hard']).optional().default('medium').describe('The difficulty level of the quiz questions.'),
-});
-export type GeneratePlaylistQuizInput = z.infer<typeof GeneratePlaylistQuizInputSchema>;
+export type GeneratePlaylistQuizInput = {
+  playlistTitle: string;
+  playlistContent: string;
+  numQuestions: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+};
 
 const GeneratePlaylistQuizOutputSchema = z.object({
   title: z.string().describe('A suitable title for the generated quiz (e.g., "Quiz: [Playlist Title]").'),

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,9 +10,21 @@ import { enhanceVideoWithMultiModalAnalysis } from '@/services/multimodal-summar
 import { SimpleEnhancedMindMap } from './simple-enhanced-mind-map';
 import type { Video } from '@/types';
 
+interface MultiModalData {
+  summary?: string;
+  keyTopics?: string[];
+  visualInsights?: string[];
+  timestampHighlights?: Array<{
+    timestamp: number;
+    description: string;
+    importance_score: number;
+  }>;
+  [key: string]: unknown;
+}
+
 interface MLEnhancedVideoSummaryProps {
   video: Video;
-  onEnhancedSummaryGenerated?: (enhancedSummary: string, multiModalData: any) => void;
+  onEnhancedSummaryGenerated?: (enhancedSummary: string, multiModalData: MultiModalData) => void;
 }
 
 type ProcessingStage = 'idle' | 'downloading' | 'transcribing' | 'analyzing_visuals' | 'aligning' | 'summarizing' | 'completed' | 'error';
@@ -30,7 +42,7 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
     progress: 0,
     message: 'Ready to process'
   });
-  const [enhancedData, setEnhancedData] = useState<any>(null);
+  const [enhancedData, setEnhancedData] = useState<MultiModalData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleStartProcessing = async () => {
@@ -132,7 +144,7 @@ export function MLEnhancedVideoSummary({ video, onEnhancedSummaryGenerated }: ML
             <div className="text-center py-6">
               <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-muted-foreground mb-4">
-                Use advanced AI models to analyze this video's audio and visual content
+                Use advanced AI models to analyze this video&apos;s audio and visual content
               </p>
               <Button 
                 onClick={handleStartProcessing}

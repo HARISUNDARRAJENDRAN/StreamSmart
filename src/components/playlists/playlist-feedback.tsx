@@ -3,14 +3,11 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { StarRating } from '@/components/feedback/StarRating';
 import { ThumbsRating } from '@/components/feedback/ThumbsRating';
 import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
 import { 
   MessageSquare, 
-  X,
-  Star,
   BookOpen,
   Users
 } from 'lucide-react';
@@ -18,11 +15,21 @@ import { useUser } from '@/contexts/UserContext';
 import { feedbackService } from '@/services/feedbackService';
 import { useToast } from "@/hooks/use-toast";
 
+interface Video {
+  id: string;
+  title: string;
+}
+
 interface Playlist {
   id: string;
   title: string;
   description?: string;
-  videos: any[];
+  videos: Video[];
+}
+
+interface Feedback {
+  feedbackType: string;
+  [key: string]: unknown;
 }
 
 interface PlaylistFeedbackProps {
@@ -31,7 +38,7 @@ interface PlaylistFeedbackProps {
 }
 
 export function PlaylistFeedback({ playlist, className }: PlaylistFeedbackProps) {
-  const [userFeedback, setUserFeedback] = useState<any>({});
+  const [userFeedback, setUserFeedback] = useState<Record<string, Feedback>>({});
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -51,8 +58,8 @@ export function PlaylistFeedback({ playlist, className }: PlaylistFeedbackProps)
       const result = await feedbackService.getUserFeedback(user.id, playlist.id);
       if (result.success) {
         // Create feedback map for this playlist
-        const feedbackMap: Record<string, any> = {};
-        result.feedback.forEach((feedback: any) => {
+        const feedbackMap: Record<string, Feedback> = {};
+        result.feedback.forEach((feedback: Feedback) => {
           feedbackMap[feedback.feedbackType] = feedback;
         });
         setUserFeedback(feedbackMap);

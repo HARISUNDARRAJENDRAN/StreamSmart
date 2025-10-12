@@ -10,7 +10,7 @@
 
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "@google/generative-ai";
 import { z } from 'zod';
-import type { MindMapNode as AppMindMapNode, MindMapEdge as AppMindMapEdge } from '@/types'; // Renamed to avoid conflict
+// MindMapNode and MindMapEdge types are imported from @/types
 
 const MODEL_NAME = "gemini-1.5-flash-latest";
 const API_KEY = process.env.GEMINI_API_KEY;
@@ -30,7 +30,7 @@ const safetySettings = [
   { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
 ];
 
-async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: any) {
+async function runChat(promptParts: (string | { text: string } | { inlineData: { mimeType: string, data: string } })[], zodSchema: z.ZodSchema) {
   if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in .env file.");
   }
@@ -76,11 +76,10 @@ const MindMapEdgeSchema = z.object({
 export type GenerateMindMapEdge = z.infer<typeof MindMapEdgeSchema>;
 
 
-const GenerateMindMapInputSchema = z.object({
-  sourceTextOrUrl: z.string().describe('The source text, playlist title, or YouTube URL to generate a mind map from.'),
-  maxNodes: z.number().optional().default(10).describe('Maximum number of nodes to include in the mind map (excluding the root).'),
-});
-export type GenerateMindMapInput = z.infer<typeof GenerateMindMapInputSchema>;
+export type GenerateMindMapInput = {
+  sourceTextOrUrl: string;
+  maxNodes?: number;
+};
 
 const GenerateMindMapOutputSchema = z.object({
   nodes: z.array(MindMapNodeSchema).describe('An array of node objects for the mind map.'),

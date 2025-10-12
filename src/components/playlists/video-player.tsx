@@ -68,15 +68,15 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
             modestbranding: 1,
           },
           events: {
-            onReady: (event: any) => {
+            onReady: () => {
               console.log('✅ [VideoPlayer] YouTube player ready for video:', videoId);
             },
-            onStateChange: (event: any) => {
+            onStateChange: (event: { data: number }) => {
               if (event.data === window.YT.PlayerState.PLAYING) {
                 console.log('▶️ [VideoPlayer] Video started playing:', videoId);
               }
             },
-            onError: (event: any) => {
+            onError: (event: { data: number }) => {
               console.log('❌ [VideoPlayer] YouTube player error:', event.data, 'for video:', videoId);
               // Show error message in the player area
               if (playerRef.current) {

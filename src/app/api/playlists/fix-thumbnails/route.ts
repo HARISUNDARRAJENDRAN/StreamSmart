@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { Playlist } from '@/models/Playlist';
 import { connectToDatabase } from '@/lib/mongodb';
 
@@ -21,15 +21,15 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     await connectToDatabase();
     
-    console.log('🔧 Starting thumbnail fix process...');
+    console.log('ðŸ”§ Starting thumbnail fix process...');
     
     // Get all playlists
     const playlists = await Playlist.find({});
-    console.log(`📋 Found ${playlists.length} playlists to process`);
+    console.log(`ðŸ“‹ Found ${playlists.length} playlists to process`);
     
     let totalVideosFixed = 0;
     let totalPlaylistsUpdated = 0;
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       let playlistUpdated = false;
       let videosFixedInPlaylist = 0;
       
-      console.log(`\n📁 Processing playlist: ${playlist.title || 'Untitled'}`);
+      console.log(`\nðŸ“ Processing playlist: ${playlist.title || 'Untitled'}`);
       
       for (let i = 0; i < playlist.videos.length; i++) {
         const video = playlist.videos[i];
@@ -55,10 +55,10 @@ export async function POST(request: NextRequest) {
             
             // Check if we need to update
             if (currentThumbnail !== correctThumbnail) {
-              console.log(`  🎥 Video: ${(video.title || 'Untitled').substring(0, 50)}`);
-              console.log(`     📺 YouTube ID: ${youtubeId}`);
-              console.log(`     ❌ Old thumbnail: ${currentThumbnail}`);
-              console.log(`     ✅ New thumbnail: ${correctThumbnail}`);
+              console.log(`  ðŸŽ¥ Video: ${(video.title || 'Untitled').substring(0, 50)}`);
+              console.log(`     ðŸ“º YouTube ID: ${youtubeId}`);
+              console.log(`     âŒ Old thumbnail: ${currentThumbnail}`);
+              console.log(`     âœ… New thumbnail: ${correctThumbnail}`);
               
               // Update the video
               playlist.videos[i].thumbnail = correctThumbnail;
@@ -67,26 +67,26 @@ export async function POST(request: NextRequest) {
               playlistUpdated = true;
             }
           } else {
-            console.log(`  ⚠️  Could not extract YouTube ID from: ${youtubeUrl}`);
+            console.log(`  âš ï¸  Could not extract YouTube ID from: ${youtubeUrl}`);
           }
         } else {
-          console.log(`  ⚠️  Video missing youtubeURL: ${video.title || 'Untitled'}`);
+          console.log(`  âš ï¸  Video missing youtubeURL: ${video.title || 'Untitled'}`);
         }
       }
       
       // Update the playlist in database if any videos were fixed
       if (playlistUpdated) {
         await playlist.save();
-        console.log(`  ✅ Updated playlist with ${videosFixedInPlaylist} video fixes`);
+        console.log(`  âœ… Updated playlist with ${videosFixedInPlaylist} video fixes`);
         totalVideosFixed += videosFixedInPlaylist;
         totalPlaylistsUpdated++;
       } else {
-        console.log(`  ℹ️  No updates needed for this playlist`);
+        console.log(`  â„¹ï¸  No updates needed for this playlist`);
       }
     }
     
-    console.log(`\n🎉 Thumbnail fix complete!`);
-    console.log(`📊 Summary:`);
+    console.log(`\nðŸŽ‰ Thumbnail fix complete!`);
+    console.log(`ðŸ“Š Summary:`);
     console.log(`   - Playlists updated: ${totalPlaylistsUpdated}`);
     console.log(`   - Videos fixed: ${totalVideosFixed}`);
     
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('❌ Error fixing thumbnails:', error);
+    console.error('âŒ Error fixing thumbnails:', error);
     return NextResponse.json(
       { success: false, error: 'Failed to fix thumbnails' },
       { status: 500 }

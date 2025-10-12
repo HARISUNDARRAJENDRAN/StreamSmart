@@ -8,11 +8,9 @@ import { StarRating } from '@/components/feedback/StarRating';
 import { ThumbsRating } from '@/components/feedback/ThumbsRating';
 import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
 import { 
-  Heart, 
-  MessageSquare, 
-  X,
+  MessageSquare,
   Star,
-  ThumbsUp
+  X
 } from 'lucide-react';
 import { useUser } from '@/contexts/UserContext';
 import { feedbackService } from '@/services/feedbackService';
@@ -34,8 +32,13 @@ interface VideoFeedbackProps {
   className?: string;
 }
 
-export function VideoFeedback({ video, playlistId, className }: VideoFeedbackProps) {
-  const [userFeedback, setUserFeedback] = useState<any>({});
+interface Feedback {
+  feedbackType: string;
+  [key: string]: unknown;
+}
+
+export function VideoFeedback({ video, className }: VideoFeedbackProps) {
+  const [userFeedback, setUserFeedback] = useState<Record<string, Feedback>>({});
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
@@ -55,8 +58,8 @@ export function VideoFeedback({ video, playlistId, className }: VideoFeedbackPro
       const result = await feedbackService.getUserFeedback(user.id, video.id);
       if (result.success) {
         // Create feedback map for this video
-        const feedbackMap: Record<string, any> = {};
-        result.feedback.forEach((feedback: any) => {
+        const feedbackMap: Record<string, Feedback> = {};
+        result.feedback.forEach((feedback: Feedback) => {
           feedbackMap[feedback.feedbackType] = feedback;
         });
         setUserFeedback(feedbackMap);

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -46,7 +45,7 @@ export function VideoDeleteDialog({
 
         <div className="py-4">
           <p className="text-sm text-gray-600">
-            Are you sure you want to remove <span className="font-medium">"{videoTitle}"</span> from this playlist? 
+            Are you sure you want to remove <span className="font-medium">&ldquo;{videoTitle}&rdquo;</span> from this playlist? 
             This will permanently delete the video from the playlist.
           </p>
         </div>

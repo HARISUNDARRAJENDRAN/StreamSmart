@@ -24,6 +24,24 @@ interface UpdateProfileData {
   };
 }
 
+interface UserResponse {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+  phoneNumber?: string;
+  bio?: string;
+  createdAt: string;
+  lastLoginDate: string;
+  learningStreak: number;
+  totalLearningTime: number;
+  weeklyGoal: number;
+  preferences?: {
+    theme?: 'light' | 'dark' | 'system';
+    notifications?: boolean;
+  };
+}
+
 interface ApiResponse<T> {
   user?: T;
   error?: string;
@@ -32,7 +50,7 @@ interface ApiResponse<T> {
 const API_BASE_URL = '/api';
 
 export const userService = {
-  async login(data: LoginData): Promise<ApiResponse<any>> {
+  async login(data: LoginData): Promise<ApiResponse<UserResponse>> {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
@@ -55,7 +73,7 @@ export const userService = {
     }
   },
 
-  async register(data: RegisterData): Promise<ApiResponse<any>> {
+  async register(data: RegisterData): Promise<ApiResponse<UserResponse>> {
     try {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
@@ -78,7 +96,7 @@ export const userService = {
     }
   },
 
-  async updateProfile(data: UpdateProfileData): Promise<ApiResponse<any>> {
+  async updateProfile(data: UpdateProfileData): Promise<ApiResponse<UserResponse>> {
     try {
       const response = await fetch(`${API_BASE_URL}/user/profile`, {
         method: 'PUT',
@@ -101,7 +119,7 @@ export const userService = {
     }
   },
 
-  async getProfile(userId: string): Promise<ApiResponse<any>> {
+  async getProfile(userId: string): Promise<ApiResponse<UserResponse>> {
     try {
       const response = await fetch(`${API_BASE_URL}/user/profile?userId=${userId}`, {
         method: 'GET',
@@ -123,7 +141,7 @@ export const userService = {
     }
   },
 
-  async updateWeeklyGoal(userId: string, weeklyGoal: number): Promise<ApiResponse<any>> {
+  async updateWeeklyGoal(userId: string, weeklyGoal: number): Promise<ApiResponse<UserResponse>> {
     try {
       const response = await fetch(`${API_BASE_URL}/user/weekly-goal`, {
         method: 'PUT',

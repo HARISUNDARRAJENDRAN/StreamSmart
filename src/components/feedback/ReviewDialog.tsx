@@ -128,7 +128,7 @@ export function ReviewDialog({
             {existingReview ? 'Edit Review' : 'Write a Review'}
           </DialogTitle>
           <DialogDescription>
-            Share your thoughts about "{item.title}" to help others learn better.
+            Share your thoughts about &quot;{item.title}&quot; to help others learn better.
           </DialogDescription>
         </DialogHeader>
 

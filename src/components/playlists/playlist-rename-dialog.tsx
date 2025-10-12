@@ -101,7 +101,7 @@ export function PlaylistRenameDialog({ playlist, onSuccess, trigger }: PlaylistR
         <DialogHeader>
           <DialogTitle>Rename Playlist</DialogTitle>
           <DialogDescription>
-            Update the title and description for "{playlist.title}".
+            Update the title and description for &ldquo;{playlist.title}&rdquo;.
           </DialogDescription>
         </DialogHeader>
 

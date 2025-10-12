@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Clock, Eye, Lightbulb, Sparkles } from "lucide-react";
+import { Brain, Clock, Lightbulb, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from 'react-markdown';
 
@@ -26,7 +26,7 @@ interface SimpleEnhancedMindMapProps {
       title: string;
       children: Array<{
         title: string;
-        children: Array<any>;
+        children: Array<{ title: string }>;
       }>;
     }>;
   };
@@ -39,8 +39,6 @@ export function SimpleEnhancedMindMap({
   title,
   summary,
   detailedSummary,
-  keyTopics,
-  visualInsights,
   timestampHighlights,
   processingMethod,
   mindMapStructure,
@@ -54,16 +52,6 @@ export function SimpleEnhancedMindMap({
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
-
-  const topicColors = [
-    'bg-blue-100 text-blue-800 border-blue-200',
-    'bg-purple-100 text-purple-800 border-purple-200',
-    'bg-green-100 text-green-800 border-green-200',
-    'bg-orange-100 text-orange-800 border-orange-200',
-    'bg-pink-100 text-pink-800 border-pink-200',
-    'bg-indigo-100 text-indigo-800 border-indigo-200',
-    'bg-teal-100 text-teal-800 border-teal-200',
-  ];
 
   return (
     <div className="space-y-6">

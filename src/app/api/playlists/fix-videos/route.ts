@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/mongodb';
 import Playlist from '@/models/Playlist';
 
 // POST - Fix existing playlists with missing video fields
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     await connectToDatabase();
     
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
         let needsUpdate = false;
         
         // Fix videos with missing required fields
-        const fixedVideos = playlist.videos.map((video: any) => {
+        const fixedVideos = playlist.videos.map((video: Record<string, unknown>) => {
           const fixedVideo = { ...video };
           
           // Ensure required fields exist

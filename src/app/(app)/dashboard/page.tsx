@@ -1,8 +1,30 @@
-'use client';
+﻿'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+// Type definitions
+interface FeedbackItem {
+  id?: string;
+  itemId?: string;
+  rating?: number;
+  feedbackType?: string;
+  [key: string]: unknown;
+}
+
+interface RecommendationItem {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  duration: string;
+  difficulty?: string;
+  creator?: string;
+  url: string;
+  category?: string;
+  [key: string]: unknown;
+}
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -14,14 +36,11 @@ import {
   ClockIcon, 
   CirclePlay, 
   AwardIcon, 
-  StarIcon, 
-  Flame, 
   CalendarIcon,
   TargetIcon,
   BrainIcon,
   UsersIcon,
   ChevronRightIcon,
-  Trophy,
   Bookmark,
   CircleCheck,
   Code2,
@@ -42,21 +61,16 @@ import {
   Lightbulb,
   Wrench,
   Heart,
-  Settings,
-  Sparkles,
   Calculator,
   Microscope,
   Atom,
-  Globe,
   Languages,
   FileText,
   MessageSquare,
-  Rocket,
   Shield,
   Cpu,
   Beaker,
   Dumbbell,
-  Leaf
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -68,7 +82,7 @@ import { playlistService } from '@/services/playlistService';
 import { WeeklyGoalSettings } from '@/components/dashboard/weekly-goal-settings';
 import { AchievementsSystem } from '@/components/achievements/achievements-system';
 import { feedbackService } from '@/services/feedbackService';
-import { RecommendationCard } from '@/components/feedback/RecommendationCard';
+// RecommendationCard removed - to be reimplemented
 import { ReviewDialog, type ReviewData } from '@/components/feedback/ReviewDialog';
 import { useToast } from "@/hooks/use-toast";
 // Note: Implicit tracking service removed - will be implemented in new recommendation system
@@ -91,16 +105,16 @@ const staggerContainer = {
 export default function DashboardPage() {
   const [playlists, setPlaylists] = useState<Playlist[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [userFeedbackMap, setUserFeedbackMap] = useState<Record<string, any>>({});
+  const [userFeedbackMap, setUserFeedbackMap] = useState<Record<string, Record<string, FeedbackItem>>>({});
   const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-  const [selectedRecommendation, setSelectedRecommendation] = useState<any>(null);
-  const [lastWatchedVideo, setLastWatchedVideo] = useState<any>(null);
+  const [selectedRecommendation, setSelectedRecommendation] = useState<RecommendationItem | null>(null);
+  const [lastWatchedVideo, setLastWatchedVideo] = useState<RecommendationItem | null>(null);
   const { user, userStats, isAuthenticated, recordActivity, updateUserStats } = useUser();
   const { toast } = useToast();
   const router = useRouter();
 
   // Function to get the last watched video from user's playlists
-  const getLastWatchedVideo = async () => {
+  const getLastWatchedVideo = useCallback(async () => {
     if (!user || !playlists.length) return null;
 
     try {
@@ -177,7 +191,7 @@ export default function DashboardPage() {
       console.error('Error getting last watched video:', error);
       return null;
     }
-  };
+  }, [user, playlists, userStats]);
 
   // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
@@ -186,7 +200,7 @@ export default function DashboardPage() {
       // Update user stats when user loads - only once
       updateUserStats(true);
     }
-  }, [user?.id]); // Only depend on user.id, not the entire user object or updateUserStats function
+  }, [user, updateUserStats]); // Only depend on user.id, not the entire user object or updateUserStats function
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -198,7 +212,7 @@ export default function DashboardPage() {
     try {
         const userPlaylists = await playlistService.getPlaylists(user.id);
         
-        const processedPlaylists = userPlaylists.slice(0, 3).map((p: any) => ({
+        const processedPlaylists = userPlaylists.slice(0, 3).map((p: Playlist) => ({
           ...p,
           id: p._id, // MongoDB uses _id
           createdAt: new Date(p.createdAt),
@@ -217,7 +231,7 @@ export default function DashboardPage() {
     };
 
     loadPlaylists();
-  }, [user, isAuthenticated]);
+  }, [user, isAuthenticated, updateUserStats]);
 
   // Load last watched video when playlists and userStats are available
   useEffect(() => {
@@ -229,7 +243,7 @@ export default function DashboardPage() {
     };
 
     loadLastWatchedVideo();
-  }, [playlists, userStats]);
+  }, [playlists, userStats, getLastWatchedVideo]);
 
   // Load user feedback for recommendations
   useEffect(() => {
@@ -240,8 +254,8 @@ export default function DashboardPage() {
         const result = await feedbackService.getUserFeedback(user.id);
         if (result.success) {
           // Create a map for quick lookup
-          const feedbackMap: Record<string, any> = {};
-          result.feedback.forEach((feedback: any) => {
+          const feedbackMap: Record<string, Record<string, FeedbackItem>> = {};
+          result.feedback.forEach((feedback: FeedbackItem) => {
             if (!feedbackMap[feedback.itemId]) {
               feedbackMap[feedback.itemId] = {};
             }
@@ -301,209 +315,6 @@ export default function DashboardPage() {
     }
   ];
 
-  const handleRating = async (recommendationId: string, rating: number) => {
-    if (!user) return;
-
-    const recommendation = recommendations.find(r => r.id === recommendationId);
-    if (!recommendation) return;
-
-    const result = await feedbackService.submitFeedback({
-      userId: user.id,
-      itemId: recommendationId,
-      itemType: 'recommendation',
-      feedbackType: 'rating',
-      rating,
-      recommendationContext: {
-        source: 'dashboard',
-        algorithm: 'content_based',
-        position: recommendations.findIndex(r => r.id === recommendationId) + 1
-      }
-    });
-
-    if (result.success) {
-      // Update local feedback map
-      setUserFeedbackMap(prev => ({
-        ...prev,
-        [recommendationId]: {
-          ...prev[recommendationId],
-          rating: result.feedback
-        }
-      }));
-
-      toast({
-        title: "Rating Submitted",
-        description: `You rated "${recommendation.title}" ${rating} stars.`,
-      });
-
-      // Record activity
-      recordActivity({
-        action: `Rated "${recommendation.title}"`,
-        item: recommendation.title,
-        type: 'completed'
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to submit rating. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleThumbsRating = async (recommendationId: string, rating: number) => {
-    if (!user) return;
-
-    const recommendation = recommendations.find(r => r.id === recommendationId);
-    if (!recommendation) return;
-
-    const feedbackType = rating === 1 ? 'thumbs_up' : 'thumbs_down';
-
-    const result = await feedbackService.submitFeedback({
-      userId: user.id,
-      itemId: recommendationId,
-      itemType: 'recommendation',
-      feedbackType,
-      rating,
-      recommendationContext: {
-        source: 'dashboard',
-        algorithm: 'content_based',
-        position: recommendations.findIndex(r => r.id === recommendationId) + 1
-      }
-    });
-
-    if (result.success) {
-      setUserFeedbackMap(prev => ({
-        ...prev,
-        [recommendationId]: {
-          ...prev[recommendationId],
-          [feedbackType]: result.feedback
-        }
-      }));
-
-      toast({
-        title: "Feedback Submitted",
-        description: `Thank you for your feedback on "${recommendation.title}".`,
-      });
-    } else {
-      toast({
-        title: "Error", 
-        description: "Failed to submit feedback. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleWatchlistToggle = async (recommendationId: string) => {
-    if (!user) return;
-
-    const recommendation = recommendations.find(r => r.id === recommendationId);
-    if (!recommendation) return;
-
-    const isInWatchlist = await feedbackService.isInWatchlist(user.id, recommendationId);
-
-    if (isInWatchlist) {
-      // Remove from watchlist logic would require getting the watchlist ID first
-      toast({
-        title: "Info",
-        description: "Watchlist removal functionality needs watchlist ID. Please manage from watchlist page.",
-      });
-    } else {
-      // Extract the real YouTube video ID from the URL
-      const extractYouTubeVideoId = (url: string): string | null => {
-        const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-        const match = url.match(regExp);
-        return match && match[2].length === 11 ? match[2] : null;
-      };
-
-      const youtubeVideoId = extractYouTubeVideoId(recommendation.url);
-      const finalItemId = youtubeVideoId || recommendationId; // Fallback to recommendationId if extraction fails
-
-      console.log('🎯 [handleWatchlistToggle] Extracted video ID:', youtubeVideoId, 'from URL:', recommendation.url);
-      console.log('🎯 [handleWatchlistToggle] Using itemId:', finalItemId);
-
-      const result = await feedbackService.addToWatchlist({
-        userId: user.id,
-        itemId: finalItemId, // Use the real YouTube video ID
-        itemType: 'video',
-        itemDetails: {
-          title: recommendation.title,
-          thumbnail: recommendation.thumbnail,
-          duration: recommendation.duration,
-          description: `${recommendation.description}\n\nOriginal URL: ${recommendation.url}`, // Store the URL in description
-          creator: recommendation.creator
-        },
-        addedFrom: 'dashboard_recommendations'
-      });
-
-      if (result.success) {
-        toast({
-          title: "Added to Watchlist",
-          description: `"${recommendation.title}" has been added to your watchlist.`,
-        });
-
-        recordActivity({
-          action: `Added "${recommendation.title}" to watchlist`,
-          item: recommendation.title,
-          type: 'created'
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to add to watchlist.",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
-  const handleNotInterested = async (recommendationId: string) => {
-    if (!user) return;
-
-    const recommendation = recommendations.find(r => r.id === recommendationId);
-    if (!recommendation) return;
-
-    const result = await feedbackService.submitFeedback({
-      userId: user.id,
-      itemId: recommendationId,
-      itemType: 'recommendation',
-      feedbackType: 'not_interested',
-      recommendationContext: {
-        source: 'dashboard',
-        algorithm: 'content_based', 
-        position: recommendations.findIndex(r => r.id === recommendationId) + 1
-      }
-    });
-
-    if (result.success) {
-      setUserFeedbackMap(prev => ({
-        ...prev,
-        [recommendationId]: {
-          ...prev[recommendationId],
-          not_interested: result.feedback
-        }
-      }));
-
-      toast({
-        title: "Feedback Recorded",
-        description: `We won't show similar content like "${recommendation.title}".`,
-      });
-    } else {
-      toast({
-        title: "Error",
-        description: "Failed to record feedback. Please try again.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleWriteReview = (recommendationId: string) => {
-    const recommendation = recommendations.find(r => r.id === recommendationId);
-    if (recommendation) {
-      setSelectedRecommendation(recommendation);
-      setReviewDialogOpen(true);
-    }
-  };
-
   const handleReviewSubmit = async (reviewData: ReviewData) => {
     if (!user || !selectedRecommendation) return;
 
@@ -549,17 +360,6 @@ export default function DashboardPage() {
       });
       throw new Error(result.error);
     }
-  };
-
-  const getUserFeedbackForItem = (itemId: string) => {
-    const feedback = userFeedbackMap[itemId] || {};
-    return {
-      rating: feedback.rating?.rating,
-      thumbsRating: feedback.thumbs_up?.rating ?? (feedback.thumbs_down?.rating === 0 ? 0 : null),
-      inWatchlist: false, // Would need to check watchlist separately
-      notInterested: !!feedback.not_interested,
-      hasReview: !!feedback.review
-    };
   };
 
   // Skill-Based Genres Data with actual videos
@@ -1183,8 +983,8 @@ export default function DashboardPage() {
   // Netflix-style genre section renderer
   const renderGenreSection = (
     sectionTitle: string,
-    genres: any[],
-    iconComponent: any,
+    genres: Array<{id: string; title: string; description: string; icon: React.ElementType; [key: string]: unknown}>,
+    iconComponent: React.ReactNode,
     showExploreAll = true
   ) => (
     <motion.section key={sectionTitle} variants={fadeInUp} className="space-y-6 w-full">
@@ -1470,7 +1270,7 @@ export default function DashboardPage() {
                 whileHover={{ scale: 1.1 }}
               >
                 <Badge className="bg-green-200 text-green-800 font-semibold">
-                  {lastWatchedVideo.completionStatus === 100 ? '✓ Completed' : '⏳ In Progress'}
+                  {lastWatchedVideo.completionStatus === 100 ? 'âœ“ Completed' : 'â³ In Progress'}
                 </Badge>
               </motion.div>
             )}
@@ -2110,8 +1910,8 @@ export default function DashboardPage() {
                   <Progress value={userStats?.weeklyGoal.progress || 0} className="h-2" />
                   <p className="text-xs text-muted-foreground">
                     {userStats?.weeklyGoal.target ? 
-                      `${Math.max(0, userStats.weeklyGoal.target - userStats.weeklyGoal.completed)} more videos to reach your weekly goal! 🎯` :
-                      'Set a weekly goal to track your progress! 🎯'
+                      `${Math.max(0, userStats.weeklyGoal.target - userStats.weeklyGoal.completed)} more videos to reach your weekly goal! ðŸŽ¯` :
+                      'Set a weekly goal to track your progress! ðŸŽ¯'
                     }
                   </p>
                 </div>
@@ -2145,3 +1945,6 @@ export default function DashboardPage() {
     </motion.div>
   );
 }
+
+
+

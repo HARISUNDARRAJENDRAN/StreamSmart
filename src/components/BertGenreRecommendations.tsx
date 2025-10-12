@@ -7,8 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Brain, 
-  TrendingUp, 
-  User, 
   RefreshCw, 
   Play,
   ThumbsUp,

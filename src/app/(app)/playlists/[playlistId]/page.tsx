@@ -7,7 +7,7 @@ import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
 import { MindMapDisplay } from '@/components/playlists/mind-map-display';
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
 import { VideoFeedback } from '@/components/playlists/video-feedback';
-import { PlaylistFeedback } from '@/components/playlists/playlist-feedback';
+// PlaylistFeedback removed - to be reimplemented
 import { PlaylistRenameDialog } from '@/components/playlists/playlist-rename-dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,8 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, PercentIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon, Star, Edit3 } from 'lucide-react'; 
+// Avatar components removed - to be used later
+import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon, Star, Edit3 } from 'lucide-react'; 
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
 import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
@@ -26,6 +26,8 @@ import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
 
 // Placeholder data fetching function for fallback
+// Placeholder data fetching function for fallback - not used
+/*
 async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
   await new Promise(resolve => setTimeout(resolve, 100)); 
   
@@ -52,6 +54,7 @@ async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playl
   }
   return null;
 }
+*/
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -69,9 +72,9 @@ export default function PlaylistDetailPage() {
   const videoPlayerKey = useId();
 
   // State to handle enhanced summary data from ML processing
-  const [enhancedSummaryData, setEnhancedSummaryData] = useState<any>(null);
+  const [enhancedSummaryData, setEnhancedSummaryData] = useState<Record<string, unknown> | null>(null);
 
-  const handleEnhancedSummaryGenerated = (enhancedSummary: string, multiModalData: any) => {
+  const handleEnhancedSummaryGenerated = (enhancedSummary: string, multiModalData: Record<string, unknown>) => {
     console.log('🚀 [handleEnhancedSummaryGenerated] Called with:', {
       enhancedSummary: enhancedSummary?.substring(0, 100) + '...',
       multiModalData,
@@ -107,7 +110,7 @@ export default function PlaylistDetailPage() {
           id: foundPlaylist._id, // MongoDB uses _id
           createdAt: new Date(foundPlaylist.createdAt),
           lastModified: new Date(foundPlaylist.updatedAt || foundPlaylist.createdAt),
-          videos: (foundPlaylist.videos || []).map((video: any) => ({
+          videos: (foundPlaylist.videos || []).map((video: Video) => ({
             id: video.id,
             title: video.title || '',
             youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
@@ -140,7 +143,7 @@ export default function PlaylistDetailPage() {
           title: processedPlaylist.title,
           videosCount: processedPlaylist.videos.length,
           firstVideoURL: processedPlaylist.videos[0]?.youtubeURL,
-          videos: processedPlaylist.videos.map((v: any) => ({
+          videos: processedPlaylist.videos.map((v: Video) => ({
             id: v.id,
             title: v.title,
             youtubeURL: v.youtubeURL
@@ -163,6 +166,7 @@ export default function PlaylistDetailPage() {
 
   useEffect(() => {
     loadPlaylist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playlistId, user, toast]);
 
   const handleSelectVideo = (video: Video) => {
@@ -651,7 +655,7 @@ export default function PlaylistDetailPage() {
             <CardContent className="p-0 flex-1 min-h-0">
               <ScrollArea className="h-full"> 
                 <div className="p-2 space-y-1">
-                  {playlist.videos.map((video, index) => (
+                  {playlist.videos.map((video) => (
                     <VideoProgressItem
                       key={video.id}
                       video={video}

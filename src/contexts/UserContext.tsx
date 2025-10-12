@@ -3,6 +3,16 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { userService } from '@/services/userService';
 import { playlistService } from '@/services/playlistService';
+import type { Playlist, Video } from '@/types';
+
+interface Activity {
+  _id?: string;
+  id?: string;
+  timestamp: string | Date;
+  type: 'completed' | 'started' | 'created' | 'quiz';
+  action: string;
+  item: string;
+}
 
 export interface User {
   id: string;
@@ -48,7 +58,7 @@ interface UserContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (userData: Partial<User>) => Promise<void>;
-  loginWithAPI: (email: string, password?: string, authProvider?: 'email' | 'google' | 'demo', additionalData?: any) => Promise<{ success: boolean; error?: string }>;
+  loginWithAPI: (email: string, password?: string, authProvider?: 'email' | 'google' | 'demo', additionalData?: Record<string, unknown>) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   updateUserProfile: (data: { name?: string; phoneNumber?: string; bio?: string }) => Promise<{ success: boolean; error?: string }>;
   updateWeeklyGoal: (weeklyGoal: number) => Promise<{ success: boolean; error?: string }>;
@@ -150,7 +160,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         // Get playlists from localStorage
         const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
         const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
-        playlists = storedPlaylists.filter((p: any) => p.userId === user.id);
+        playlists = storedPlaylists.filter((p: Playlist) => p.userId === user.id);
 
         // Get activities from localStorage
         const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
@@ -159,16 +169,16 @@ export function UserProvider({ children }: { children: ReactNode }) {
       }
 
       // Calculate stats
-      const totalVideos = playlists.reduce((sum: number, playlist: any) => 
+      const totalVideos = playlists.reduce((sum: number, playlist: Playlist) => 
         sum + (playlist.videos?.length || 0), 0);
       
-      const completedVideos = playlists.reduce((sum: number, playlist: any) => 
-        sum + (playlist.videos?.filter((v: any) => v.completionStatus === 100).length || 0), 0);
+      const completedVideos = playlists.reduce((sum: number, playlist: Playlist) => 
+        sum + (playlist.videos?.filter((v: Video) => v.completionStatus === 100).length || 0), 0);
 
       const overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
 
       // Process recent activities
-      const recentActivity = activities.map((activity: any) => ({
+      const recentActivity = activities.map((activity: Activity) => ({
         ...activity,
         id: activity._id || activity.id || Date.now().toString(),
         timestamp: new Date(activity.timestamp),
@@ -179,7 +189,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       weekStart.setDate(weekStart.getDate() - weekStart.getDay());
       weekStart.setHours(0, 0, 0, 0);
 
-      const weeklyCompleted = allActivities.filter((activity: any) => {
+      const weeklyCompleted = allActivities.filter((activity: Activity) => {
         const activityDate = new Date(activity.timestamp);
         return activityDate >= weekStart && activity.type === 'completed';
       }).length;
@@ -188,8 +198,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
       const weeklyProgress = Math.min(Math.round((weeklyCompleted / weeklyTarget) * 100), 100);
 
       // Calculate total learning time based on actual video durations
-      const totalSeconds = playlists.reduce((sum: number, playlist: any) => {
-        return sum + (playlist.videos?.reduce((videoSum: number, video: any) => {
+      const totalSeconds = playlists.reduce((sum: number, playlist: Playlist) => {
+        return sum + (playlist.videos?.reduce((videoSum: number, video: Video) => {
           // Only count completed videos (100% completion)
           if (video.completionStatus !== 100) return videoSum;
           
@@ -263,14 +273,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
       };
       setUserStats(defaultStats);
     }
-  }, [user]); // Add dependency array for useCallback
+  }, [user, lastStatsUpdate]); // Add dependency array for useCallback
 
   // Login with API
   const loginWithAPI = async (
     email: string, 
     password?: string, 
     authProvider: 'email' | 'google' | 'demo' = 'email',
-    additionalData?: any
+    additionalData?: Record<string, unknown>
   ): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     
@@ -471,7 +481,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     if (user) {
       updateUserStats();
     }
-  }, [user]);
+  }, [user, updateUserStats]);
 
   const contextValue: UserContextType = {
     user,

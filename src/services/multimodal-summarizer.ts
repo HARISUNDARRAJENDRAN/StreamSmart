@@ -170,7 +170,7 @@ class MultiModalSummarizerService {
    * Fallback method when ML backend is not available
    * Uses the existing Gemini-based summarization
    */
-  async fallbackSummary(videoContent: string): Promise<Partial<MultiModalSummaryResponse>> {
+  async fallbackSummary(): Promise<Partial<MultiModalSummaryResponse>> {
     console.warn('Using fallback summarization - ML backend not available');
     
     // This would integrate with your existing Gemini-based summarization
@@ -202,7 +202,7 @@ export async function enhanceVideoWithMultiModalAnalysis(
   existingSummary?: string
 ): Promise<{
   enhanced_summary: string;
-  multimodal_data: any;
+  multimodal_data: MultiModalSummaryResponse | null;
   processing_method: 'multimodal' | 'fallback';
 }> {
   try {
@@ -293,37 +293,38 @@ The knowledge presented has direct real-world applications for problem-solving a
 
 /**
  * Combine existing text-based summary with multi-modal insights
+ * Note: Currently unused but kept for future integration
  */
-function combineExistingWithMultiModal(
-  existingSummary: string,
-  multiModalData: MultiModalSummaryResponse
-): string {
-  const sections = [];
-  
-  // Main summary
-  sections.push(`**Enhanced Summary:**\n${multiModalData.summary}`);
-  
-  // Visual insights
-  if (multiModalData.visual_insights.length > 0) {
-    sections.push(`**Visual Analysis:**\n${multiModalData.visual_insights.join(' ')}`);
-  }
-  
-  // Key topics
-  if (multiModalData.key_topics.length > 0) {
-    sections.push(`**Key Topics:**\n- ${multiModalData.key_topics.join('\n- ')}`);
-  }
-  
-  // Timestamp highlights
-  if (multiModalData.timestamp_highlights.length > 0) {
-    const highlights = multiModalData.timestamp_highlights
-      .map(h => `${Math.floor(h.timestamp)}s: ${h.description}`)
-      .join('\n- ');
-    sections.push(`**Key Moments:**\n- ${highlights}`);
-  }
-  
-  // Processing stats
-  const stats = multiModalData.processing_stats;
-  sections.push(`**Analysis Stats:**\nProcessed ${stats.total_segments} text segments and ${stats.total_frames} visual frames with ${(stats.multimodal_alignment_score * 100).toFixed(1)}% alignment score.`);
-  
-  return sections.join('\n\n');
-} 
+// function combineExistingWithMultiModal(
+//   existingSummary: string,
+//   multiModalData: MultiModalSummaryResponse
+// ): string {
+//   const sections = [];
+//   
+//   // Main summary
+//   sections.push(`**Enhanced Summary:**\n${multiModalData.summary}`);
+//   
+//   // Visual insights
+//   if (multiModalData.visual_insights.length > 0) {
+//     sections.push(`**Visual Analysis:**\n${multiModalData.visual_insights.join(' ')}`);
+//   }
+//   
+//   // Key topics
+//   if (multiModalData.key_topics.length > 0) {
+//     sections.push(`**Key Topics:**\n- ${multiModalData.key_topics.join('\n- ')}`);
+//   }
+//   
+//   // Timestamp highlights
+//   if (multiModalData.timestamp_highlights.length > 0) {
+//     const highlights = multiModalData.timestamp_highlights
+//       .map(h => `${Math.floor(h.timestamp)}s: ${h.description}`)
+//       .join('\n- ');
+//     sections.push(`**Key Moments:**\n- ${highlights}`);
+//   }
+//   
+//   // Processing stats
+//   const stats = multiModalData.processing_stats;
+//   sections.push(`**Analysis Stats:**\nProcessed ${stats.total_segments} text segments and ${stats.total_frames} visual frames with ${(stats.multimodal_alignment_score * 100).toFixed(1)}% alignment score.`);
+//   
+//   return sections.join('\n\n');
+// } 

@@ -54,7 +54,7 @@ export function LoginForm() {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Login Failed",
         description: "An unexpected error occurred. Please try again.",
@@ -96,7 +96,7 @@ export function LoginForm() {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Google Sign-In Failed",
         description: "Could not sign in with Google. Please try again.",
@@ -126,7 +126,7 @@ export function LoginForm() {
           variant: "destructive",
         });
       }
-    } catch (error) {
+    } catch {
       toast({
         title: "Demo Login Failed",
         description: "Could not start demo. Please try again.",
@@ -205,7 +205,7 @@ export function LoginForm() {
       </CardContent>
       <CardFooter className="text-center">
         <p className="text-sm text-gray-400">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="font-medium text-red-400 hover:text-red-300 hover:underline">
             Sign up
           </Link>

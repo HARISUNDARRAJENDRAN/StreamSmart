@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
@@ -17,12 +17,7 @@ import {
   Award, 
   Rocket, 
   Brain, 
-  Clock, 
-  Calendar,
-  TrendingUp,
-  Users,
-  Heart,
-  Shield,
+  Clock,
   Gem,
   Sparkles,
   CheckCircle,
@@ -46,6 +41,30 @@ export interface Achievement {
   color: string;
 }
 
+interface Activity {
+  type: string;
+  action: string;
+  timestamp: string | Date;
+}
+
+interface WeeklyGoal {
+  progress: number;
+}
+
+interface UserStats {
+  totalVideosCompleted?: number;
+  currentStreak?: number;
+  totalPlaylists?: number;
+  overallProgress?: number;
+  recentActivity?: Activity[];
+  weeklyGoal?: WeeklyGoal;
+  totalLearningTime?: string;
+}
+
+interface UserData {
+  createdAt?: string | Date;
+}
+
 const achievementDefinitions = [
   // Learning Achievements
   {
@@ -58,7 +77,7 @@ const achievementDefinitions = [
     requirement: 1,
     points: 10,
     color: 'text-green-500',
-    checkProgress: (userStats: any) => userStats?.totalVideosCompleted || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
   {
     id: 'video_novice',
@@ -70,7 +89,7 @@ const achievementDefinitions = [
     requirement: 5,
     points: 25,
     color: 'text-blue-500',
-    checkProgress: (userStats: any) => userStats?.totalVideosCompleted || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
   {
     id: 'video_enthusiast',
@@ -82,7 +101,7 @@ const achievementDefinitions = [
     requirement: 25,
     points: 100,
     color: 'text-purple-500',
-    checkProgress: (userStats: any) => userStats?.totalVideosCompleted || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
   {
     id: 'video_master',
@@ -94,7 +113,7 @@ const achievementDefinitions = [
     requirement: 100,
     points: 500,
     color: 'text-yellow-500',
-    checkProgress: (userStats: any) => userStats?.totalVideosCompleted || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
   {
     id: 'video_legend',
@@ -106,7 +125,7 @@ const achievementDefinitions = [
     requirement: 500,
     points: 2000,
     color: 'text-cyan-500',
-    checkProgress: (userStats: any) => userStats?.totalVideosCompleted || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
 
   // Streak Achievements
@@ -120,7 +139,7 @@ const achievementDefinitions = [
     requirement: 3,
     points: 30,
     color: 'text-orange-500',
-    checkProgress: (userStats: any) => userStats?.currentStreak || 0,
+    checkProgress: (userStats: UserStats) => userStats?.currentStreak || 0,
   },
   {
     id: 'streak_keeper',
@@ -132,7 +151,7 @@ const achievementDefinitions = [
     requirement: 7,
     points: 75,
     color: 'text-orange-600',
-    checkProgress: (userStats: any) => userStats?.currentStreak || 0,
+    checkProgress: (userStats: UserStats) => userStats?.currentStreak || 0,
   },
   {
     id: 'streak_warrior',
@@ -144,7 +163,7 @@ const achievementDefinitions = [
     requirement: 30,
     points: 300,
     color: 'text-red-500',
-    checkProgress: (userStats: any) => userStats?.currentStreak || 0,
+    checkProgress: (userStats: UserStats) => userStats?.currentStreak || 0,
   },
   {
     id: 'streak_legend',
@@ -156,7 +175,7 @@ const achievementDefinitions = [
     requirement: 100,
     points: 1000,
     color: 'text-red-600',
-    checkProgress: (userStats: any) => userStats?.currentStreak || 0,
+    checkProgress: (userStats: UserStats) => userStats?.currentStreak || 0,
   },
 
   // Completion Achievements
@@ -170,7 +189,7 @@ const achievementDefinitions = [
     requirement: 1,
     points: 20,
     color: 'text-purple-500',
-    checkProgress: (userStats: any) => userStats?.totalPlaylists || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalPlaylists || 0,
   },
   {
     id: 'playlist_curator',
@@ -182,7 +201,7 @@ const achievementDefinitions = [
     requirement: 5,
     points: 100,
     color: 'text-purple-600',
-    checkProgress: (userStats: any) => userStats?.totalPlaylists || 0,
+    checkProgress: (userStats: UserStats) => userStats?.totalPlaylists || 0,
   },
   {
     id: 'completionist',
@@ -194,7 +213,7 @@ const achievementDefinitions = [
     requirement: 100,
     points: 200,
     color: 'text-yellow-500',
-    checkProgress: (userStats: any) => userStats?.overallProgress || 0,
+    checkProgress: (userStats: UserStats) => userStats?.overallProgress || 0,
   },
 
   // Speed Achievements
@@ -208,10 +227,10 @@ const achievementDefinitions = [
     requirement: 5,
     points: 75,
     color: 'text-yellow-400',
-    checkProgress: (userStats: any) => {
+    checkProgress: (userStats: UserStats) => {
       // Check today's completed videos from recent activity
       const today = new Date().toDateString();
-      return userStats?.recentActivity?.filter((activity: any) => 
+      return userStats?.recentActivity?.filter((activity: Activity) => 
         activity.type === 'completed' && 
         new Date(activity.timestamp).toDateString() === today
       ).length || 0;
@@ -227,9 +246,9 @@ const achievementDefinitions = [
     requirement: 10,
     points: 150,
     color: 'text-blue-400',
-    checkProgress: (userStats: any) => {
+    checkProgress: (userStats: UserStats) => {
       const today = new Date().toDateString();
-      return userStats?.recentActivity?.filter((activity: any) => 
+      return userStats?.recentActivity?.filter((activity: Activity) => 
         activity.type === 'completed' && 
         new Date(activity.timestamp).toDateString() === today
       ).length || 0;
@@ -247,7 +266,7 @@ const achievementDefinitions = [
     requirement: 100,
     points: 100,
     color: 'text-green-600',
-    checkProgress: (userStats: any) => userStats?.weeklyGoal?.progress || 0,
+    checkProgress: (userStats: UserStats) => userStats?.weeklyGoal?.progress || 0,
   },
   {
     id: 'time_master',
@@ -259,7 +278,7 @@ const achievementDefinitions = [
     requirement: 600, // 10 hours in minutes
     points: 250,
     color: 'text-blue-600',
-    checkProgress: (userStats: any) => {
+    checkProgress: (userStats: UserStats) => {
       // Extract hours from totalLearningTime string like "5h 30m"
       const timeStr = userStats?.totalLearningTime || '0h 0m';
       const hours = parseInt(timeStr.match(/(\d+)h/)?.[1] || '0');
@@ -279,7 +298,7 @@ const achievementDefinitions = [
     requirement: 1,
     points: 500,
     color: 'text-pink-500',
-    checkProgress: (userStats: any, user: any) => {
+    checkProgress: (userStats: UserStats, user: UserData) => {
       // Check if user created account in first month
       const accountAge = Date.now() - new Date(user?.createdAt || Date.now()).getTime();
       const oneMonth = 30 * 24 * 60 * 60 * 1000;
@@ -296,9 +315,9 @@ const achievementDefinitions = [
     requirement: 1,
     points: 150,
     color: 'text-purple-400',
-    checkProgress: (userStats: any) => {
+    checkProgress: (userStats: UserStats) => {
       // Check if user has any quiz-related activities
-      return userStats?.recentActivity?.some((activity: any) => 
+      return userStats?.recentActivity?.some((activity: Activity) => 
         activity.type === 'quiz' || activity.action.toLowerCase().includes('quiz')
       ) ? 1 : 0;
     },

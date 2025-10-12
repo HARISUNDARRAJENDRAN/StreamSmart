@@ -7,17 +7,17 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   ArrowLeft, 
   Search, 
-  Filter, 
+ 
   Grid3X3, 
   List, 
-  Clock, 
+ 
   Eye, 
   ThumbsUp,
-  Play,
+
   ExternalLink,
   RefreshCw,
   Plus,
@@ -120,8 +120,9 @@ export default function GenrePage() {
   const [difficultyFilter, setDifficultyFilter] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [aiRefreshLoading, setAiRefreshLoading] = useState(false);
-  const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
-  const [totalAvailable, setTotalAvailable] = useState(0);
+  // Unused state variables - commented out
+  // const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
+  // const [totalAvailable, setTotalAvailable] = useState(0);
   
   // Preview and Playlist states
   const [previewVideo, setPreviewVideo] = useState<Video | null>(null);
@@ -183,7 +184,7 @@ export default function GenrePage() {
             thumbnail: rec.thumbnail_url || 'https://placehold.co/480x360.png?text=Video',
             duration: 'N/A',
             category: categoryName || slug,
-            channelTitle: (rec as any).channel_name || (rec as any).channelTitle || '',
+            channelTitle: (rec as Video & {channel_name?: string}).channel_name || (rec as Video).channelTitle || '',
             viewCount: 0,
             likeCount: rec.likes ?? 0,
             youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
@@ -207,7 +208,7 @@ export default function GenrePage() {
     };
 
     fetchVideos();
-  }, [slug]);
+  }, [slug, categoryName]);
 
   // Helper function to fetch playlists
   const fetchPlaylists = async () => {
@@ -239,11 +240,11 @@ export default function GenrePage() {
   // Fetch user playlists on component mount and when user changes
   useEffect(() => {
     fetchPlaylists();
-  }, [user]);
+  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter and sort videos
   useEffect(() => {
-    let filtered = videos.filter(video => {
+    const filtered = videos.filter(video => {
       const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                            video.channelTitle.toLowerCase().includes(searchQuery.toLowerCase());
@@ -304,7 +305,7 @@ export default function GenrePage() {
           thumbnail: rec.thumbnail_url || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
           duration: 'N/A',
           category: categoryName || slug,
-          channelTitle: (rec as any).channel_name || (rec as any).channelTitle || '',
+          channelTitle: (rec as Video & {channel_name?: string}).channel_name || (rec as Video).channelTitle || '',
           viewCount: 0,
           likeCount: rec.likes ?? 0,
           youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
@@ -703,6 +704,7 @@ export default function GenrePage() {
                   <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30">
                     <CardContent className="p-0">
                       <div className="relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
                           alt={video.title}

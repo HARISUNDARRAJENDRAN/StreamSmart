@@ -4,10 +4,9 @@ import React, { useState, useEffect, useCallback, useRef, useMemo, memo } from '
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { BrainIcon, ExpandIcon, DownloadIcon, XIcon, Loader2Icon, RotateCcwIcon, ImageIcon, FileTextIcon, MinimizeIcon, MaximizeIcon, AlertCircleIcon, RefreshCwIcon, ChevronRightIcon, ChevronDownIcon, UserIcon } from 'lucide-react';
+import { BrainIcon, DownloadIcon, XIcon, MaximizeIcon, AlertCircleIcon, RefreshCwIcon, ChevronRightIcon, ChevronDownIcon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { mindMapService } from "@/services/bertRecommendationService";
-import { useAuth } from "@/contexts/AuthContext";
 import ReactFlow, {
   Controls,
   Background,
@@ -23,9 +22,9 @@ import ReactFlow, {
   Handle,
   Position,
   type NodeProps,
-  MarkerType,
   getBezierPath,
   type EdgeProps,
+  type ReactFlowInstance,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import Elk, { type ElkNode, type ElkExtendedEdge, type LayoutOptions } from 'elkjs/lib/elk.bundled.js';
@@ -273,6 +272,8 @@ const edgeTypes = {
 };
 
 // Phase 6.1: Breadcrumb Navigation Component
+// Unused interface and component - kept for future use
+/*
 interface BreadcrumbNavigationProps {
   history: string[];
   allNodes: Node<CollapsibleNodeData>[];
@@ -282,7 +283,9 @@ interface BreadcrumbNavigationProps {
   compact?: boolean;
   maxItems?: number;
 }
+*/
 
+/*
 const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
   history,
   allNodes,
@@ -294,7 +297,6 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
 }) => {
   if (history.length === 0) return null;
 
-  // Smart truncation for long paths
   const displayHistory = history.length > maxItems 
     ? [...history.slice(0, 1), '...', ...history.slice(-maxItems + 2)]
     : history;
@@ -304,7 +306,6 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
       {!compact && <div className="font-medium text-primary mb-2 text-xs">Focus Path</div>}
       <div className="flex items-center space-x-2 flex-wrap">
         {displayHistory.map((nodeId, index) => {
-          // Handle ellipsis separator
           if (nodeId === '...') {
             return (
               <span key={`ellipsis-${index}`} className="text-neutral-500 text-xs">
@@ -351,7 +352,6 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
         })}
       </div>
       
-      {/* Quick actions for breadcrumb navigation */}
       {!compact && (
         <div className="mt-2 pt-2 border-t border-neutral-600 flex items-center justify-between text-xs">
           <span className="text-neutral-400">
@@ -382,6 +382,7 @@ const BreadcrumbNavigation: React.FC<BreadcrumbNavigationProps> = ({
     </div>
   );
 };
+*/
 
 interface CollapsibleNodeData {
   label: string;
@@ -394,59 +395,46 @@ interface CollapsibleNodeData {
   height?: number; 
   // Dynamic properties added at runtime
   onToggleExpansion?: (nodeId: string) => void;
-  onNodeClick?: (nodeId: string) => void; // Add click handler
   isGloballyExpanded?: boolean;
+  onNodeClick?: (nodeId: string) => void; // Add click handler
   isFocused?: boolean; // Add focus state
   isInFocusPath?: boolean; // Add focus path state
 }
 
-const elk = new Elk();
+// Unused - elk instances are created locally in functions where needed
+// const elk = new Elk();
 
-// ELK layout options - optimized for professional, clean appearance
+// ELK layout options - moved to inline usage where needed
+/*
 const elkLayoutOptions: LayoutOptions = {
   'elk.algorithm': 'layered',
   'elk.direction': 'DOWN',
   'elk.alignment': 'CENTER',
-  
-  // Enhanced spacing for better visual clarity
-  'elk.layered.spacing.nodeNodeBetweenLayers': '120', // Increased vertical spacing between levels
-  'elk.spacing.nodeNode': '100', // Increased horizontal spacing between nodes
-  'elk.spacing.edgeNode': '40', // Better edge-to-node spacing
-  'elk.spacing.edgeEdge': '20', // Space between edges
-  
-  // Improved edge routing for cleaner connections
+  'elk.layered.spacing.nodeNodeBetweenLayers': '120',
+  'elk.spacing.nodeNode': '100',
+  'elk.spacing.edgeNode': '40',
+  'elk.spacing.edgeEdge': '20',
   'elk.edgeRouting': 'POLYLINE',
-  'elk.layered.edgeRouting.polyline.sloppy': 'false', // Cleaner edge paths
-  
-  // Better layer management
+  'elk.layered.edgeRouting.polyline.sloppy': 'false',
   'elk.layered.compaction.postCompaction.strategy': 'BALANCED',
   'elk.layered.compaction.postCompaction.constraints': 'SEQUENCE',
   'elk.layered.nodePlacement.strategy': 'BRANDES_KOEPF',
   'elk.layered.nodePlacement.favorStraightEdges': 'true',
-  
-  // Enhanced hierarchy handling
   'elk.hierarchyHandling': 'INCLUDE_CHILDREN',
   'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',
   'elk.layered.cycleBreaking.strategy': 'DEPTH_FIRST',
-  
-  // Improved layout quality
   'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
   'elk.layered.crossingMinimization.greedySwitch': 'true',
   'elk.layered.layering.strategy': 'LONGEST_PATH',
-  
-  // Better aspect ratio and overall appearance
-  'elk.aspectRatio': '1.6', // Golden ratio-inspired layout
+  'elk.aspectRatio': '1.6',
   'elk.nodeSize.constraints': 'MINIMUM_SIZE',
   'elk.nodeSize.options': 'DEFAULT_MINIMUM_SIZE',
-  
-  // Padding and margins for professional appearance
   'elk.padding': '[top=40,left=40,bottom=40,right=40]',
   'elk.spacing.componentComponent': '80',
-  
-  // Performance optimizations
   'elk.stress.desired.edgeLength': '120',
-  'elk.layered.thoroughness': '10' // Higher quality layout
+  'elk.layered.thoroughness': '10'
 };
+*/
 
 const getLayoutedElements = async (
   nodesToLayout: Node<CollapsibleNodeData>[], 
@@ -510,7 +498,6 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
   // Enhanced dynamic dimensions calculation with better text handling
   const calculateOptimalDimensions = (label: string, description?: string, level: number = 0) => {
     // More sophisticated text measurement
-    const labelWords = label.split(' ').length;
     const labelLength = label.length;
     
     // Calculate optimal width based on content and level (increased sizes)
@@ -777,8 +764,8 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
           <button
             onClick={(e) => {
               e.stopPropagation();
-              if ((data as any).onToggleExpansion) {
-                (data as any).onToggleExpansion(id);
+              if (data.onToggleExpansion) {
+                data.onToggleExpansion(id);
               }
             }}
             className="expand-button absolute top-2 right-2 p-1.5 hover:bg-white/50 rounded-full transition-all duration-200 border-2 border-white hover:border-gray-200 hover:scale-110"
@@ -787,9 +774,9 @@ const CollapsibleNode = memo(function CollapsibleNode({ id, data, isConnectable 
               backdropFilter: 'blur(4px)',
               color: '#000000'
             }}
-            title={`${(data as any).isGloballyExpanded ? 'Collapse' : 'Expand'} children (${data.childrenIds.length})`}
+            title={`${data.isGloballyExpanded ? 'Collapse' : 'Expand'} children (${data.childrenIds.length})`}
           >
-            {(data as any).isGloballyExpanded ? 
+            {data.isGloballyExpanded ? 
               <ChevronDownIcon className="h-3 w-3" /> : 
               <ChevronRightIcon className="h-3 w-3" />
             }
@@ -839,14 +826,14 @@ interface MindMapDisplayProps {
     summary?: string;
   } | null; 
   keyConceptsFromSummary?: string[];
-  enhancedSummaryData?: any;
+  enhancedSummaryData?: Record<string, unknown>;
 }
 
 // Removed old client-side mind map generation - now using Gemini API
 
 // Removed old client-side dynamic mind map generation - now using Gemini API
 
-export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, currentVideo, keyConceptsFromSummary, enhancedSummaryData }: MindMapDisplayProps) {
+export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, currentVideo }: MindMapDisplayProps) {
   // Performance: Reduced debug logging
   const renderCount = useRef(0);
   renderCount.current++;
@@ -876,14 +863,13 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
   const [focusedNodeId, setFocusedNodeId] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [focusHistory, setFocusHistory] = useState<string[]>([]);
-  const [nodePositions, setNodePositions] = useState<Record<string, { x: number; y: number }>>({});
   const [showKeyboardHelp, setShowKeyboardHelp] = useState(false);
 
   // Performance: Use refs for heavy operations
   const mindMapContainerRef = useRef<HTMLDivElement>(null);
   const fullScreenContainerRef = useRef<HTMLDivElement>(null);
-  const rfInstanceRef = useRef<any>(null);
-  const fullScreenRfInstanceRef = useRef<any>(null); // Separate ref for fullscreen
+  const rfInstanceRef = useRef<ReactFlowInstance | null>(null);
+  const fullScreenRfInstanceRef = useRef<ReactFlowInstance | null>(null); // Separate ref for fullscreen
   const layoutTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastLayoutTime = useRef<number>(0);
 
@@ -899,7 +885,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
     'elk.padding': '[top=40,left=40,bottom=40,right=40]'
   }), []);
 
-  const setRfInstance = (instance: any) => {
+  const setRfInstance = (instance: ReactFlowInstance) => {
     rfInstanceRef.current = instance;
   };
 
@@ -965,7 +951,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
         const focusedMultiplier = node.data.isFocused ? 1.2 : 1.0;
         const pathMultiplier = node.data.isInFocusPath ? 1.1 : 1.0;
         
-        const elkNode: any = {
+        const elkNode: Record<string, unknown> = {
           id: node.id,
           width: Math.round(baseWidth * focusedMultiplier * pathMultiplier),
           height: Math.round(baseHeight * focusedMultiplier * pathMultiplier)
@@ -1346,8 +1332,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
       return;
     }
     
-    // Different fitting strategies based on current level and node count
-    const nodeCount = visibleNodes.length;
+    // Different fitting strategies based on current level
     const focusedNode = focusedNodeId ? visibleNodes.find(n => n.id === focusedNodeId) : null;
     
     // Calculate appropriate zoom and padding based on generation
@@ -1537,7 +1522,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
       });
       
       // Find the root node and initialize progressive disclosure
-      const rootNode = generatedNodes.find((node: any) => node.data.level === 0);
+      const rootNode = generatedNodes.find((node: Node) => node.data.level === 0);
       if (rootNode) {
         // Start with only root node visible (not expanded)
         setExpandedNodeIds(new Set());
@@ -1563,7 +1548,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
         description: `Successfully created mind map with ${generatedNodes.length} concepts and ${generatedEdges.length} connections.`
       });
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("❌ Error generating Gemini mind map:", error);
       
       let errorMessage = "Could not generate AI mind map.";
@@ -2019,7 +2004,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
               <p className="text-muted-foreground leading-relaxed">
                 {currentVideo ? (
                   <>
-                    Click the <span className="font-medium text-primary">"Regenerate"</span> button above to create an AI-powered mind map from this video's content.
+                    Click the <span className="font-medium text-primary">&quot;Regenerate&quot;</span> button above to create an AI-powered mind map from this video&apos;s content.
                   </>
                 ) : (
                   "Please select a video from the playlist to generate an AI mind map."

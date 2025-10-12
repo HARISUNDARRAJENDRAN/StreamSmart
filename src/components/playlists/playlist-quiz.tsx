@@ -1,6 +1,6 @@
 'use client';
 
-import type { Quiz, QuizQuestion } from '@/types';
+import type { Quiz } from '@/types';
 import { generatePlaylistQuiz, type GeneratePlaylistQuizInput } from '@/ai/flows/generate-playlist-quiz-flow';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,7 @@ interface PlaylistQuizProps {
 
 type QuizDifficulty = 'easy' | 'medium' | 'hard';
 
-export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: PlaylistQuizProps) {
+export function PlaylistQuiz({ playlistTitle, playlistContent }: PlaylistQuizProps) {
   const [quiz, setQuiz] = useState<Quiz | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState<{ [key: string]: number }>({});
@@ -58,12 +58,13 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
         setQuiz({ title: `Quiz: ${playlistTitle}`, questions: [] }); 
         setShowSettings(true); // Go back to settings on error
       }
-    } catch (err: any) {
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
       console.error('Error generating quiz:', err);
-      setError(`Failed to generate quiz: ${err.message || 'Unknown error'}`);
+      setError(`Failed to generate quiz: ${errorMessage}`);
       toast({
         title: "Quiz Generation Error",
-        description: `Could not create a quiz. ${err.message || 'Please try again.'}`,
+        description: `Could not create a quiz. ${errorMessage || 'Please try again.'}`,
         variant: "destructive",
       });
       setShowSettings(true); // Go back to settings on error
@@ -132,7 +133,7 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
       <Card className="w-full p-6 min-h-[400px] flex flex-col justify-center">
         <CardHeader>
           <CardTitle className="flex items-center"><SettingsIcon className="mr-2 h-6 w-6 text-primary"/>Quiz Settings</CardTitle>
-          <CardDescription>Customize your quiz experience for "{playlistTitle}".</CardDescription>
+          <CardDescription>Customize your quiz experience for &ldquo;{playlistTitle}&rdquo;.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
@@ -213,7 +214,7 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
         <LightbulbIcon className="h-12 w-12 text-muted-foreground mb-4" />
         <CardTitle className="mb-2">No Quiz Available</CardTitle>
         <CardDescription>
-          The AI couldn't create a quiz for this playlist with the selected settings. This can happen if there's not enough textual content or if the content is very abstract.
+          The AI couldn&apos;t create a quiz for this playlist with the selected settings. This can happen if there&apos;s not enough textual content or if the content is very abstract.
         </CardDescription>
         <Button onClick={resetQuizAndShowSettings} variant="outline" size="sm" className="mt-6">
           <RefreshCwIcon className="mr-2 h-4 w-4" /> Change Settings & Regenerate
@@ -235,7 +236,7 @@ export function PlaylistQuiz({ playlistId, playlistTitle, playlistContent }: Pla
     return (
       <Card className="w-full p-6">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Quiz Results for "{quiz.title}"</CardTitle>
+          <CardTitle className="text-2xl">Quiz Results for &ldquo;{quiz.title}&rdquo;</CardTitle>
           <CardDescription className="text-xl font-semibold text-primary">
             You scored: {score} out of {quiz.questions.length}
           </CardDescription>

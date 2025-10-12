@@ -42,7 +42,7 @@ export default function PlaylistsPage() {
       console.log('Raw playlists received:', userPlaylists);
       console.log('First playlist raw data:', userPlaylists[0]);
       
-      const processedPlaylists = userPlaylists.map((p: any, index: number) => {
+      const processedPlaylists = userPlaylists.map((p: Playlist, index: number) => {
         console.log(`Processing playlist ${index}:`, {
           _id: p._id,
           id: p.id,
@@ -63,7 +63,7 @@ export default function PlaylistsPage() {
           videoCount: p.videoCount, // Pass through the correct video count from API
           createdAt: new Date(p.createdAt),
           lastModified: new Date(p.updatedAt || p.createdAt),
-          videos: (p.videos || []).map((video: any) => ({
+          videos: (p.videos || []).map((video: Video) => ({
             id: video.id,
             title: video.title || '',
             youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
@@ -87,7 +87,7 @@ export default function PlaylistsPage() {
       console.log('First playlist videos:', processedPlaylists[0]?.videos);
       
       // Sort by creation date, newest first
-      processedPlaylists.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      processedPlaylists.sort((a: Playlist, b: Playlist) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setPlaylists(processedPlaylists);
 
     } catch (error) {
@@ -104,7 +104,7 @@ export default function PlaylistsPage() {
 
   useEffect(() => {
     loadPlaylists();
-  }, [user, toast]);
+  }, [user, toast]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeletePlaylist = async (playlistId: string) => {
     try {
@@ -322,7 +322,7 @@ export default function PlaylistsPage() {
                     <AlertDialogHeader>
                       <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the playlist "{playlist.title}".
+                        This action cannot be undone. This will permanently delete the playlist &ldquo;{playlist.title}&rdquo;.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
@@ -342,7 +342,7 @@ export default function PlaylistsPage() {
            <ListVideoIcon className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
           <CardTitle className="text-xl mb-2">No Playlists Found</CardTitle>
           <CardDescription className="mb-6">
-            It looks like you haven't created any playlists yet.
+            It looks like you haven&apos;t created any playlists yet.
             <br />
             Get started by creating one to organize your learning videos.
           </CardDescription>

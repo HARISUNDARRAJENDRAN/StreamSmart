@@ -12,7 +12,6 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Button } from '@/components/ui/button';
 import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

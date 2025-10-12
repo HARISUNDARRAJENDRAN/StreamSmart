@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Play, Pause, RotateCcw, Music, Coffee, Timer, History } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -212,10 +209,6 @@ export default function ProductivityTimer() {
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`;
   };
 
-  const formatSessionTime = (isoString: string): string => {
-    return new Date(isoString).toLocaleString();
-  };
-
   const openSpotifyFocus = () => {
     window.open('https://open.spotify.com/search/lofi%20focus%20study', '_blank');
   };
@@ -251,8 +244,8 @@ export default function ProductivityTimer() {
           <motion.div
             key={`circle-${i}`}
             className="absolute rounded-full border"
-            style={{ borderColor: 'rgba(139, 92, 246, 0.1)' }}
             style={{
+              borderColor: 'rgba(139, 92, 246, 0.1)',
               width: `${200 + i * 100}px`,
               height: `${200 + i * 100}px`,
               left: '50%',
@@ -625,7 +618,7 @@ export default function ProductivityTimer() {
                   }}
                   transition={{ duration: 4, repeat: Infinity }}
                 >
-                  "{currentQuote}"
+                  &quot;{currentQuote}&quot;
                 </motion.p>
               </motion.div>
             </motion.div>
@@ -737,7 +730,7 @@ export default function ProductivityTimer() {
                   }}
                   transition={{ duration: 4, repeat: Infinity }}
                 >
-                  "{currentQuote}"
+                  &quot;{currentQuote}&quot;
                 </motion.p>
               </motion.div>
             </motion.div>

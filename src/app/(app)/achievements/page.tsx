@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Trophy, Filter, Star, Flame, BookOpenCheck, Target, Zap, Brain, Crown } from 'lucide-react';
 import { AchievementsSystem } from '@/components/achievements/achievements-system';
 import { motion } from 'framer-motion';

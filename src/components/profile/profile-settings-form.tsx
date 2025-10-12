@@ -10,7 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { UserCircle2Icon, Edit3Icon, MailIcon, PhoneIcon, InfoIcon, SaveIcon, Loader2Icon } from 'lucide-react';
+import { UserCircle2Icon, MailIcon, PhoneIcon, InfoIcon, SaveIcon, Loader2Icon } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from '@/contexts/UserContext';
 import React from 'react';

@@ -1,7 +1,4 @@
-import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { MailIcon, LinkedinIcon, ZapIcon } from 'lucide-react'; // Added ZapIcon for logo
+﻿import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'StreamSmart - AI-Powered YouTube Learning',
@@ -19,3 +16,4 @@ export default function LandingLayout({
     </div>
   );
 }
+
