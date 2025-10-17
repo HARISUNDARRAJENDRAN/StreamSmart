@@ -283,13 +283,16 @@ export async function updatePlaylist(id: string, updates: Partial<DynamoDBPlayli
   return result.Attributes as DynamoDBPlaylist;
 }
 
-export async function deletePlaylist(id: string): Promise<void> {
+export async function deletePlaylist(id: string): Promise<DynamoDBPlaylist | null> {
   const client = await connectToDatabase();
   
-  await client.send(new DeleteCommand({
+  const result = await client.send(new DeleteCommand({
     TableName: TABLES.Playlists,
     Key: { id },
+    ReturnValues: 'ALL_OLD',
   }));
+
+  return (result.Attributes as DynamoDBPlaylist | undefined) || null;
 }
 
 export async function getAllPlaylists(limit: number = 20, exclusiveStartKey?: Record<string, any>): Promise<{

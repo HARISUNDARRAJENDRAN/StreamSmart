@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getActivitiesByUserId, createActivity, updateUser, findUserById } from '@/lib/dynamodb-service';
+import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
 
 // GET - Fetch user's activities
 export async function GET(request: NextRequest) {
@@ -11,9 +12,25 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
+    // Check cache first
+    const cacheKey = generateCacheKey('activities', { userId, limit });
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) {
+      return NextResponse.json(cachedData);
+    }
+
     try {
       const activities = await getActivitiesByUserId(userId, limit);
-      return NextResponse.json({ activities });
+      const response = { activities };
+
+      // Cache for shorter time as activities change frequently
+      try {
+        await cache.set(cacheKey, response, CacheTTL.SHORT);
+      } catch (cacheError) {
+        console.error('Activities cache set error:', cacheError);
+      }
+      
+      return NextResponse.json(response);
     } catch (dbError) {
       console.error('DynamoDB query error:', dbError);
       return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
@@ -44,6 +61,13 @@ export async function POST(request: NextRequest) {
 
       // Update user's learning streak
       await updateUserStreak(userId);
+
+      // Invalidate cache for this user
+      try {
+        await cache.invalidate(`activities:userId=${userId}`);
+      } catch (cacheError) {
+        console.error('Activities cache invalidate error:', cacheError);
+      }
 
       return NextResponse.json({ activity });
     } catch (dbError) {

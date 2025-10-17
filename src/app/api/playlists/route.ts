@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import { getPlaylistsByUserId, createPlaylist, getPlaylistById, updatePlaylist, deletePlaylist, getAllPlaylists } from '@/lib/dynamodb-service';
+import { getPlaylistsByUserId, createPlaylist, updatePlaylist, deletePlaylist, getAllPlaylists, type DynamoDBPlaylist } from '@/lib/dynamodb-service';
+import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
 
 // Utility function to extract YouTube ID from URL
 function extractYouTubeId(url: string): string | null {
@@ -37,21 +38,27 @@ interface VideoSource {
   addedBy?: string;
 }
 
-function transformVideo(sourceVideo: VideoSource, addedBy: string = 'user'): Record<string, unknown> {
+type PlaylistVideo = DynamoDBPlaylist['videos'][number];
+
+function transformVideo(sourceVideo: VideoSource, addedBy: string = 'user'): PlaylistVideo {
   // Extract youtubeId from url if not provided
-  const youtubeId = sourceVideo.youtubeId || sourceVideo.id || extractYouTubeId(sourceVideo.url || sourceVideo.youtubeURL);
+  const candidateUrl = sourceVideo.url ?? sourceVideo.youtubeURL ?? '';
+  const extractedYoutubeId = candidateUrl ? extractYouTubeId(candidateUrl) : null;
+  const youtubeId = sourceVideo.youtubeId ?? sourceVideo.id ?? extractedYoutubeId ?? '';
+  const thumbnail = sourceVideo.thumbnail ?? (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : '');
+  const videoUrl = sourceVideo.youtubeURL ?? sourceVideo.url ?? (youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : '');
   
   return {
     id: `video_${uuidv4()}`,
     youtubeId: youtubeId || '',
     title: sourceVideo.title || 'Untitled Video',
     channelTitle: sourceVideo.channelTitle || '',
-    thumbnail: sourceVideo.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
+    thumbnail,
     duration: sourceVideo.duration || '0:00',
-    url: sourceVideo.url || sourceVideo.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
-    youtubeURL: sourceVideo.youtubeURL || sourceVideo.url || `https://www.youtube.com/watch?v=${youtubeId}`,
+    url: videoUrl,
+    youtubeURL: videoUrl,
     description: sourceVideo.description || '',
-    completionStatus: sourceVideo.completionStatus || 0,
+    completionStatus: sourceVideo.completionStatus ?? 0,
     addedAt: sourceVideo.addedAt || new Date().toISOString(),
     addedBy: sourceVideo.addedBy || addedBy,
   };
@@ -65,6 +72,15 @@ export async function GET(request: NextRequest) {
     // For demo purposes, allow fetching all playlists if no userId provided
     const queryUserId = userId || 'guest';
 
+    // Generate cache key
+    const cacheKey = generateCacheKey('playlists', { userId: queryUserId });
+    
+    // Check cache first
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) {
+      return NextResponse.json(cachedData);
+    }
+
     try {
       let playlists;
       
@@ -72,7 +88,7 @@ export async function GET(request: NextRequest) {
       if (userId === 'all-debug') {
         const result = await getAllPlaylists(20);
         playlists = result.items;
-        return NextResponse.json({ 
+        const response = { 
           success: true,
           debug: true,
           playlists: playlists.map(p => ({
@@ -83,29 +99,19 @@ export async function GET(request: NextRequest) {
             userId: p.userId,
             createdAt: p.createdAt
           }))
-        });
+        };
+        await cache.set(cacheKey, response, CacheTTL.SHORT);
+        return NextResponse.json(response);
       }
       
       playlists = await getPlaylistsByUserId(queryUserId);
       
-      console.log('Found playlists count:', playlists.length);
-      if (playlists.length > 0) {
-        console.log('First playlist id:', playlists[0].id, 'type:', typeof playlists[0].id);
-        console.log('First playlist title:', playlists[0].title);
-        console.log('First playlist videos count:', playlists[0].videos.length);
-        if (playlists[0].videos.length > 0) {
-          console.log('First video data:', {
-            id: playlists[0].videos[0].id,
-            youtubeId: playlists[0].videos[0].youtubeId,
-            youtubeURL: playlists[0].videos[0].youtubeURL,
-            url: playlists[0].videos[0].url,
-            title: playlists[0].videos[0].title,
-            completionStatus: playlists[0].videos[0].completionStatus
-          });
-        }
+      // Reduce excessive logging in production
+      if (process.env.NODE_ENV === 'development' && playlists.length > 0) {
+        console.log('Found playlists:', playlists.length);
       }
       
-      return NextResponse.json({ 
+      const response = { 
         success: true,
         playlists: playlists.map(p => ({
           _id: p.id,
@@ -135,7 +141,12 @@ export async function GET(request: NextRequest) {
             description: video.description || ''
           }))
         }))
-      });
+      };
+      
+      // Cache the response
+      await cache.set(cacheKey, response, CacheTTL.MEDIUM);
+      
+      return NextResponse.json(response);
     } catch (dbError) {
       console.error('DynamoDB query error:', dbError);
       return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
@@ -168,7 +179,7 @@ export async function POST(request: NextRequest) {
 
       // Handle simple playlist creation (from genre page) - when firstVideo is provided
       if (firstVideo) {
-        const playlistVideos = [];
+        const playlistVideos: PlaylistVideo[] = [];
         
         // Add first video using helper
         const video = transformVideo(firstVideo);
@@ -185,7 +196,8 @@ export async function POST(request: NextRequest) {
           overallProgress: 0,
         });
 
-        console.log('Playlist created successfully:', playlist.id);
+        // Invalidate cache for this user
+        await cache.invalidate(`playlists:userId=${playlist.userId}`);
         
         return NextResponse.json({ 
           success: true,
@@ -205,7 +217,7 @@ export async function POST(request: NextRequest) {
       }
 
       // Transform videos to include all required fields
-      const transformedVideos = (videos || []).map((video: VideoSource) => transformVideo(video));
+  const transformedVideos: PlaylistVideo[] = (videos || []).map((video: VideoSource) => transformVideo(video));
 
       const playlist = await createPlaylist({
         userId,
@@ -218,7 +230,8 @@ export async function POST(request: NextRequest) {
         overallProgress: 0,
       });
 
-      console.log('Full playlist created successfully:', playlist.id);
+      // Invalidate cache for this user
+      await cache.invalidate(`playlists:userId=${playlist.userId}`);
       
       return NextResponse.json({ 
         success: true,
@@ -256,15 +269,19 @@ export async function PUT(request: NextRequest) {
     try {
       // Calculate overall progress if videos are being updated
       if (updateData.videos) {
-        // Transform videos to include all required fields
-        updateData.videos = updateData.videos.map((video: VideoSource) => transformVideo(video));
+        const videoSources = updateData.videos as VideoSource[];
+        const normalizedVideos: PlaylistVideo[] = videoSources.map((video) => transformVideo(video));
+        updateData.videos = normalizedVideos;
 
-        const completedVideos = updateData.videos.filter((v: Record<string, unknown>) => v.completionStatus === 100).length;
-        const totalVideos = updateData.videos.length;
+        const completedVideos = normalizedVideos.filter((v) => v.completionStatus === 100).length;
+        const totalVideos = normalizedVideos.length;
         updateData.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
       }
 
       const playlist = await updatePlaylist(playlistId, updateData);
+
+      // Invalidate cache for this user
+      await cache.invalidate(`playlists:userId=${playlist.userId}`);
 
       return NextResponse.json({ playlist });
     } catch (dbError) {
@@ -287,10 +304,23 @@ export async function DELETE(request: NextRequest) {
     }
 
     try {
-      await deletePlaylist(playlistId);
+      const deletedPlaylist = await deletePlaylist(playlistId);
+      const userIdForInvalidation = deletedPlaylist?.userId;
+
+      try {
+        if (userIdForInvalidation) {
+          await cache.invalidate(`playlists:userId=${userIdForInvalidation}`);
+        } else {
+          console.warn('Playlist cache invalidation fallback triggered for playlist', playlistId);
+          await cache.invalidate('playlists');
+        }
+      } catch (cacheError) {
+        console.error('Playlist cache invalidate error:', cacheError);
+      }
+
       return NextResponse.json({ success: true });
-    } catch (dbError) {
-      console.error('DynamoDB error:', dbError);
+    } catch (deleteError) {
+      console.error('DynamoDB delete error:', deleteError);
       return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
   } catch (error) {

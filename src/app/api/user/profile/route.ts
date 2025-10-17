@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findUserById, updateUser } from '@/lib/dynamodb-service';
+import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
 
 export async function PUT(request: NextRequest) {
   try {
@@ -34,6 +35,9 @@ export async function PUT(request: NextRequest) {
 
       // Update user
       const updatedUser = await updateUser(userId, updateData);
+
+      // Invalidate cache
+      await cache.invalidate(`user-profile:userId=${userId}`);
 
       return NextResponse.json({
         user: {
@@ -79,6 +83,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Check cache first
+    const cacheKey = generateCacheKey('user-profile', { userId });
+    const cachedData = await cache.get(cacheKey);
+    if (cachedData) {
+      return NextResponse.json(cachedData);
+    }
+
     try {
       const user = await findUserById(userId);
       
@@ -89,7 +100,7 @@ export async function GET(request: NextRequest) {
         );
       }
 
-      return NextResponse.json({
+      const response = {
         user: {
           id: user.id,
           name: user.name,
@@ -103,7 +114,12 @@ export async function GET(request: NextRequest) {
           totalLearningTime: user.totalLearningTime,
           preferences: user.preferences,
         }
-      });
+      };
+
+      // Cache the response
+      await cache.set(cacheKey, response, CacheTTL.MEDIUM);
+
+      return NextResponse.json(response);
     } catch (dbError) {
       console.error('DynamoDB query error:', dbError);
       return NextResponse.json(

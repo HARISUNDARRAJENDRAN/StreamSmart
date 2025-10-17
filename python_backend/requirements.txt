@@ -7,6 +7,9 @@ python-multipart==0.0.6
 # Database (install when MongoDB is available)
 pymongo==4.6.0
 motor==3.3.2
+boto3==1.34.162
+opensearch-py==2.4.2
+requests-aws4auth==1.2.3
 
 # YouTube and media processing (install when yt-dlp is available)
 youtube-transcript-api==0.6.2

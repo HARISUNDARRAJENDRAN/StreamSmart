@@ -8,7 +8,7 @@ import logging
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 import hashlib
 from datetime import datetime
 import re
@@ -17,6 +17,22 @@ from urllib.parse import parse_qs, urlparse
 import time
 import numpy as np
 import json
+
+# Optional AWS stack imports
+try:
+    import boto3
+    from botocore.exceptions import BotoCoreError, ClientError
+    from opensearchpy import OpenSearch, RequestsHttpConnection
+    from requests_aws4auth import AWS4Auth
+    HAS_AWS_LIBS = True
+except ImportError:
+    HAS_AWS_LIBS = False
+    boto3 = None
+    AWS4Auth = None
+    OpenSearch = None
+    RequestsHttpConnection = None
+    BotoCoreError = ClientError = Exception
+    print("⚠️  AWS SDK libraries not available - RAG AWS features disabled")
 
 # Optional imports with graceful fallbacks
 try:
@@ -118,6 +134,19 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 MONGODB_URI = os.getenv("MONGO_URI")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
 
+AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
+AWS_RAG_S3_BUCKET = os.getenv("AWS_RAG_S3_BUCKET")
+AWS_RAG_OPENSEARCH_ENDPOINT = os.getenv("AWS_RAG_OPENSEARCH_ENDPOINT")
+AWS_RAG_OPENSEARCH_INDEX = os.getenv("AWS_RAG_OPENSEARCH_INDEX", "streamsmart-rag-chunks")
+AWS_RAG_EMBED_MODEL = os.getenv("AWS_RAG_EMBED_MODEL", "amazon.titan-embed-text-v2")
+AWS_RAG_LLM_MODEL = os.getenv("AWS_RAG_LLM_MODEL", "amazon.titan-text-express-v1")
+
+AWS_RAG_ENABLED = bool(
+    HAS_AWS_LIBS
+    and AWS_RAG_S3_BUCKET
+    and AWS_RAG_OPENSEARCH_ENDPOINT
+)
+
 
 
 # MongoDB client initialization
@@ -135,6 +164,29 @@ elif not HAS_MONGO:
     logger.warning("MongoDB not available. Database features will be disabled.")
 else:
     logger.warning("MONGO_URI not provided. Database features will be disabled.")
+
+# Initialize AWS RAG manager if configuration is present
+aws_rag_manager: Optional["AWSRAGManager"] = None
+if AWS_RAG_ENABLED:
+    try:
+        aws_rag_manager = AWSRAGManager(
+            region=AWS_REGION,
+            bucket=AWS_RAG_S3_BUCKET,
+            opensearch_endpoint=AWS_RAG_OPENSEARCH_ENDPOINT,
+            index=AWS_RAG_OPENSEARCH_INDEX,
+            embed_model_id=AWS_RAG_EMBED_MODEL,
+            llm_model_id=AWS_RAG_LLM_MODEL,
+        )
+        logger.info(
+            "AWS RAG manager enabled (bucket=%s, index=%s)",
+            AWS_RAG_S3_BUCKET,
+            AWS_RAG_OPENSEARCH_INDEX,
+        )
+    except Exception as aws_error:  # noqa: BLE001
+        aws_rag_manager = None
+        logger.error("Failed to initialize AWS RAG manager: %s", aws_error)
+else:
+    logger.info("AWS RAG manager disabled (missing configuration or libraries)")
 
 # Initialize Gemini if available
 if GEMINI_API_KEY and HAS_GOOGLE_AI:
@@ -266,6 +318,326 @@ def generate_chunks_and_embeddings(transcript_text: str, sentence_transformer_mo
     except Exception as e:
         logger.error(f"Error generating chunks and embeddings: {e}")
         return []
+
+
+class AWSRAGManager:
+    """Handles AWS-backed storage, retrieval, and generation for the RAG workflow."""
+
+    def __init__(
+        self,
+        *,
+        region: str,
+        bucket: str,
+        opensearch_endpoint: str,
+        index: str,
+        embed_model_id: str,
+        llm_model_id: str,
+    ) -> None:
+        if not HAS_AWS_LIBS:
+            raise RuntimeError("AWS SDK libraries are not available")
+
+        self.region = region
+        self.bucket = bucket
+        self.index = index
+        self.embed_model_id = embed_model_id
+        self.llm_model_id = llm_model_id
+        self._session = boto3.Session(region_name=region)
+        self.logger = logging.getLogger("AWSRAGManager")
+        self._init_clients(opensearch_endpoint)
+
+    def _init_clients(self, opensearch_endpoint: str) -> None:
+        self.s3 = self._session.client("s3")
+        self.bedrock = self._session.client("bedrock-runtime", region_name=self.region)
+
+        credentials = self._session.get_credentials()
+        if credentials is None:
+            raise RuntimeError("Unable to locate AWS credentials for RAG integration")
+
+        frozen = credentials.get_frozen_credentials()
+        host = opensearch_endpoint.replace("https://", "").replace("http://", "").rstrip("/")
+
+        self.opensearch = OpenSearch(
+            hosts=[{"host": host, "port": 443}],
+            http_auth=AWS4Auth(
+                frozen.access_key,
+                frozen.secret_key,
+                self.region,
+                "es",
+                session_token=frozen.token,
+            ),
+            use_ssl=True,
+            verify_certs=True,
+            connection_class=RequestsHttpConnection,
+        )
+
+        self.vector_dimension: Optional[int] = None
+
+    def _ensure_index(self, dimension: int) -> None:
+        if self.opensearch.indices.exists(index=self.index):
+            if not self.vector_dimension:
+                mapping = self.opensearch.indices.get_mapping(index=self.index)
+                try:
+                    self.vector_dimension = mapping[self.index]["mappings"]["properties"]["vector"]["dimension"]
+                except KeyError:
+                    self.vector_dimension = dimension
+            if self.vector_dimension and self.vector_dimension != dimension:
+                self.logger.warning(
+                    "OpenSearch index %s dimension mismatch (expected %s, got %s)",
+                    self.index,
+                    self.vector_dimension,
+                    dimension,
+                )
+            return
+
+        body = {
+            "settings": {"index": {"knn": True}},
+            "mappings": {
+                "properties": {
+                    "vector": {
+                        "type": "knn_vector",
+                        "dimension": dimension,
+                        "method": {
+                            "name": "hnsw",
+                            "space_type": "cosinesimil",
+                            "engine": "faiss",
+                        },
+                    },
+                    "user_id": {"type": "keyword"},
+                    "video_id": {"type": "keyword"},
+                    "video_title": {"type": "text"},
+                    "chunk_id": {"type": "keyword"},
+                    "text": {"type": "text"},
+                    "source_url": {"type": "keyword"},
+                    "s3_key": {"type": "keyword"},
+                    "created_at": {"type": "date"},
+                }
+            },
+        }
+
+        self.opensearch.indices.create(index=self.index, body=body)
+        self.vector_dimension = dimension
+        self.logger.info("Created OpenSearch index %s (dimension=%s)", self.index, dimension)
+
+    def _utc_now(self) -> str:
+        return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+
+    def _decode_body(self, response_body) -> Dict[str, Any]:
+        payload = response_body.read()
+        if isinstance(payload, bytes):
+            payload = payload.decode("utf-8")
+        return json.loads(payload)
+
+    def _embed_text(self, text: str) -> List[float]:
+        body = json.dumps({"inputText": text})
+        response = self.bedrock.invoke_model(
+            modelId=self.embed_model_id,
+            body=body,
+            accept="application/json",
+            contentType="application/json",
+        )
+
+        result = self._decode_body(response["body"])
+        embedding = result.get("embedding")
+
+        if embedding is None and "embeddings" in result:
+            embedding = result["embeddings"][0].get("embedding")
+
+        if embedding is None and "vector" in result:
+            embedding = result["vector"]
+
+        if embedding is None:
+            raise RuntimeError("Embedding model returned no vector data")
+
+        return embedding
+
+    def ingest_transcript(
+        self,
+        *,
+        user_id: str,
+        video_id: str,
+        title: str,
+        transcript_text: str,
+        source_url: str,
+    ) -> Dict[str, Any]:
+        s3_key = f"transcripts/{user_id}/{video_id}.txt"
+
+        self.s3.put_object(
+            Bucket=self.bucket,
+            Key=s3_key,
+            Body=transcript_text.encode("utf-8"),
+        )
+
+        chunks = chunk_transcript(transcript_text)
+        indexed = 0
+        failures = 0
+
+        for idx, chunk in enumerate(chunks):
+            try:
+                embedding = self._embed_text(chunk)
+                self._ensure_index(len(embedding))
+
+                doc_id = f"{user_id}:{video_id}:{idx:04d}"
+                doc = {
+                    "user_id": user_id,
+                    "video_id": video_id,
+                    "video_title": title,
+                    "chunk_id": idx,
+                    "text": chunk,
+                    "vector": embedding,
+                    "source_url": source_url,
+                    "s3_key": s3_key,
+                    "created_at": self._utc_now(),
+                }
+
+                self.opensearch.index(index=self.index, id=doc_id, body=doc)
+                indexed += 1
+            except Exception as exc:  # noqa: BLE001
+                failures += 1
+                self.logger.error("Failed to index chunk %s for %s: %s", idx, video_id, exc)
+
+        return {
+            "s3Key": s3_key,
+            "chunksIndexed": indexed,
+            "chunksFailed": failures,
+        }
+
+    def retrieve_relevant_chunks(
+        self,
+        *,
+        question: str,
+        user_id: str,
+        video_filter: Optional[List[str]],
+        top_k: int = 5,
+    ) -> List[Dict[str, Any]]:
+        embedding = self._embed_text(question)
+        self._ensure_index(len(embedding))
+
+        search_size = max(top_k * 3, top_k)
+        query = {
+            "size": search_size,
+            "query": {
+                "knn": {
+                    "vector": {
+                        "vector": embedding,
+                        "k": search_size,
+                    }
+                }
+            },
+        }
+
+        response = self.opensearch.search(index=self.index, body=query)
+        hits = []
+
+        for hit in response.get("hits", {}).get("hits", []):
+            source = hit.get("_source", {})
+
+            if source.get("user_id") != user_id:
+                continue
+
+            if video_filter and source.get("video_id") not in video_filter:
+                continue
+
+            hits.append(
+                {
+                    "text": source.get("text", ""),
+                    "video_id": source.get("video_id"),
+                    "video_title": source.get("video_title"),
+                    "source_url": source.get("source_url"),
+                    "score": hit.get("_score", 0.0),
+                }
+            )
+
+            if len(hits) >= top_k:
+                break
+
+        return hits
+
+    def _generate_answer(self, question: str, context_blocks: List[Dict[str, Any]]) -> str:
+        if not context_blocks:
+            return ""
+
+        context_parts = []
+        for idx, block in enumerate(context_blocks, start=1):
+            snippet = block["text"]
+            if len(snippet) > 1600:
+                snippet = snippet[:1600] + "..."
+            context_parts.append(f"[Source {idx}] {block['video_title']}:\n{snippet}")
+
+        prompt = (
+            "You are StreamSmart's educational assistant. Use only the provided context to answer.\n"
+            "Cite sources in the form [Source N]. If the context lacks the answer, say so.\n\n"
+            f"Question: {question}\n\nContext:\n{chr(10).join(context_parts)}\n\nAnswer:"
+        )
+
+        body = json.dumps(
+            {
+                "inputText": prompt,
+                "textGenerationConfig": {
+                    "maxTokenCount": 600,
+                    "temperature": 0.2,
+                    "topP": 0.9,
+                },
+            }
+        )
+
+        response = self.bedrock.invoke_model(
+            modelId=self.llm_model_id,
+            body=body,
+            accept="application/json",
+            contentType="application/json",
+        )
+
+        result = self._decode_body(response["body"])
+
+        if "results" in result and result["results"]:
+            return result["results"][0].get("outputText", "").strip()
+
+        if "outputText" in result:
+            return result["outputText"].strip()
+
+        return ""
+
+    def answer_question(
+        self,
+        *,
+        question: str,
+        user_id: str,
+        video_filter: Optional[List[str]],
+        top_k: int = 5,
+    ) -> Dict[str, Any]:
+        chunks = self.retrieve_relevant_chunks(
+            question=question,
+            user_id=user_id,
+            video_filter=video_filter,
+            top_k=top_k,
+        )
+
+        if not chunks:
+            return {
+                "answer": "",
+                "sources": [],
+                "chunks": [],
+            }
+
+        answer = self._generate_answer(question, chunks)
+
+        sources = []
+        for idx, chunk in enumerate(chunks, start=1):
+            sources.append(
+                {
+                    "video_id": chunk.get("video_id"),
+                    "title": chunk.get("video_title"),
+                    "score": chunk.get("score"),
+                    "source": f"Source {idx}",
+                    "url": chunk.get("source_url"),
+                }
+            )
+
+        return {
+            "answer": answer,
+            "sources": sources,
+            "chunks": chunks,
+        }
 
 def get_video_transcript_with_user_agent(video_id: str) -> Optional[str]:
     """Get transcript using youtube-transcript-api with detailed error logging"""
@@ -491,7 +863,8 @@ async def health_check():
         "gemini_ai": bool(GEMINI_API_KEY),
         "mongodb": bool(mongodb_client),
         "backend": True,
-        "bert_embeddings": bool(BERT_AVAILABLE)
+        "bert_embeddings": bool(BERT_AVAILABLE),
+        "aws_rag": bool(aws_rag_manager),
     }
     
     status = "healthy" if services["backend"] else "degraded"
@@ -540,17 +913,39 @@ async def process_videos(request: ProcessVideosRequest):
                 failed_videos.append({"url": url, "error": "No actual transcript available for RAG"})
                 continue
             
-            # Generate chunks and embeddings for semantic search
-            chunks_with_embeddings = []
-            try:
-                if lightweight_bert:
-                    logger.info(f"Generating semantic chunks for video {video_id}")
-                    chunks_with_embeddings = generate_chunks_and_embeddings(transcript, lightweight_bert)
-                    logger.info(f"Successfully created {len(chunks_with_embeddings)} semantic chunks for {video_id}")
-                else:
-                    logger.warning(f"Lightweight BERT not available for chunking video {video_id}")
-            except Exception as chunk_error:
-                logger.error(f"Error generating chunks for {video_id}: {chunk_error}")
+            chunks_with_embeddings: List[Dict[str, Any]] = []
+            aws_rag_metadata: Optional[Dict[str, Any]] = None
+
+            if aws_rag_manager:
+                try:
+                    aws_rag_metadata = aws_rag_manager.ingest_transcript(
+                        user_id=request.userId,
+                        video_id=video_id,
+                        title=video_info['title'],
+                        transcript_text=transcript,
+                        source_url=url,
+                    )
+                    logger.info(
+                        "Indexed %s chunks for %s via AWS RAG",
+                        aws_rag_metadata.get("chunksIndexed", 0),
+                        video_id,
+                    )
+                except Exception as aws_ingest_error:  # noqa: BLE001
+                    logger.error(
+                        "AWS RAG ingestion failed for %s: %s",
+                        video_id,
+                        aws_ingest_error,
+                    )
+            else:
+                try:
+                    if lightweight_bert:
+                        logger.info(f"Generating semantic chunks for video {video_id}")
+                        chunks_with_embeddings = generate_chunks_and_embeddings(transcript, lightweight_bert)
+                        logger.info(f"Successfully created {len(chunks_with_embeddings)} semantic chunks for {video_id}")
+                    else:
+                        logger.warning(f"Lightweight BERT not available for chunking video {video_id}")
+                except Exception as chunk_error:
+                    logger.error(f"Error generating chunks for {video_id}: {chunk_error}")
             
             # Store in database with chunks
             transcript_doc = {
@@ -562,7 +957,8 @@ async def process_videos(request: ProcessVideosRequest):
                 "metadata": video_info,
                 "processed_at": datetime.utcnow(),
                 "transcript_hash": hashlib.md5(transcript.encode()).hexdigest(),
-                "chunks": chunks_with_embeddings  # Add semantic chunks with embeddings
+                "chunks": chunks_with_embeddings,  # Legacy local chunk storage
+                "awsRag": aws_rag_metadata,
             }
             
             db.transcripts.insert_one(transcript_doc)
@@ -593,12 +989,47 @@ async def rag_answer(request: RAGAnswerRequest):
     if not mongodb_client:
         raise HTTPException(status_code=500, detail="Database not available")
     
-    if not GEMINI_API_KEY:
+    if not aws_rag_manager and not GEMINI_API_KEY:
         raise HTTPException(status_code=500, detail="AI service not available")
     
     try:
         logger.info(f"RAG request: userId={request.userId}, question='{request.question}', video_ids={request.video_ids}")
+
+        if aws_rag_manager:
+            try:
+                aws_response = aws_rag_manager.answer_question(
+                    question=request.question,
+                    user_id=request.userId,
+                    video_filter=request.video_ids,
+                    top_k=5,
+                )
+
+                if aws_response["answer"]:
+                    return {
+                        "answer": aws_response["answer"],
+                        "sources": aws_response["sources"],
+                        "sourceType": "aws_rag",
+                    }
+
+                if not aws_response["sources"]:
+                    return {
+                        "answer": "I could not find any indexed transcripts for your question yet. Please process videos first and try again.",
+                        "sources": [],
+                        "sourceType": "aws_rag",
+                    }
+
+                # Fall back to local pipeline if AWS returned context without an answer
+                logger.warning("AWS RAG returned context without answer; falling back to Gemini pipeline")
+            except Exception as aws_error:  # noqa: BLE001
+                logger.error("AWS RAG pipeline failed: %s", aws_error)
         
+        if aws_rag_manager and not GEMINI_API_KEY:
+            return {
+                "answer": "I could not complete the response because the backup model is unavailable. Please retry in a moment.",
+                "sources": [],
+                "sourceType": "aws_rag",
+            }
+
         mongo_query = {"userId": request.userId}
         if request.video_ids:
             mongo_query["video_id"] = {"$in": request.video_ids}
