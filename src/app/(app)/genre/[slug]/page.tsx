@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
@@ -121,8 +121,8 @@ export default function GenrePage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [aiRefreshLoading, setAiRefreshLoading] = useState(false);
   // Unused state variables - commented out
-  // const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
-  // const [totalAvailable, setTotalAvailable] = useState(0);
+  const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
+  const [totalAvailable, setTotalAvailable] = useState(0);
   
   // Preview and Playlist states
   const [previewVideo, setPreviewVideo] = useState<Video | null>(null);
@@ -195,10 +195,20 @@ export default function GenrePage() {
           };
         });
 
+        // Deduplicate by youtubeId (keep first occurrence)
+        const seenIds = new Set<string>();
+        const uniqueVideos = transformedVideos.filter(video => {
+          if (!video.youtubeId || seenIds.has(video.youtubeId)) {
+            return false;
+          }
+          seenIds.add(video.youtubeId);
+          return true;
+        });
+
         setAlgorithmUsed('bert');
-        setTotalAvailable(transformedVideos.length);
-        setVideos(transformedVideos);
-        setFilteredVideos(transformedVideos);
+        setTotalAvailable(uniqueVideos.length);
+        setVideos(uniqueVideos);
+        setFilteredVideos(uniqueVideos);
       } catch (err) {
         console.error('Error fetching videos:', err);
         setError(err instanceof Error ? err.message : 'Failed to load videos');
@@ -210,8 +220,23 @@ export default function GenrePage() {
     fetchVideos();
   }, [slug, categoryName]);
 
-  // Helper function to fetch playlists
-  const fetchPlaylists = async () => {
+  const lastFetchRef = useRef<number>(0);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  
+  // Helper function to fetch playlists (manual only)
+  const fetchPlaylists = async (force = false) => {
+    if (!force) {
+      console.log('Playlist fetch disabled - use manual refresh button');
+      return;
+    }
+
+    // Cancel any previous ongoing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    
+    abortControllerRef.current = new AbortController();
+
     try {
       // Use the actual user ID if logged in, otherwise use 'guest'
       const userId = user?.id || 'guest';
@@ -220,7 +245,9 @@ export default function GenrePage() {
       console.log('Fetching playlists for userId:', userId);
       console.log('user?.id:', user?.id);
       
-      const response = await fetch(`/api/playlists?userId=${userId}`);
+      const response = await fetch(`/api/playlists?userId=${userId}`, {
+        signal: abortControllerRef.current.signal
+      });
       console.log('Playlists response status:', response.status);
       
       if (response.ok) {
@@ -239,8 +266,10 @@ export default function GenrePage() {
 
   // Fetch user playlists on component mount and when user changes
   useEffect(() => {
-    fetchPlaylists();
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (user?.id) {
+      fetchPlaylists();
+    }
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter and sort videos
   useEffect(() => {
@@ -316,9 +345,19 @@ export default function GenrePage() {
         };
       });
 
+      // Deduplicate by youtubeId (keep first occurrence)
+      const seenIds = new Set<string>();
+      const uniqueVideos = transformedVideos.filter(video => {
+        if (!video.youtubeId || seenIds.has(video.youtubeId)) {
+          return false;
+        }
+        seenIds.add(video.youtubeId);
+        return true;
+      });
+
       setAlgorithmUsed('bert');
-      setTotalAvailable(transformedVideos.length);
-      setVideos(transformedVideos);
+      setTotalAvailable(uniqueVideos.length);
+      setVideos(uniqueVideos);
     } catch (err) {
       console.error('Error refreshing recommendations:', err);
     } finally {
@@ -380,7 +419,7 @@ export default function GenrePage() {
         if (data.success) {
           alert('Video added to playlist successfully!');
           // Refresh playlists to update video counts
-          await fetchPlaylists();
+          await fetchPlaylists(true);
         } else {
           alert(data.error || 'Failed to add video to playlist');
         }
@@ -464,7 +503,7 @@ export default function GenrePage() {
           setSelectedVideoForPlaylist(null);
           
           // Then refresh playlists from server
-          await fetchPlaylists();
+          await fetchPlaylists(true);
           
           alert('Playlist created successfully! Redirecting to playlists page...');
           
@@ -632,7 +671,7 @@ export default function GenrePage() {
               
               {/* Playlist Refresh Button for debugging */}
               <Button
-                onClick={fetchPlaylists}
+                onClick={() => fetchPlaylists(true)}
                 variant="outline"
                 size="sm"
                 className="border-green-200 hover:bg-green-50 hover:border-green-300"
@@ -692,7 +731,8 @@ export default function GenrePage() {
             }
           >
             {filteredVideos.map((video, index) => {
-              const uniqueKey = video.youtubeId || video._id || `video-${index}-${Date.now()}`;
+              // Use index + youtubeId to handle duplicate video IDs from BERT recommendations
+              const uniqueKey = `${index}-${video.youtubeId || video._id || 'video'}`;
               
               return (
                 <motion.div

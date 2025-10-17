@@ -233,8 +233,10 @@ export default function ProgressPage() {
   };
 
   useEffect(() => {
-    fetchProgressData();
-  }, [user]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (user?.id) {
+      fetchProgressData();
+    }
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (userLoading || isLoading) {
     return (

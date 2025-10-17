@@ -75,7 +75,7 @@ export default function PlaylistDetailPage() {
   const [enhancedSummaryData, setEnhancedSummaryData] = useState<Record<string, unknown> | null>(null);
 
   const handleEnhancedSummaryGenerated = (enhancedSummary: string, multiModalData: Record<string, unknown>) => {
-    console.log('🚀 [handleEnhancedSummaryGenerated] Called with:', {
+    console.log('[PlaylistDetailPage] Enhanced summary generated:', {
       enhancedSummary: enhancedSummary?.substring(0, 100) + '...',
       multiModalData,
       hasMultiModalData: !!multiModalData,
@@ -130,7 +130,7 @@ export default function PlaylistDetailPage() {
         setPlaylist(processedPlaylist);
         if (processedPlaylist.videos.length > 0) {
           setCurrentVideo(processedPlaylist.videos[0]);
-          console.log('🎬 [PlaylistDetailPage] Set current video:', {
+          console.log('[PlaylistDetailPage] Set current video:', {
             id: processedPlaylist.videos[0].id,
             title: processedPlaylist.videos[0].title,
             youtubeURL: processedPlaylist.videos[0].youtubeURL,
@@ -138,7 +138,7 @@ export default function PlaylistDetailPage() {
           });
         }
         
-        console.log('📋 [PlaylistDetailPage] Loaded playlist:', {
+        console.log('[PlaylistDetailPage] Loaded playlist:', {
           id: processedPlaylist.id,
           title: processedPlaylist.title,
           videosCount: processedPlaylist.videos.length,

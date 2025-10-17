@@ -90,7 +90,7 @@ export const feedbackService = {
   // Remove feedback - Mock implementation
   async removeFeedback(feedbackId: string, userId: string) {
     try {
-      console.log('🗑️ [Mock] Removing feedback:', { feedbackId, userId });
+      console.log('[Mock] Removing feedback:', { feedbackId, userId });
       
       // Remove from mock data
       delete mockFeedbackData[feedbackId];
@@ -111,7 +111,7 @@ export const feedbackService = {
   // Add to watchlist - Mock implementation
   async addToWatchlist(watchlistData: WatchlistData) {
     try {
-      console.log('➕ [Mock] Adding to watchlist:', watchlistData);
+      console.log('[Mock] Adding to watchlist:', watchlistData);
       
       // Create watchlist item
       const watchlistItem = {
@@ -144,7 +144,7 @@ export const feedbackService = {
   // Remove from watchlist - Mock implementation
   async removeFromWatchlist(watchlistId: string, userId: string) {
     try {
-      console.log('🗑️ [Mock] Removing from watchlist:', { watchlistId, userId });
+      console.log('[Mock] Removing from watchlist:', { watchlistId, userId });
       
       // Remove from mock data
       if (mockWatchlistData[userId]) {
@@ -178,7 +178,7 @@ export const feedbackService = {
     } = {}
   ) {
     try {
-      console.log('📚 [Mock] Getting user watchlist:', { userId, options });
+      console.log('[Mock] Getting user watchlist:', { userId, options });
       
       let watchlistItems = mockWatchlistData[userId] || [];
       
@@ -265,7 +265,7 @@ export const feedbackService = {
   // Check if item is in watchlist - Mock implementation
   async isInWatchlist(userId: string, itemId: string): Promise<boolean> {
     try {
-      console.log('🔍 [Mock] Checking if in watchlist:', { userId, itemId });
+      console.log('[Mock] Checking if in watchlist:', { userId, itemId });
       
       const userWatchlist = mockWatchlistData[userId] || [];
       const isInWatchlist = userWatchlist.some(item => item.itemId === itemId);

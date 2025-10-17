@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
-import User from '@/models/User';
+import { updateUser, findUserById } from '@/lib/dynamodb-service';
 
 export async function PUT(request: NextRequest) {
   try {
@@ -14,19 +13,20 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Weekly goal must be between 1 and 100' }, { status: 400 });
     }
 
-    await connectToDatabase();
+    try {
+      const updatedUser = await updateUser(userId, { weeklyGoal });
 
-    const user = await User.findByIdAndUpdate(
-      userId,
-      { weeklyGoal },
-      { new: true }
-    ).select('-password');
+      if (!updatedUser) {
+        return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      }
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      // Return user without password
+      const { password, ...userWithoutPassword } = updatedUser;
+      return NextResponse.json({ user: userWithoutPassword });
+    } catch (dbError) {
+      console.error('DynamoDB operation error:', dbError);
+      return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
-
-    return NextResponse.json({ user });
   } catch (error) {
     console.error('Weekly goal update error:', error);
     return NextResponse.json({ error: 'Failed to update weekly goal' }, { status: 500 });

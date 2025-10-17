@@ -1,26 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
-import mongoose from 'mongoose';
+import { connectToDatabase } from '@/lib/dynamodb';
+import { PutCommand, QueryCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
-// Video schema matching frontend expectations
-const videoSchema = new mongoose.Schema({
-  youtubeId: { type: String, required: true, unique: true },
-  title: String,
-  description: String,
-  thumbnail: String,
-  duration: String,
-  category: String,
-  channelTitle: String,
-  publishedAt: Date,
-  viewCount: Number,
-  likeCount: Number,
-  youtubeURL: String,
-  tags: [String],
-  difficulty: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Video = mongoose.models.Video || mongoose.model('Video', videoSchema);
+const VIDEOS_TABLE = 'Videos';
 
 // YouTube API configuration
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
@@ -113,9 +95,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Connect to database
-    await connectDB();
-
     // Get request body
     const body = await request.json();
     const { category, limit = 5 } = body;
@@ -136,7 +115,11 @@ export async function POST(request: NextRequest) {
 
     let totalInserted = 0;
     let totalUpdated = 0;
+    let totalFailed = 0;
     const errors: string[] = [];
+    
+    // Connect to DynamoDB
+    const client = await connectToDatabase();
 
     // Process each query
     for (const { category: cat, query, subGenre } of queriesToProcess) {
@@ -146,32 +129,88 @@ export async function POST(request: NextRequest) {
 
         for (const video of videos) {
           const videoData = {
+            id: video.id,
             youtubeId: video.id,
             title: video.snippet.title,
             description: video.snippet.description,
             thumbnail: video.snippet.thumbnails.high?.url || video.snippet.thumbnails.default?.url,
             duration: parseDuration(video.contentDetails.duration),
             category: cat,
+            subGenre: subGenre,
             channelTitle: video.snippet.channelTitle,
-            publishedAt: new Date(video.snippet.publishedAt),
+            publishedAt: new Date(video.snippet.publishedAt).getTime(),
             viewCount: parseInt(video.statistics.viewCount || '0'),
             likeCount: parseInt(video.statistics.likeCount || '0'),
             youtubeURL: `https://www.youtube.com/watch?v=${video.id}`,
             tags: video.snippet.tags || [],
-            difficulty: 'Beginner' // Default difficulty, can be enhanced later
+            difficulty: 'Beginner',
+            createdAt: Date.now(),
+            updatedAt: Date.now()
           };
 
-          // Upsert video
-          const result = await Video.findOneAndUpdate(
-            { youtubeId: video.id },
-            { $set: videoData },
-            { upsert: true, new: true }
-          );
-
-          if (result.createdAt.getTime() === result.updatedAt?.getTime()) {
+          try {
+            // Try conditional Put first (for new items)
+            await client.send(new PutCommand({
+              TableName: VIDEOS_TABLE,
+              Item: videoData,
+              ConditionExpression: 'attribute_not_exists(id)'
+            }));
             totalInserted++;
-          } else {
-            totalUpdated++;
+          } catch (error) {
+            // If conditional check fails, item exists - update it
+            if (error instanceof Error && error.name === 'ConditionalCheckFailedException') {
+              try {
+                await client.send(new UpdateCommand({
+                  TableName: VIDEOS_TABLE,
+                  Key: { id: video.id },
+                  UpdateExpression: 'SET #title = :title, #desc = :desc, #thumb = :thumb, #dur = :dur, #cat = :cat, #subGenre = :subGenre, #ch = :ch, #pub = :pub, #vc = :vc, #lc = :lc, #url = :url, #tags = :tags, #diff = :diff, #updatedAt = :updatedAt',
+                  ExpressionAttributeNames: {
+                    '#title': 'title',
+                    '#desc': 'description',
+                    '#thumb': 'thumbnail',
+                    '#dur': 'duration',
+                    '#cat': 'category',
+                    '#subGenre': 'subGenre',
+                    '#ch': 'channelTitle',
+                    '#pub': 'publishedAt',
+                    '#vc': 'viewCount',
+                    '#lc': 'likeCount',
+                    '#url': 'youtubeURL',
+                    '#tags': 'tags',
+                    '#diff': 'difficulty',
+                    '#updatedAt': 'updatedAt'
+                  },
+                  ExpressionAttributeValues: {
+                    ':title': videoData.title,
+                    ':desc': videoData.description,
+                    ':thumb': videoData.thumbnail,
+                    ':dur': videoData.duration,
+                    ':cat': videoData.category,
+                    ':subGenre': videoData.subGenre,
+                    ':ch': videoData.channelTitle,
+                    ':pub': videoData.publishedAt,
+                    ':vc': videoData.viewCount,
+                    ':lc': videoData.likeCount,
+                    ':url': videoData.youtubeURL,
+                    ':tags': videoData.tags,
+                    ':diff': videoData.difficulty,
+                    ':updatedAt': videoData.updatedAt
+                  }
+                }));
+                totalUpdated++;
+              } catch (updateError) {
+                totalFailed++;
+                const errorMsg = `Failed to update video ${video.id}: ${updateError instanceof Error ? updateError.message : 'Unknown error'}`;
+                console.error(errorMsg);
+                errors.push(errorMsg);
+              }
+            } else {
+              // Unexpected error during Put
+              totalFailed++;
+              const errorMsg = `Failed to insert video ${video.id}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+              console.error(errorMsg);
+              errors.push(errorMsg);
+            }
           }
         }
       } catch (error) {
@@ -180,7 +219,7 @@ export async function POST(request: NextRequest) {
         errors.push(errorMsg);
         
         // Check for quota exceeded
-        if (error.message.includes('403')) {
+        if (error instanceof Error && error.message.includes('403')) {
           errors.push('YouTube API quota exceeded. Please try again later.');
           break;
         }
@@ -193,7 +232,8 @@ export async function POST(request: NextRequest) {
       stats: {
         totalInserted,
         totalUpdated,
-        totalProcessed: totalInserted + totalUpdated,
+        totalFailed,
+        totalProcessed: totalInserted + totalUpdated + totalFailed,
         errors: errors.length
       },
       errors: errors.length > 0 ? errors : undefined
@@ -214,28 +254,11 @@ export async function POST(request: NextRequest) {
 // GET endpoint to check population status
 export async function GET() {
   try {
-    await connectDB();
-    
-    const stats = await Video.aggregate([
-      {
-        $group: {
-          _id: '$category',
-          count: { $sum: 1 },
-          latestVideo: { $max: '$createdAt' }
-        }
-      },
-      {
-        $sort: { _id: 1 }
-      }
-    ]);
-
-    const totalVideos = await Video.countDocuments();
-
     return NextResponse.json({
       success: true,
-      totalVideos,
-      categoryCounts: stats,
-      hasYouTubeApiKey: !!YOUTUBE_API_KEY
+      message: 'Video population endpoint available',
+      hasYouTubeApiKey: !!YOUTUBE_API_KEY,
+      info: 'Use POST to populate videos, requires YouTube API key'
     });
 
   } catch (error) {

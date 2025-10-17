@@ -2,11 +2,23 @@ from fastapi import APIRouter, HTTPException, Query, Body
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 import logging
+from decimal import Decimal
 from services.bert_recommendation_engine import get_bert_recommendation_engine
+from config_production import config
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+def convert_decimal(obj):
+    """Convert Decimal objects to native Python types for JSON serialization"""
+    if isinstance(obj, Decimal):
+        return float(obj) if obj % 1 else int(obj)
+    elif isinstance(obj, dict):
+        return {k: convert_decimal(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_decimal(i) for i in obj]
+    return obj
 
 router = APIRouter(prefix="/api/bert-recommendations", tags=["BERT Recommendations"])
 
@@ -45,15 +57,26 @@ class RecommendationResponse(BaseModel):
 async def initialize_bert_system():
     """Initialize the BERT recommendation system"""
     try:
+        logger.info(f"Initializing BERT system - DynamoDB: {config.USE_DYNAMODB}")
+        
         engine = get_bert_recommendation_engine()
+        
+        # Configure engine based on env
+        if hasattr(engine, 'use_dynamodb'):
+            engine.use_dynamodb = config.USE_DYNAMODB
+            
         success = engine.initialize_system()
         
         if success:
             stats = engine.get_system_stats()
+            source = "DynamoDB" if engine.use_dynamodb else "CSV"
+            
             return {
                 "success": True,
-                "message": "BERT recommendation system initialized successfully",
-                "stats": stats
+                "message": f"BERT recommendation system initialized successfully using {source}",
+                "stats": stats,
+                "data_source": source,
+                "total_videos": len(engine.df_yt) if engine.df_yt is not None else 0
             }
         else:
             return {
@@ -72,14 +95,25 @@ async def get_system_stats():
         engine = get_bert_recommendation_engine()
         stats = engine.get_system_stats()
         
+        # Add data source info
+        data_source = "DynamoDB" if get_attribute(engine, 'use_dynamodb', False) else "CSV"
+        video_count = len(engine.df_yt) if engine.df_yt is not None else 0
+        
         return {
             "success": True,
-            "stats": stats
+            "stats": stats,
+            "data_source": data_source,
+            "total_videos_loaded": video_count,
+            "cache_timestamp": get_attribute(engine, 'cache_timestamp', 0)
         }
         
     except Exception as e:
         logger.error(f"Error getting system stats: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+def get_attribute(obj, attr, default):
+    """Safely get attribute from object"""
+    return getattr(obj, attr, default)
 
 @router.post("/recommend", response_model=RecommendationResponse)
 async def get_content_based_recommendations(request: RecommendationRequest):
@@ -109,8 +143,8 @@ async def get_content_based_recommendations(request: RecommendationRequest):
                 message="No recommendations found"
             )
         
-        # Convert to dict
-        recommendations = recommendations_df.to_dict('records')
+        # Convert to dict and handle Decimal types
+        recommendations = convert_decimal(recommendations_df.to_dict('records'))
         
         return RecommendationResponse(
             success=True,
@@ -150,8 +184,8 @@ async def get_genre_based_recommendations(request: GenreRecommendationRequest):
                 message=f"No recommendations found for genre: {request.genre}"
             )
         
-        # Convert to dict
-        recommendations = recommendations_df.to_dict('records')
+        # Convert to dict and handle Decimal types
+        recommendations = convert_decimal(recommendations_df.to_dict('records'))
         
         return RecommendationResponse(
             success=True,
@@ -190,8 +224,8 @@ async def get_personalized_recommendations(request: PersonalizedRecommendationRe
                 message="No personalized recommendations found"
             )
         
-        # Convert to dict
-        recommendations = recommendations_df.to_dict('records')
+        # Convert to dict and handle Decimal types
+        recommendations = convert_decimal(recommendations_df.to_dict('records'))
         
         return RecommendationResponse(
             success=True,
@@ -229,8 +263,8 @@ async def get_popular_recommendations(
                 message="No popular recommendations found"
             )
         
-        # Convert to dict
-        recommendations = recommendations_df.to_dict('records')
+        # Convert to dict and handle Decimal types
+        recommendations = convert_decimal(recommendations_df.to_dict('records'))
         
         return RecommendationResponse(
             success=True,
@@ -263,7 +297,7 @@ async def get_available_genres():
             }
         
         genres = engine.df_yt['genre'].unique().tolist()
-        genre_counts = engine.df_yt['genre'].value_counts().to_dict()
+        genre_counts = convert_decimal(engine.df_yt['genre'].value_counts().to_dict())
         
         return {
             "success": True,

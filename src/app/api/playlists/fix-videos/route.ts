@@ -1,19 +1,25 @@
 ﻿import { NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
-import Playlist from '@/models/Playlist';
+import { getAllPlaylists, updatePlaylist } from '@/lib/dynamodb-service';
 
 // POST - Fix existing playlists with missing video fields
 export async function POST() {
   try {
-    await connectToDatabase();
+    // Find all playlists using pagination
+    const allPlaylists = [];
+    let lastEvaluatedKey: Record<string, any> | undefined;
+    const pageSize = 100; // Reasonable page size for DynamoDB scan
     
-    // Find all playlists
-    const playlists = await Playlist.find({});
+    // Paginate through all playlists
+    do {
+      const result = await getAllPlaylists(pageSize, lastEvaluatedKey);
+      allPlaylists.push(...result.items);
+      lastEvaluatedKey = result.lastEvaluatedKey;
+    } while (lastEvaluatedKey);
     
     let fixedCount = 0;
     let errorCount = 0;
     
-    for (const playlist of playlists) {
+    for (const playlist of allPlaylists) {
       try {
         let needsUpdate = false;
         
@@ -81,14 +87,13 @@ export async function POST() {
         });
         
         if (needsUpdate) {
-          playlist.videos = fixedVideos;
-          await playlist.save();
+          await updatePlaylist(playlist.id, { videos: fixedVideos });
           fixedCount++;
-          console.log(`Fixed playlist: ${playlist.title} (${playlist._id})`);
+          console.log(`Fixed playlist: ${playlist.title} (${playlist.id})`);
         }
         
       } catch (error) {
-        console.error(`Error fixing playlist ${playlist._id}:`, error);
+        console.error(`Error fixing playlist ${playlist.id}:`, error);
         errorCount++;
       }
     }
@@ -98,7 +103,7 @@ export async function POST() {
       message: `Fixed ${fixedCount} playlists, ${errorCount} errors`,
       fixedCount,
       errorCount,
-      totalPlaylists: playlists.length
+      totalPlaylists: allPlaylists.length
     });
     
   } catch (error) {

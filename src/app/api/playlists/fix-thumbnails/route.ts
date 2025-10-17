@@ -1,6 +1,5 @@
 ﻿import { NextResponse } from 'next/server';
-import { Playlist } from '@/models/Playlist';
-import { connectToDatabase } from '@/lib/mongodb';
+import { getAllPlaylists, updatePlaylist } from '@/lib/dynamodb-service';
 
 function extractYouTubeId(url: string): string | null {
   if (!url) return null;
@@ -23,13 +22,11 @@ function extractYouTubeId(url: string): string | null {
 
 export async function POST() {
   try {
-    await connectToDatabase();
-    
-    console.log('ðŸ”§ Starting thumbnail fix process...');
+    console.log('🔧 Starting thumbnail fix process...');
     
     // Get all playlists
-    const playlists = await Playlist.find({});
-    console.log(`ðŸ“‹ Found ${playlists.length} playlists to process`);
+    const playlists = await getAllPlaylists(1000);
+    console.log(`Found ${playlists.length} playlists to process`);
     
     let totalVideosFixed = 0;
     let totalPlaylistsUpdated = 0;
@@ -38,10 +35,9 @@ export async function POST() {
       let playlistUpdated = false;
       let videosFixedInPlaylist = 0;
       
-      console.log(`\nðŸ“ Processing playlist: ${playlist.title || 'Untitled'}`);
+      console.log(`\n📝 Processing playlist: ${playlist.title || 'Untitled'}`);
       
-      for (let i = 0; i < playlist.videos.length; i++) {
-        const video = playlist.videos[i];
+      const updatedVideos = playlist.videos.map((video: Record<string, unknown>) => {
         const youtubeUrl = video.youtubeURL || video.url || '';
         const currentThumbnail = video.thumbnail || '';
         
@@ -50,58 +46,47 @@ export async function POST() {
           const youtubeId = extractYouTubeId(youtubeUrl);
           
           if (youtubeId) {
-            // Generate correct thumbnail URL
-            const correctThumbnail = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+            // Generate the proper thumbnail URL
+            const correctThumbnail = `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`;
             
-            // Check if we need to update
             if (currentThumbnail !== correctThumbnail) {
-              console.log(`  ðŸŽ¥ Video: ${(video.title || 'Untitled').substring(0, 50)}`);
-              console.log(`     ðŸ“º YouTube ID: ${youtubeId}`);
-              console.log(`     âŒ Old thumbnail: ${currentThumbnail}`);
-              console.log(`     âœ… New thumbnail: ${correctThumbnail}`);
-              
-              // Update the video
-              playlist.videos[i].thumbnail = correctThumbnail;
-              playlist.videos[i].youtubeId = youtubeId;
+              console.log(`  ✓ Fixed thumbnail for: ${video.title}`);
               videosFixedInPlaylist++;
-              playlistUpdated = true;
+              return { ...video, thumbnail: correctThumbnail };
             }
-          } else {
-            console.log(`  âš ï¸  Could not extract YouTube ID from: ${youtubeUrl}`);
           }
-        } else {
-          console.log(`  âš ï¸  Video missing youtubeURL: ${video.title || 'Untitled'}`);
         }
-      }
+        
+        return video;
+      });
       
-      // Update the playlist in database if any videos were fixed
-      if (playlistUpdated) {
-        await playlist.save();
-        console.log(`  âœ… Updated playlist with ${videosFixedInPlaylist} video fixes`);
-        totalVideosFixed += videosFixedInPlaylist;
+      if (videosFixedInPlaylist > 0) {
+        await updatePlaylist(playlist.id, { videos: updatedVideos });
+        playlistUpdated = true;
         totalPlaylistsUpdated++;
+        totalVideosFixed += videosFixedInPlaylist;
+        console.log(`Playlist updated with ${videosFixedInPlaylist} fixed videos`);
       } else {
-        console.log(`  â„¹ï¸  No updates needed for this playlist`);
+        console.log('No thumbnails needed fixing');
       }
     }
     
-    console.log(`\nðŸŽ‰ Thumbnail fix complete!`);
-    console.log(`ðŸ“Š Summary:`);
-    console.log(`   - Playlists updated: ${totalPlaylistsUpdated}`);
-    console.log(`   - Videos fixed: ${totalVideosFixed}`);
+    console.log('\nThumbnail fix completed!');
+    console.log(`Summary: ${totalPlaylistsUpdated} playlists updated, ${totalVideosFixed} videos fixed`);
     
     return NextResponse.json({
       success: true,
       message: 'Thumbnail fix completed successfully',
-      playlistsUpdated: totalPlaylistsUpdated,
-      videosFixed: totalVideosFixed
+      totalPlaylistsUpdated,
+      totalVideosFixed,
+      totalPlaylists: playlists.length
     });
     
   } catch (error) {
-    console.error('âŒ Error fixing thumbnails:', error);
-    return NextResponse.json(
-      { success: false, error: 'Failed to fix thumbnails' },
-      { status: 500 }
-    );
+    console.error('Error fixing thumbnails:', error);
+    return NextResponse.json({ 
+      success: false,
+      error: 'Failed to fix thumbnails' 
+    }, { status: 500 });
   }
 } 

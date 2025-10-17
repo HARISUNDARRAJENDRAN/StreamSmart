@@ -19,12 +19,12 @@ interface PomodoroSession {
 const motivationalQuotes = [
   "When you feel like giving up, remember why you started 🌟",
   "Success is the sum of small efforts repeated day in and day out 💪",
-  "The future depends on what you do today 🚀",
-  "Focus on progress, not perfection ✨",
+  "The future depends on what you do today",
+  "Focus on progress, not perfection",
   "Every expert was once a beginner 🌱",
   "Your only limit is you 🔥",
-  "Dream big, work hard, stay focused 🎯",
-  "Consistency is the key to success 🗝️",
+  "Dream big, work hard, stay focused",
+  "Consistency is the key to success",
 ];
 
 export default function ProductivityTimer() {

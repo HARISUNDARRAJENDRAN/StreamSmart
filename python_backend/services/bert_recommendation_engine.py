@@ -10,35 +10,103 @@ from pymongo import MongoClient
 from datetime import datetime
 import json
 import pickle
+import boto3
+from boto3.dynamodb.conditions import Key
+from threading import Lock
+import time
+from decimal import Decimal
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def convert_decimal(obj):
+    """Convert Decimal objects to native Python types for JSON serialization"""
+    # Handle None immediately
+    if obj is None:
+        return None
+    
+    if isinstance(obj, Decimal):
+        # Handle special Decimal values
+        if obj.is_nan():
+            return None  # or 'NaN' for string representation
+        if obj.is_infinite():
+            return None  # or 'Infinity'/'-Infinity' for string representation
+        
+        # Handle finite Decimals
+        # Check if it has no fractional part
+        if obj % 1 == 0:
+            return int(obj)
+        
+        # For numbers with fractional parts, check magnitude safety
+        # Safe range for float conversion: roughly ±1e308 with reasonable precision
+        abs_val = abs(obj)
+        if abs_val < Decimal('1e15'):  # Safe magnitude for float conversion without precision loss
+            return float(obj)
+        else:
+            # Return string representation for large/precise numbers
+            return str(obj)
+    
+    elif isinstance(obj, dict):
+        return {k: convert_decimal(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_decimal(i) for i in obj]
+    
+    return obj
+
 class BertRecommendationEngine:
-    def __init__(self, mongo_uri: str = "mongodb://localhost:27017/", db_name: str = "streamsmart"):
+    def __init__(self, 
+                 mongo_uri: str = "mongodb://localhost:27017/", 
+                 db_name: str = "streamsmart",
+                 use_dynamodb: bool = True,
+                 aws_region: str = "ap-south-1"):
         """
         Initialize the BERT-based recommendation engine
         
         Args:
             mongo_uri: MongoDB connection URI
             db_name: Database name
+            use_dynamodb: Whether to use DynamoDB or CSV for video data
+            aws_region: AWS region for DynamoDB
         """
         self.mongo_uri = mongo_uri
         self.db_name = db_name
         self.client = MongoClient(mongo_uri)
         self.db = self.client[db_name]
         
+        # DynamoDB configuration
+        self.use_dynamodb = use_dynamodb
+                
         # Initialize embedding model (SentenceTransformer for reliability and speed)
         self.model = None
         self.df_yt = None
         self.embeddings_cache = {}
         
-        # Dataset path
+        # Dataset paths
         self.dataset_path = "educational_youtube_content.csv"
         self.embeddings_cache_path = "embeddings_cache.pkl"
         
+        # DynamoDB connection
+        if self.use_dynamodb:
+            try:
+                self.dynamodb = boto3.resource('dynamodb', region_name=aws_region)
+                self.videos_table = self.dynamodb.Table('Videos')
+                logger.info("DynamoDB connection established")
+            except Exception as e:
+                logger.error(f"Failed to connect to DynamoDB: {e}")
+                logger.info("Falling back to CSV mode")
+                self.use_dynamodb = False
+        
+        # Cache management
+        self._cache_timestamp = 0
+        self._cache_ttl = 3600  # 1 hour cache TTL
+        self._lock = Lock()
+        
         self._initialize_bert_model()
+    
+    @property
+    def cache_timestamp(self):
+        return getattr(self, '_cache_timestamp', 0)
     
     def _initialize_bert_model(self):
         """Load sentence-transformer model (BERT-based)"""
@@ -142,12 +210,103 @@ class BertRecommendationEngine:
         df.to_csv(self.dataset_path, index=False)
         logger.info("Sample dataset created successfully")
     
-    def load_and_preprocess_dataset(self):
-        """Load and preprocess the dataset"""
+    def load_dynamodb_videos(self) -> bool:
+        """Load videos from DynamoDB Videos table"""
         try:
-            # Check if dataset exists, if not download it
+            with self._lock:
+                current_time = time.time()
+                
+                # Check cache (1 hour TTL)
+                if (self.cache_timestamp > 0 and 
+                    current_time - self._cache_timestamp < self._cache_ttl and 
+                    self.df_yt is not None):
+                    logger.info("Serving videos from memory cache")
+                    return True
+                
+                logger.info("Loading videos from DynamoDB...")
+                videos = []
+                last_evaluated_key = None
+                
+                # Paginate through all videos
+                # Only fetch essential fields that we know exist
+                while True:
+                    scan_kwargs = {
+                        'Limit': 1000,
+                        'ProjectionExpression': 'id, youtubeId, title, #desc, thumbnail, #dur, category, channelTitle, viewCount',
+                        'ExpressionAttributeNames': {
+                            '#desc': 'description',
+                            '#dur': 'duration'
+                        }
+                    }
+                    
+                    if last_evaluated_key:
+                        scan_kwargs['ExclusiveStartKey'] = last_evaluated_key
+                        
+                    response = self.videos_table.scan(**scan_kwargs)
+                    videos.extend(response.get('Items', []))
+                    
+                    last_evaluated_key = response.get('LastEvaluatedKey')
+                    if not last_evaluated_key:
+                        break
+                
+                # Convert to DataFrame
+                self.df_yt = pd.DataFrame(videos)
+                
+                # Map DynamoDB fields to expected format
+                self.df_yt['clean_title'] = self.df_yt['title'].apply(
+                    lambda x: re.sub(r'[^a-zA-Z0-9\s]', ' ', x) if isinstance(x, str) else ' '
+                )
+                self.df_yt['clean_title'] = self.df_yt['clean_title'].str.lower().str.strip()
+                self.df_yt['clean_title'] = self.df_yt['clean_title'].str.replace(r'\s+', ' ', regex=True)
+                
+                # Add missing columns for compatibility
+                # Map category to genre and normalize it
+                if 'category' in self.df_yt.columns:
+                    self.df_yt['genre'] = self.df_yt['category'].fillna('General')
+                else:
+                    self.df_yt['genre'] = 'General'
+                
+                self.df_yt['channel_name'] = self.df_yt.get('channelTitle', '')
+                self.df_yt['thumbnail_url'] = self.df_yt.get('thumbnail', '')
+                
+                # Convert Decimal to float for viewCount (DynamoDB returns Decimal)
+                if 'viewCount' in self.df_yt.columns:
+                    self.df_yt['view_count'] = self.df_yt['viewCount'].apply(lambda x: float(x) if x is not None else 0)
+                else:
+                    self.df_yt['view_count'] = 0
+                
+                # Add likes/dislikes estimate (DynamoDB doesn't have these)
+                if 'likes' not in self.df_yt.columns:
+                    self.df_yt['likes'] = self.df_yt['view_count'] * 0.1  # Estimate 10% of views
+                if 'dislikes' not in self.df_yt.columns:
+                    self.df_yt['dislikes'] = self.df_yt['likes'] * 0.05  # Estimate 5% of likes
+                
+                # Log unique genres for debugging
+                unique_genres = self.df_yt['genre'].unique()
+                logger.info(f"Unique genres found in DynamoDB: {list(unique_genres)[:20]}")  # Show first 20
+                
+                # Filter out empty titles
+                self.df_yt = self.df_yt[self.df_yt['clean_title'].str.len() > 0]
+                
+                # Update cache timestamp
+                self._cache_timestamp = current_time
+                
+                logger.info(f"Loaded {len(self.df_yt)} videos from DynamoDB")
+                return True
+                
+        except Exception as e:
+            logger.error(f"Error loading DynamoDB videos: {e}")
+            return False
+            
+    def load_csv_fallback(self) -> bool:
+        """Fallback to CSV loading if DynamoDB fails"""
+        try:
+            logger.info("Falling back to CSV mode...")
+            
+            # Check if dataset exists, if not create sample
             if not os.path.exists(self.dataset_path):
-                self.download_dataset()
+                self.sample_dataset = True
+                self.create_sample_dataset()
             
             logger.info("Loading dataset...")
             self.df_yt = pd.read_csv(self.dataset_path)
@@ -190,6 +349,24 @@ class BertRecommendationEngine:
             
         except Exception as e:
             logger.error(f"Error loading dataset: {e}")
+            return False
+    
+    def load_and_preprocess_dataset(self):
+        """Load and preprocess dataset from DynamoDB"""
+        try:
+            # Load from DynamoDB only
+            if self.use_dynamodb:
+                if self.load_dynamodb_videos():
+                    return True
+                else:
+                    logger.error("DynamoDB loading failed! CSV fallback is intentionally disabled.")
+                    return False
+            else:
+                logger.error("DynamoDB is not enabled! Pass use_dynamodb=True to the constructor to enable DynamoDB.")
+                return False
+            
+        except Exception as e:
+            logger.exception(f"Error in load_and_preprocess_dataset: {e}")
             return False
     
     def get_bert_embeddings(self, text: str) -> np.ndarray:
@@ -394,7 +571,7 @@ class BertRecommendationEngine:
         Get top recommendations for a specific genre
         
         Args:
-            genre: Genre to get recommendations for
+            genre: Genre to get recommendations for (slug format like 'coding-programming')
             top_n: Number of recommendations to return
             user_id: Optional user ID for personalized recommendations
             
@@ -406,9 +583,20 @@ class BertRecommendationEngine:
                 logger.error("Dataset not loaded")
                 return pd.DataFrame()
             
-            # Map the genre name to match dataset format
-            mapped_genre = self._map_genre_name(genre)
-            logger.info(f"Original genre: '{genre}' mapped to: '{mapped_genre}'")
+            # Trim whitespace from genre
+            genre = genre.strip()
+            
+            # Handle empty genre
+            if not genre:
+                logger.warning("Empty genre string provided")
+                mapped_genre = genre
+            # Only map if it looks like a human-readable format (contains spaces or any uppercase letter)
+            elif ' ' in genre or any(c.isupper() for c in genre):
+                mapped_genre = self._map_genre_name(genre)
+                logger.info(f"Mapped human-readable genre: '{genre}' → '{mapped_genre}'")
+            else:
+                mapped_genre = genre
+                logger.info(f"Using genre slug directly: '{genre}'")
             
             # Filter by genre
             genre_videos = self.df_yt[self.df_yt['genre'] == mapped_genre]
@@ -508,10 +696,11 @@ class BertRecommendationEngine:
     def _log_recommendation(self, user_id: str, input_title: str, recommendations: pd.DataFrame):
         """Log recommendation to MongoDB"""
         try:
+            recommendations_dict = recommendations.to_dict('records')
             log_entry = {
                 "user_id": user_id,
                 "input_title": input_title,
-                "recommendations": recommendations.to_dict('records'),
+                "recommendations": convert_decimal(recommendations_dict),
                 "timestamp": datetime.now(),
                 "recommendation_type": "content_based"
             }
@@ -522,10 +711,11 @@ class BertRecommendationEngine:
     def _log_genre_recommendation(self, user_id: str, genre: str, recommendations: pd.DataFrame):
         """Log genre recommendation to MongoDB"""
         try:
+            recommendations_dict = recommendations.to_dict('records')
             log_entry = {
                 "user_id": user_id,
                 "genre": genre,
-                "recommendations": recommendations.to_dict('records'),
+                "recommendations": convert_decimal(recommendations_dict),
                 "timestamp": datetime.now(),
                 "recommendation_type": "genre_based"
             }
@@ -562,7 +752,7 @@ class BertRecommendationEngine:
             stats = {
                 "total_videos": len(self.df_yt),
                 "unique_genres": self.df_yt['genre'].nunique(),
-                "genres": self.df_yt['genre'].value_counts().to_dict(),
+                "genres": convert_decimal(self.df_yt['genre'].value_counts().to_dict()),
                 "cached_embeddings": len(self.embeddings_cache),
                 "system_status": "initialized"
             }

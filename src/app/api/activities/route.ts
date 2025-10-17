@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
-import Activity from '@/models/Activity';
-import User from '@/models/User';
+import { getActivitiesByUserId, createActivity, updateUser, findUserById } from '@/lib/dynamodb-service';
 
 // GET - Fetch user's activities
 export async function GET(request: NextRequest) {
@@ -14,17 +12,12 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-      await connectToDatabase();
+      const activities = await getActivitiesByUserId(userId, limit);
+      return NextResponse.json({ activities });
     } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
+      console.error('DynamoDB query error:', dbError);
+      return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
     }
-    
-    const activities = await Activity.find({ userId })
-      .sort({ timestamp: -1 })
-      .limit(limit);
-    
-    return NextResponse.json({ activities });
   } catch (error) {
     console.error('Error fetching activities:', error);
     return NextResponse.json({ error: 'Failed to fetch activities' }, { status: 500 });
@@ -42,25 +35,21 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      await connectToDatabase();
+      const activity = await createActivity({
+        userId,
+        action,
+        item,
+        type,
+      });
+
+      // Update user's learning streak
+      await updateUserStreak(userId);
+
+      return NextResponse.json({ activity });
     } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
+      console.error('DynamoDB operation error:', dbError);
+      return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
-
-    const activity = new Activity({
-      userId,
-      action,
-      item,
-      type,
-    });
-
-    await activity.save();
-
-    // Update user's learning streak
-    await updateUserStreak(userId);
-
-    return NextResponse.json({ activity });
   } catch (error) {
     console.error('Error recording activity:', error);
     return NextResponse.json({ error: 'Failed to record activity' }, { status: 500 });
@@ -70,9 +59,7 @@ export async function POST(request: NextRequest) {
 // Helper function to calculate and update user's learning streak
 async function updateUserStreak(userId: string) {
   try {
-    const activities = await Activity.find({ userId })
-      .sort({ timestamp: -1 })
-      .limit(365); // Last year of activities
+    const activities = await getActivitiesByUserId(userId, 365); // Last year of activities
 
     let streak = 0;
     const today = new Date();
@@ -106,7 +93,7 @@ async function updateUserStreak(userId: string) {
     }
 
     // Update user's streak
-    await User.findByIdAndUpdate(userId, { learningStreak: streak });
+    await updateUser(userId, { learningStreak: streak });
 
     return streak;
   } catch (error) {

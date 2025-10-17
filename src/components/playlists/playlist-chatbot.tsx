@@ -56,7 +56,7 @@ export function PlaylistChatbot({
 
 I analyze the full video transcripts to provide you with accurate answers directly from the content of each video.
 
-🔄 Please click "Process Videos First" to enable transcript-based Q&A.
+Please click "Process Videos First" to enable transcript-based Q&A.
 
 You can ask me about:
 • Specific concepts explained in the videos
@@ -81,7 +81,7 @@ What would you like to know?`,
     const processingMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'ai',
-      content: "🔄 Processing video transcripts for enhanced Q&A. This may take a moment...",
+      content: "Processing video transcripts for enhanced Q&A. This may take a moment...",
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, processingMessage]);
@@ -146,7 +146,7 @@ What would you like to know?`,
           const successMessage: ChatMessage = {
             id: (Date.now() + 1).toString(),
             role: 'ai',
-            content: `✅ Successfully processed ${result.video_ids.length} video transcripts: ${result.video_ids.join(', ')}. You can now ask questions about the content!`,
+            content: `Successfully processed ${result.video_ids.length} video transcripts: ${result.video_ids.join(', ')}. You can now ask questions about the content!`,
             timestamp: new Date(),
           };
           setMessages(prev => [...prev, successMessage]);
@@ -201,14 +201,14 @@ What would you like to know?`,
       let aiContent = response.answer;
       
       if (response.sourceType === 'no_content') {
-        aiContent += '\n\n💡 *No video transcripts are available yet. Please click "Process Videos First" to enable transcript-based Q&A.*';
+        aiContent += '\n\n*No video transcripts are available yet. Please click "Process Videos First" to enable transcript-based Q&A.*';
       } else if (response.sourceType === 'rag_search') {
-        aiContent += '\n\n🔍 *This answer is based on searching through the video transcripts.*';
+        aiContent += '\n\n*This answer is based on searching through the video transcripts.*';
         if (response.confidence) {
           aiContent += ` (Confidence: ${(response.confidence * 100).toFixed(1)}%)`;
         }
       } else if (response.sourceType === 'error') {
-        aiContent += '\n\n⚠️ *There was an error accessing the transcript database.*';
+        aiContent += '\n\n*There was an error accessing the transcript database.*';
       }
       
       if (response.relevantVideos && response.relevantVideos.length > 0) {
@@ -272,7 +272,7 @@ What would you like to know?`,
                 Processing...
               </>
             ) : processingComplete ? (
-              '✅ Processed'
+              'Processed'
             ) : (
               'Process Videos First'
             )}

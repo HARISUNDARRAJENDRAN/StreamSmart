@@ -11,19 +11,19 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
   const playerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('🎥 [VideoPlayer] Attempting to load video:', { videoUrl, videoTitle });
+    console.log('[VideoPlayer] Attempting to load video:', { videoUrl, videoTitle });
     
     if (!videoUrl || !playerRef.current) {
-      console.log('❌ [VideoPlayer] Missing videoUrl or playerRef:', { videoUrl, hasPlayerRef: !!playerRef.current });
+      console.log('[VideoPlayer] Missing videoUrl or playerRef:', { videoUrl, hasPlayerRef: !!playerRef.current });
       return;
     }
 
     // Extract video ID from URL
     const videoId = extractVideoId(videoUrl);
-    console.log('🔍 [VideoPlayer] Extracted video ID:', videoId, 'from URL:', videoUrl);
+    console.log('[VideoPlayer] Extracted video ID:', videoId, 'from URL:', videoUrl);
     
     if (!videoId) {
-      console.log('❌ [VideoPlayer] Failed to extract video ID from URL:', videoUrl);
+      console.log('[VideoPlayer] Failed to extract video ID from URL:', videoUrl);
       return;
     }
 
@@ -39,21 +39,21 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
       firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
 
       window.onYouTubeIframeAPIReady = () => {
-        console.log('✅ [VideoPlayer] YouTube API ready, creating player...');
+        console.log('[VideoPlayer] YouTube API ready, creating player...');
         createPlayer(videoId);
       };
     } else {
-      console.log('✅ [VideoPlayer] YouTube API already loaded, creating player...');
+      console.log('[VideoPlayer] YouTube API already loaded, creating player...');
       createPlayer(videoId);
     }
 
     function createPlayer(videoId: string) {
       if (!playerRef.current) {
-        console.log('❌ [VideoPlayer] PlayerRef not available during createPlayer');
+        console.log('[VideoPlayer] PlayerRef not available during createPlayer');
         return;
       }
 
-      console.log('🎬 [VideoPlayer] Creating YouTube player for video ID:', videoId);
+      console.log('[VideoPlayer] Creating YouTube player for video ID:', videoId);
       
       try {
         new window.YT.Player(playerRef.current, {
@@ -69,15 +69,15 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
           },
           events: {
             onReady: () => {
-              console.log('✅ [VideoPlayer] YouTube player ready for video:', videoId);
+              console.log('[VideoPlayer] YouTube player ready for video:', videoId);
             },
             onStateChange: (event: { data: number }) => {
               if (event.data === window.YT.PlayerState.PLAYING) {
-                console.log('▶️ [VideoPlayer] Video started playing:', videoId);
+                console.log('[VideoPlayer] Video started playing:', videoId);
               }
             },
             onError: (event: { data: number }) => {
-              console.log('❌ [VideoPlayer] YouTube player error:', event.data, 'for video:', videoId);
+              console.log('[VideoPlayer] YouTube player error:', event.data, 'for video:', videoId);
               // Show error message in the player area
               if (playerRef.current) {
                 playerRef.current.innerHTML = `
@@ -94,7 +94,7 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
           },
         });
       } catch (error) {
-        console.error('❌ [VideoPlayer] Error creating YouTube player:', error);
+        console.error('[VideoPlayer] Error creating YouTube player:', error);
         if (playerRef.current) {
           playerRef.current.innerHTML = `
             <div class="flex items-center justify-center h-full bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
@@ -111,14 +111,14 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
   }, [videoUrl]);
 
   function extractVideoId(url: string): string | null {
-    console.log('🔍 [VideoPlayer] Extracting video ID from URL:', url);
+    console.log('[VideoPlayer] Extracting video ID from URL:', url);
     
     // Enhanced regex to handle various YouTube URL formats
     const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
     
     const videoId = match && match[2].length === 11 ? match[2] : null;
-    console.log('🎯 [VideoPlayer] Regex match result:', { match: match?.slice(0, 3), videoId });
+    console.log('[VideoPlayer] Regex match result:', { match: match?.slice(0, 3), videoId });
     
     return videoId;
   }

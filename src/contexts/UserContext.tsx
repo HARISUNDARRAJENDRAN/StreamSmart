@@ -92,7 +92,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       
       if (result.success) {
         // Update stats after recording activity (but don't force it)
-        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
+        // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
       } else {
         // Fallback to localStorage if MongoDB fails
         console.log('Falling back to localStorage for activity recording');
@@ -108,7 +108,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const trimmedLog = activityLog.slice(0, 100);
         
         localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
+        // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
       }
     } catch (error) {
       console.error('Error recording activity:', error);
@@ -128,7 +128,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         const trimmedLog = activityLog.slice(0, 100);
         
         localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-        setTimeout(() => updateUserStats(false), 2000); // Delayed, non-forced update
+        // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
       } catch (fallbackError) {
         console.error('Error with localStorage fallback:', fallbackError);
       }
@@ -253,8 +253,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
         recentActivity,
       };
 
-      setUserStats(newStats);
-      setLastStatsUpdate(now);
+      // Only update if stats actually changed to prevent unnecessary re-renders
+      if (JSON.stringify(newStats) !== JSON.stringify(userStats)) {
+        setUserStats(newStats);
+        setLastStatsUpdate(now);
+      }
     } catch (error) {
       console.error('Error updating user stats:', error);
       // Set default stats to prevent crashes
@@ -476,12 +479,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
     loadUserSession();
   }, []);
 
-  // Update stats when user changes
-  useEffect(() => {
-    if (user) {
-      updateUserStats();
-    }
-  }, [user, updateUserStats]);
+  // Auto-stats update temporarily disabled to fix infinite loop
+  // Update stats when user changes (avoid effect loops on function identity)
+  // useEffect(() => {
+  //   if (user && !userStats) {
+  //     // Only update stats if stats don't exist yet
+  //     const timer = setTimeout(() => {
+  //       updateUserStats();
+  //     }, 1000); // Debounce to prevent rapid calls
+  //     
+  //     return () => clearTimeout(timer);
+  //   }
+  //   // Depend only on stable user id to avoid infinite loops
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user?.id, userStats]);
 
   const contextValue: UserContextType = {
     user,

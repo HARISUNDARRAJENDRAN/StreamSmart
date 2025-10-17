@@ -103,8 +103,10 @@ export default function PlaylistsPage() {
   };
 
   useEffect(() => {
-    loadPlaylists();
-  }, [user, toast]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (user?.id) {
+      loadPlaylists();
+    }
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDeletePlaylist = async (playlistId: string) => {
     try {

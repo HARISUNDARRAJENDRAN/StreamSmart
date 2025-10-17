@@ -1,152 +1,105 @@
-import mongoose from 'mongoose';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, PutCommand, QueryCommand, ScanCommand, GetCommand, UpdateCommand, DeleteCommand, BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import { fromNodeProviderChain } from '@aws-sdk/credential-providers';
 
-// MongoDB Atlas connection URI from environment variable
-const MONGO_URI = process.env.MONGO_URI;
+// Get AWS region from environment variables or default
+const region = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'ap-south-1';
 
-// Fallback for development (optional)
-const DEVELOPMENT_URI = process.env.NODE_ENV === 'development' 
-  ? process.env.MONGODB_URI || 'mongodb://localhost:27017/streamsmart'
-  : null;
-
-// Use Atlas URI for production, fallback for development
-const connectionString = MONGO_URI || DEVELOPMENT_URI;
-
-// Default DB name if URI omits a database path
-const DEFAULT_DB_NAME = process.env.MONGO_DB_NAME || 'streamsmart';
-// Detect if the URI already includes a db name segment after the host
-const uriHasDbName = /mongodb(?:\+srv)?:\/\/[^\/]+\/(?!\?)([^?\/]+)(?=\?|$)/.test(connectionString);
-
-// Validate connection string
-if (!connectionString) {
-  throw new Error(
-    'Please define the MONGO_URI environment variable for MongoDB Atlas connection. ' +
-    'Format: mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<dbname>?retryWrites=true&w=majority'
-  );
-}
-
-// Validate Atlas connection string format in production
-if (process.env.NODE_ENV === 'production' && !connectionString.startsWith('mongodb+srv://')) {
-  throw new Error(
-    'Production requires MongoDB Atlas connection string starting with mongodb+srv://'
-  );
-}
-
-// Log connection info (without credentials)
-const logUri = connectionString.replace(/\/\/[^:\/]+:[^@\/]+@/, '//***:***@');
-console.log(`🔗 MongoDB connecting to: ${logUri}`);
-console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+// Log connection info
+console.log(`DynamoDB connecting to region: ${region}`);
+console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 
 /**
- * Global mongoose cache for connection reuse
- * Prevents connection growth during API route hot reloads in development
+ * Global DynamoDB client cache for connection reuse
+ * Prevents creating multiple clients during API route hot reloads
  */
-interface MongooseCache {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
+interface DynamoDBCache {
+  client: DynamoDBDocumentClient | null;
+  promise: Promise<DynamoDBDocumentClient> | null;
 }
 
 declare global {
-  var mongoose: MongooseCache | undefined;
+  var dynamodb: DynamoDBCache | undefined;
 }
 
-let cached: MongooseCache = global.mongoose as MongooseCache;
+let cached: DynamoDBCache = global.dynamodb as DynamoDBCache;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.dynamodb = { client: null, promise: null };
 }
 
 /**
- * Connect to MongoDB Atlas
- * Uses connection pooling and proper error handling for production
+ * Initialize DynamoDB client
+ * Uses DynamoDBDocumentClient for simplified API
  */
-async function connectDB(): Promise<typeof mongoose> {
+async function connectDB(): Promise<DynamoDBDocumentClient> {
   try {
-    // Return existing connection if available
-    if (cached.conn) {
-      console.log('📡 Using existing MongoDB connection');
-      return cached.conn;
+    if (cached.client) {
+      console.log('📡 Using existing DynamoDB client');
+      return cached.client;
     }
 
-    // Return existing promise if connection is in progress
     if (!cached.promise) {
-      const connectionOptions = {
-        // Connection pooling options for production
-        maxPoolSize: 10, // Maximum number of connections
-        serverSelectionTimeoutMS: 5000, // How long to try selecting a server
-        socketTimeoutMS: 45000, // How long a socket can be inactive
-        bufferCommands: false, // Disable mongoose buffering
-        
-        // Development vs Production timeouts
-        ...(process.env.NODE_ENV === 'production' ? {
-          connectTimeoutMS: 10000,
-          heartbeatFrequencyMS: 10000,
-        } : {
-          connectTimeoutMS: 30000,
-          heartbeatFrequencyMS: 30000,
-        })
-      } as Parameters<typeof mongoose.connect>[1];
+      console.log('Initializing DynamoDB client...');
+      
+      cached.promise = (async () => {
+        const baseClient = new DynamoDBClient({
+          region,
+          // Use the full default provider chain (supports env, shared config/SSO, EC2/ECS, etc.)
+          credentials: fromNodeProviderChain(),
+        });
 
-      // If no db name is present in the URI, enforce the intended database
-      const finalOptions = uriHasDbName ? connectionOptions : { ...connectionOptions, dbName: DEFAULT_DB_NAME };
+        const docClient = DynamoDBDocumentClient.from(baseClient, {
+          marshallOptions: {
+            removeUndefinedValues: true,
+            convertEmptyValues: false,
+            convertClassInstanceToMap: true,
+          },
+          unmarshallOptions: {
+            wrapNumbers: false,
+          },
+        });
 
-      console.log('🚀 Initiating MongoDB Atlas connection...');
-      if (!uriHasDbName) {
-        console.log(`🛠️  URI has no database path; forcing dbName='${DEFAULT_DB_NAME}'`);
-      }
-      cached.promise = mongoose.connect(connectionString, finalOptions);
+        return docClient;
+      })();
     }
 
-    // Wait for connection to complete
-    cached.conn = await cached.promise;
+    cached.client = await cached.promise;
     
-    // Connection success logging
-    console.log('✅ MongoDB Atlas connected successfully');
-    console.log(`📊 Connection state: ${mongoose.connection.readyState}`);
-    console.log(`🏷️  Database name: ${mongoose.connection.name}`);
+    console.log('DynamoDB client initialized successfully');
+    console.log(`Connected to region: ${region}`);
+    console.log('Tables: Users, Playlists, Activities, Videos');
     
-    return cached.conn;
+    return cached.client;
 
   } catch (error) {
-    // Reset promise on error to allow retry
     cached.promise = null;
-    
-    // Enhanced error logging
-    console.error('❌ MongoDB Atlas connection failed:', error);
-    
-    // Provide helpful error messages
+    console.error('DynamoDB initialization failed:', error);
     if (error instanceof Error) {
-      if (error.message.includes('authentication failed')) {
-        console.error('🔐 Authentication failed - check username/password in MONGO_URI');
-      } else if (error.message.includes('ENOTFOUND')) {
-        console.error('🌐 Network error - check cluster URL in MONGO_URI');
-      } else if (error.message.includes('serverSelectionTimeoutMS')) {
-        console.error('⏱️  Server selection timeout - check cluster accessibility');
+      if (error.message.includes('credentials')) {
+        console.error('Credentials error - ensure SSO or env credentials are configured');
+      } else if (error.message.includes('region')) {
+        console.error('Region error - check AWS_REGION/AWS_DEFAULT_REGION');
       }
     }
-    
     throw error;
   }
 }
 
-/**
- * Gracefully close the MongoDB connection
- * Useful for cleanup in serverless environments
- */
 async function disconnectDB(): Promise<void> {
   try {
-    if (cached.conn) {
-      await mongoose.disconnect();
-      cached.conn = null;
+    if (cached.client) {
+      cached.client = null;
       cached.promise = null;
-      console.log('🔌 MongoDB connection closed');
+      console.log('DynamoDB client closed');
     }
   } catch (error) {
-    console.error('❌ Error closing MongoDB connection:', error);
+    console.error('Error closing DynamoDB client:', error);
     throw error;
   }
 }
 
-// Export the connection functions
 export default connectDB;
 export { connectDB, disconnectDB };
-export const connectToDatabase = connectDB; // Legacy compatibility 
+export const connectToDatabase = connectDB; // Legacy compatibility
+export { DynamoDBDocumentClient, PutCommand, QueryCommand, ScanCommand, GetCommand, UpdateCommand, DeleteCommand, BatchWriteCommand }; 

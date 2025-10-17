@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 // Type definitions
@@ -195,12 +195,12 @@ export default function DashboardPage() {
 
   // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       console.log('User ID available for tracking:', user.id);
-      // Update user stats when user loads - only once
+      // Update user stats when user loads - only once per id
       updateUserStats(true);
     }
-  }, [user, updateUserStats]); // Only depend on user.id, not the entire user object or updateUserStats function
+  }, [user?.id]); // Only depend on user id to avoid loops
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -231,7 +231,7 @@ export default function DashboardPage() {
     };
 
     loadPlaylists();
-  }, [user, isAuthenticated, updateUserStats]);
+  }, [user?.id, isAuthenticated]);
 
   // Load last watched video when playlists and userStats are available
   useEffect(() => {
@@ -1270,7 +1270,7 @@ export default function DashboardPage() {
                 whileHover={{ scale: 1.1 }}
               >
                 <Badge className="bg-green-200 text-green-800 font-semibold">
-                  {lastWatchedVideo.completionStatus === 100 ? 'âœ“ Completed' : 'â³ In Progress'}
+                  {lastWatchedVideo.completionStatus === 100 ? '✓ Completed' : '⌛ In Progress'}
                 </Badge>
               </motion.div>
             )}

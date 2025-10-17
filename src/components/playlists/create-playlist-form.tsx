@@ -203,7 +203,7 @@ export function CreatePlaylistForm() {
       });
       
       toast({
-        title: "Playlist Created! 🎉",
+        title: "Playlist Created!",
         description: `"${data.title}" has been saved with ${newVideosWithDetails.length} videos.`,
       });
       

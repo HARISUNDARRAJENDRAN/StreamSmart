@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/mongodb';
-import Playlist from '@/models/Playlist';
+import { v4 as uuidv4 } from 'uuid';
+import { getPlaylistsByUserId, createPlaylist, getPlaylistById, updatePlaylist, deletePlaylist, getAllPlaylists } from '@/lib/dynamodb-service';
 
 // Utility function to extract YouTube ID from URL
 function extractYouTubeId(url: string): string | null {
@@ -21,6 +21,42 @@ function extractYouTubeId(url: string): string | null {
   return null;
 }
 
+// Helper function to transform video source objects into normalized video objects
+interface VideoSource {
+  id?: string;
+  youtubeId?: string;
+  title?: string;
+  channelTitle?: string;
+  thumbnail?: string;
+  duration?: string;
+  url?: string;
+  youtubeURL?: string;
+  description?: string;
+  completionStatus?: number;
+  addedAt?: string;
+  addedBy?: string;
+}
+
+function transformVideo(sourceVideo: VideoSource, addedBy: string = 'user'): Record<string, unknown> {
+  // Extract youtubeId from url if not provided
+  const youtubeId = sourceVideo.youtubeId || sourceVideo.id || extractYouTubeId(sourceVideo.url || sourceVideo.youtubeURL);
+  
+  return {
+    id: `video_${uuidv4()}`,
+    youtubeId: youtubeId || '',
+    title: sourceVideo.title || 'Untitled Video',
+    channelTitle: sourceVideo.channelTitle || '',
+    thumbnail: sourceVideo.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
+    duration: sourceVideo.duration || '0:00',
+    url: sourceVideo.url || sourceVideo.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
+    youtubeURL: sourceVideo.youtubeURL || sourceVideo.url || `https://www.youtube.com/watch?v=${youtubeId}`,
+    description: sourceVideo.description || '',
+    completionStatus: sourceVideo.completionStatus || 0,
+    addedAt: sourceVideo.addedAt || new Date().toISOString(),
+    addedBy: sourceVideo.addedBy || addedBy,
+  };
+}
+
 // GET - Fetch user's playlists
 export async function GET(request: NextRequest) {
   try {
@@ -30,79 +66,80 @@ export async function GET(request: NextRequest) {
     const queryUserId = userId || 'guest';
 
     try {
-      await connectToDatabase();
-    } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
-    }
-    
-    // Debug mode: return all playlists with their userIds
-    if (userId === 'all-debug') {
-      const allPlaylists = await Playlist.find({}).sort({ createdAt: -1 }).limit(20);
-      return NextResponse.json({ 
-        success: true,
-        debug: true,
-        playlists: allPlaylists.map(p => ({
-          id: p._id,
-          title: p.title,
-          description: p.description,
-          videoCount: p.videos.length,
-          userId: p.userId,
-          createdAt: p.createdAt
-        }))
-      });
-    }
-    
-    const playlists = await Playlist.find({ userId: queryUserId }).sort({ createdAt: -1 });
-    
-    console.log('Found playlists count:', playlists.length);
-    if (playlists.length > 0) {
-      console.log('First playlist _id:', playlists[0]._id, 'type:', typeof playlists[0]._id);
-      console.log('First playlist title:', playlists[0].title);
-      console.log('First playlist videos count:', playlists[0].videos.length);
-      if (playlists[0].videos.length > 0) {
-        console.log('First video data:', {
-          id: playlists[0].videos[0].id,
-          youtubeId: playlists[0].videos[0].youtubeId,
-          youtubeURL: playlists[0].videos[0].youtubeURL,
-          url: playlists[0].videos[0].url,
-          title: playlists[0].videos[0].title,
-          completionStatus: playlists[0].videos[0].completionStatus
+      let playlists;
+      
+      // Debug mode: return all playlists with their userIds
+      if (userId === 'all-debug') {
+        const result = await getAllPlaylists(20);
+        playlists = result.items;
+        return NextResponse.json({ 
+          success: true,
+          debug: true,
+          playlists: playlists.map(p => ({
+            id: p.id,
+            title: p.title,
+            description: p.description,
+            videoCount: p.videos.length,
+            userId: p.userId,
+            createdAt: p.createdAt
+          }))
         });
       }
-    }
-    
-    return NextResponse.json({ 
-      success: true,
-      playlists: playlists.map(p => ({
-        _id: p._id.toString(), // Ensure _id is stringified
-        id: p._id.toString(),  // Ensure id is also stringified
-        title: p.title,
-        description: p.description,
-        category: p.category,
-        tags: p.tags,
-        isPublic: p.isPublic,
-        videoCount: p.videos.length,
-        overallProgress: p.overallProgress,
-        createdAt: p.createdAt,
-        updatedAt: p.updatedAt,
-        userId: p.userId,
-        // Include ALL videos with complete data for progress calculation
-        videos: p.videos.map(video => ({
-          id: video.id,
-          title: video.title,
-          thumbnail: video.thumbnail,
-          youtubeURL: video.youtubeURL || video.url,
-          youtubeId: video.youtubeId,
-          duration: video.duration,
-          channelTitle: video.channelTitle,
-          completionStatus: video.completionStatus || 0, // CRITICAL: Include completion status
-          addedAt: video.addedAt,
-          addedBy: video.addedBy,
-          description: video.description || ''
+      
+      playlists = await getPlaylistsByUserId(queryUserId);
+      
+      console.log('Found playlists count:', playlists.length);
+      if (playlists.length > 0) {
+        console.log('First playlist id:', playlists[0].id, 'type:', typeof playlists[0].id);
+        console.log('First playlist title:', playlists[0].title);
+        console.log('First playlist videos count:', playlists[0].videos.length);
+        if (playlists[0].videos.length > 0) {
+          console.log('First video data:', {
+            id: playlists[0].videos[0].id,
+            youtubeId: playlists[0].videos[0].youtubeId,
+            youtubeURL: playlists[0].videos[0].youtubeURL,
+            url: playlists[0].videos[0].url,
+            title: playlists[0].videos[0].title,
+            completionStatus: playlists[0].videos[0].completionStatus
+          });
+        }
+      }
+      
+      return NextResponse.json({ 
+        success: true,
+        playlists: playlists.map(p => ({
+          _id: p.id,
+          id: p.id,
+          title: p.title,
+          description: p.description,
+          category: p.category,
+          tags: p.tags,
+          isPublic: p.isPublic,
+          videoCount: p.videos.length,
+          overallProgress: p.overallProgress,
+          createdAt: p.createdAt,
+          updatedAt: p.updatedAt,
+          userId: p.userId,
+          // Include ALL videos with complete data for progress calculation
+          videos: p.videos.map(video => ({
+            id: video.id,
+            title: video.title,
+            thumbnail: video.thumbnail,
+            youtubeURL: video.youtubeURL || video.url,
+            youtubeId: video.youtubeId,
+            duration: video.duration,
+            channelTitle: video.channelTitle,
+            completionStatus: video.completionStatus || 0,
+            addedAt: video.addedAt,
+            addedBy: video.addedBy,
+            description: video.description || ''
+          }))
         }))
-      }))
-    });
+      });
+    } catch (dbError) {
+      console.error('DynamoDB query error:', dbError);
+      return NextResponse.json({ error: 'Database query failed' }, { status: 500 });
+    }
   } catch (error) {
     console.error('Error fetching playlists:', error);
     return NextResponse.json({ error: 'Failed to fetch playlists' }, { status: 500 });
@@ -117,7 +154,7 @@ export async function POST(request: NextRequest) {
 
     console.log('Creating playlist with data:', { userId, title, description, category, hasFirstVideo: !!firstVideo });
     console.log('Environment check:', { 
-      MONGO_URI: !!process.env.MONGO_URI,
+      AWS_REGION: !!process.env.AWS_REGION,
       NODE_ENV: process.env.NODE_ENV 
     });
 
@@ -127,132 +164,78 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      console.log('Attempting to connect to MongoDB...');
-      await connectToDatabase();
-      console.log('MongoDB connection successful');
-    } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      
-      // Check if it's a missing environment variable
-      if (!process.env.MONGO_URI && !process.env.MONGODB_URI) {
-        return NextResponse.json({ 
-          error: 'Database not configured. Please set MONGO_URI environment variable.' 
-        }, { status: 500 });
-      }
-      
-      return NextResponse.json({ 
-        error: 'Database connection failed. Please check your MongoDB Atlas configuration.' 
-      }, { status: 500 });
-    }
+      console.log('Creating playlist in DynamoDB...');
 
-    // Handle simple playlist creation (from genre page) - when firstVideo is provided
-    if (firstVideo) {
-      const playlistVideos = [];
-      
-      // Add first video
-      const video = {
-        id: `video_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        youtubeId: firstVideo.youtubeId,
-        title: firstVideo.title,
-        thumbnail: firstVideo.thumbnail,
-        duration: firstVideo.duration,
-        channelTitle: firstVideo.channelTitle,
-        url: firstVideo.youtubeURL,
-        youtubeURL: firstVideo.youtubeURL,
-        description: firstVideo.description,
-        addedAt: new Date().toISOString(),
-        completionStatus: 0,
-        addedBy: 'user'
-      };
-      playlistVideos.push(video);
+      // Handle simple playlist creation (from genre page) - when firstVideo is provided
+      if (firstVideo) {
+        const playlistVideos = [];
+        
+        // Add first video using helper
+        const video = transformVideo(firstVideo);
+        playlistVideos.push(video);
 
-      const playlist = new Playlist({
-        userId: userId || 'guest', // Use provided userId or fallback to guest
-        title,
-        description: description || '',
-        category: category || 'General',
-        tags: tags || [],
-        isPublic: isPublic || false,
-        videos: playlistVideos,
-        overallProgress: 0,
-      });
+        const playlist = await createPlaylist({
+          userId: userId || 'guest',
+          title,
+          description: description || '',
+          category: category || 'General',
+          tags: tags || [],
+          isPublic: isPublic || false,
+          videos: playlistVideos,
+          overallProgress: 0,
+        });
 
-      try {
-        await playlist.save();
-        console.log('Playlist saved successfully:', playlist._id);
+        console.log('Playlist created successfully:', playlist.id);
         
         return NextResponse.json({ 
           success: true,
           playlist: {
-            id: playlist._id,
+            id: playlist.id,
             title: playlist.title,
             description: playlist.description,
             videoCount: playlist.videos.length
           }
         });
-      } catch (saveError) {
-        console.error('Error saving playlist:', saveError);
-        return NextResponse.json({ error: 'Failed to save playlist to database' }, { status: 500 });
       }
-    }
 
-    // Handle full playlist creation (from playlist create page)
-    if (!userId || !category) {
-      console.error('Missing required fields for full playlist creation:', { userId: !!userId, title: !!title, category: !!category });
-      return NextResponse.json({ error: 'Missing required fields for full playlist creation' }, { status: 400 });
-    }
+      // Handle full playlist creation (from playlist create page)
+      if (!userId || !category) {
+        console.error('Missing required fields for full playlist creation:', { userId: !!userId, title: !!title, category: !!category });
+        return NextResponse.json({ error: 'Missing required fields for full playlist creation' }, { status: 400 });
+      }
 
-    // Transform videos to include all required fields
-    const transformedVideos = (videos || []).map((video: Record<string, unknown>, index: number) => {
-      // Extract youtubeId from url if not provided
-      const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
-      
-      return {
-        id: video.id || `video_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 9)}`,
-        youtubeId: youtubeId || '', // Required field
-        title: video.title || 'Untitled Video',
-        channelTitle: video.channelTitle || '',
-        thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
-        duration: video.duration || '0:00',
-        url: video.url || video.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
-        youtubeURL: video.youtubeURL || video.url || `https://www.youtube.com/watch?v=${youtubeId}`, // Required field
-        description: video.description || '',
-        completionStatus: video.completionStatus || 0,
-        addedAt: video.addedAt || new Date().toISOString(), // Required field
-        addedBy: video.addedBy || 'user',
-      };
-    });
+      // Transform videos to include all required fields
+      const transformedVideos = (videos || []).map((video: VideoSource) => transformVideo(video));
 
-    const playlist = new Playlist({
-      userId,
-      title,
-      description: description || '',
-      category,
-      tags: tags || [],
-      isPublic: isPublic || false,
-      videos: transformedVideos,
-      overallProgress: 0,
-    });
+      const playlist = await createPlaylist({
+        userId,
+        title,
+        description: description || '',
+        category,
+        tags: tags || [],
+        isPublic: isPublic || false,
+        videos: transformedVideos,
+        overallProgress: 0,
+      });
 
-    try {
-      await playlist.save();
-      console.log('Full playlist saved successfully:', playlist._id);
+      console.log('Full playlist created successfully:', playlist.id);
       
       return NextResponse.json({ 
         success: true,
         playlist: {
-          id: playlist._id,
+          id: playlist.id,
           title: playlist.title,
           description: playlist.description,
           videoCount: playlist.videos.length
         }
       });
-    } catch (saveError) {
-      console.error('Error saving full playlist:', saveError);
-      if (saveError instanceof Error) {
-        return NextResponse.json({ error: saveError.message }, { status: 400 });
+    } catch (dbError) {
+      console.error('DynamoDB operation error:', dbError);
+      
+      if (dbError instanceof Error) {
+        return NextResponse.json({ error: dbError.message }, { status: 400 });
       }
-      return NextResponse.json({ error: 'Failed to save playlist' }, { status: 500 });
+      return NextResponse.json({ error: 'Failed to create playlist' }, { status: 500 });
     }
   } catch (error) {
     console.error('Error creating playlist:', error);
@@ -271,51 +254,23 @@ export async function PUT(request: NextRequest) {
     }
 
     try {
-      await connectToDatabase();
+      // Calculate overall progress if videos are being updated
+      if (updateData.videos) {
+        // Transform videos to include all required fields
+        updateData.videos = updateData.videos.map((video: VideoSource) => transformVideo(video));
+
+        const completedVideos = updateData.videos.filter((v: Record<string, unknown>) => v.completionStatus === 100).length;
+        const totalVideos = updateData.videos.length;
+        updateData.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
+      }
+
+      const playlist = await updatePlaylist(playlistId, updateData);
+
+      return NextResponse.json({ playlist });
     } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
+      console.error('DynamoDB error:', dbError);
+      return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
-
-    // Calculate overall progress if videos are being updated
-    if (updateData.videos) {
-      // Transform videos to include all required fields
-      updateData.videos = updateData.videos.map((video: Record<string, unknown>, index: number) => {
-        // Extract youtubeId from url if not provided
-        const youtubeId = video.youtubeId || video.id || extractYouTubeId(video.url || video.youtubeURL);
-        
-        return {
-          id: video.id || `video_${Date.now()}_${index}_${Math.random().toString(36).substr(2, 9)}`,
-          youtubeId: youtubeId || '', // Required field
-          title: video.title || 'Untitled Video',
-          channelTitle: video.channelTitle || '',
-          thumbnail: video.thumbnail || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
-          duration: video.duration || '0:00',
-          url: video.url || video.youtubeURL || `https://www.youtube.com/watch?v=${youtubeId}`,
-          youtubeURL: video.youtubeURL || video.url || `https://www.youtube.com/watch?v=${youtubeId}`, // Required field
-          description: video.description || '',
-          completionStatus: video.completionStatus || 0,
-          addedAt: video.addedAt || new Date().toISOString(), // Required field
-          addedBy: video.addedBy || 'user',
-        };
-      });
-
-      const completedVideos = updateData.videos.filter((v: Record<string, unknown>) => v.completionStatus === 100).length;
-      const totalVideos = updateData.videos.length;
-      updateData.overallProgress = totalVideos > 0 ? Math.round((completedVideos / totalVideos) * 100) : 0;
-    }
-
-    const playlist = await Playlist.findByIdAndUpdate(
-      playlistId,
-      updateData,
-      { new: true }
-    );
-
-    if (!playlist) {
-      return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ playlist });
   } catch (error) {
     console.error('Error updating playlist:', error);
     return NextResponse.json({ error: 'Failed to update playlist' }, { status: 500 });
@@ -332,19 +287,12 @@ export async function DELETE(request: NextRequest) {
     }
 
     try {
-      await connectToDatabase();
+      await deletePlaylist(playlistId);
+      return NextResponse.json({ success: true });
     } catch (dbError) {
-      console.error('MongoDB connection error:', dbError);
-      return NextResponse.json({ error: 'Database connection failed' }, { status: 500 });
+      console.error('DynamoDB error:', dbError);
+      return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });
     }
-
-    const result = await Playlist.findByIdAndDelete(playlistId);
-
-    if (!result) {
-      return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
-    }
-
-    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting playlist:', error);
     return NextResponse.json({ error: 'Failed to delete playlist' }, { status: 500 });

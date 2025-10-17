@@ -1,15 +1,6 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function HomePage() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Redirect to the landing page by default
-    router.replace('/landing');
-  }, [router]);
-
-  return null; // Or a loading spinner
+  // Server-side redirect to landing page (instant, no blank screen)
+  redirect('/landing');
 }

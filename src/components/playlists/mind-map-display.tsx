@@ -1205,7 +1205,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
   // Progressive disclosure: Get visible nodes and edges based on current state
   const getVisibleNodesAndEdges = useCallback(() => {
     if (allNodes.length === 0) {
-      console.log('📊 getVisibleNodesAndEdges: No nodes available');
+      console.log('getVisibleNodesAndEdges: No nodes available');
       return { visibleNodes: [], visibleEdges: [] };
     }
 
@@ -1214,7 +1214,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
     // Progressive disclosure: Show nodes based on current level and history
     const rootNode = allNodes.find(node => node.data.level === 0);
     if (!rootNode) {
-      console.log('📊 getVisibleNodesAndEdges: No root node found');
+      console.log('getVisibleNodesAndEdges: No root node found');
       return { visibleNodes: [], visibleEdges: [] };
     }
 
@@ -1272,7 +1272,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
     
     const enhancedVisibleNodes = createEnhancedNodes(visibleNodesAccumulator);
     
-    console.log(`📊 Progressive disclosure summary:`, {
+    console.log('Progressive disclosure summary:');
       currentLevel,
       totalNodes: allNodes.length,
       expandedNodes: expandedNodeIds.size,
@@ -1317,18 +1317,18 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
   const autoFitProgressiveView = useCallback((forceFullscreen?: boolean) => {
     const useFullscreen = forceFullscreen || isFullScreenOpen;
     const currentInstance = useFullscreen ? fullScreenRfInstanceRef.current : rfInstanceRef.current;
-    console.log(`🎯 AutoFit called: fullscreen=${useFullscreen}, instance=${!!currentInstance}, currentLevel=${currentLevel}`);
+    console.log(`AutoFit called: fullscreen=${useFullscreen}, instance=${!!currentInstance}, currentLevel=${currentLevel}`);
     
     if (!currentInstance) {
-      console.warn('⚠️ No ReactFlow instance available for auto-fit');
+      console.warn('No ReactFlow instance available for auto-fit');
       return;
     }
     
     // Get the currently visible nodes
     const { visibleNodes } = getVisibleNodesAndEdges();
-    console.log(`👀 Visible nodes for level ${currentLevel}:`, visibleNodes.length);
+    console.log(`Visible nodes for level ${currentLevel}:`, visibleNodes.length);
     if (visibleNodes.length === 0) {
-      console.warn('⚠️ No visible nodes for auto-fit');
+      console.warn('No visible nodes for auto-fit');
       return;
     }
     
@@ -1426,7 +1426,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
   // Effect to handle auto-fitting when switching to/from fullscreen
   useEffect(() => {
     if (displayedNodes.length > 0) {
-      console.log(`🖥️ Fullscreen state changed to: ${isFullScreenOpen}, triggering auto-fit for ${displayedNodes.length} nodes`);
+      console.log(`Fullscreen state changed to: ${isFullScreenOpen}, triggering auto-fit for ${displayedNodes.length} nodes`);
       const fitTimer = setTimeout(() => {
         autoFitProgressiveView(isFullScreenOpen);
       }, 200); // Give time for fullscreen transition
@@ -1450,7 +1450,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
 
   const loadMindMapData = useCallback(async () => {
     if (!currentVideo) {
-      console.log('⚠️ No current video available for mind map generation');
+      console.log('No current video available for mind map generation');
       setIsLoading(false);
       setGeneratedTitle("No Video Selected");
       return;
@@ -1463,7 +1463,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
       // Extract video ID from the current video
       let videoId = currentVideo.id;
       
-      console.log('🔍 Current video data:', {
+      console.log('Current video data:', {
         id: currentVideo.id,
         title: currentVideo.title,
         youtubeURL: currentVideo.youtubeURL
@@ -1488,13 +1488,13 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
         if (urlMatch) {
           videoId = urlMatch[1];
         } else {
-          console.warn('⚠️ Could not extract valid YouTube video ID from:', currentVideo);
+          console.warn('Could not extract valid YouTube video ID from:', currentVideo);
           // Use the original value and let backend handle it
           videoId = currentVideo?.id;
         }
       }
       
-      console.log('🎯 Extracted video ID:', videoId);
+      console.log('Extracted video ID:', videoId);
       
       // Use a default user ID for transcript processing
       const defaultUserId = 'default_user';

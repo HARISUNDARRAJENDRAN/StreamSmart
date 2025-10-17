@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import User from '@/models/User';
+import { findUserById, updateUser } from '@/lib/dynamodb-service';
 
 export async function PUT(request: NextRequest) {
   try {
-    await connectDB();
-    
     const { userId, name, phoneNumber, bio, preferences } = await request.json();
 
     if (!userId) {
@@ -15,41 +12,51 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Find and update user
-    const user = await User.findById(userId);
-    
-    if (!user) {
+    try {
+      // Find user
+      const user = await findUserById(userId);
+      
+      if (!user) {
+        return NextResponse.json(
+          { error: 'User not found' },
+          { status: 404 }
+        );
+      }
+
+      // Prepare update data
+      const updateData: Record<string, any> = {};
+      if (name !== undefined) updateData.name = name.trim();
+      if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
+      if (bio !== undefined) updateData.bio = bio;
+      if (preferences !== undefined) {
+        updateData.preferences = { ...user.preferences, ...preferences };
+      }
+
+      // Update user
+      const updatedUser = await updateUser(userId, updateData);
+
+      return NextResponse.json({
+        user: {
+          id: updatedUser.id,
+          name: updatedUser.name,
+          email: updatedUser.email,
+          avatarUrl: updatedUser.avatarUrl,
+          phoneNumber: updatedUser.phoneNumber,
+          bio: updatedUser.bio,
+          createdAt: updatedUser.createdAt,
+          lastLoginDate: updatedUser.lastLoginDate,
+          learningStreak: updatedUser.learningStreak,
+          totalLearningTime: updatedUser.totalLearningTime,
+          preferences: updatedUser.preferences,
+        }
+      });
+    } catch (dbError) {
+      console.error('DynamoDB operation error:', dbError);
       return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
+        { error: 'Database operation failed' },
+        { status: 500 }
       );
     }
-
-    // Update fields if provided
-    if (name !== undefined) user.name = name.trim();
-    if (phoneNumber !== undefined) user.phoneNumber = phoneNumber;
-    if (bio !== undefined) user.bio = bio;
-    if (preferences !== undefined) {
-      user.preferences = { ...user.preferences, ...preferences };
-    }
-
-    await user.save();
-
-    return NextResponse.json({
-      user: {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        avatarUrl: user.avatarUrl,
-        phoneNumber: user.phoneNumber,
-        bio: user.bio,
-        createdAt: user.createdAt,
-        lastLoginDate: user.lastLoginDate,
-        learningStreak: user.learningStreak,
-        totalLearningTime: user.totalLearningTime,
-        preferences: user.preferences,
-      }
-    });
 
   } catch (error) {
     console.error('Profile update error:', error);
@@ -62,8 +69,6 @@ export async function PUT(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    await connectDB();
-    
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('userId');
 
@@ -74,30 +79,38 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const user = await User.findById(userId);
-    
-    if (!user) {
+    try {
+      const user = await findUserById(userId);
+      
+      if (!user) {
+        return NextResponse.json(
+          { error: 'User not found' },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          avatarUrl: user.avatarUrl,
+          phoneNumber: user.phoneNumber,
+          bio: user.bio,
+          createdAt: user.createdAt,
+          lastLoginDate: user.lastLoginDate,
+          learningStreak: user.learningStreak,
+          totalLearningTime: user.totalLearningTime,
+          preferences: user.preferences,
+        }
+      });
+    } catch (dbError) {
+      console.error('DynamoDB query error:', dbError);
       return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
+        { error: 'Database query failed' },
+        { status: 500 }
       );
     }
-
-    return NextResponse.json({
-      user: {
-        id: user._id.toString(),
-        name: user.name,
-        email: user.email,
-        avatarUrl: user.avatarUrl,
-        phoneNumber: user.phoneNumber,
-        bio: user.bio,
-        createdAt: user.createdAt,
-        lastLoginDate: user.lastLoginDate,
-        learningStreak: user.learningStreak,
-        totalLearningTime: user.totalLearningTime,
-        preferences: user.preferences,
-      }
-    });
 
   } catch (error) {
     console.error('Profile fetch error:', error);
