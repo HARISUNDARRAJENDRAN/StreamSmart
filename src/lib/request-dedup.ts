@@ -12,7 +12,7 @@ type PendingRequest<T> = {
 
 class DistributedRequestDeduplicator {
   private redis: Redis;
-  private pending: Map<string, PendingRequest<any>> = new Map();
+  private pending: Map<string, PendingRequest<unknown>> = new Map();
   private ttl: number = 5000; // 5 seconds
   private keyPrefix: string = 'streamsmart:dedup:';
   private maxRetries: number;
@@ -22,9 +22,9 @@ class DistributedRequestDeduplicator {
     // Initialize Redis connection for distributed deduplication
     const host = process.env.AWS_ELASTICACHE_HOST || 'localhost';
     const tlsEnv = process.env.AWS_ELASTICACHE_TLS;
-  this.useTLS = tlsEnv === 'true' || (tlsEnv !== 'false' && !['localhost', '127.0.0.1'].includes(host));
-  const parsedRetries = Number(process.env.REQUEST_DEDUP_MAX_RETRIES);
-  this.maxRetries = Number.isFinite(parsedRetries) && parsedRetries > 0 ? parsedRetries : 10;
+    this.useTLS = tlsEnv === 'true' || (tlsEnv !== 'false' && !['localhost', '127.0.0.1'].includes(host));
+    const parsedRetries = Number(process.env.REQUEST_DEDUP_MAX_RETRIES);
+    this.maxRetries = Number.isFinite(parsedRetries) && parsedRetries > 0 ? parsedRetries : 10;
 
     this.redis = new Redis({
       host,
@@ -71,7 +71,7 @@ class DistributedRequestDeduplicator {
 
   async dedupe<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
     const now = Date.now();
-    const existing = this.pending.get(key);
+    const existing = this.pending.get(key) as PendingRequest<T> | undefined;
 
     // Return existing promise if still valid (in-memory cache for performance)
     if (existing && (now - existing.timestamp) < this.ttl) {
@@ -94,7 +94,7 @@ class DistributedRequestDeduplicator {
 
         await this.sleep(Math.min(100 * (attempt + 1), 500));
 
-        const pendingRetry = this.pending.get(key);
+        const pendingRetry = this.pending.get(key) as PendingRequest<T> | undefined;
         if (pendingRetry && (Date.now() - pendingRetry.timestamp) < this.ttl) {
           return pendingRetry.promise;
         }

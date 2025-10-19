@@ -3,7 +3,9 @@
  * Communicates with Python ML backend for advanced video analysis.
  */
 
-const ML_BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api-base';
+
+const ML_BACKEND_URL = API_BASE_URL;
 
 export interface MultiModalSummaryRequest {
   youtube_url: string;
@@ -12,19 +14,31 @@ export interface MultiModalSummaryRequest {
 
 export interface MultiModalSummaryResponse {
   summary: string;
+  detailed_summary?: string;
   key_topics: string[];
   visual_insights: string[];
   timestamp_highlights: Array<{
     timestamp: number;
     description: string;
     importance_score?: number;
+    learning_value?: string;
   }>;
-  processing_stats: {
+  processing_stats?: {
     total_segments: number;
     total_frames: number;
     video_duration: number;
     multimodal_alignment_score: number;
   };
+  mind_map_structure?: {
+    root: string;
+    nodes: Array<{
+      title: string;
+      children: string[];
+    }>;
+  };
+  learning_objectives?: string[];
+  key_concepts?: string[];
+  terminologies?: string[];
 }
 
 export interface TranscriptData {

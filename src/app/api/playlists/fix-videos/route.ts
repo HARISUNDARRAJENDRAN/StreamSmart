@@ -6,7 +6,7 @@ export async function POST() {
   try {
     // Find all playlists using pagination
     const allPlaylists = [];
-    let lastEvaluatedKey: Record<string, any> | undefined;
+    let lastEvaluatedKey: Record<string, string | number | boolean> | undefined;
     const pageSize = 100; // Reasonable page size for DynamoDB scan
     
     // Paginate through all playlists

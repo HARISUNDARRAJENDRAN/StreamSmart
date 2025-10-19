@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest) {
       }
 
       // Prepare update data
-      const updateData: Record<string, any> = {};
+      const updateData: Record<string, string | number | boolean | Record<string, unknown>> = {};
       if (name !== undefined) updateData.name = name.trim();
       if (phoneNumber !== undefined) updateData.phoneNumber = phoneNumber;
       if (bio !== undefined) updateData.bio = bio;

@@ -19,7 +19,7 @@ export async function GET(
     const limit = parseInt(request.nextUrl.searchParams.get('limit') || '200', 10);
     
     // Decode the nextToken if provided (it's base64-encoded ExclusiveStartKey)
-    let exclusiveStartKey: Record<string, any> | undefined;
+    let exclusiveStartKey: Record<string, string | number | boolean> | undefined;
     if (nextToken) {
       try {
         exclusiveStartKey = JSON.parse(Buffer.from(nextToken, 'base64').toString('utf-8'));

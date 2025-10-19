@@ -19,6 +19,7 @@ interface DynamoDBCache {
 }
 
 declare global {
+  // eslint-disable-next-line no-var
   var dynamodb: DynamoDBCache | undefined;
 }
 

@@ -1,10 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { API_BASE_URL } from '@/lib/api-base';
+import type { MultiModalSummaryResponse } from '@/services/multimodal-summarizer';
 
-const ML_BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const ML_BACKEND_URL = API_BASE_URL;
 
 export async function POST(request: NextRequest) {
+  let youtube_url: string;
+  let video_id: string;
+  let existing_summary: string | undefined;
+
   try {
-    const { youtube_url, video_id, existing_summary } = await request.json();
+    const body = await request.json();
+    youtube_url = body.youtube_url;
+    video_id = body.video_id;
+    existing_summary = typeof body.existing_summary === 'string' ? body.existing_summary : undefined;
+
+    if (!youtube_url || !video_id) {
+      throw new Error('Missing required video details');
+    }
 
     // Check if ML backend is available
     const healthResponse = await fetch(`${ML_BACKEND_URL}/health`, {
@@ -56,7 +69,7 @@ export async function POST(request: NextRequest) {
     console.warn('ML backend not available, using fallback:', error);
     
     // Enhanced fallback processing with better content
-    const enhancedFallbackSummary = existing_summary 
+  const enhancedFallbackSummary = existing_summary 
       ? `## AI-Enhanced Analysis (Text-Based Mode)
 
 ${existing_summary}
@@ -80,7 +93,7 @@ This video contains valuable educational content. While our advanced multi-modal
       enhanced_summary: enhancedFallbackSummary,
       multimodal_data: {
         summary: enhancedFallbackSummary,
-        key_topics: existing_summary ? extractTopicsFromSummary(existing_summary) : ["Educational Content", "Learning Material", "Video Analysis"],
+  key_topics: existing_summary ? extractTopicsFromSummary(existing_summary) : ["Educational Content", "Learning Material", "Video Analysis"],
         visual_insights: ["Visual analysis temporarily unavailable - full multi-modal features will return when ML backend is online"],
         timestamp_highlights: generateMockHighlights(),
         processing_stats: {
@@ -97,7 +110,7 @@ This video contains valuable educational content. While our advanced multi-modal
   }
 }
 
-function combineExistingWithMultiModal(existingSummary: string, multiModalData: Record<string, unknown>): string {
+function combineExistingWithMultiModal(existingSummary: string, multiModalData: MultiModalSummaryResponse): string {
   return `## Enhanced Summary
 
 ${multiModalData.summary}
@@ -106,10 +119,10 @@ ${multiModalData.summary}
 ${existingSummary}
 
 ## Key Insights
-${multiModalData.key_topics?.map((topic: string) => `• ${topic}`).join('\n') || 'No key topics identified'}
+${(multiModalData.key_topics || []).map((topic: string) => `• ${topic}`).join('\n') || 'No key topics identified'}
 
 ## Visual Elements
-${multiModalData.visual_insights?.map((insight: string) => `• ${insight}`).join('\n') || 'No visual insights available'}`;
+${(multiModalData.visual_insights || []).map((insight: string) => `• ${insight}`).join('\n') || 'No visual insights available'}`;
 }
 
 function extractTopicsFromSummary(summary: string): string[] {

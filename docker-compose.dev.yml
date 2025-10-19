@@ -1,0 +1,73 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: python_backend/Dockerfile
+    image: streamsmart-backend:dev
+    container_name: streamsmart-backend-dev
+    ports:
+      - "8000:8000"
+    environment:
+      AWS_PROFILE: ${AWS_PROFILE:-streamsmart-admin}
+      AWS_REGION: ${AWS_REGION:-ap-south-1}
+      USE_DYNAMODB: "true"
+      ENVIRONMENT: production
+      VIDEOS_TABLE: Videos
+      AWS_SDK_LOAD_CONFIG: "1"
+      AWS_ELASTICACHE_HOST: redis
+      AWS_ELASTICACHE_PORT: "6379"
+      AWS_ELASTICACHE_TLS: "false"
+    volumes:
+      - ${USERPROFILE}/.aws:/root/.aws:rw
+      - ./educational_youtube_content.csv:/app/educational_youtube_content.csv:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+        INTERNAL_API_URL: http://backend:8000
+    image: streamsmart-frontend:dev
+    container_name: streamsmart-frontend-dev
+    depends_on:
+      backend:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    ports:
+      - "3000:3000"
+    environment:
+      AWS_PROFILE: ${AWS_PROFILE:-streamsmart-admin}
+      AWS_REGION: ${AWS_REGION:-ap-south-1}
+      AWS_SDK_LOAD_CONFIG: "1"
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      INTERNAL_API_URL: http://backend:8000
+      AWS_ELASTICACHE_HOST: redis
+      AWS_ELASTICACHE_PORT: "6379"
+      AWS_ELASTICACHE_TLS: "false"
+    volumes:
+      - ${USERPROFILE}/.aws:/root/.aws:rw
+
+  redis:
+    image: redis:7-alpine
+    container_name: streamsmart-redis-dev
+    command: ["redis-server", "--save", "60", "1", "--loglevel", "warning"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  redis-data:

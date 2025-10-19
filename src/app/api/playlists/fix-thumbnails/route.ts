@@ -32,7 +32,6 @@ export async function POST() {
     let totalPlaylistsUpdated = 0;
     
     for (const playlist of playlists) {
-      let playlistUpdated = false;
       let videosFixedInPlaylist = 0;
       
       console.log(`\n📝 Processing playlist: ${playlist.title || 'Untitled'}`);
@@ -62,7 +61,6 @@ export async function POST() {
       
       if (videosFixedInPlaylist > 0) {
         await updatePlaylist(playlist.id, { videos: updatedVideos });
-        playlistUpdated = true;
         totalPlaylistsUpdated++;
         totalVideosFixed += videosFixedInPlaylist;
         console.log(`Playlist updated with ${videosFixedInPlaylist} fixed videos`);

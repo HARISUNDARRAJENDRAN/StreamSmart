@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
           });
         } else {
           // Update existing user
-          const updates: Record<string, any> = { lastLoginDate: Date.now() };
+          const updates: Record<string, string | number | boolean> = { lastLoginDate: Date.now() };
           if (googleId && !user.googleId) {
             updates.googleId = googleId;
           }

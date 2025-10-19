@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateUser, findUserById } from '@/lib/dynamodb-service';
+import { updateUser } from '@/lib/dynamodb-service';
 
 export async function PUT(request: NextRequest) {
   try {
@@ -21,6 +21,7 @@ export async function PUT(request: NextRequest) {
       }
 
       // Return user without password
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...userWithoutPassword } = updatedUser;
       return NextResponse.json({ user: userWithoutPassword });
     } catch (dbError) {

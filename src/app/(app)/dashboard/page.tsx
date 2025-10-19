@@ -1,27 +1,63 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import type { ElementType, ReactNode } from 'react';
 // Type definitions
 interface FeedbackItem {
   id?: string;
   itemId?: string;
   rating?: number;
   feedbackType?: string;
-  [key: string]: unknown;
+  reviewTitle?: string;
+  reviewText?: string;
 }
 
 interface RecommendationItem {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   thumbnail: string;
-  duration: string;
+  duration?: string;
   difficulty?: string;
   creator?: string;
-  url: string;
+  url?: string;
+  youtubeURL?: string;
   category?: string;
-  [key: string]: unknown;
+  playlistId?: string;
+  playlistTitle?: string;
+  activityTimestamp?: Date;
+  completionStatus?: number;
+  channelTitle?: string;
 }
+
+interface GenreVideo {
+  id: string;
+  title: string;
+  thumbnail: string;
+  duration: string;
+  creator: string;
+  url: string;
+}
+
+interface GenreCard {
+  id: string;
+  title: string;
+  description: string;
+  icon: ElementType;
+  gradient: string;
+  borderColor: string;
+  iconColor: string;
+  count: string;
+  videos?: GenreVideo[];
+}
+
+type ApiPlaylist = Partial<Playlist> & {
+  _id?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+  overallProgress?: number;
+  videos?: Partial<Video>[];
+};
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -76,7 +112,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import type { Playlist } from '@/types';
+import type { Playlist, Video } from '@/types';
 import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
 import { WeeklyGoalSettings } from '@/components/dashboard/weekly-goal-settings';
@@ -113,14 +149,33 @@ export default function DashboardPage() {
   const { toast } = useToast();
   const router = useRouter();
 
+  const buildRecommendationFromVideo = useCallback(
+    (video: Video, playlistMeta: { id: string; title: string }, activityTimestamp: Date): RecommendationItem => ({
+      id: video.id,
+      title: video.title,
+      description: video.summary ?? video.enhancedSummary,
+      thumbnail: video.thumbnail,
+      duration: video.duration,
+      creator: video.channelTitle,
+      url: video.youtubeURL,
+      youtubeURL: video.youtubeURL,
+      playlistId: playlistMeta.id,
+      playlistTitle: playlistMeta.title,
+      activityTimestamp,
+      completionStatus: video.completionStatus,
+      channelTitle: video.channelTitle,
+    }),
+    []
+  );
+
   // Function to get the last watched video from user's playlists
-  const getLastWatchedVideo = useCallback(async () => {
+  const getLastWatchedVideo = useCallback(async (): Promise<RecommendationItem | null> => {
     if (!user || !playlists.length) return null;
 
     try {
       // Get all completed videos from all playlists with timestamps from recent activities
-      let lastCompletedVideo = null;
-      let latestTimestamp = new Date(0);
+      let lastCompletedVideo: RecommendationItem | null = null;
+      let latestTimestamp = 0;
 
       // Check recent activities for completed videos
       if (userStats?.recentActivity) {
@@ -128,19 +183,22 @@ export default function DashboardPage() {
           if (activity.type === 'completed' || activity.type === 'started') {
             // Find this video in playlists
             for (const playlist of playlists) {
-              const video = playlist.videos?.find(v => 
+              const video = playlist.videos?.find(v =>
                 v.title === activity.item || 
                 v.title.includes(activity.item) ||
                 activity.item.includes(v.title)
               );
-              if (video && activity.timestamp > latestTimestamp) {
-                lastCompletedVideo = {
-                  ...video,
-                  playlistTitle: playlist.title,
-                  playlistId: playlist.id,
-                  activityTimestamp: activity.timestamp
-                };
-                latestTimestamp = activity.timestamp;
+              const activityTime = activity.timestamp instanceof Date
+                ? activity.timestamp.getTime()
+                : new Date(activity.timestamp).getTime();
+
+              if (video && !Number.isNaN(activityTime) && activityTime > latestTimestamp) {
+                lastCompletedVideo = buildRecommendationFromVideo(
+                  video,
+                  { id: playlist.id, title: playlist.title },
+                  new Date(activityTime),
+                );
+                latestTimestamp = activityTime;
               }
             }
           }
@@ -161,12 +219,11 @@ export default function DashboardPage() {
             });
             
             const video = sortedVideos[0];
-            lastCompletedVideo = {
-              ...video,
-              playlistTitle: playlist.title,
-              playlistId: playlist.id,
-              activityTimestamp: new Date()
-            };
+            lastCompletedVideo = buildRecommendationFromVideo(
+              video,
+              { id: playlist.id, title: playlist.title },
+              new Date()
+            );
             break;
           }
         }
@@ -176,12 +233,11 @@ export default function DashboardPage() {
           const firstPlaylist = playlists[0];
           if (firstPlaylist.videos && firstPlaylist.videos.length > 0) {
             const video = firstPlaylist.videos[0];
-            lastCompletedVideo = {
-              ...video,
-              playlistTitle: firstPlaylist.title,
-              playlistId: firstPlaylist.id,
-              activityTimestamp: new Date()
-            };
+            lastCompletedVideo = buildRecommendationFromVideo(
+              video,
+              { id: firstPlaylist.id, title: firstPlaylist.title },
+              new Date()
+            );
           }
         }
       }
@@ -191,7 +247,7 @@ export default function DashboardPage() {
       console.error('Error getting last watched video:', error);
       return null;
     }
-  }, [user, playlists, userStats]);
+  }, [buildRecommendationFromVideo, playlists, user, userStats]);
 
   // Note: User tracking will be implemented in new recommendation system
   useEffect(() => {
@@ -200,7 +256,7 @@ export default function DashboardPage() {
       // Update user stats when user loads - only once per id
       updateUserStats(true);
     }
-  }, [user?.id]); // Only depend on user id to avoid loops
+  }, [updateUserStats, user?.id]);
 
   useEffect(() => {
     const loadPlaylists = async () => {
@@ -210,19 +266,27 @@ export default function DashboardPage() {
     }
 
     try {
-        const userPlaylists = await playlistService.getPlaylists(user.id);
-        
-        const processedPlaylists = userPlaylists.slice(0, 3).map((p: Playlist) => ({
-          ...p,
-          id: p._id, // MongoDB uses _id
-          createdAt: new Date(p.createdAt),
-          lastModified: new Date(p.updatedAt || p.createdAt),
-          videos: p.videos || [],
-          tags: p.tags || [],
-          userId: p.userId,
-          overallProgress: p.overallProgress || 0,
-        }));
-        
+        const userPlaylists = await playlistService.getPlaylists(user.id) as ApiPlaylist[];
+
+        const processedPlaylists: Playlist[] = userPlaylists.slice(0, 3).map((p, index) => {
+          const createdAt = p.createdAt ? new Date(p.createdAt) : new Date();
+          const updatedAt = p.updatedAt ? new Date(p.updatedAt) : createdAt;
+          const videos = (p.videos ?? []) as Video[];
+
+          return {
+            id: p._id ?? p.id ?? `playlist-${index}`,
+            title: p.title ?? 'Untitled Playlist',
+            description: p.description ?? '',
+            userId: p.userId ?? user.id,
+            createdAt,
+            lastModified: updatedAt,
+            videos,
+            aiRecommended: Boolean(p.aiRecommended),
+            tags: p.tags ?? [],
+            overallProgress: p.overallProgress ?? 0,
+          };
+        });
+
         setPlaylists(processedPlaylists);
     } catch (error) {
       console.error("Error loading playlists:", error);
@@ -231,7 +295,7 @@ export default function DashboardPage() {
     };
 
     loadPlaylists();
-  }, [user?.id, isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   // Load last watched video when playlists and userStats are available
   useEffect(() => {
@@ -252,14 +316,22 @@ export default function DashboardPage() {
 
       try {
         const result = await feedbackService.getUserFeedback(user.id);
-        if (result.success) {
+        if (result.success && Array.isArray(result.feedback)) {
           // Create a map for quick lookup
           const feedbackMap: Record<string, Record<string, FeedbackItem>> = {};
-          result.feedback.forEach((feedback: FeedbackItem) => {
-            if (!feedbackMap[feedback.itemId]) {
-              feedbackMap[feedback.itemId] = {};
+          (result.feedback as FeedbackItem[]).forEach((feedbackEntry) => {
+            const itemId = feedbackEntry.itemId;
+            const feedbackType = feedbackEntry.feedbackType;
+
+            if (!itemId || !feedbackType) {
+              return;
             }
-            feedbackMap[feedback.itemId][feedback.feedbackType] = feedback;
+
+            if (!feedbackMap[itemId]) {
+              feedbackMap[itemId] = {};
+            }
+
+            feedbackMap[itemId][feedbackType] = feedbackEntry;
           });
           setUserFeedbackMap(feedbackMap);
         }
@@ -333,14 +405,17 @@ export default function DashboardPage() {
       }
     });
 
-    if (result.success) {
-      setUserFeedbackMap(prev => ({
-        ...prev,
-        [selectedRecommendation.id]: {
-          ...prev[selectedRecommendation.id],
-          review: result.feedback
-        }
-      }));
+    if (result.success && result.feedback) {
+      setUserFeedbackMap(prev => {
+        const previousFeedback = prev[selectedRecommendation.id] ?? {};
+        return {
+          ...prev,
+          [selectedRecommendation.id]: {
+            ...previousFeedback,
+            review: result.feedback as FeedbackItem,
+          },
+        };
+      });
 
       toast({
         title: "Review Submitted",
@@ -358,12 +433,15 @@ export default function DashboardPage() {
         description: "Failed to submit review. Please try again.",
         variant: "destructive"
       });
-      throw new Error(result.error);
+      if (result?.error) {
+        throw new Error(result.error);
+      }
+      throw new Error('Failed to submit review');
     }
   };
 
   // Skill-Based Genres Data with actual videos
-  const skillBasedGenres = [
+  const skillBasedGenres: GenreCard[] = [
     {
       id: "coding-programming",
       title: "Coding & Programming",
@@ -687,7 +765,7 @@ export default function DashboardPage() {
   ];
 
   // Academic Genres
-  const academicGenres = [
+  const academicGenres: GenreCard[] = [
     {
       id: "mathematics",
       title: "Mathematics",
@@ -742,7 +820,7 @@ export default function DashboardPage() {
   ];
 
   // Career & Professional Development
-  const careerGenres = [
+  const careerGenres: GenreCard[] = [
     {
       id: "resume-job-hunting",
       title: "Resume & Job Hunting",
@@ -786,7 +864,7 @@ export default function DashboardPage() {
   ];
 
   // Tech News & Trends
-  const techTrendsGenres = [
+  const techTrendsGenres: GenreCard[] = [
     {
       id: "tech-news",
       title: "Tech News & Product Launches",
@@ -821,7 +899,7 @@ export default function DashboardPage() {
   ];
 
   // Mind-expanding & Curiosity
-  const curiosityGenres = [
+  const curiosityGenres: GenreCard[] = [
     {
       id: "trivia-facts",
       title: "Did You Know / Trivia",
@@ -856,7 +934,7 @@ export default function DashboardPage() {
   ];
 
   // DIY & Hands-on
-  const diyGenres = [
+  const diyGenres: GenreCard[] = [
     {
       id: "robotics-iot",
       title: "Robotics & IoT",
@@ -872,7 +950,7 @@ export default function DashboardPage() {
   ];
 
   // Lifestyle
-  const lifestyleGenres = [
+  const lifestyleGenres: GenreCard[] = [
     {
       id: "health-fitness",
       title: "Health & Fitness",
@@ -897,6 +975,10 @@ export default function DashboardPage() {
   ];
 
 
+
+  const activeRecommendationReview = selectedRecommendation
+    ? userFeedbackMap[selectedRecommendation.id]?.review
+    : undefined;
 
   const handleGenreClick = (genreId: string) => {
     // Find genre across all categories
@@ -983,8 +1065,8 @@ export default function DashboardPage() {
   // Netflix-style genre section renderer
   const renderGenreSection = (
     sectionTitle: string,
-    genres: Array<{id: string; title: string; description: string; icon: React.ElementType; [key: string]: unknown}>,
-    iconComponent: React.ReactNode,
+    genres: GenreCard[],
+    iconComponent: ReactNode,
     showExploreAll = true
   ) => (
     <motion.section key={sectionTitle} variants={fadeInUp} className="space-y-6 w-full">
@@ -1934,13 +2016,13 @@ export default function DashboardPage() {
           title: selectedRecommendation.title,
           type: 'video' as const
         } : { id: '', title: '', type: 'video' as const }}
-        existingReview={selectedRecommendation ? 
-          userFeedbackMap[selectedRecommendation.id]?.review ? {
-            rating: userFeedbackMap[selectedRecommendation.id].review.rating,
-            title: userFeedbackMap[selectedRecommendation.id].review.reviewTitle,
-            text: userFeedbackMap[selectedRecommendation.id].review.reviewText
-          } : undefined : undefined
-        }
+        existingReview={(activeRecommendationReview && typeof activeRecommendationReview.rating === 'number')
+          ? {
+              rating: activeRecommendationReview.rating,
+              title: activeRecommendationReview.reviewTitle ?? '',
+              text: activeRecommendationReview.reviewText ?? '',
+            }
+          : undefined}
       />
     </motion.div>
   );

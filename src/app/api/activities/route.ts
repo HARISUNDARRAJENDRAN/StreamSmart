@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getActivitiesByUserId, createActivity, updateUser, findUserById } from '@/lib/dynamodb-service';
+import { getActivitiesByUserId, createActivity, updateUser } from '@/lib/dynamodb-service';
 import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
 
 // GET - Fetch user's activities

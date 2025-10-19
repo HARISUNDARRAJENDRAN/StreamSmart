@@ -56,8 +56,6 @@ def check_dependencies():
     # Optional packages (not required for basic functionality)
     optional_packages = {
         'torch': 'torch',
-        'whisper_timestamped': 'whisper_timestamped',
-        'clip': 'clip',
         'yt_dlp': 'yt_dlp',
         'opencv-python': 'cv2',
         'pymongo': 'pymongo',

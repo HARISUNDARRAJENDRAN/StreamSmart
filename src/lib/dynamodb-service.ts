@@ -1,6 +1,6 @@
 import { connectToDatabase } from './mongodb';
 import { GetCommand, QueryCommand, ScanCommand, UpdateCommand, DeleteCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { v4 as uuidv4 } from 'uuid';
+
 
 // Table names
 export const TABLES = {
@@ -138,7 +138,7 @@ export async function updateUser(id: string, updates: Partial<DynamoDBUser>): Pr
   const client = await connectToDatabase();
   
   const updateExpressions: string[] = [];
-  const expressionAttributeValues: Record<string, any> = {};
+  const expressionAttributeValues: Record<string, unknown> = {};
   
   Object.entries(updates).forEach(([key, value]) => {
     if (key !== 'id') {
@@ -261,7 +261,7 @@ export async function updatePlaylist(id: string, updates: Partial<DynamoDBPlayli
   const client = await connectToDatabase();
   
   const updateExpressions: string[] = [];
-  const expressionAttributeValues: Record<string, any> = {};
+  const expressionAttributeValues: Record<string, unknown> = {};
   
   updates.updatedAt = Date.now();
   
@@ -295,9 +295,9 @@ export async function deletePlaylist(id: string): Promise<DynamoDBPlaylist | nul
   return (result.Attributes as DynamoDBPlaylist | undefined) || null;
 }
 
-export async function getAllPlaylists(limit: number = 20, exclusiveStartKey?: Record<string, any>): Promise<{
+export async function getAllPlaylists(limit: number = 20, exclusiveStartKey?: Record<string, unknown>): Promise<{
   items: DynamoDBPlaylist[];
-  lastEvaluatedKey?: Record<string, any>;
+  lastEvaluatedKey?: Record<string, unknown>;
 }> {
   const client = await connectToDatabase();
   
@@ -461,7 +461,7 @@ export async function updateVideo(id: string, updates: Partial<DynamoDBVideo>): 
   const client = await connectToDatabase();
   
   const updateExpressions: string[] = [];
-  const expressionAttributeValues: Record<string, any> = {};
+  const expressionAttributeValues: Record<string, unknown> = {};
   
   // Don't set default values in an update function - only update fields that are explicitly provided
   Object.entries(updates).forEach(([key, value]) => {

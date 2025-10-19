@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { API_BASE_URL } from '@/lib/api-base';
 
 // Types
 export const RAGQuerySchema = z.object({
@@ -61,7 +62,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
       const healthController = new AbortController();
       const healthTimeout = setTimeout(() => healthController.abort(), 5000);
       
-      const healthCheck = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/health`, {
+  const healthCheck = await fetch(`${API_BASE_URL}/health`, {
         method: 'GET',
         signal: healthController.signal,
       });
@@ -104,7 +105,7 @@ export async function answerWithRAG(input: PlaylistRAGInput): Promise<PlaylistRA
     console.log('Using userId for RAG:', userId);
     console.log('Using videoIds for RAG:', videoIds);
     
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/rag-answer`, {
+  const response = await fetch(`${API_BASE_URL}/rag-answer`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -213,7 +214,7 @@ export async function processVideosForRAG(videoUrls: string[]) {
     
     console.log("Processed URLs for RAG:", processedUrls);
 
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const apiUrl = API_BASE_URL;
     const targetUrl = `${apiUrl}/process-videos`;
     const requestBody = {
       urls: processedUrls,

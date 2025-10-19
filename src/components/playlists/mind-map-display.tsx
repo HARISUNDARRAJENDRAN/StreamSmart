@@ -1272,7 +1272,7 @@ export const MindMapDisplay = memo(function MindMapDisplay({ playlistTitle, curr
     
     const enhancedVisibleNodes = createEnhancedNodes(visibleNodesAccumulator);
     
-    console.log('Progressive disclosure summary:');
+    console.log('Progressive disclosure summary:', {
       currentLevel,
       totalNodes: allNodes.length,
       expandedNodes: expandedNodeIds.size,

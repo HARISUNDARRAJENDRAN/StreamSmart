@@ -64,7 +64,7 @@ interface RegisterData {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '@/lib/api-base';
 
 // Auth Provider Component
 export function AuthProvider({ children }: { children: ReactNode }) {

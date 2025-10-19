@@ -44,13 +44,33 @@ class AWSElastiCache {
     });
   }
 
-  private serialize(data: any): string {
-    return JSON.stringify(data);
+  private serialize<T>(entry: CacheEntry<T>): string {
+    return JSON.stringify(entry);
   }
 
-  private deserialize<T>(serialized: string): T {
+  private deserialize<T>(serialized: string): CacheEntry<T> {
     try {
-      return JSON.parse(serialized);
+      const parsed = JSON.parse(serialized) as unknown;
+
+      if (
+        typeof parsed !== 'object' ||
+        parsed === null ||
+        !('data' in parsed) ||
+        !('timestamp' in parsed)
+      ) {
+        throw new Error('Parsed cache entry is invalid');
+      }
+
+      const cacheEntry = parsed as { data: unknown; timestamp: unknown };
+
+      if (typeof cacheEntry.timestamp !== 'number') {
+        throw new Error('Cache entry timestamp is invalid');
+      }
+
+      return {
+        data: cacheEntry.data as T,
+        timestamp: cacheEntry.timestamp,
+      };
     } catch (error) {
       console.error('Cache deserialization error:', error);
       throw new Error('Failed to deserialize cached data');
@@ -86,7 +106,7 @@ class AWSElastiCache {
         return null;
       }
 
-      const entry: CacheEntry<T> = this.deserialize(serializedData);
+      const entry = this.deserialize<T>(serializedData);
       return entry.data;
     } catch (error) {
       console.error('Cache get error:', error);
@@ -182,10 +202,12 @@ export const CacheTTL = {
 } as const;
 
 // Helper function to generate cache keys - same as before
-export function generateCacheKey(prefix: string, params: Record<string, any>): string {
+type CacheKeyParam = string | number | boolean | null | undefined;
+
+export function generateCacheKey(prefix: string, params: Record<string, CacheKeyParam>): string {
   const sortedParams = Object.keys(params)
     .sort()
-    .map(key => `${key}=${params[key]}`)
+    .map(key => `${key}=${String(params[key])}`)
     .join('&');
   return `${prefix}:${sortedParams}`;
 }

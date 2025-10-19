@@ -120,9 +120,6 @@ export default function GenrePage() {
   const [difficultyFilter, setDifficultyFilter] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [aiRefreshLoading, setAiRefreshLoading] = useState(false);
-  // Unused state variables - commented out
-  const [algorithmUsed, setAlgorithmUsed] = useState<string>("loading");
-  const [totalAvailable, setTotalAvailable] = useState(0);
   
   // Preview and Playlist states
   const [previewVideo, setPreviewVideo] = useState<Video | null>(null);
@@ -205,8 +202,6 @@ export default function GenrePage() {
           return true;
         });
 
-        setAlgorithmUsed('bert');
-        setTotalAvailable(uniqueVideos.length);
         setVideos(uniqueVideos);
         setFilteredVideos(uniqueVideos);
       } catch (err) {
@@ -220,7 +215,6 @@ export default function GenrePage() {
     fetchVideos();
   }, [slug, categoryName]);
 
-  const lastFetchRef = useRef<number>(0);
   const abortControllerRef = useRef<AbortController | null>(null);
   
   // Helper function to fetch playlists (manual only)

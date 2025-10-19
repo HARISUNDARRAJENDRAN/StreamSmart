@@ -65,6 +65,24 @@ StreamSmart is a Next.js application designed to transform your YouTube viewing 
 
 To get a local copy up and running, follow these simple steps.
 
+## Running with Docker (Recommended for local QA)
+
+1. Authenticate with AWS SSO so the containers can reuse your cached credentials:
+    ```powershell
+    aws sso login --profile streamsmart-admin
+    ```
+
+2. Start the frontend and backend together. The compose file mounts your host AWS profile so DynamoDB calls work inside the containers:
+    ```powershell
+    docker compose -f docker-compose.dev.yml up --build
+    ```
+
+3. Open the app at `http://localhost:3000`. The backend API is exposed on `http://localhost:8000`.
+
+> **Note**
+> * `AWS_PROFILE` defaults to `streamsmart-admin`. Override it with `setx AWS_PROFILE <profile>` (PowerShell) or by exporting before running compose.
+> * Optional integrations (MongoDB, YouTube ingestion) are excluded from the base image. Install them by running `pip install -r python_backend/requirements-optional.txt` inside the container or host environment when needed.
+
 ### Prerequisites
 
 *   Node.js (v18 or later recommended)
@@ -76,7 +94,7 @@ To get a local copy up and running, follow these simple steps.
 *   Google Cloud Project with Vertex AI enabled
 *   YouTube Data API Key
 
-### Installation & Setup
+### Installation & Setup (Manual without Docker)
 
 1.  **Clone the repository:**
     ```powershell
