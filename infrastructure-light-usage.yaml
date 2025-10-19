@@ -1,0 +1,377 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "StreamSmart ECS Fargate Infrastructure - Light Usage (~$100/month)"
+
+Parameters:
+  VpcId:
+    Type: AWS::EC2::Vpc::Id
+    Description: "VPC ID for the infrastructure"
+  
+  SubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: "Subnet IDs for the infrastructure (at least 2 required)"
+
+Resources:
+  # ECR Repositories
+  BackendECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: streamsmart-backend
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: MUTABLE
+
+  FrontendECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      RepositoryName: streamsmart-frontend
+      ImageScanningConfiguration:
+        ScanOnPush: true
+      ImageTagMutability: MUTABLE
+
+  # ECS Cluster with Fargate Spot
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: streamsmart-cluster
+      CapacityProviders:
+        - FARGATE
+        - FARGATE_SPOT
+      DefaultCapacityProviderStrategy:
+        - CapacityProvider: FARGATE_SPOT
+          Weight: 1
+
+  # Application Load Balancer
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: streamsmart-alb
+      Scheme: internet-facing
+      Type: application
+      Subnets: !Ref SubnetIds
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for StreamSmart ALB"
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+
+  # Target Groups
+  BackendTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: streamsmart-backend-tg
+      Port: 8000
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: ip
+      HealthCheckPath: /docs
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 3
+
+  FrontendTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: streamsmart-frontend-tg
+      Port: 3000
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: ip
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 3
+
+  # ALB Listener with routing rules
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref FrontendTargetGroup
+
+  # API path routing to backend
+  BackendListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref ALBListener
+      Priority: 10
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /api/*
+            - /docs
+            - /openapi.json
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref BackendTargetGroup
+
+  # S3 bucket for RAG transcripts
+  RAGS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "streamsmart-rag-transcripts-${AWS::AccountId}-${AWS::Region}"
+      VersioningConfiguration:
+        Status: Enabled
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ArchiveOldTranscripts
+            Status: Enabled
+            Transitions:
+              - TransitionInDays: 90
+                StorageClass: GLACIER_IR
+
+  # OpenSearch Domain - OPTIMIZED FOR LIGHT USAGE
+  OpenSearchDomain:
+    Type: AWS::OpenSearchService::Domain
+    Properties:
+      DomainName: streamsmart-rag
+      EngineVersion: "OpenSearch_2.11"
+      ClusterConfig:
+        # COST OPTIMIZATION: Single t3.small instance
+        InstanceType: t3.small.search
+        InstanceCount: 1
+        DedicatedMasterEnabled: false
+        # COST OPTIMIZATION: Single-AZ deployment
+        ZoneAwarenessEnabled: false
+      EBSOptions:
+        EBSEnabled: true
+        # COST OPTIMIZATION: 50GB instead of 100GB
+        VolumeSize: 50
+        VolumeType: gp3
+        # gp3 performance settings (3000 IOPS default)
+        Iops: 3000
+        Throughput: 125
+      AccessPolicies:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub "arn:aws:iam::${AWS::AccountId}:root"
+            Action: "es:*"
+            Resource: !Sub "arn:aws:es:${AWS::Region}:${AWS::AccountId}:domain/streamsmart-rag/*"
+      # COST OPTIMIZATION: Single subnet for single-AZ
+      VPCOptions:
+        SubnetIds:
+          - !Select [0, !Ref SubnetIds]
+        SecurityGroupIds:
+          - !Ref OpenSearchSecurityGroup
+      # Additional cost optimizations
+      AdvancedOptions:
+        "rest.action.multi.allow_explicit_index": "true"
+        "indices.query.bool.max_clause_count": "1024"
+
+  OpenSearchSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for OpenSearch domain"
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          SourceSecurityGroupId: !Ref ECSSecurityGroup
+
+  ECSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Security group for ECS tasks"
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 8000
+          ToPort: 8000
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  # IAM Roles
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ecsTaskExecutionRole-streamsmart
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      Policies:
+        - PolicyName: SecretsManagerAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:streamsmart/*"
+
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ecsTaskRole-streamsmart
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ECSTaskPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # Bedrock access
+              - Effect: Allow
+                Action:
+                  - bedrock:InvokeModel
+                  - bedrock:InvokeModelWithResponseStream
+                Resource: "*"
+              # S3 access
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                  - s3:ListBucket
+                Resource:
+                  - !GetAtt RAGS3Bucket.Arn
+                  - !Sub "${RAGS3Bucket.Arn}/*"
+              # OpenSearch access
+              - Effect: Allow
+                Action:
+                  - es:ESHttpPost
+                  - es:ESHttpGet
+                  - es:ESHttpPut
+                  - es:ESHttpDelete
+                  - es:ESHttpHead
+                Resource: !Sub "${OpenSearchDomain.Arn}/*"
+              # DynamoDB access
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:BatchGetItem
+                  - dynamodb:BatchWriteItem
+                Resource: 
+                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Videos"
+                  - !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/Videos/index/*"
+              # Secrets Manager access
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Sub "arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:streamsmart/*"
+
+  # CloudWatch Log Groups with reduced retention
+  BackendLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/streamsmart-backend
+      # COST OPTIMIZATION: 7 days retention instead of 30
+      RetentionInDays: 7
+
+  FrontendLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/streamsmart-frontend
+      RetentionInDays: 7
+
+Outputs:
+  ECSCluster:
+    Description: "ECS Cluster Name"
+    Value: !Ref ECSCluster
+    Export:
+      Name: !Sub "${AWS::StackName}-ECSCluster"
+
+  LoadBalancerDNS:
+    Description: "Load Balancer DNS Name"
+    Value: !GetAtt LoadBalancer.DNSName
+    Export:
+      Name: !Sub "${AWS::StackName}-LoadBalancerDNS"
+
+  OpenSearchEndpoint:
+    Description: "OpenSearch Domain Endpoint"
+    Value: !GetAtt OpenSearchDomain.DomainEndpoint
+    Export:
+      Name: !Sub "${AWS::StackName}-OpenSearchEndpoint"
+
+  S3BucketName:
+    Description: "S3 Bucket for RAG transcripts"
+    Value: !Ref RAGS3Bucket
+    Export:
+      Name: !Sub "${AWS::StackName}-S3Bucket"
+
+  BackendECRRepository:
+    Description: "Backend ECR Repository URI"
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${BackendECRRepository}"
+    Export:
+      Name: !Sub "${AWS::StackName}-BackendECR"
+
+  FrontendECRRepository:
+    Description: "Frontend ECR Repository URI"
+    Value: !Sub "${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${FrontendECRRepository}"
+    Export:
+      Name: !Sub "${AWS::StackName}-FrontendECR"
+
+  BackendTargetGroupArn:
+    Description: "Backend Target Group ARN"
+    Value: !Ref BackendTargetGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-BackendTG"
+
+  FrontendTargetGroupArn:
+    Description: "Frontend Target Group ARN"
+    Value: !Ref FrontendTargetGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-FrontendTG"
+
+  BackendSecurityGroup:
+    Description: "ECS Tasks Security Group"
+    Value: !Ref ECSSecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-ECSSecurityGroup"
+
+  TaskExecutionRoleArn:
+    Description: "ECS Task Execution Role ARN"
+    Value: !GetAtt ECSTaskExecutionRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-TaskExecutionRole"
+
+  TaskRoleArn:
+    Description: "ECS Task Role ARN"
+    Value: !GetAtt ECSTaskRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-TaskRole"
