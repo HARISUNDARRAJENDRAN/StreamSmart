@@ -100,8 +100,13 @@ const nextConfig: NextConfig = {
     ];
   },
   // Environment variable validation
+  // For Amplify SSR: embed credentials at build time since Lambda@Edge doesn't support runtime env vars
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    STREAMSMART_AWS_ACCESS_KEY_ID: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
+    STREAMSMART_AWS_SECRET_ACCESS_KEY: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
+    STREAMSMART_AWS_REGION: process.env.STREAMSMART_AWS_REGION,
   },
 };
 
