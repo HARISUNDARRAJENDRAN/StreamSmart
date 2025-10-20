@@ -65,6 +65,14 @@ async function connectDB(): Promise<DynamoDBDocumentClient> {
               }
             : undefined;
 
+        console.log('Credential check:', {
+          hasCustomAccessKey: !!process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
+          hasCustomSecretKey: !!process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
+          hasAwsRegion: !!process.env.STREAMSMART_AWS_REGION,
+          usingExplicitCredentials: !!explicitCredentials,
+          region,
+        });
+
         const baseClient = new DynamoDBClient({
           region,
           // Use explicit credentials when provided; otherwise fall back to the default provider chain
