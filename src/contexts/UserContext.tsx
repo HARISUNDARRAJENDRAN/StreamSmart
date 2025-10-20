@@ -148,10 +148,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
 
     try {
-      // Try to get user playlists from MongoDB first
-      let playlists = await playlistService.getPlaylists(user.id);
-      let activities = await playlistService.getActivities(user.id, 5);
-      let allActivities = await playlistService.getActivities(user.id, 100);
+      // Fetch all data in parallel for better performance
+      // Fetch activities only once with max limit and slice on client side
+      const [playlists, allActivities] = await Promise.all([
+        playlistService.getPlaylists(user.id),
+        playlistService.getActivities(user.id, 100)
+      ]);
+      
+      const activities = allActivities.slice(0, 5);
 
       // If MongoDB is not available, fall back to localStorage
       if (playlists.length === 0 && activities.length === 0) {
