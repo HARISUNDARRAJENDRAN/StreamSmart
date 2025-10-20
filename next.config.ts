@@ -107,6 +107,10 @@ const nextConfig: NextConfig = {
     STREAMSMART_AWS_ACCESS_KEY_ID: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
     STREAMSMART_AWS_SECRET_ACCESS_KEY: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
     STREAMSMART_AWS_REGION: process.env.STREAMSMART_AWS_REGION,
+    // ElastiCache configuration for Redis caching
+    AWS_ELASTICACHE_HOST: process.env.AWS_ELASTICACHE_HOST || 'master.streamsmart-cache-redis.ofismd.aps1.cache.amazonaws.com',
+    AWS_ELASTICACHE_PORT: process.env.AWS_ELASTICACHE_PORT || '6379',
+    AWS_ELASTICACHE_TLS: process.env.AWS_ELASTICACHE_TLS || 'true',
   },
 };
 
