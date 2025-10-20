@@ -1,9 +1,22 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocumentClient, PutCommand, QueryCommand, ScanCommand, GetCommand, UpdateCommand, DeleteCommand, BatchWriteCommand } from '@aws-sdk/lib-dynamodb';
+import {
+  DynamoDBDocumentClient,
+  PutCommand,
+  QueryCommand,
+  ScanCommand,
+  GetCommand,
+  UpdateCommand,
+  DeleteCommand,
+  BatchWriteCommand,
+} from '@aws-sdk/lib-dynamodb';
 import { fromNodeProviderChain } from '@aws-sdk/credential-providers';
 
-// Get AWS region from environment variables or default
-const region = process.env.AWS_REGION || process.env.AWS_DEFAULT_REGION || 'ap-south-1';
+// Determine AWS region from available environment variables (custom names allowed for Amplify)
+const region =
+  process.env.STREAMSMART_AWS_REGION ||
+  process.env.AWS_REGION ||
+  process.env.AWS_DEFAULT_REGION ||
+  'ap-south-1';
 
 // Log connection info
 console.log(`DynamoDB connecting to region: ${region}`);
@@ -44,10 +57,18 @@ async function connectDB(): Promise<DynamoDBDocumentClient> {
       console.log('Initializing DynamoDB client...');
       
       cached.promise = (async () => {
+        const explicitCredentials =
+          process.env.STREAMSMART_AWS_ACCESS_KEY_ID && process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY
+            ? {
+                accessKeyId: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
+                secretAccessKey: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
+              }
+            : undefined;
+
         const baseClient = new DynamoDBClient({
           region,
-          // Use the full default provider chain (supports env, shared config/SSO, EC2/ECS, etc.)
-          credentials: fromNodeProviderChain(),
+          // Use explicit credentials when provided; otherwise fall back to the default provider chain
+          credentials: explicitCredentials ?? fromNodeProviderChain(),
         });
 
         const docClient = DynamoDBDocumentClient.from(baseClient, {
@@ -78,7 +99,7 @@ async function connectDB(): Promise<DynamoDBDocumentClient> {
     console.error('DynamoDB initialization failed:', error);
     if (error instanceof Error) {
       if (error.message.includes('credentials')) {
-        console.error('Credentials error - ensure SSO or env credentials are configured');
+        console.error('Credentials error - ensure SSO or environment credentials are configured');
       } else if (error.message.includes('region')) {
         console.error('Region error - check AWS_REGION/AWS_DEFAULT_REGION');
       }
