@@ -1,5 +1,5 @@
 const resolveApiBaseUrl = (): string => {
-  const publicUrl = process.env.NEXT_PUBLIC_API_URL;
+  const publicUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL;
   const internalUrl = process.env.INTERNAL_API_URL;
   if (typeof window === 'undefined') {
     return internalUrl || publicUrl || 'http://localhost:8000';
