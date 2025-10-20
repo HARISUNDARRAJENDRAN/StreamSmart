@@ -68,8 +68,13 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  // Environment variables are handled by Vercel automatically
-  // No need to manually embed them in next.config
+  // Environment variables will be loaded from .env files or Docker environment
+  env: {
+    NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
+    STREAMSMART_AWS_ACCESS_KEY_ID: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
+    STREAMSMART_AWS_SECRET_ACCESS_KEY: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
+    STREAMSMART_AWS_REGION: process.env.STREAMSMART_AWS_REGION,
+  },
 };
 
 export default nextConfig;
