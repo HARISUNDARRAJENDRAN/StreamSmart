@@ -9,7 +9,6 @@ import {
   DeleteCommand,
   BatchWriteCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { fromNodeProviderChain } from '@aws-sdk/credential-providers';
 
 // Determine AWS region from available environment variables (custom names allowed for Amplify)
 const region =
@@ -57,26 +56,31 @@ async function connectDB(): Promise<DynamoDBDocumentClient> {
       console.log('Initializing DynamoDB client...');
       
       cached.promise = (async () => {
-        const explicitCredentials =
-          process.env.STREAMSMART_AWS_ACCESS_KEY_ID && process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY
-            ? {
-                accessKeyId: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
-                secretAccessKey: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
-              }
-            : undefined;
-
-        console.log('Credential check:', {
+        console.log('Environment check:', {
           hasCustomAccessKey: !!process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
           hasCustomSecretKey: !!process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
           hasAwsRegion: !!process.env.STREAMSMART_AWS_REGION,
-          usingExplicitCredentials: !!explicitCredentials,
-          region,
+          nodeEnv: process.env.NODE_ENV,
+          allEnvVars: Object.keys(process.env).filter(k => k.includes('AWS') || k.includes('STREAMSMART')),
         });
+
+        // In Amplify SSR (Lambda@Edge), we MUST use explicit credentials
+        if (!process.env.STREAMSMART_AWS_ACCESS_KEY_ID || !process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY) {
+          throw new Error(
+            'Missing AWS credentials. Please set STREAMSMART_AWS_ACCESS_KEY_ID and STREAMSMART_AWS_SECRET_ACCESS_KEY in Amplify environment variables.'
+          );
+        }
+
+        const credentials = {
+          accessKeyId: process.env.STREAMSMART_AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY,
+        };
+
+        console.log('Using explicit credentials for region:', region);
 
         const baseClient = new DynamoDBClient({
           region,
-          // Use explicit credentials when provided; otherwise fall back to the default provider chain
-          credentials: explicitCredentials ?? fromNodeProviderChain(),
+          credentials,
         });
 
         const docClient = DynamoDBDocumentClient.from(baseClient, {
