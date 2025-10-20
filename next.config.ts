@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  // Enable standalone output for Docker
+  output: 'standalone',
+
   // Optimize package imports for faster builds
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
