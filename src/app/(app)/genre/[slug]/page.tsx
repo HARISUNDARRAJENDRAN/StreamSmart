@@ -163,7 +163,7 @@ export default function GenrePage() {
 
         // Helper to extract YouTube ID from thumbnail or fallback
         const extractVideoId = (thumbnailUrl?: string): string => {
-          if (!thumbnailUrl) return '';
+          if (!thumbnailUrl || typeof thumbnailUrl !== 'string') return '';
           let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
           if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
           if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);
@@ -311,7 +311,7 @@ export default function GenrePage() {
       if (!resp.success) throw new Error(resp.message || 'Failed to refresh BERT recommendations');
 
       const extractVideoId = (thumbnailUrl?: string): string => {
-        if (!thumbnailUrl) return '';
+        if (!thumbnailUrl || typeof thumbnailUrl !== 'string') return '';
         let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
         if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
         if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);

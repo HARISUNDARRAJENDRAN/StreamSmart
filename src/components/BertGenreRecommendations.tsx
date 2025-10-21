@@ -97,6 +97,10 @@ const BertGenreRecommendations: React.FC<BertGenreRecommendationsProps> = ({
   };
 
   const extractVideoId = (thumbnailUrl: string): string => {
+    // Check if thumbnailUrl is valid
+    if (!thumbnailUrl || typeof thumbnailUrl !== 'string') {
+      return '';
+    }
     // Extract video ID from thumbnail URL or try different patterns
     let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
     if (!match) {

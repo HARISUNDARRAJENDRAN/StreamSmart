@@ -1,0 +1,8 @@
+﻿aws : 
+At line:1 char:1
++ aws logs get-log-events --log-group-name "/ecs/streamsmart-frontend"  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Error when retrieving token from sso: Token has expired and refresh failed

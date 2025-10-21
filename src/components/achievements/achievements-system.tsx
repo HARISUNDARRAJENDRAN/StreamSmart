@@ -281,8 +281,10 @@ const achievementDefinitions = [
     checkProgress: (userStats: UserStats) => {
       // Extract hours from totalLearningTime string like "5h 30m"
       const timeStr = userStats?.totalLearningTime || '0h 0m';
-      const hours = parseInt(timeStr.match(/(\d+)h/)?.[1] || '0');
-      const minutes = parseInt(timeStr.match(/(\d+)m/)?.[1] || '0');
+      const hoursMatch = typeof timeStr === 'string' ? timeStr.match(/(\d+)h/) : null;
+      const minutesMatch = typeof timeStr === 'string' ? timeStr.match(/(\d+)m/) : null;
+      const hours = parseInt(hoursMatch?.[1] || '0');
+      const minutes = parseInt(minutesMatch?.[1] || '0');
       return hours * 60 + minutes;
     },
   },

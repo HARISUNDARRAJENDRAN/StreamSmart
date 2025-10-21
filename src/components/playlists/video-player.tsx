@@ -113,6 +113,12 @@ export function VideoPlayer({ videoUrl, videoTitle }: VideoPlayerProps) {
   function extractVideoId(url: string): string | null {
     console.log('[VideoPlayer] Extracting video ID from URL:', url);
     
+    // Check if url is valid
+    if (!url || typeof url !== 'string') {
+      console.warn('[VideoPlayer] Invalid URL provided:', url);
+      return null;
+    }
+    
     // Enhanced regex to handle various YouTube URL formats
     const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
