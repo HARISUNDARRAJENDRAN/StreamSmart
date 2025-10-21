@@ -1,55 +1,36 @@
-# Use Node.js Alpine image
-FROM node:20-alpine AS base
+# Simple single-stage build for ECS
+FROM node:20-alpine
+
+WORKDIR /app
 
 # Install dependencies
-FROM base AS deps
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --only=production && npm cache clean --force
 
-# Build application
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy application
 COPY . .
 
-# Build arguments
+# Build arguments for environment variables
 ARG NEXT_PUBLIC_BACKEND_URL
 ARG STREAMSMART_AWS_ACCESS_KEY_ID
 ARG STREAMSMART_AWS_SECRET_ACCESS_KEY
 ARG STREAMSMART_AWS_REGION
 
-# Set environment variables
-ENV NEXT_TELEMETRY_DISABLED=1
+# Set environment variables for build
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
 ENV STREAMSMART_AWS_ACCESS_KEY_ID=$STREAMSMART_AWS_ACCESS_KEY_ID
 ENV STREAMSMART_AWS_SECRET_ACCESS_KEY=$STREAMSMART_AWS_SECRET_ACCESS_KEY
 ENV STREAMSMART_AWS_REGION=$STREAMSMART_AWS_REGION
 
+# Build Next.js
 RUN npm run build
 
-# Production image
-FROM base AS runner
-WORKDIR /app
-
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy built application
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-USER nextjs
-
+# Expose port
 EXPOSE 3000
 
 ENV PORT=3000
 
+# Start Next.js
 CMD ["npm", "start"]
