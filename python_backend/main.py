@@ -5,6 +5,14 @@ Focuses on core features without heavy ML dependencies for easier deployment
 
 import os
 import logging
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✅ Loaded environment variables from .env file")
+except ImportError:
+    print("⚠️ python-dotenv not installed, using system environment variables only")
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -43,13 +51,9 @@ except ImportError:
     genai = None
     print("⚠️  Google AI not available - some features disabled")
 
-try:
-    from pymongo import MongoClient
-    HAS_MONGO = True
-except ImportError:
-    HAS_MONGO = False
-    MongoClient = None
-    print("⚠️  MongoDB not available - using in-memory storage")
+# MongoDB removed - using DynamoDB exclusively
+HAS_MONGO = False
+MongoClient = None
 
 try:
     from youtube_transcript_api import YouTubeTranscriptApi
@@ -98,7 +102,16 @@ except ImportError as e:
     print(f"BERT service unavailable: {e}")
     BERT_AVAILABLE = False
     bert_router = None
-from smart_recommendation_endpoints import router as smart_router
+# Smart recommendation endpoints removed (MongoDB-based)
+
+# Import Transcript router
+try:
+    from transcript_endpoints import router as transcript_router
+    TRANSCRIPT_AVAILABLE = True
+except ImportError as e:
+    print(f"Transcript endpoints unavailable: {e}")
+    TRANSCRIPT_AVAILABLE = False
+    transcript_router = None
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -124,14 +137,27 @@ if BERT_AVAILABLE and bert_router:
     print("✅ BERT embeddings recommendation service enabled")
 else:
     print("⚠️ BERT recommendation service disabled (dependencies not available)")
-# Keep smart endpoints registered (not used by frontend)
-app.include_router(smart_router)
+# Smart endpoints removed - using BERT with DynamoDB instead
+
+# Include Transcript router if available
+if TRANSCRIPT_AVAILABLE and transcript_router:
+    app.include_router(transcript_router)
+    print("✅ Transcript upload/download endpoints enabled")
+else:
+    print("⚠️ Transcript endpoints disabled")
+
+# Include Lex proxy router
+try:
+    from lex_proxy_endpoint import router as lex_router
+    app.include_router(lex_router)
+    print("✅ Lex voice chat proxy endpoint enabled")
+except Exception as e:
+    print(f"⚠️  Lex proxy endpoint not available: {e}")
 
 # Note: AI content endpoints were removed as part of recommendation engine cleanup
 
 # Environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-MONGODB_URI = os.getenv("MONGO_URI")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
@@ -149,21 +175,7 @@ AWS_RAG_ENABLED = bool(
 
 
 
-# MongoDB client initialization
-mongodb_client = None
-db = None
-if MONGODB_URI and HAS_MONGO:
-    try:
-        mongodb_client = MongoClient(MONGODB_URI)
-        db = mongodb_client.streamsmart
-        logger.info("MongoDB connected successfully")
-    except Exception as e:
-        logger.error(f"MongoDB connection failed: {e}")
-        mongodb_client = None
-elif not HAS_MONGO:
-    logger.warning("MongoDB not available. Database features will be disabled.")
-else:
-    logger.warning("MONGO_URI not provided. Database features will be disabled.")
+# MongoDB removed - using DynamoDB for all database operations
 
 # Initialize AWS RAG manager if configuration is present
 aws_rag_manager: Optional["AWSRAGManager"] = None
@@ -861,10 +873,11 @@ async def health_check():
     """Health check endpoint"""
     services = {
         "gemini_ai": bool(GEMINI_API_KEY),
-        "mongodb": bool(mongodb_client),
+        "mongodb": bool(mongodb_client) if 'mongodb_client' in globals() else False,
         "backend": True,
         "bert_embeddings": bool(BERT_AVAILABLE),
-        "aws_rag": bool(aws_rag_manager),
+        "aws_rag": bool(aws_rag_manager) if 'aws_rag_manager' in globals() else False,
+        "transcripts": True,  # New transcript system
     }
     
     status = "healthy" if services["backend"] else "degraded"
@@ -876,9 +889,8 @@ async def health_check():
 
 @app.post("/process-videos")
 async def process_videos(request: ProcessVideosRequest):
-    """Process YouTube videos and store transcripts"""
-    if not mongodb_client:
-        raise HTTPException(status_code=500, detail="Database not available")
+    """Process YouTube videos and store transcripts - MongoDB removed, using S3"""
+    # MongoDB removed - transcripts now stored in S3 via Chrome extension
     
     processed_videos = []
     failed_videos = []
@@ -983,14 +995,56 @@ async def process_videos(request: ProcessVideosRequest):
         "video_ids": video_ids  # Add this field for frontend compatibility
     }
 
+def get_transcripts_from_s3(video_ids: list) -> list:
+    """Fetch transcripts from S3 for given video IDs"""
+    try:
+        import boto3
+        import json
+        
+        s3_client = boto3.client('s3', region_name='ap-south-1')
+        transcripts = []
+        
+        for video_id in video_ids:
+            try:
+                s3_key = f"{video_id}.json"
+                response = s3_client.get_object(
+                    Bucket='streamsmart-transcripts-560271561936',
+                    Key=s3_key
+                )
+                
+                transcript_data = json.loads(response['Body'].read().decode('utf-8'))
+                
+                # Convert segments to text
+                transcript_text = '\n'.join([
+                    f"[{seg['timestamp']}] {seg['text']}" 
+                    for seg in transcript_data.get('segments', [])
+                ])
+                
+                transcripts.append({
+                    'video_id': video_id,
+                    'title': transcript_data.get('title', 'Unknown'),
+                    'transcript': transcript_text
+                })
+                
+                logger.info(f"Loaded transcript from S3 for video: {video_id}")
+            except Exception as e:
+                logger.warning(f"Could not load transcript for {video_id}: {e}")
+                continue
+        
+        return transcripts
+    except Exception as e:
+        logger.error(f"Error fetching transcripts from S3: {e}")
+        return []
+
 @app.post("/rag-answer")
 async def rag_answer(request: RAGAnswerRequest):
     """Answer questions using RAG with stored transcripts"""
-    if not mongodb_client:
-        raise HTTPException(status_code=500, detail="Database not available")
+    # Try S3 transcripts first (new system)
+    use_s3_transcripts = True
     
-    if not aws_rag_manager and not GEMINI_API_KEY:
-        raise HTTPException(status_code=500, detail="AI service not available")
+    # We now use AWS Bedrock directly, so we only need boto3
+    if not HAS_AWS_LIBS:
+        raise HTTPException(status_code=500, detail="AWS Bedrock not available - boto3 required")
     
     try:
         logger.info(f"RAG request: userId={request.userId}, question='{request.question}', video_ids={request.video_ids}")
@@ -1030,19 +1084,19 @@ async def rag_answer(request: RAGAnswerRequest):
                 "sourceType": "aws_rag",
             }
 
-        mongo_query = {"userId": request.userId}
-        if request.video_ids:
-            mongo_query["video_id"] = {"$in": request.video_ids}
-            logger.info(f"Filtering RAG context for video_ids: {request.video_ids}")
-        else:
-            logger.warning("No video_ids provided for RAG request, using all transcripts for user. This might lead to mixed contexts.")
-
-        user_transcripts = list(db.transcripts.find(
-            mongo_query,
-            {"transcript": 1, "title": 1, "video_id": 1}
-        ))
+        # Try to get transcripts from S3 first (new system)
+        user_transcripts = []
         
-        logger.info(f"Found {len(user_transcripts)} transcripts for RAG context (query: {mongo_query})")
+        if use_s3_transcripts and request.video_ids:
+            logger.info("Attempting to fetch transcripts from S3...")
+            user_transcripts = get_transcripts_from_s3(request.video_ids)
+        
+        # MongoDB removed - only using S3 for transcripts now
+        if not user_transcripts:
+            logger.info("⚠️ No transcripts found in S3")
+            # Continue with empty list
+        
+        logger.info(f"Found {len(user_transcripts)} transcripts for RAG context")
         
         if not user_transcripts:
             logger.warning(f"No transcripts found for userId {request.userId} and video_ids {request.video_ids}. Cannot answer question.")
@@ -1142,30 +1196,63 @@ async def rag_answer(request: RAGAnswerRequest):
         context = "\n\n".join(context_parts)
         logger.info(f"Final RAG context contains {len(context)} characters from {len(sources)} videos")
         
-        # Generate answer using Gemini
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Generate answer using OpenAI GPT-4o-mini (most cost-efficient)
+        import os
+        OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+        OPENAI_API_URL = "https://api.openai.com/v1/chat/completions"
         
-        prompt = f"""
-        Based on the following video transcripts, answer the user's question. Be specific and cite which video(s) you're referencing.
-        
-        Question: {request.question}
-        
-        Video Transcripts:
-        {context}
-        
-        Please provide a helpful, accurate answer based on the transcript content. If the transcripts don't contain relevant information, say so clearly.
-        """
-        
-        response = model.generate_content(prompt)
-        
-        return {
-            "answer": response.text,
-            "sources": sources,
-            "sourceType": "transcripts"
-        }
+        try:
+            prompt = f"""Based on the following video transcripts, answer the user's question. Be specific and cite which video(s) you're referencing.
+
+Question: {request.question}
+
+Video Transcripts:
+{context[:15000]}
+
+Please provide a helpful, accurate answer based on the transcript content. If the transcripts don't contain relevant information, say so clearly."""
+            
+            # Call OpenAI API with GPT-4o-mini (cheapest at ~$0.15/1M input tokens)
+            headers = {
+                "Authorization": f"Bearer {OPENAI_API_KEY}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "model": "gpt-4o-mini",
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "max_tokens": 1024,
+                "temperature": 0.7
+            }
+            
+            logger.info("🤖 Calling OpenAI GPT-4o-mini...")
+            import requests
+            response = requests.post(OPENAI_API_URL, headers=headers, json=payload, timeout=30)
+            response.raise_for_status()
+            
+            response_data = response.json()
+            answer = response_data['choices'][0]['message']['content']
+            
+            logger.info(f"✅ Generated answer using OpenAI GPT-4o-mini (cost: ~$0.15/1M tokens)")
+            
+            return {
+                "answer": answer,
+                "sources": sources,
+                "sourceType": "transcripts"
+            }
+            
+        except Exception as e:
+            logger.error(f"OpenAI API error: {e}")
+            raise HTTPException(status_code=500, detail=f"Error generating answer with OpenAI: {str(e)}")
         
     except Exception as e:
+        import traceback
         logger.error(f"Error in RAG answer: {e}")
+        logger.error(f"Full traceback: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail=f"Error processing question: {str(e)}")
 
 @app.post("/enhance-video")
@@ -1182,7 +1269,7 @@ async def enhance_video(request: EnhanceVideoRequest):
         
         # Generate enhanced summary using Gemini
         if GEMINI_API_KEY:
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-pro')
             
             prompt = f"""
             Analyze this educational video and create a comprehensive summary:
@@ -1237,11 +1324,8 @@ async def enhance_video(request: EnhanceVideoRequest):
 @app.post("/generate-mindmap")
 async def generate_mindmap(request: dict):
     """Generate mind map using Gemini API from video transcript"""
-    if not GEMINI_API_KEY:
-        raise HTTPException(status_code=500, detail="Gemini AI service not available")
-    
-    if not mongodb_client:
-        raise HTTPException(status_code=500, detail="Database not available")
+    # MongoDB removed - transcripts stored in S3
+    # Note: GEMINI_API_KEY check removed as we now use OpenAI
     
     try:
         video_id = request.get("video_id")
@@ -1356,7 +1440,7 @@ Generate the complete mind map JSON based on the provided transcript. Output ONL
 
         # Generate mind map using Gemini
         logger.info(f"🤖 Sending transcript to Gemini for mind map generation...")
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-pro')
         
         # Configure generation for better JSON output with higher limits
         generation_config = genai.types.GenerationConfig(

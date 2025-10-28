@@ -1,4 +1,4 @@
-import { connectToDatabase } from './mongodb';
+import { connectToDatabase } from './dynamodb';
 import { GetCommand, QueryCommand, ScanCommand, UpdateCommand, DeleteCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 
 
@@ -35,9 +35,10 @@ export interface DynamoDBUser {
     theme: 'light' | 'dark' | 'system';
     notifications: boolean;
   };
-  authProvider: 'email' | 'google' | 'demo';
+  authProvider: 'email' | 'google' | 'demo' | 'cognito';
   password?: string;
   googleId?: string;
+  cognitoId?: string;
 }
 
 export async function createUser(userData: Partial<DynamoDBUser>): Promise<DynamoDBUser> {

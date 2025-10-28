@@ -58,7 +58,7 @@ def check_dependencies():
         'torch': 'torch',
         'yt_dlp': 'yt_dlp',
         'opencv-python': 'cv2',
-        'pymongo': 'pymongo',
+        # 'pymongo': removed - using DynamoDB
     }
     
     missing_packages = []

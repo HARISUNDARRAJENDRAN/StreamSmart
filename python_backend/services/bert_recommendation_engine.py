@@ -6,7 +6,6 @@ import logging
 from typing import List, Dict, Optional, Tuple
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
-from pymongo import MongoClient
 from datetime import datetime
 import json
 import pickle
@@ -56,23 +55,15 @@ def convert_decimal(obj):
 
 class BertRecommendationEngine:
     def __init__(self, 
-                 mongo_uri: str = "mongodb://localhost:27017/", 
-                 db_name: str = "streamsmart",
                  use_dynamodb: bool = True,
-                 aws_region: str = "ap-south-1"):
+                 aws_region: str = "ap-south-2"):
         """
         Initialize the BERT-based recommendation engine
         
         Args:
-            mongo_uri: MongoDB connection URI
-            db_name: Database name
             use_dynamodb: Whether to use DynamoDB or CSV for video data
             aws_region: AWS region for DynamoDB
         """
-        self.mongo_uri = mongo_uri
-        self.db_name = db_name
-        self.client = MongoClient(mongo_uri)
-        self.db = self.client[db_name]
         
         # DynamoDB configuration
         self.use_dynamodb = use_dynamodb
@@ -694,34 +685,14 @@ class BertRecommendationEngine:
             return pd.DataFrame()
     
     def _log_recommendation(self, user_id: str, input_title: str, recommendations: pd.DataFrame):
-        """Log recommendation to MongoDB"""
-        try:
-            recommendations_dict = recommendations.to_dict('records')
-            log_entry = {
-                "user_id": user_id,
-                "input_title": input_title,
-                "recommendations": convert_decimal(recommendations_dict),
-                "timestamp": datetime.now(),
-                "recommendation_type": "content_based"
-            }
-            self.db.recommendation_logs.insert_one(log_entry)
-        except Exception as e:
-            logger.error(f"Error logging recommendation: {e}")
+        """Log recommendation (MongoDB removed, kept for compatibility)"""
+        # MongoDB logging removed - can implement DynamoDB logging if needed
+        pass
     
     def _log_genre_recommendation(self, user_id: str, genre: str, recommendations: pd.DataFrame):
-        """Log genre recommendation to MongoDB"""
-        try:
-            recommendations_dict = recommendations.to_dict('records')
-            log_entry = {
-                "user_id": user_id,
-                "genre": genre,
-                "recommendations": convert_decimal(recommendations_dict),
-                "timestamp": datetime.now(),
-                "recommendation_type": "genre_based"
-            }
-            self.db.recommendation_logs.insert_one(log_entry)
-        except Exception as e:
-            logger.error(f"Error logging genre recommendation: {e}")
+        """Log genre recommendation (MongoDB removed, kept for compatibility)"""
+        # MongoDB logging removed - can implement DynamoDB logging if needed
+        pass
     
     def initialize_system(self):
         """Initialize the complete recommendation system"""

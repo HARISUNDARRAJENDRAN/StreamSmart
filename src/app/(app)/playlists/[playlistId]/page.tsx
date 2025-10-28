@@ -4,9 +4,11 @@ import { useState, useEffect, useId } from 'react';
 import { useParams } from 'next/navigation';
 import { VideoPlayer } from '@/components/playlists/video-player';
 import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
+import { LexVoiceChat } from '@/components/playlists/lex-voice-chat';
 import { MindMapDisplay } from '@/components/playlists/mind-map-display';
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
 import { VideoFeedback } from '@/components/playlists/video-feedback';
+import { ManualTranscriptUpload } from '@/components/playlists/manual-transcript-upload';
 // PlaylistFeedback removed - to be reimplemented
 import { PlaylistRenameDialog } from '@/components/playlists/playlist-rename-dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -571,12 +573,29 @@ export default function PlaylistDetailPage() {
                 </TabsContent>
                 
                 <TabsContent value="chatbot">
-                   <PlaylistChatbot 
-                     playlistId={playlist.id} 
-                     playlistContent={compiledPlaylistContentForRAG}
-                     currentVideoTitle={currentVideo?.title}
-                     currentVideoSummary={currentVideo?.summary}
-                   />
+                  <div className="space-y-4">
+                    {/* Manual Transcript Upload Section */}
+                    {currentVideo && (
+                      <ManualTranscriptUpload
+                        videoId={currentVideo.youtubeId || currentVideo.id}
+                        videoTitle={currentVideo.title}
+                        youtubeUrl={currentVideo.youtubeURL}
+                        onUploadComplete={() => {
+                          toast({
+                            title: "Transcript Uploaded",
+                            description: "AI chat is now enabled for this video!",
+                          });
+                        }}
+                      />
+                    )}
+                    
+                    {/* Amazon Lex Voice Chat */}
+                    <LexVoiceChat
+                      userId={user?.id || 'anonymous'}
+                      playlistId={playlist.id}
+                      videoIds={playlist.videos?.map(v => v.id)}
+                    />
+                  </div>
                 </TabsContent>
                 
                 <TabsContent value="mindmap">

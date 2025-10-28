@@ -1,5 +1,9 @@
-import { RegisterForm } from '@/components/auth/register-form';
- 
+import { CognitoRegisterForm } from '@/components/auth/cognito-register-form';
+
 export default function RegisterPage() {
-  return <RegisterForm />;
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <CognitoRegisterForm />
+    </div>
+  );
 } 

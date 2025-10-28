@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StreamSmart Transcript Extractor</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <h1>StreamSmart</h1>
+      </div>
+      <div class="status" id="backendStatus">
+        <span class="dot"></span>
+        <span class="text">Checking...</span>
+      </div>
+    </div>
+
+    <!-- Current Video -->
+    <div class="section" id="currentVideoSection" style="display: none;">
+      <h2>Current Video</h2>
+      <div class="video-card" id="currentVideo">
+        <div class="video-info">
+          <p class="video-title" id="videoTitle">Loading...</p>
+          <p class="video-channel" id="videoChannel"></p>
+        </div>
+        <button class="btn btn-primary" id="extractBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+          Extract Transcript
+        </button>
+      </div>
+    </div>
+
+    <!-- Not on YouTube -->
+    <div class="section" id="notYoutubeSection">
+      <div class="empty-state">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M23 7l-7 5 7 5V7z"></path>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+        </svg>
+        <p>Open a YouTube video to extract transcripts</p>
+      </div>
+    </div>
+
+    <!-- Recent Extractions -->
+    <div class="section">
+      <h2>Recent Extractions</h2>
+      <div id="recentList" class="recent-list">
+        <p class="empty">No recent extractions</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <a href="http://localhost:3000" target="_blank" class="link">Open StreamSmart</a>
+      <span class="version">v1.0.0</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

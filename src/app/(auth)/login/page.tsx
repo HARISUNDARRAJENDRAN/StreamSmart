@@ -1,5 +1,9 @@
-import { LoginForm } from '@/components/auth/login-form';
+import { CognitoLoginForm } from '@/components/auth/cognito-login-form';
 
 export default function LoginPage() {
-  return <LoginForm />;
+  return (
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <CognitoLoginForm />
+    </div>
+  );
 }

@@ -119,6 +119,17 @@ debug_chatbot_issue.js
 cache/
 temp/
 logs/
+python_backend/cache/
+python_backend/logs/
+python_backend/temp/
+
+# Test and migration files
+test_*.json
+test_*.ps1
+test-*.ps1
+*_test.json
+create_tables.ps1
+opensearch_config.json
 
 # OS generated files
 .DS_Store

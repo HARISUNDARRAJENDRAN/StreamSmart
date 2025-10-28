@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/auth": "^6.16.0",
     "@aws-sdk/client-dynamodb": "^3.550.0",
+    "@aws-sdk/client-lex-runtime-v2": "^3.918.0",
     "@aws-sdk/credential-providers": "^3.550.0",
     "@aws-sdk/lib-dynamodb": "^3.550.0",
     "@google/generative-ai": "^0.21.0",
@@ -38,6 +40,8 @@
     "@tsparticles/engine": "^3.8.1",
     "@tsparticles/preset-links": "^3.2.0",
     "@tsparticles/react": "^3.0.0",
+    "amazon-cognito-identity-js": "^6.3.15",
+    "aws-amplify": "^6.15.7",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

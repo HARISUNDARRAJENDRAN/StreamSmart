@@ -3,6 +3,7 @@ import {Geist, Geist_Mono, Poppins} from 'next/font/google';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { UserProvider } from '@/contexts/UserContext';
+import { CognitoAuthProvider } from '@/contexts/CognitoAuthContext';
 import { QueryProvider } from '@/providers/QueryProvider';
 
 const geistSans = Geist({
@@ -35,10 +36,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
         <QueryProvider>
-          <UserProvider>
-            {children}
-            <Toaster />
-          </UserProvider>
+          <CognitoAuthProvider>
+            <UserProvider>
+              {children}
+              <Toaster />
+            </UserProvider>
+          </CognitoAuthProvider>
         </QueryProvider>
       </body>
     </html>

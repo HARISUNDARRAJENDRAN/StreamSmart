@@ -263,6 +263,13 @@ export default function GenrePage() {
     if (user?.id) {
       fetchPlaylists();
     }
+    
+    // Cleanup: abort any ongoing requests when component unmounts
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Filter and sort videos
@@ -456,6 +463,8 @@ export default function GenrePage() {
 
     try {
       console.log('Sending playlist creation request...');
+      
+      // Disable button to prevent double-clicks
       const requestData = {
         userId: user?.id || 'guest',
         title: newPlaylistTitle,
@@ -488,23 +497,16 @@ export default function GenrePage() {
         console.log('Response data:', data);
         
         if (data.success) {
-          console.log('Playlist created successfully, refreshing list...');
+          console.log('Playlist created successfully');
           
-          // Reset form state FIRST to prevent UI blocking
+          // Reset form state and close modal
           setNewPlaylistTitle('');
           setNewPlaylistDescription('');
-          setShowCreatePlaylist(false);
           setSelectedVideoForPlaylist(null);
+          setShowCreatePlaylist(false);
           
-          // Then refresh playlists from server
-          await fetchPlaylists(true);
-          
-          alert('Playlist created successfully! Redirecting to playlists page...');
-          
-          // Small delay to ensure playlist is saved before redirect
-          setTimeout(() => {
-            router.push('/playlists');
-          }, 1000);
+          // Use replace instead of push to avoid back button issues
+          router.replace('/playlists');
         } else {
           alert(data.error || 'Failed to create playlist');
         }

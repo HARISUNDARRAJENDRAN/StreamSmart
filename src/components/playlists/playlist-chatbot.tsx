@@ -9,6 +9,7 @@ import { BotIcon, SendHorizonalIcon, UserIcon, Loader2Icon } from 'lucide-react'
 import { cn } from '@/lib/utils';
 import { answerWithRAG, processVideosForRAG, type PlaylistRAGInput } from '@/ai/flows/rag-answer-questions';
 import type { ChatMessage } from '@/types';
+import { sendMessageToLex, generateSessionId } from '@/lib/lex-client';
 
 function extractVideoIdFromTitle(title?: string): string | undefined {
   if (!title) return undefined;
@@ -31,6 +32,8 @@ export function PlaylistChatbot({
   const [isProcessingVideos, setIsProcessingVideos] = useState(false);
   const [processingComplete, setProcessingComplete] = useState(false);
   const [processedVideoIds, setProcessedVideoIds] = useState<string[]>([]);
+  const [lexSessionId] = useState(() => generateSessionId('user-' + Date.now()));
+  const [useLex] = useState(true); // Toggle to use Lex or direct OpenAI
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -190,13 +193,43 @@ What would you like to know?`,
     setIsLoading(true);
 
     try {
+      let response;
+      
+      // Route through Amazon Lex for conversational AI
+      if (useLex) {
+        try {
+          // Send message to Lex bot
+          const lexResponse = await sendMessageToLex(
+            userMessage.content,
+            lexSessionId,
+            'user-' + Date.now()
+          );
+          
+          // If Lex returns a direct response, use it
+          // Otherwise, fall through to RAG
+          if (lexResponse.message && !lexResponse.message.includes('FallbackIntent')) {
+            const aiMessage: ChatMessage = {
+              id: (Date.now() + 1).toString(),
+              role: 'ai',
+              content: lexResponse.message + '\n\n*Powered by Amazon Lex*',
+              timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, aiMessage]);
+            return;
+          }
+        } catch (lexError) {
+          console.error('Lex error, falling back to direct RAG:', lexError);
+        }
+      }
+      
+      // Use direct RAG (either as fallback or primary)
       const aiInput: PlaylistRAGInput = {
         question: userMessage.content,
         playlistContent: playlistContent,
         currentVideoId: extractVideoIdFromTitle(currentVideoTitle),
         allVideoIds: processedVideoIds.length > 0 ? processedVideoIds : undefined,
       };
-      const response = await answerWithRAG(aiInput);
+      response = await answerWithRAG(aiInput);
       
       let aiContent = response.answer;
       

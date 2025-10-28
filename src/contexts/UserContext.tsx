@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { useAuth } from './CognitoAuthContext';
 import { userService } from '@/services/userService';
 import { playlistService } from '@/services/playlistService';
 import type { Playlist, Video } from '@/types';
@@ -70,10 +71,37 @@ interface UserContextType {
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: ReactNode }) {
+  const cognitoAuth = useAuth();
   const [user, setUser] = useState<User | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lastStatsUpdate, setLastStatsUpdate] = useState<number>(0);
+
+  // Sync with Cognito authentication
+  useEffect(() => {
+    if (cognitoAuth.user && cognitoAuth.isAuthenticated) {
+      // Convert Cognito user to UserContext user format
+      const cognitoUser = cognitoAuth.user;
+      setUser({
+        id: cognitoUser.id,
+        name: cognitoUser.name,
+        email: cognitoUser.email,
+        avatarUrl: cognitoUser.avatarUrl,
+        phoneNumber: cognitoUser.phoneNumber || '',
+        bio: cognitoUser.bio || '',
+        createdAt: new Date(cognitoUser.createdAt),
+        lastLoginDate: new Date(cognitoUser.lastLoginDate),
+        learningStreak: cognitoUser.learningStreak,
+        totalLearningTime: cognitoUser.totalLearningTime,
+        weeklyGoal: cognitoUser.weeklyGoal,
+        preferences: cognitoUser.preferences,
+      });
+      setIsLoading(false);
+    } else if (!cognitoAuth.isLoading) {
+      setUser(null);
+      setIsLoading(false);
+    }
+  }, [cognitoAuth.user, cognitoAuth.isAuthenticated, cognitoAuth.isLoading]);
 
   // Calculate learning streak based on daily activity
   const calculateStreak = (): number => {
@@ -442,7 +470,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   // Logout function
-  const logout = () => {
+  const logout = async () => {
+    try {
+      // Sign out from Cognito
+      await cognitoAuth.signOut();
+    } catch (error) {
+      console.error('Error signing out from Cognito:', error);
+    }
+    
     setUser(null);
     setUserStats(null);
     localStorage.removeItem('userSession');
@@ -501,8 +536,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const contextValue: UserContextType = {
     user,
     userStats,
-    isAuthenticated: !!user,
-    isLoading,
+    isAuthenticated: cognitoAuth.isAuthenticated && !!user,
+    isLoading: isLoading || cognitoAuth.isLoading,
     login,
     loginWithAPI,
     logout,
