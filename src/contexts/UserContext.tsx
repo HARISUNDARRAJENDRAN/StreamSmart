@@ -124,19 +124,25 @@ export function UserProvider({ children }: { children: ReactNode }) {
       } else {
         // Fallback to localStorage if MongoDB fails
         console.log('Falling back to localStorage for activity recording');
-        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
-        const newActivity = {
-          id: Date.now().toString(),
-          ...activity,
-          timestamp: new Date(),
-        };
+        try {
+          const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+          const newActivity = {
+            id: Date.now().toString(),
+            ...activity,
+            timestamp: new Date(),
+          };
 
-        activityLog.unshift(newActivity);
-        // Keep only last 100 activities
-        const trimmedLog = activityLog.slice(0, 100);
-        
-        localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
-        // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
+          activityLog.unshift(newActivity);
+          // Keep only last 100 activities
+          const trimmedLog = activityLog.slice(0, 100);
+
+          localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
+          // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
+        } catch (parseError) {
+          console.error('Error parsing activity log from localStorage:', parseError);
+          // Reset corrupted data
+          localStorage.setItem(`userActivity_${user.id}`, '[]');
+        }
       }
     } catch (error) {
       console.error('Error recording activity:', error);
@@ -144,7 +150,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // Fallback to localStorage
       try {
         console.log('Falling back to localStorage for activity recording');
-        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        let activityLog = [];
+        try {
+          activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+        } catch (parseError) {
+          console.error('Error parsing activity log, resetting:', parseError);
+          activityLog = [];
+        }
+
         const newActivity = {
           id: Date.now().toString(),
           ...activity,
@@ -154,7 +167,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         activityLog.unshift(newActivity);
         // Keep only last 100 activities
         const trimmedLog = activityLog.slice(0, 100);
-        
+
         localStorage.setItem(`userActivity_${user.id}`, JSON.stringify(trimmedLog));
         // setTimeout(() => updateUserStats(false), 2000); // Disabled to prevent infinite loop
       } catch (fallbackError) {
@@ -188,16 +201,27 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // If MongoDB is not available, fall back to localStorage
       if (playlists.length === 0 && activities.length === 0) {
         console.log('Falling back to localStorage for user stats');
-        
+
         // Get playlists from localStorage
-        const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
-        const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
-        playlists = storedPlaylists.filter((p: Playlist) => p.userId === user.id);
+        try {
+          const storedPlaylistsRaw = localStorage.getItem('userPlaylists');
+          const storedPlaylists = storedPlaylistsRaw ? JSON.parse(storedPlaylistsRaw) : [];
+          playlists = storedPlaylists.filter((p: Playlist) => p.userId === user.id);
+        } catch (parseError) {
+          console.error('Error parsing playlists from localStorage:', parseError);
+          playlists = [];
+        }
 
         // Get activities from localStorage
-        const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
-        activities = activityLog.slice(0, 5);
-        allActivities = activityLog.slice(0, 100);
+        try {
+          const activityLog = JSON.parse(localStorage.getItem(`userActivity_${user.id}`) || '[]');
+          activities = activityLog.slice(0, 5);
+          allActivities = activityLog.slice(0, 100);
+        } catch (parseError) {
+          console.error('Error parsing activities from localStorage:', parseError);
+          activities = [];
+          allActivities = [];
+        }
       }
 
       // Calculate stats

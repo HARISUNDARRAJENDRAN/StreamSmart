@@ -88,13 +88,14 @@ export async function getVideoDetails(videoId: string): Promise<Partial<Video> |
     const data = await response.json();
     if (data.items && data.items.length > 0) {
       const item: YouTubeVideoItem = data.items[0];
+      const description = item.snippet.description || '';
       return {
         id: item.id,
         title: item.snippet.title,
         youtubeURL: `https://www.youtube.com/watch?v=${item.id}`,
         thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
         duration: item.contentDetails ? formatDuration(item.contentDetails.duration) : 'N/A',
-        summary: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
+        summary: description.substring(0, 200) + (description.length > 200 ? '...' : ''),
         channelTitle: item.snippet.channelTitle || '',
       };
     }
@@ -141,15 +142,18 @@ export async function searchVideos(query: string, maxResults: number = 5): Promi
         const errorData = await detailsResponse.json();
         console.error('YouTube API error (fetching details for search):', detailsResponse.status, errorData.error?.message);
         // Fallback: return snippet data from search if details fail
-        return videoItems.map(item => ({
-            id: item.id.videoId,
-            title: item.snippet.title,
-            youtubeURL: `https://www.youtube.com/watch?v=${item.id.videoId}`,
-            thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-            duration: 'N/A', // Duration not available from search snippet directly
-            summary: item.snippet.description.substring(0, 200) + (item.snippet.description.length > 200 ? '...' : ''),
-            channelTitle: item.snippet.channelTitle || '',
-        }));
+        return videoItems.map(item => {
+            const description = item.snippet.description || '';
+            return {
+                id: item.id.videoId,
+                title: item.snippet.title,
+                youtubeURL: `https://www.youtube.com/watch?v=${item.id.videoId}`,
+                thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
+                duration: 'N/A', // Duration not available from search snippet directly
+                summary: description.substring(0, 200) + (description.length > 200 ? '...' : ''),
+                channelTitle: item.snippet.channelTitle || '',
+            };
+        });
     }
     const detailsData = await detailsResponse.json();
     const detailedItems: YouTubeVideoItem[] = detailsData.items || [];
