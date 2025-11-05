@@ -28,7 +28,7 @@ export function RegisterForm() {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    router.push('/dashboard');
+    router.push('/ai-feed');
     return null;
   }
 
@@ -127,7 +127,7 @@ export function RegisterForm() {
           title: "Welcome to StreamSmart!",
           description: "Your account has been created successfully.",
         });
-        router.push('/dashboard');
+        router.push('/ai-feed');
       } else {
         toast({
           title: "Registration Successful",

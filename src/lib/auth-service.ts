@@ -13,7 +13,6 @@ import {
   fetchUserAttributes,
   updateUserAttributes
 } from '@aws-amplify/auth';
-import { createUser, findUserByEmail, updateUser } from './dynamodb-service';
 
 export interface AuthUser {
   id: string;
@@ -33,46 +32,53 @@ export interface AuthUser {
   };
 }
 
-// Sync Cognito user with DynamoDB
+// Sync Cognito user with DynamoDB via API route
 async function syncUserWithDynamoDB(cognitoUser: any): Promise<AuthUser> {
   const attributes = await fetchUserAttributes();
   const email = attributes.email!;
   
-  // Check if user exists in DynamoDB
-  let user = await findUserByEmail(email);
-  
-  if (!user) {
-    // Create new user in DynamoDB
-    user = await createUser({
-      name: attributes.name || email.split('@')[0],
+  // Call server-side API to sync user with DynamoDB
+  const response = await fetch('/api/auth/cognito/sync', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      cognitoUserId: cognitoUser.userId,
       email: email,
-      avatarUrl: attributes.picture || `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(attributes.name || email)}`,
-      phoneNumber: attributes.phone_number || '',
-      bio: '',
-      authProvider: 'cognito',
-      cognitoId: cognitoUser.userId
-    });
-  } else {
-    // Update last login
-    user = await updateUser(user.id, { 
-      lastLoginDate: Date.now(),
-      cognitoId: cognitoUser.userId
-    });
+      name: attributes.name || email.split('@')[0],
+      attributes: {
+        picture: attributes.picture,
+        phone_number: attributes.phone_number,
+        name: attributes.name,
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.error || 'Failed to sync user with database');
   }
+
+  const data = await response.json();
   
+  if (!data.success || !data.user) {
+    throw new Error('Failed to sync user with database');
+  }
+
   return {
-    id: user.id,
-    email: user.email,
-    name: user.name,
-    avatarUrl: user.avatarUrl,
-    phoneNumber: user.phoneNumber,
-    bio: user.bio,
-    createdAt: user.createdAt,
-    lastLoginDate: user.lastLoginDate,
-    learningStreak: user.learningStreak,
-    totalLearningTime: user.totalLearningTime,
-    weeklyGoal: user.weeklyGoal || 15,
-    preferences: user.preferences || {
+    id: data.user.id,
+    email: data.user.email,
+    name: data.user.name,
+    avatarUrl: data.user.avatarUrl,
+    phoneNumber: data.user.phoneNumber,
+    bio: data.user.bio,
+    createdAt: data.user.createdAt,
+    lastLoginDate: data.user.lastLoginDate,
+    learningStreak: data.user.learningStreak,
+    totalLearningTime: data.user.totalLearningTime,
+    weeklyGoal: data.user.weeklyGoal || 15,
+    preferences: data.user.preferences || {
       theme: 'system',
       notifications: true
     }
@@ -223,13 +229,23 @@ export async function updateUserProfile(updates: Partial<AuthUser>) {
       });
     }
     
-    // Update DynamoDB
+    // Update DynamoDB via API
     const attributes = await fetchUserAttributes();
     const email = attributes.email!;
-    const user = await findUserByEmail(email);
     
-    if (user) {
-      await updateUser(user.id, updates);
+    const response = await fetch('/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        ...updates,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update profile in database');
     }
     
     return true;

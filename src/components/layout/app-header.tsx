@@ -50,16 +50,15 @@ export function AppHeader() {
       {/* Left: Brand */}
       <div className="flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)' }} />
-        <Link href="/dashboard" className="text-lg font-semibold" style={{ color: 'hsl(var(--foreground))' }}>StreamSmart</Link>
+        <Link href="/ai-feed" className="text-lg font-semibold" style={{ color: 'hsl(var(--foreground))' }}>StreamSmart</Link>
       </div>
 
       {/* Center: Top navigation */}
       <nav className="hidden md:flex items-center gap-1 mx-auto">
         {[
-          { href: '/dashboard', label: 'Dashboard' },
+          { href: '/ai-feed', label: '✨ AI Feed' },
           { href: '/playlists', label: 'Playlists' },
           { href: '/productivity', label: 'Productivity' },
-          { href: '/progress', label: 'My Progress' },
           { href: '/achievements', label: 'Achievements' },
         ].map(item => {
           const active = pathname.startsWith(item.href);

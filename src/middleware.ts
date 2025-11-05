@@ -12,7 +12,6 @@ const publicPaths = [
 
 // Protected route prefixes
 const protectedPrefixes = [
-  '/dashboard',
   '/settings',
   '/playlists',
   '/progress',

@@ -11,8 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter, CardDescription }
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { PlusCircleIcon, Trash2Icon, YoutubeIcon, BotIcon, Loader2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { generateVideoRecommendations } from '@/ai/flows/generate-video-recommendations';
-import type { GenerateVideoRecommendationsInput, RecommendedVideo } from '@/ai/flows/generate-video-recommendations';
+// Video recommendations removed - using CSV-based recommendations instead
 import { RecommendedVideoCard } from './recommended-video-card';
 import type { Video } from '@/types'; 
 import { useToast } from "@/hooks/use-toast";
@@ -44,7 +43,7 @@ export function CreatePlaylistForm() {
   const { user, recordActivity, updateUserStats } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [isAiLoading, setIsAiLoading] = useState(false);
-  const [aiRecommendedVideos, setAiRecommendedVideos] = useState<RecommendedVideo[]>([]);
+  const [aiRecommendedVideos, setAiRecommendedVideos] = useState<any[]>([]);
 
   const form = useForm<PlaylistFormValues>({
     resolver: zodResolver(playlistFormSchema),
@@ -181,7 +180,9 @@ export function CreatePlaylistForm() {
           thumbnail: v.thumbnail || '',
           duration: v.duration || '',
           url: v.youtubeURL || '',
+          youtubeURL: v.youtubeURL || '',
           completionStatus: v.completionStatus || 0,
+          addedBy: 'user',
         })),
       });
 
@@ -201,6 +202,39 @@ export function CreatePlaylistForm() {
         item: data.title,
         type: "created"
       });
+
+      // Real-time sync: Immediately sync playlists for personalized feed
+      // This ensures recommendations update within seconds, not hours
+      if (result.playlist && newVideosWithDetails.length > 0) {
+        console.log('🔄 Triggering real-time playlist sync...');
+        
+        // Clear the sync timestamp to force immediate sync
+        localStorage.removeItem(`lastPlaylistSync_${user.id}`);
+        
+        // Trigger sync in background (fire-and-forget)
+        playlistService.syncPlaylistsForRecommendations(user.id, true)
+          .then((syncResult) => {
+            if (syncResult.success) {
+              console.log(`✅ Real-time sync complete: ${syncResult.syncedCount} videos synced`);
+              
+              // Clear feed cache to ensure fresh recommendations
+              if (typeof window !== 'undefined' && (window as any).__recommendationService) {
+                (window as any).__recommendationService.clearCache();
+              }
+              
+              // Dispatch custom event to notify feed page
+              const event = new CustomEvent('playlistSynced', {
+                detail: { userId: user.id, syncedCount: syncResult.syncedCount }
+              });
+              window.dispatchEvent(event);
+              console.log('📢 Feed will refresh with new recommendations');
+            }
+          })
+          .catch(err => {
+            console.error('❌ Real-time sync failed:', err);
+            // Don't show error to user - background operation
+          });
+      }
       
       toast({
         title: "Playlist Created!",
@@ -236,20 +270,31 @@ export function CreatePlaylistForm() {
 
     setIsAiLoading(true);
     setAiRecommendedVideos([]);
+    
+    // AI recommendations temporarily disabled - using CSV-based recommendations instead
+    toast({
+      title: "Feature Coming Soon",
+      description: "AI recommendations will be available soon with the new CSV-based system.",
+    });
+    setIsAiLoading(false);
+    
+    /* Original code commented out
     try {
       const input: GenerateVideoRecommendationsInput = { playlistTitle };
       const result = await generateVideoRecommendations(input);
       
       if (result && result.recommendedVideos && result.recommendedVideos.length > 0) {
         setAiRecommendedVideos(result.recommendedVideos);
-         toast({
-            title: "AI Suggestions Loaded",
-            description: `${result.recommendedVideos.length} video suggestions found for "${playlistTitle}".`,
+        toast({
+          title: "AI Suggestions Loaded",
+          description: `${result.recommendedVideos.length} video suggestions found for "${playlistTitle}".`,
         });
       } else {
-         toast({ title: "AI Recommendations", description: "No specific video suggestions found for this topic, or an error occurred."});
+        toast({ 
+          title: "AI Recommendations", 
+          description: "No specific video suggestions found for this topic, or an error occurred."
+        });
       }
-
     } catch (error) {
       console.error("Error fetching AI recommendations:", error);
       const detail = error instanceof Error ? `Details: ${error.message}` : "An unexpected error occurred.";
@@ -261,9 +306,10 @@ export function CreatePlaylistForm() {
     } finally {
       setIsAiLoading(false);
     }
+    */
   };
 
-  const addRecommendedVideoToForm = (video: RecommendedVideo) => {
+  const addRecommendedVideoToForm = (video: any) => {
     const currentVideos = form.getValues("videos") || [];
     if (currentVideos.some(v => v.url === video.youtubeURL)) {
         toast({

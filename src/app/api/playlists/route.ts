@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
-import { getPlaylistsByUserId, createPlaylist, updatePlaylist, deletePlaylist, getAllPlaylists, type DynamoDBPlaylist } from '@/lib/dynamodb-service';
+import { getPlaylistsByUserId, createPlaylist, updatePlaylist, deletePlaylist, getAllPlaylists, getPlaylistById, type DynamoDBPlaylist } from '@/lib/dynamodb-service';
 import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
 
 // Utility function to extract YouTube ID from URL
@@ -294,7 +294,7 @@ export async function PUT(request: NextRequest) {
   }
 }
 
-// DELETE - Delete a playlist
+// DELETE - Delete a playlist with cascade deletion of all associated resources
 export async function DELETE(request: NextRequest) {
   try {
     const playlistId = request.nextUrl.searchParams.get('playlistId');
@@ -304,9 +304,89 @@ export async function DELETE(request: NextRequest) {
     }
 
     try {
+      // First, get the playlist to access video information before deletion
+      const playlist = await getPlaylistById(playlistId);
+      
+      if (!playlist) {
+        return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
+      }
+
+      // Cascade delete: Remove associated S3 transcripts and DynamoDB entries
+      const deletionResults = {
+        s3Deleted: [] as string[],
+        s3Failed: [] as string[],
+        dynamodbDeleted: [] as string[],
+        dynamodbFailed: [] as string[],
+      };
+
+      if (playlist.videos && playlist.videos.length > 0) {
+        console.log(`[Playlist Delete] Starting cascade deletion for ${playlist.videos.length} videos`);
+        
+        for (const video of playlist.videos) {
+          // Delete S3 transcript if it exists
+          if (video.transcriptS3Key || video.youtubeId) {
+            try {
+              const s3Key = video.transcriptS3Key || `${video.youtubeId}.json`;
+              
+              // Call Python backend to delete S3 transcript
+              const deleteS3Response = await fetch('http://localhost:8000/api/transcripts/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  videoId: video.youtubeId || video.id,
+                  s3Key: s3Key
+                })
+              });
+
+              if (deleteS3Response.ok) {
+                deletionResults.s3Deleted.push(s3Key);
+                console.log(`[Playlist Delete] ✅ Deleted S3 transcript: ${s3Key}`);
+              } else {
+                deletionResults.s3Failed.push(s3Key);
+                console.warn(`[Playlist Delete] ⚠️ Failed to delete S3: ${s3Key}`);
+              }
+            } catch (s3Error) {
+              console.error(`[Playlist Delete] S3 deletion error:`, s3Error);
+              deletionResults.s3Failed.push(video.transcriptS3Key || video.youtubeId || 'unknown');
+            }
+          }
+
+          // Delete DynamoDB transcript metadata if it exists
+          if (video.youtubeId) {
+            try {
+              const deleteDynamoResponse = await fetch('http://localhost:8000/api/transcripts/delete-metadata', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ videoId: video.youtubeId })
+              });
+
+              if (deleteDynamoResponse.ok) {
+                deletionResults.dynamodbDeleted.push(video.youtubeId);
+                console.log(`[Playlist Delete] ✅ Deleted DynamoDB metadata: ${video.youtubeId}`);
+              } else {
+                deletionResults.dynamodbFailed.push(video.youtubeId);
+                console.warn(`[Playlist Delete] ⚠️ Failed to delete DynamoDB: ${video.youtubeId}`);
+              }
+            } catch (dynamoError) {
+              console.error(`[Playlist Delete] DynamoDB deletion error:`, dynamoError);
+              deletionResults.dynamodbFailed.push(video.youtubeId);
+            }
+          }
+        }
+
+        console.log(`[Playlist Delete] Cascade deletion summary:`, {
+          s3Deleted: deletionResults.s3Deleted.length,
+          s3Failed: deletionResults.s3Failed.length,
+          dynamodbDeleted: deletionResults.dynamodbDeleted.length,
+          dynamodbFailed: deletionResults.dynamodbFailed.length,
+        });
+      }
+
+      // Finally, delete the playlist itself
       const deletedPlaylist = await deletePlaylist(playlistId);
       const userIdForInvalidation = deletedPlaylist?.userId;
 
+      // Invalidate caches
       try {
         if (userIdForInvalidation) {
           await cache.invalidate(`playlists:userId=${userIdForInvalidation}`);
@@ -318,7 +398,20 @@ export async function DELETE(request: NextRequest) {
         console.error('Playlist cache invalidate error:', cacheError);
       }
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ 
+        success: true,
+        deletionSummary: {
+          playlistDeleted: true,
+          resourcesDeleted: {
+            s3Transcripts: deletionResults.s3Deleted.length,
+            dynamodbEntries: deletionResults.dynamodbDeleted.length,
+          },
+          resourcesFailed: {
+            s3Transcripts: deletionResults.s3Failed.length,
+            dynamodbEntries: deletionResults.dynamodbFailed.length,
+          }
+        }
+      });
     } catch (deleteError) {
       console.error('DynamoDB delete error:', deleteError);
       return NextResponse.json({ error: 'Database operation failed' }, { status: 500 });

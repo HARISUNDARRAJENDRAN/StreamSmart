@@ -32,7 +32,7 @@ export function CognitoLoginForm() {
 
     try {
       await signIn(email, password);
-      router.push('/dashboard');
+      router.push('/ai-feed');
     } catch (err: any) {
       console.error('Login error:', err);
       

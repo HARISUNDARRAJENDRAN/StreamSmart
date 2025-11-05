@@ -7,12 +7,39 @@ console.log('🔧 StreamSmart: Service worker initialized');
 
 const CONFIG = {
   BACKEND_URL: 'http://localhost:8000',
+  FRONTEND_URL: 'http://localhost:3000',
   STORAGE_KEYS: {
     USER_TOKEN: 'userToken',
+    USER_ID: 'userId',
     RECENT_UPLOADS: 'recentUploads',
     SETTINGS: 'settings'
   }
 };
+
+/**
+ * Auto-sync authentication from web app
+ * Listens for token updates from localStorage
+ */
+async function syncAuthFromWebApp() {
+  try {
+    // Get token from chrome.storage (set by web app via content script)
+    const { userToken, userId } = await chrome.storage.sync.get([
+      CONFIG.STORAGE_KEYS.USER_TOKEN,
+      CONFIG.STORAGE_KEYS.USER_ID
+    ]);
+    
+    if (userToken && userId) {
+      console.log('✅ User authenticated:', userId);
+      return { token: userToken, userId };
+    }
+    
+    console.log('⚠️ No authentication found');
+    return null;
+  } catch (error) {
+    console.error('Failed to sync auth:', error);
+    return null;
+  }
+}
 
 /**
  * Handle messages from content scripts and popup
@@ -39,21 +66,81 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         .catch(error => sendResponse({ error: error.message }));
       return true;
       
+    case 'setAuth':
+      // Set authentication from web app
+      chrome.storage.sync.set({
+        [CONFIG.STORAGE_KEYS.USER_TOKEN]: request.token,
+        [CONFIG.STORAGE_KEYS.USER_ID]: request.userId
+      })
+        .then(() => {
+          console.log('✅ Authentication set for user:', request.userId);
+          sendResponse({ success: true });
+        })
+        .catch(error => sendResponse({ success: false, error: error.message }));
+      return true;
+      
+    case 'getAuth':
+      // Get current authentication
+      syncAuthFromWebApp()
+        .then(auth => sendResponse({ success: true, auth }))
+        .catch(error => sendResponse({ success: false, error: error.message }));
+      return true;
+      
+    case 'openInStreamSmart':
+      // Open StreamSmart and redirect to playlists
+      handleOpenInStreamSmart(request.videoId)
+        .then(() => sendResponse({ success: true }))
+        .catch(error => sendResponse({ success: false, error: error.message }));
+      return true;
+      
     default:
       sendResponse({ error: 'Unknown action' });
   }
 });
 
 /**
+ * Open video in StreamSmart and redirect to playlists
+ */
+async function handleOpenInStreamSmart(videoId) {
+  try {
+    const auth = await syncAuthFromWebApp();
+    
+    if (!auth || !auth.token) {
+      // No auth - open login page
+      chrome.tabs.create({ 
+        url: `${CONFIG.FRONTEND_URL}/auth/login?redirect=/playlists` 
+      });
+      return;
+    }
+    
+    // User is authenticated - redirect to playlists
+    chrome.tabs.create({ 
+      url: `${CONFIG.FRONTEND_URL}/playlists` 
+    });
+  } catch (error) {
+    console.error('Failed to open in StreamSmart:', error);
+    throw error;
+  }
+}
+
+/**
  * Upload transcript to backend
  */
 async function handleTranscriptUpload(data) {
   try {
+    const auth = await syncAuthFromWebApp();
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    // Add auth token if available
+    if (auth && auth.token) {
+      headers['Authorization'] = `Bearer ${auth.token}`;
+    }
+    
     const response = await fetch(`${CONFIG.BACKEND_URL}/api/transcripts/upload`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify(data)
     });
     
@@ -81,15 +168,24 @@ async function handleTranscriptUpload(data) {
 }
 
 /**
- * Check if transcript is cached
+ * Check if video is in user's playlists
  */
 async function checkTranscriptCached(videoId) {
   try {
-    const response = await fetch(`${CONFIG.BACKEND_URL}/api/transcripts/check/${videoId}`);
+    // Get user ID
+    const result = await chrome.storage.sync.get(['userId']);
+    const userId = result.userId;
+    
+    if (!userId) {
+      return false;
+    }
+
+    // Check if video exists in any of user's playlists
+    const response = await fetch(`http://localhost:3000/api/playlists/check-video?userId=${userId}&videoId=${videoId}`);
     
     if (response.ok) {
       const data = await response.json();
-      return data.cached;
+      return data.exists;
     }
     
     return false;

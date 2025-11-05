@@ -13,21 +13,16 @@ requests-aws4auth==1.2.3
 requests==2.31.0
 python-dotenv==1.0.0
 
+# OpenAI for embeddings and chat (NEW - Feature 5)
+openai>=1.0.0
+
 # Data processing - NumPy MUST be < 2.0 for TensorFlow 2.15 compatibility
 numpy>=1.24.0,<2.0.0
 pandas==2.1.4
 scikit-learn==1.3.2
 
-# Prefer CPU-only PyTorch wheels
---extra-index-url https://download.pytorch.org/whl/cpu
-
-# AI and ML - Core packages (always install)
-transformers==4.35.2
-sentence-transformers>=2.3.0
-huggingface-hub>=0.20.0
-
-# PyTorch - CPU-only wheels for compatibility (only torch needed for sentence-transformers)
-torch==2.3.1+cpu
+# ML dependencies removed - using CSV-based recommendations
+# Kept pandas and scikit-learn for data processing only
 
 # TensorFlow with compatibility constraints (optional - large download)
 # tensorflow>=2.16,<2.20

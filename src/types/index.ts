@@ -23,6 +23,7 @@ export type Playlist = {
 
 export type Video = {
   id: string;
+  youtubeId?: string; // 11-character YouTube video ID
   title: string;
   youtubeURL: string;
   transcript?: string;
@@ -34,6 +35,12 @@ export type Video = {
   completionStatus: number; // Percentage
   understandingScore?: number; // Optional
   channelTitle?: string; // Optional channel title
+  // Transcript metadata
+  transcriptS3Key?: string;
+  hasTranscript?: boolean;
+  transcriptLanguage?: string;
+  transcriptUploadedAt?: string;
+  transcriptSegmentCount?: number;
 };
 
 export type ChatMessage = {

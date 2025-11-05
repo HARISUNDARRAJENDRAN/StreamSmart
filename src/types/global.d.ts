@@ -1,7 +1,4 @@
+// MongoDB/Mongoose types removed - using DynamoDB exclusively
 declare global {
-  // eslint-disable-next-line no-var
-  var mongoose: {
-    conn: typeof import('mongoose') | null;
-    promise: Promise<typeof import('mongoose')> | null;
-  };
+  // Global types can be added here if needed
 } 

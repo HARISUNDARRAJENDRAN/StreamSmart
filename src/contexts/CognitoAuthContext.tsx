@@ -91,11 +91,33 @@ export function CognitoAuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      // Force sign out any existing user first
+      try {
+        await signOutUser();
+        if (typeof window !== 'undefined') {
+          localStorage.clear();
+          sessionStorage.clear();
+        }
+      } catch (e) {
+        // Ignore errors, continue with sign in
+      }
+      
       const authenticatedUser = await signInUser(email, password);
       setUser(authenticatedUser);
       setIsAuthenticated(true);
     } catch (error: any) {
       console.error('Sign in error:', error);
+      // If error is about existing user, clear and show message
+      if (error.message?.includes('already a signed in user')) {
+        try {
+          await signOutUser();
+          if (typeof window !== 'undefined') {
+            localStorage.clear();
+            sessionStorage.clear();
+          }
+        } catch (e) {}
+        throw new Error('Session cleared. Please try logging in again.');
+      }
       throw error;
     }
   };
@@ -143,8 +165,20 @@ export function CognitoAuthProvider({ children }: { children: ReactNode }) {
       await signOutUser();
       setUser(null);
       setIsAuthenticated(false);
+      // Clear all storage
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
     } catch (error: any) {
       console.error('Sign out error:', error);
+      // Force clear even on error
+      setUser(null);
+      setIsAuthenticated(false);
+      if (typeof window !== 'undefined') {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
       throw error;
     }
   };

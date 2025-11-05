@@ -1,6 +1,8 @@
 """
 Lex Proxy Endpoint - Backend handles Lex communication
 Flow: Frontend → Backend → Lex → OpenAI → Backend → Frontend
+
+Enhanced with TranscriptService for automatic S3 fetching
 """
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
@@ -8,6 +10,7 @@ import boto3
 import logging
 import json
 from typing import Optional
+from services.transcript_service import transcript_service
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -32,11 +35,20 @@ class LexVoiceRequest(BaseModel):
     userId: str
     videoIds: Optional[list] = []
 
+class SourceReference(BaseModel):
+    videoId: str
+    videoTitle: Optional[str] = None
+    timestamp: Optional[str] = None
+    confidence: Optional[float] = None
+    snippet: Optional[str] = None
+
 class LexVoiceResponse(BaseModel):
     answer: str
     intent: Optional[str] = None
     sessionId: str
     audioUrl: Optional[str] = None
+    sources: Optional[list[SourceReference]] = []
+    confidence: Optional[float] = None
 
 @router.post("/lex-voice-chat", response_model=LexVoiceResponse)
 async def lex_voice_chat(request: LexVoiceRequest):
@@ -73,81 +85,95 @@ async def lex_voice_chat(request: LexVoiceRequest):
             except Exception as lex_error:
                 logger.warning(f"⚠️ Lex error (continuing without): {lex_error}")
         
-        # Step 2: Generate answer with OpenAI (from your existing RAG endpoint)
-        logger.info("🧠 Generating answer with OpenAI...")
+        # Step 2: Use TranscriptService to fetch transcripts from S3
+        logger.info("📥 Fetching transcripts using TranscriptService...")
         
-        # Import the RAG function from main
-        from main import get_transcripts_from_s3
         import requests
         
-        # Get transcripts from S3
-        # Extract actual YouTube video IDs from the database IDs passed
-        transcripts = []
-        if request.videoIds:
-            logger.info(f"Video IDs received: {request.videoIds}")
-            
-            # Check if these are database IDs (like video_xxx) or YouTube IDs
-            youtube_ids = []
-            for vid in request.videoIds:
-                if vid.startswith('video_'):
-                    # This is a database ID - we need to extract the YouTube ID
-                    # For now, try to get it from DynamoDB or just skip
-                    logger.warning(f"Database ID {vid} passed, need YouTube ID")
-                else:
-                    # This is already a YouTube ID
-                    youtube_ids.append(vid)
-            
-            # Also try searching S3 directly to see what's available
-            import boto3
-            s3_client = boto3.client('s3', region_name='ap-south-1')
-            try:
-                s3_response = s3_client.list_objects_v2(
-                    Bucket='streamsmart-transcripts-560271561936',
-                    MaxKeys=10
-                )
-                if 'Contents' in s3_response:
-                    available_keys = [obj['Key'] for obj in s3_response['Contents'] if obj['Key'].endswith('.json')]
-                    logger.info(f"Available transcripts in S3: {available_keys}")
-                    
-                    # Use all available transcripts for now
-                    youtube_ids = [key.replace('.json', '') for key in available_keys]
-            except Exception as e:
-                logger.error(f"Could not list S3: {e}")
-            
-            if youtube_ids:
-                logger.info(f"Using YouTube IDs: {youtube_ids}")
-                transcripts = get_transcripts_from_s3(youtube_ids)
+        if not request.videoIds:
+            logger.warning("No video IDs provided")
+            return LexVoiceResponse(
+                answer="I don't have any video context. Please add videos to your playlist first and make sure transcripts are extracted.",
+                sessionId=request.sessionId,
+                intent=intent_name
+            )
         
-        # Build context
-        context = ""
-        if transcripts:
-            context_parts = []
-            for t in transcripts:
-                title = t.get('title', 'Unknown')
-                transcript_text = t.get('transcript', '')
-                if isinstance(transcript_text, list):
-                    transcript_text = ' '.join([seg.get('text', '') for seg in transcript_text])
-                
-                context_parts.append(f"Video: {title}\nTranscript: {transcript_text[:3000]}")
-            
-            context = "\n\n".join(context_parts)
+        # Extract YouTube IDs (handle both database IDs and YouTube IDs)
+        youtube_ids = []
+        for vid in request.videoIds:
+            if vid.startswith('video_'):
+                # Database ID - extract YouTube ID (last 11 chars if possible)
+                # Or skip for now - need proper mapping
+                logger.warning(f"Database ID {vid} - needs YouTube ID mapping")
+            elif len(vid) == 11:
+                # This looks like a YouTube ID
+                youtube_ids.append(vid)
+            else:
+                logger.warning(f"Unknown ID format: {vid}")
         
-        # Generate answer with OpenAI
+        if not youtube_ids:
+            logger.warning("No valid YouTube IDs found")
+            return LexVoiceResponse(
+                answer="I couldn't find valid video IDs. Please make sure you've extracted transcripts from YouTube videos.",
+                sessionId=request.sessionId,
+                intent=intent_name
+            )
+        
+        logger.info(f"Using YouTube IDs: {youtube_ids}")
+        
+        # Use Multi-Video Context Manager for intelligent context building
+        from services.multi_video_context import multi_video_context_manager
+        
+        context_result = multi_video_context_manager.build_context(
+            video_ids=youtube_ids,
+            query=request.text,
+            query_type='auto'  # Auto-classify query type
+        )
+        
+        if not context_result.get('formatted_context'):
+            logger.warning("No context built from transcripts")
+            return LexVoiceResponse(
+                answer="I couldn't find relevant information in the transcripts. Please make sure transcripts are extracted.",
+                sessionId=request.sessionId,
+                intent=intent_name
+            )
+        
+        context = context_result['formatted_context']
+        query_type = context_result['query_type']
+        video_count = context_result['video_count']
+        
+        logger.info(f"✅ Built context: {len(context)} chars from {video_count} videos (type: {query_type})")
+        
+        # Step 3: Generate answer with OpenAI
+        logger.info("🧠 Generating answer with OpenAI...")
         import os
         OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
         
-        if not context:
-            answer = "I couldn't find any transcripts for the videos you're asking about. Please upload transcripts first using the Chrome extension or manual upload feature."
-        else:
-            prompt = f"""Based on the following video transcripts, answer the user's question naturally and conversationally.
+        # Build enhanced prompt
+        system_prompt = """You are an educational AI assistant helping users learn from video content.
+
+Your role:
+- Answer questions based on the provided video transcripts
+- Explain concepts clearly and simply
+- Be conversational and encouraging
+- If the answer isn't in the transcripts, say so politely
+- Provide examples when helpful
+
+Guidelines:
+- Keep answers concise but complete (200-300 words)
+- Use bullet points for lists
+- Bold key terms with **term**
+- Reference the video when relevant"""
+
+        user_prompt = f"""Based on these video transcripts, answer the question:
+
+{context}
 
 Question: {request.text}
 
-Transcripts:
-{context}
-
-Provide a clear, conversational answer."""
-            
+Answer:"""
+        
+        try:
             headers = {
                 "Authorization": f"Bearer {OPENAI_API_KEY}",
                 "Content-Type": "application/json"
@@ -155,7 +181,10 @@ Provide a clear, conversational answer."""
             
             payload = {
                 "model": "gpt-4o-mini",
-                "messages": [{"role": "user", "content": prompt}],
+                "messages": [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
                 "max_tokens": 500,
                 "temperature": 0.7
             }
@@ -172,13 +201,30 @@ Provide a clear, conversational answer."""
                 answer = data['choices'][0]['message']['content']
                 logger.info(f"✅ Generated answer: {answer[:100]}...")
             else:
-                answer = "I'm having trouble generating an answer right now. Please try again."
+                logger.error(f"OpenAI API error: {openai_response.status_code}")
+                answer = "I'm having trouble generating an answer right now. Please try again in a moment."
+                
+        except Exception as openai_error:
+            logger.error(f"OpenAI request failed: {openai_error}")
+            answer = "I apologize, but I'm having trouble processing your question. Please try again."
         
-        # Return response
+        # Build sources from context result
+        sources = []
+        for source_data in context_result.get('sources', []):
+            sources.append(SourceReference(
+                videoId=source_data['videoId'],
+                videoTitle=source_data['videoTitle'],
+                confidence=source_data.get('confidence', 0.85),
+                snippet=source_data.get('snippet', '')
+            ))
+        
+        # Return response with sources
         return LexVoiceResponse(
             answer=answer,
             intent=intent_name,
-            sessionId=request.sessionId
+            sessionId=request.sessionId,
+            sources=sources,
+            confidence=context_result.get('confidence', 0.85)
         )
         
     except Exception as e:

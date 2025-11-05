@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { userId, action, item, type } = body;
+    const { userId, action, item, type, videoId, genre, videoTitle, channelName, watchDuration, playlistId } = body;
 
     if (!userId || !action || !item || !type) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -57,6 +57,13 @@ export async function POST(request: NextRequest) {
         action,
         item,
         type,
+        // Enhanced fields for video tracking and personalization
+        videoId: videoId || item, // Use item as fallback for videoId
+        genre,
+        videoTitle,
+        channelName,
+        watchDuration,
+        playlistId,
       });
 
       // Update user's learning streak

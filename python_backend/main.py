@@ -9,10 +9,13 @@ import logging
 # Load environment variables from .env file
 try:
     from dotenv import load_dotenv
-    load_dotenv()
-    print("✅ Loaded environment variables from .env file")
+    import pathlib
+    # Load from parent directory (project root)
+    env_path = pathlib.Path(__file__).parent.parent / '.env'
+    load_dotenv(env_path)
+    print(f"[OK] Loaded environment variables from {env_path}")
 except ImportError:
-    print("⚠️ python-dotenv not installed, using system environment variables only")
+    print("[WARNING] python-dotenv not installed, using system environment variables only")
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -40,7 +43,7 @@ except ImportError:
     OpenSearch = None
     RequestsHttpConnection = None
     BotoCoreError = ClientError = Exception
-    print("⚠️  AWS SDK libraries not available - RAG AWS features disabled")
+    print("[WARNING] AWS SDK libraries not available - RAG AWS features disabled")
 
 # Optional imports with graceful fallbacks
 try:
@@ -49,7 +52,16 @@ try:
 except ImportError:
     HAS_GOOGLE_AI = False
     genai = None
-    print("⚠️  Google AI not available - some features disabled")
+    print("[WARNING] Google AI not available - some features disabled")
+
+# OpenAI import
+try:
+    import openai
+    HAS_OPENAI = True
+except ImportError:
+    HAS_OPENAI = False
+    openai = None
+    print("[WARNING] OpenAI not available - suggestion generation disabled")
 
 # MongoDB removed - using DynamoDB exclusively
 HAS_MONGO = False
@@ -61,7 +73,7 @@ try:
 except ImportError:
     HAS_YOUTUBE_API = False
     YouTubeTranscriptApi = None
-    print("⚠️  YouTube Transcript API not available")
+    print("[WARNING] YouTube Transcript API not available")
 
 try:
     import yt_dlp
@@ -69,7 +81,7 @@ try:
 except ImportError:
     HAS_YT_DLP = False
     yt_dlp = None
-    print("⚠️  yt-dlp not available - video processing disabled")
+    print("[WARNING] yt-dlp not available - video processing disabled")
 
 try:
     from sklearn.metrics.pairwise import cosine_similarity
@@ -77,7 +89,7 @@ try:
 except ImportError:
     HAS_SKLEARN = False
     cosine_similarity = None
-    print("⚠️  scikit-learn not available - similarity calculations disabled")
+    print("[WARNING] scikit-learn not available - similarity calculations disabled")
 
 try:
     import nltk
@@ -87,22 +99,37 @@ except ImportError:
     HAS_NLTK = False
     nltk = None
     sent_tokenize = None
-    print("⚠️  NLTK not available - text processing may be limited")
+    print("[WARNING] NLTK not available - text processing may be limited")
 
 # Lightweight BERT removed; keep placeholder for existing calls to no-op
     lightweight_bert = None
 
+# Import services
+try:
+    from services.transcript_service import transcript_service
+    from services.conversation_service import conversation_service
+    from services.multi_modal_service import multi_modal_service
+    from services.advanced_search_service import advanced_search_service
+    HAS_SERVICES = True
+except ImportError as e:
+    print(f"[WARNING] Services not available: {e}")
+    HAS_SERVICES = False
+    transcript_service = None
+    conversation_service = None
+    multi_modal_service = None
+    advanced_search_service = None
+
 # Import remaining endpoints
 from genre_endpoints import router as genre_router
-# Import BERT router (embeddings-based) with error handling
+
+# Import CSV-based recommendation router
 try:
-    from bert_recommendation_endpoints import router as bert_router
-    BERT_AVAILABLE = True
+    from recommendation_endpoints import router as recommendation_router
+    RECOMMENDATIONS_AVAILABLE = True
 except ImportError as e:
-    print(f"BERT service unavailable: {e}")
-    BERT_AVAILABLE = False
-    bert_router = None
-# Smart recommendation endpoints removed (MongoDB-based)
+    print(f"⚠️ Recommendation endpoints unavailable: {e}")
+    RECOMMENDATIONS_AVAILABLE = False
+    recommendation_router = None
 
 # Import Transcript router
 try:
@@ -131,33 +158,34 @@ app.add_middleware(
 
 # Register routers for modular endpoints
 app.include_router(genre_router)
-# Include BERT router only if available
-if BERT_AVAILABLE and bert_router:
-    app.include_router(bert_router)
-    print("✅ BERT embeddings recommendation service enabled")
+
+# Include CSV recommendation router
+if RECOMMENDATIONS_AVAILABLE and recommendation_router:
+    app.include_router(recommendation_router)
+    print("[OK] CSV-based recommendation service enabled")
 else:
-    print("⚠️ BERT recommendation service disabled (dependencies not available)")
-# Smart endpoints removed - using BERT with DynamoDB instead
+    print("[WARNING] Recommendation service disabled")
 
 # Include Transcript router if available
 if TRANSCRIPT_AVAILABLE and transcript_router:
     app.include_router(transcript_router)
-    print("✅ Transcript upload/download endpoints enabled")
+    print("[OK] Transcript upload/download endpoints enabled")
 else:
-    print("⚠️ Transcript endpoints disabled")
+    print("[WARNING] Transcript endpoints disabled")
 
 # Include Lex proxy router
 try:
     from lex_proxy_endpoint import router as lex_router
     app.include_router(lex_router)
-    print("✅ Lex voice chat proxy endpoint enabled")
+    print("[OK] Lex voice chat proxy endpoint enabled")
 except Exception as e:
-    print(f"⚠️  Lex proxy endpoint not available: {e}")
+    print(f"[WARNING] Lex proxy endpoint not available: {e}")
 
 # Note: AI content endpoints were removed as part of recommendation engine cleanup
 
 # Environment variables
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")  # For embeddings and chat
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")  # Get from Google Cloud Console
 
 AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
@@ -177,28 +205,8 @@ AWS_RAG_ENABLED = bool(
 
 # MongoDB removed - using DynamoDB for all database operations
 
-# Initialize AWS RAG manager if configuration is present
+# AWS RAG manager will be initialized after class definition
 aws_rag_manager: Optional["AWSRAGManager"] = None
-if AWS_RAG_ENABLED:
-    try:
-        aws_rag_manager = AWSRAGManager(
-            region=AWS_REGION,
-            bucket=AWS_RAG_S3_BUCKET,
-            opensearch_endpoint=AWS_RAG_OPENSEARCH_ENDPOINT,
-            index=AWS_RAG_OPENSEARCH_INDEX,
-            embed_model_id=AWS_RAG_EMBED_MODEL,
-            llm_model_id=AWS_RAG_LLM_MODEL,
-        )
-        logger.info(
-            "AWS RAG manager enabled (bucket=%s, index=%s)",
-            AWS_RAG_S3_BUCKET,
-            AWS_RAG_OPENSEARCH_INDEX,
-        )
-    except Exception as aws_error:  # noqa: BLE001
-        aws_rag_manager = None
-        logger.error("Failed to initialize AWS RAG manager: %s", aws_error)
-else:
-    logger.info("AWS RAG manager disabled (missing configuration or libraries)")
 
 # Initialize Gemini if available
 if GEMINI_API_KEY and HAS_GOOGLE_AI:
@@ -207,6 +215,14 @@ if GEMINI_API_KEY and HAS_GOOGLE_AI:
         logger.info("Gemini AI configured successfully")
     except Exception as e:
         logger.error(f"Gemini AI configuration failed: {e}")
+
+# Initialize OpenAI if available
+if OPENAI_API_KEY and HAS_OPENAI:
+    try:
+        openai.api_key = OPENAI_API_KEY
+        logger.info("OpenAI configured successfully")
+    except Exception as e:
+        logger.error(f"OpenAI configuration failed: {e}")
 
 # Try to download required NLTK data
 if HAS_NLTK:
@@ -841,7 +857,35 @@ def get_video_transcript(video_id: str) -> Optional[str]:
     logger.warning(f"❌ Transcript fetch failed for {video_id}")
     return None
 
+# ============================================================================
+# Initialize AWS RAG Manager (after class definition)
+# ============================================================================
+if AWS_RAG_ENABLED:
+    try:
+        aws_rag_manager = AWSRAGManager(
+            region=AWS_REGION,
+            bucket=AWS_RAG_S3_BUCKET,
+            opensearch_endpoint=AWS_RAG_OPENSEARCH_ENDPOINT,
+            index=AWS_RAG_OPENSEARCH_INDEX,
+            embed_model_id=AWS_RAG_EMBED_MODEL,
+            llm_model_id=AWS_RAG_LLM_MODEL,
+        )
+        logger.info(
+            "✅ AWS RAG manager enabled (bucket=%s, index=%s)",
+            AWS_RAG_S3_BUCKET,
+            AWS_RAG_OPENSEARCH_INDEX,
+        )
+    except Exception as aws_error:
+        aws_rag_manager = None
+        logger.error("❌ Failed to initialize AWS RAG manager: %s", aws_error)
+        import traceback
+        logger.error("Full traceback: %s", traceback.format_exc())
+else:
+    logger.info("⚠️ AWS RAG manager disabled (missing configuration or libraries)")
+
+# ============================================================================
 # Pydantic models
+# ============================================================================
 class ProcessVideosRequest(BaseModel):
     urls: List[str]
     userId: str
@@ -859,6 +903,19 @@ class EnhanceVideoRequest(BaseModel):
     youtube_url: str
     video_id: str
 
+class GenerateQuizRequest(BaseModel):
+    video_id: str
+    num_questions: Optional[int] = 5
+
+class GenerateStudyPlanRequest(BaseModel):
+    playlist_id: str
+    video_titles: List[str]
+    user_goal: Optional[str] = None
+
+class SuggestRelatedRequest(BaseModel):
+    video_id: str
+    exclude_playlist_id: Optional[str] = None
+
 @app.get("/", response_model=dict)
 async def root():
     """Root endpoint"""
@@ -870,15 +927,27 @@ async def root():
 
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
-    """Health check endpoint"""
+    """Health check endpoint with detailed service status"""
+    # Check TranscriptService
+    from services.transcript_service import transcript_service
+    transcript_status = bool(transcript_service)
+    
     services = {
         "gemini_ai": bool(GEMINI_API_KEY),
-        "mongodb": bool(mongodb_client) if 'mongodb_client' in globals() else False,
+        "openai": bool(OPENAI_API_KEY),
+        "dynamodb": True,  # Using DynamoDB exclusively
         "backend": True,
-        "bert_embeddings": bool(BERT_AVAILABLE),
+        "recommendations": True,  # CSV-based recommendations
         "aws_rag": bool(aws_rag_manager) if 'aws_rag_manager' in globals() else False,
-        "transcripts": True,  # New transcript system
+        "transcripts": transcript_status,  # S3-based transcript system
+        "transcript_service": transcript_status,  # TranscriptService singleton
     }
+    
+    # Log AWS RAG status
+    if services["aws_rag"]:
+        logger.info(f"✅ AWS RAG Manager: ENABLED (Bucket: {AWS_RAG_S3_BUCKET}, Index: {AWS_RAG_OPENSEARCH_INDEX})")
+    else:
+        logger.warning(f"⚠️ AWS RAG Manager: DISABLED (Check: HAS_AWS_LIBS={HAS_AWS_LIBS}, BUCKET={bool(AWS_RAG_S3_BUCKET)}, ENDPOINT={bool(AWS_RAG_OPENSEARCH_ENDPOINT)})")
     
     status = "healthy" if services["backend"] else "degraded"
     
@@ -889,8 +958,8 @@ async def health_check():
 
 @app.post("/process-videos")
 async def process_videos(request: ProcessVideosRequest):
-    """Process YouTube videos and store transcripts - MongoDB removed, using S3"""
-    # MongoDB removed - transcripts now stored in S3 via Chrome extension
+    """Process YouTube videos and store transcripts in S3"""
+    # Transcripts stored in S3 via Chrome extension
     
     processed_videos = []
     failed_videos = []
@@ -1093,7 +1162,7 @@ async def rag_answer(request: RAGAnswerRequest):
         
         # MongoDB removed - only using S3 for transcripts now
         if not user_transcripts:
-            logger.info("⚠️ No transcripts found in S3")
+            logger.info("[INFO] No transcripts found in S3")
             # Continue with empty list
         
         logger.info(f"Found {len(user_transcripts)} transcripts for RAG context")
@@ -1229,7 +1298,7 @@ Please provide a helpful, accurate answer based on the transcript content. If th
                 "temperature": 0.7
             }
             
-            logger.info("🤖 Calling OpenAI GPT-4o-mini...")
+            logger.info("[OPENAI] Calling GPT-4o-mini...")
             import requests
             response = requests.post(OPENAI_API_URL, headers=headers, json=payload, timeout=30)
             response.raise_for_status()
@@ -1237,7 +1306,7 @@ Please provide a helpful, accurate answer based on the transcript content. If th
             response_data = response.json()
             answer = response_data['choices'][0]['message']['content']
             
-            logger.info(f"✅ Generated answer using OpenAI GPT-4o-mini (cost: ~$0.15/1M tokens)")
+            logger.info("[OPENAI] Generated answer using GPT-4o-mini (cost: ~$0.15/1M tokens)")
             
             return {
                 "answer": answer,
@@ -1319,7 +1388,7 @@ async def enhance_video(request: EnhanceVideoRequest):
         logger.error(f"Error in enhance video: {e}")
         raise HTTPException(status_code=500, detail=f"Error enhancing video: {str(e)}")
 
-## Lightweight BERT endpoints removed
+## ML endpoints removed - using CSV recommendations
 
 @app.post("/generate-mindmap")
 async def generate_mindmap(request: dict):
@@ -1665,37 +1734,1730 @@ Generate the complete mind map JSON based on the provided transcript. Output ONL
 
 
 
+# ============================================================================
+# AI TUTOR ENDPOINTS - Phase 1 Implementation
+# ============================================================================
+
+@app.post("/generate-quiz")
+async def generate_quiz(request: GenerateQuizRequest):
+    """
+    Generate an AI-powered quiz from video transcript
+    Uses OpenAI GPT-4o-mini for quiz generation
+    Enhanced with TranscriptService for automatic S3 fetching
+    """
+    try:
+        logger.info(f"📝 Generating quiz for video: {request.video_id}")
+        logger.info(f"📝 Video ID type: {type(request.video_id)}, length: {len(request.video_id)}")
+        
+        # Validate video ID format (should be 11 characters for YouTube)
+        if len(request.video_id) != 11:
+            logger.warning(f"⚠️ Invalid video ID format: '{request.video_id}' (expected 11 chars, got {len(request.video_id)})")
+            raise HTTPException(
+                status_code=400, 
+                detail=f"Invalid video ID format. Expected YouTube video ID (11 characters), got: {request.video_id}"
+            )
+        
+        # 1. Get transcript using TranscriptService (with caching!)
+        from services.transcript_service import transcript_service
+        
+        transcript_text = transcript_service.get_full_text(request.video_id)
+        
+        if not transcript_text:
+            logger.error(f"❌ No transcript found for video: {request.video_id}")
+            raise HTTPException(
+                status_code=404, 
+                detail=f"Transcript not found for video {request.video_id}. Please extract it using the Chrome extension first."
+            )
+        
+        # Get key concepts for better quiz generation
+        key_concepts = transcript_service.extract_key_concepts(request.video_id, max_concepts=10)
+        logger.info(f"📊 Key concepts: {key_concepts}")
+        
+        # Limit to first 6000 words to fit in context
+        words = transcript_text.split()
+        if len(words) > 6000:
+            transcript_text = ' '.join(words[:6000])
+            logger.info(f"Truncated transcript to 6000 words")
+        
+        logger.info(f"✅ Got transcript ({len(transcript_text)} chars, {len(words)} words)")
+        
+        # 2. Generate quiz with OpenAI
+        if not OPENAI_API_KEY:
+            raise HTTPException(status_code=503, detail="OpenAI API not configured")
+        
+        # Enhanced prompt with key concepts
+        key_concepts_str = ", ".join(key_concepts) if key_concepts else "various topics"
+        
+        prompt = f"""<system>
+You are an expert tutor. Your task is to generate a high-quality, {request.num_questions}-question multiple-choice quiz based ONLY on the provided video transcript.
+
+Key concepts in this video: {key_concepts_str}
+
+Requirements:
+1. Create educational questions that test understanding (not just memorization)
+2. Each question must have 4 options (A, B, C, D)
+3. Mark the correct answer
+4. Provide a brief explanation for the correct answer
+5. Focus on key concepts and practical application
+6. Vary difficulty levels (easy, medium, hard)
+
+You MUST return the quiz in the following exact JSON format. Do not include any other text or markdown.
+
+{{
+  "quizTitle": "Quiz: [Main Topic of Transcript]",
+  "questions": [
+    {{
+      "questionId": "q1",
+      "questionText": "[Question 1]",
+      "difficulty": "easy|medium|hard",
+      "options": [
+        {{ "optionId": "a", "text": "[Option A]" }},
+        {{ "optionId": "b", "text": "[Option B]" }},
+        {{ "optionId": "c", "text": "[Option C]" }},
+        {{ "optionId": "d", "text": "[Option D]" }}
+      ],
+      "correctOptionId": "b",
+      "explanation": "[Why this answer is correct and why others are wrong]"
+    }}
+  ]
+}}
+</system>
+
+<user>
+Video Transcript:
+{transcript_text}
+</user>"""
+
+        headers = {
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 2000,
+            "temperature": 0.7,
+            "response_format": { "type": "json_object" }
+        }
+        
+        logger.info("🤖 Calling OpenAI...")
+        openai_response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
+        )
+        
+        if not openai_response.ok:
+            logger.error(f"OpenAI error: {openai_response.text}")
+            raise HTTPException(status_code=500, detail="Failed to generate quiz")
+        
+        result = openai_response.json()
+        quiz_json = json.loads(result['choices'][0]['message']['content'])
+        
+        logger.info(f"✅ Quiz generated: {len(quiz_json.get('questions', []))} questions")
+        
+        return {
+            "success": True,
+            "quiz": quiz_json,
+            "videoId": request.video_id,
+            "generatedAt": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error generating quiz: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating quiz: {str(e)}")
+
+
+@app.post("/generate-study-plan")
+async def generate_study_plan(request: GenerateStudyPlanRequest):
+    """
+    Generate an AI-powered study plan for a playlist
+    Uses OpenAI GPT-4o-mini for personalized learning path
+    Enhanced with TranscriptService for intelligent content analysis from S3 transcripts
+    """
+    try:
+        logger.info(f"📚 Generating study plan for playlist: {request.playlist_id}")
+        
+        if not request.video_titles:
+            raise HTTPException(status_code=400, detail="No videos provided")
+        
+        if not OPENAI_API_KEY:
+            raise HTTPException(status_code=503, detail="OpenAI API not configured")
+        
+        # Fetch transcripts from S3 using TranscriptService
+        from services.transcript_service import transcript_service
+        
+        # Get playlist data from DynamoDB to extract video IDs
+        dynamodb = boto3.resource('dynamodb', region_name='ap-south-2')
+        playlists_table = dynamodb.Table('Playlists')
+        
+        video_analyses = []
+        video_ids = []
+        
+        # Try to fetch playlist to get video IDs
+        try:
+            response = playlists_table.get_item(Key={'id': request.playlist_id})
+            if 'Item' in response:
+                playlist = response['Item']
+                videos = playlist.get('videos', [])
+                
+                logger.info(f"📋 Found {len(videos)} videos in playlist")
+                
+                for i, video in enumerate(videos):
+                    video_id = video.get('youtubeId') or video.get('id', '').replace('video_', '')
+                    video_title = video.get('title', request.video_titles[i] if i < len(request.video_titles) else f"Video {i+1}")
+                    
+                    video_info = {
+                        'number': i + 1,
+                        'title': video_title,
+                        'hasTranscript': False,
+                        'keyTopics': [],
+                        'summary': None
+                    }
+                    
+                    # Try to fetch transcript from S3 if valid video ID
+                    if video_id and len(video_id) == 11:
+                        video_ids.append(video_id)
+                        try:
+                            transcript_text = transcript_service.get_full_text(video_id)
+                            if transcript_text:
+                                video_info['hasTranscript'] = True
+                                # Get first 500 chars as preview
+                                video_info['summary'] = transcript_text[:500] + "..." if len(transcript_text) > 500 else transcript_text
+                                logger.info(f"✅ Fetched transcript for video {i+1}: {video_id}")
+                        except Exception as e:
+                            logger.warning(f"⚠️ Could not fetch transcript for {video_id}: {e}")
+                    
+                    video_analyses.append(video_info)
+            else:
+                # Fallback: Use titles from request
+                logger.warning(f"Playlist {request.playlist_id} not found, using titles only")
+                for i, title in enumerate(request.video_titles):
+                    video_analyses.append({
+                        'number': i + 1,
+                        'title': title,
+                        'hasTranscript': False,
+                        'keyTopics': []
+                    })
+        except Exception as e:
+            logger.error(f"Error fetching playlist: {e}")
+            # Fallback: Use titles from request
+            for i, title in enumerate(request.video_titles):
+                video_analyses.append({
+                    'number': i + 1,
+                    'title': title,
+                    'hasTranscript': False,
+                    'keyTopics': []
+                })
+        
+        # Build rich context about the playlist with transcript insights
+        video_list_parts = []
+        transcripts_available = sum(1 for v in video_analyses if v.get('hasTranscript'))
+        
+        for v in video_analyses:
+            video_entry = f"{v['number']}. {v['title']}"
+            if v.get('hasTranscript') and v.get('summary'):
+                video_entry += f"\n   Preview: {v['summary']}"
+            video_list_parts.append(video_entry)
+        
+        video_list = "\n".join(video_list_parts)
+        user_goal_text = f"\n\nUser's Learning Goal: {request.user_goal}" if request.user_goal else ""
+        transcript_note = f"\n\nNote: {transcripts_available}/{len(video_analyses)} videos have full transcripts available for analysis." if transcripts_available > 0 else ""
+        
+        prompt = f"""You are an expert learning coach. Create a personalized study plan for this playlist of educational videos.
+
+Videos in this playlist:
+{video_list}
+{user_goal_text}{transcript_note}
+
+Generate a comprehensive study plan in markdown format that includes:
+
+1. **Overview**: What this learning path covers (use transcript previews when available)
+2. **Prerequisites**: What the learner should know before starting
+3. **Recommended Order**: The optimal sequence to watch these videos and why
+4. **Key Learning Objectives**: What they'll be able to do after completing this
+5. **Study Tips**: How to get the most out of these videos
+6. **Practice Suggestions**: Exercises or projects to reinforce learning
+7. **Estimated Timeline**: How long this will take (be realistic)
+8. **Key Topics by Video**: Break down main topics covered in each video
+
+Make it engaging, motivational, and actionable. Use bullet points and clear sections. Be specific about the content based on the video transcripts provided."""
+
+        headers = {
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 2500,  # Increased for more detailed analysis
+            "temperature": 0.7  # Slightly lower for more focused output
+        }
+        
+        logger.info("🤖 Calling OpenAI for study plan...")
+        openai_response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
+        )
+        
+        if not openai_response.ok:
+            logger.error(f"OpenAI error: {openai_response.text}")
+            raise HTTPException(status_code=500, detail="Failed to generate study plan")
+        
+        result = openai_response.json()
+        study_plan_markdown = result['choices'][0]['message']['content']
+        
+        logger.info(f"✅ Study plan generated ({len(study_plan_markdown)} chars)")
+        
+        return {
+            "success": True,
+            "studyPlanMarkdown": study_plan_markdown,
+            "playlistId": request.playlist_id,
+            "videoCount": len(request.video_titles),
+            "generatedAt": datetime.now().isoformat()
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error generating study plan: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating study plan: {str(e)}")
+
+
+@app.post("/suggest-related")
+async def suggest_related(request: SuggestRelatedRequest):
+    """
+    Suggest related videos based on content similarity
+    Uses OpenSearch k-NN search on existing embeddings
+    """
+    try:
+        logger.info(f"🔗 Finding related videos for: {request.video_id}")
+        
+        if not HAS_AWS_LIBS or not opensearch_client:
+            raise HTTPException(status_code=503, detail="OpenSearch not configured")
+        
+        # 1. Get the current video's embedding from OpenSearch
+        try:
+            # Search for this video's chunks to get its embedding
+            search_query = {
+                "size": 1,
+                "query": {
+                    "term": {
+                        "videoId": request.video_id
+                    }
+                }
+            }
+            
+            response = opensearch_client.search(
+                index="streamsmart-ai-vectors",
+                body=search_query
+            )
+            
+            if not response['hits']['hits']:
+                raise HTTPException(status_code=404, detail=f"Video {request.video_id} not found in index")
+            
+            # Get embedding from the first chunk
+            video_embedding = response['hits']['hits'][0]['_source'].get('embedding')
+            if not video_embedding:
+                raise HTTPException(status_code=404, detail="No embedding found for video")
+            
+            logger.info(f"✅ Got embedding for video {request.video_id}")
+            
+        except Exception as e:
+            logger.error(f"❌ Error getting video embedding: {e}")
+            raise HTTPException(status_code=500, detail=f"Could not retrieve video data: {str(e)}")
+        
+        # 2. Find similar videos using k-NN search
+        knn_query = {
+            "size": 10,  # Get top 10 to filter down
+            "query": {
+                "knn": {
+                    "embedding": {
+                        "vector": video_embedding,
+                        "k": 10
+                    }
+                }
+            },
+            "_source": ["videoId", "title", "description", "thumbnail"],
+            # Filter out the current video
+            "post_filter": {
+                "bool": {
+                    "must_not": [
+                        {"term": {"videoId": request.video_id}}
+                    ]
+                }
+            }
+        }
+        
+        # If playlist is specified, also exclude videos from same playlist
+        if request.exclude_playlist_id:
+            knn_query["post_filter"]["bool"]["must_not"].append(
+                {"term": {"playlistId": request.exclude_playlist_id}}
+            )
+        
+        results = opensearch_client.search(
+            index="streamsmart-ai-vectors",
+            body=knn_query
+        )
+        
+        # 3. Process and deduplicate results
+        seen_videos = set()
+        related_videos = []
+        
+        for hit in results['hits']['hits']:
+            vid = hit['_source'].get('videoId')
+            if vid and vid not in seen_videos:
+                seen_videos.add(vid)
+                related_videos.append({
+                    "videoId": vid,
+                    "title": hit['_source'].get('title', 'Unknown Video'),
+                    "description": hit['_source'].get('description', '')[:200],
+                    "thumbnail": hit['_source'].get('thumbnail', ''),
+                    "similarity": round(hit['_score'], 3)
+                })
+                
+                # Return top 5 unique videos
+                if len(related_videos) >= 5:
+                    break
+        
+        logger.info(f"✅ Found {len(related_videos)} related videos")
+        
+        return {
+            "success": True,
+            "relatedVideos": related_videos,
+            "sourceVideoId": request.video_id
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error finding related videos: {e}")
+        raise HTTPException(status_code=500, detail=f"Error finding related videos: {str(e)}")
+
+
+# ============================================================================
+# ADVANCED RAG WITH SEMANTIC SEARCH
+# ============================================================================
+
+from services.embedding_service import EmbeddingService
+
+# Initialize embedding service (lazy initialization)
+_embedding_service = None
+
+def get_embedding_service():
+    """Lazy initialization of embedding service"""
+    global _embedding_service
+    if _embedding_service is None:
+        _embedding_service = EmbeddingService(openai_api_key=OPENAI_API_KEY)
+    return _embedding_service
+
+
+class SemanticChatRequest(BaseModel):
+    """Request model for semantic chat with enhanced RAG"""
+    text: str
+    sessionId: str
+    userId: str
+    videoIds: list[str]
+
+
+class SemanticChatResponse(BaseModel):
+    """Response model for semantic chat"""
+    answer: str
+    sessionId: str
+    sources: list[dict]  # List of relevant chunks with metadata
+    videosSources: list[str]  # Video IDs that contributed to answer
+
+
+@app.post("/semantic-chat", response_model=SemanticChatResponse)
+async def semantic_chat(request: SemanticChatRequest):
+    """
+    Advanced RAG chatbot using semantic search with embeddings.
+    Uses OpenAI embeddings for better context retrieval than keyword search.
+    
+    Flow:
+    1. Generate query embedding
+    2. Semantic search across transcript chunks
+    3. Build context from top-K relevant chunks
+    4. GPT-4o generates answer with full context
+    """
+    try:
+        logger.info(f"🔍 Semantic chat query: '{request.text}' for user {request.userId}")
+        logger.info(f"📹 Searching across {len(request.videoIds)} videos")
+        
+        if not request.videoIds:
+            raise HTTPException(status_code=400, detail="No video IDs provided")
+        
+        # Get embedding service
+        embedding_service = get_embedding_service()
+        
+        # Perform semantic search across all video transcripts
+        search_results = embedding_service.semantic_search(
+            query=request.text,
+            video_ids=request.videoIds,
+            top_k=5,  # Top 5 most relevant chunks
+            similarity_threshold=0.5  # Only chunks with >50% similarity
+        )
+        
+        if not search_results:
+            # No relevant chunks found - provide general response
+            logger.warning("⚠️ No relevant transcript chunks found")
+            return SemanticChatResponse(
+                answer="I couldn't find relevant information in the provided videos to answer your question. Could you rephrase or ask something more specific about the video content?",
+                sessionId=request.sessionId,
+                sources=[],
+                videosSources=[]
+            )
+        
+        # Build rich context from search results
+        context_parts = []
+        sources_metadata = []
+        video_sources = set()
+        
+        for i, result in enumerate(search_results, 1):
+            video_id = result['video_id']
+            chunk_text = result['chunk_text']
+            similarity = result['similarity_score']
+            
+            context_parts.append(
+                f"[Source {i} - Video ID: {video_id}, Relevance: {similarity:.2%}]\n{chunk_text}\n"
+            )
+            
+            sources_metadata.append({
+                'videoId': video_id,
+                'chunkIndex': result['chunk_index'],
+                'similarityScore': round(similarity, 3),
+                'text': chunk_text[:200] + "..." if len(chunk_text) > 200 else chunk_text
+            })
+            
+            video_sources.add(video_id)
+        
+        context = "\n".join(context_parts)
+        
+        # Build prompt for GPT-4o
+        prompt = f"""You are an AI tutor helping a student understand video content. Answer their question using the provided transcript excerpts.
+
+**Student Question:**
+{request.text}
+
+**Relevant Transcript Excerpts (ranked by relevance):**
+{context}
+
+**Instructions:**
+- Provide a clear, comprehensive answer based on the transcript excerpts
+- Reference specific sources when making claims (e.g., "According to Source 1...")
+- If multiple sources cover the topic, synthesize the information
+- Use simple language and include examples when helpful
+- If the excerpts don't fully answer the question, acknowledge what's covered and what's not
+- Be encouraging and educational
+
+**Answer:**"""
+
+        # Call OpenAI API
+        headers = {
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [{"role": "user", "content": prompt}],
+            "max_tokens": 800,
+            "temperature": 0.7
+        }
+        
+        logger.info("🤖 Calling OpenAI with semantic context...")
+        openai_response = requests.post(
+            "https://api.openai.com/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        
+        if not openai_response.ok:
+            logger.error(f"OpenAI error: {openai_response.text}")
+            raise HTTPException(status_code=500, detail="Failed to generate answer")
+        
+        result = openai_response.json()
+        answer = result['choices'][0]['message']['content']
+        
+        logger.info(f"✅ Generated answer ({len(answer)} chars) using {len(search_results)} sources from {len(video_sources)} videos")
+        
+        return SemanticChatResponse(
+            answer=answer,
+            sessionId=request.sessionId,
+            sources=sources_metadata,
+            videosSources=list(video_sources)
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error in semantic chat: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error processing semantic chat: {str(e)}")
+
+
+# ============================================================================
+# END AI TUTOR ENDPOINTS
+# ============================================================================
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
     # Initialize BERT embeddings engine on startup
     try:
-        logger.info("🚀 StreamSmart Backend starting up...")
-        logger.info(f"🤖 Gemini AI: {'✅ Available' if GEMINI_API_KEY else '❌ Not configured'}")
-        logger.info(f"📊 MongoDB: {'✅ Connected' if mongodb_client else '❌ Not connected'}")
-        logger.info(f"🧠 BERT Embeddings Service: {'✅ Available' if BERT_AVAILABLE else '❌ Disabled'}")
-
-        if BERT_AVAILABLE:
-            try:
-                from services.bert_recommendation_engine import get_bert_recommendation_engine
-                logger.info("🧠 Initializing BERT Embeddings recommendation system...")
-                bert_engine = get_bert_recommendation_engine()
-                bert_engine.initialize_system()
-                logger.info("✅ BERT Embeddings recommendation system initialized!")
-            except Exception as e:
-                logger.error(f"❌ Failed to initialize BERT Embeddings system: {e}")
+        logger.info("[STARTUP] StreamSmart Backend starting...")
+        logger.info(f"[GEMINI] {'Available' if GEMINI_API_KEY else 'Not configured'}")
+        logger.info("[DATABASE] DynamoDB (ap-south-2) - Connected")
+        logger.info("[RECOMMENDATIONS] CSV-based system - Active")
         
         # Start content collection system
         try:
             from genre_endpoints import start_content_collection
             await start_content_collection()
-            logger.info("🎯 Content collection system started - collecting videos every 6 hours")
+            logger.info("[CONTENT] Collection system started - collecting every 6 hours")
         except Exception as e:
             logger.error(f"Failed to start content collection: {e}")
         
         logger.info("🎉 Backend startup complete!")
     except Exception as e:
         logger.error(f"❌ Startup error: {e}")
+
+# ==================== FEATURE 1: SMART SUGGESTIONS ====================
+
+class GenerateSuggestionsRequest(BaseModel):
+    video_ids: List[str]
+    user_id: Optional[str] = None
+    conversation_history: Optional[List[Dict[str, str]]] = []
+    max_suggestions: int = 4
+
+class SuggestionResponse(BaseModel):
+    text: str
+    category: str
+    priority: int
+    confidence: float
+
+class SuggestionsResult(BaseModel):
+    suggestions: List[SuggestionResponse]
+    confidence: float
+    generated_at: str
+
+@app.post("/generate-suggestions", response_model=SuggestionsResult)
+async def generate_suggestions(request: GenerateSuggestionsRequest):
+    """
+    Generate smart question suggestions based on video context
+    Uses GPT-4o-mini to create contextual, relevant questions
+    """
+    try:
+        video_ids = request.video_ids
+        conversation_history = request.conversation_history or []
+        max_suggestions = min(request.max_suggestions, 8)  # Cap at 8
+
+        if not video_ids:
+            raise HTTPException(status_code=400, detail="video_ids is required")
+
+        # Check if required services are available
+        if not HAS_OPENAI or not openai:
+            logger.warning("OpenAI not available, returning fallback suggestions")
+            return get_fallback_suggestions(len(video_ids) > 1, max_suggestions)
+
+        if not HAS_SERVICES or not transcript_service:
+            logger.warning("TranscriptService not available, generating without context")
+            transcript_snippets = []
+        else:
+            # Fetch transcript snippets for context
+            transcript_snippets = []
+            for video_id in video_ids[:3]:  # Limit to first 3 videos
+                try:
+                    transcript = transcript_service.get_full_text(video_id)
+                    if transcript:
+                        # Get first 500 chars as context
+                        snippet = transcript[:500] if len(transcript) > 500 else transcript
+                        transcript_snippets.append({
+                            'video_id': video_id,
+                            'snippet': snippet
+                        })
+                except Exception as e:
+                    logger.warning(f"Could not fetch transcript for {video_id}: {e}")
+                    continue
+
+        # Check if we have conversation history
+        has_history = len(conversation_history) > 0
+        history_text = ""
+        if has_history:
+            history_text = "\n".join([
+                f"{msg.get('role', 'user')}: {msg.get('content', '')}"
+                for msg in conversation_history[-3:]  # Last 3 messages
+            ])
+
+        # Build context for GPT
+        context_text = ""
+        if transcript_snippets:
+            context_text = "\n\n".join([
+                f"Video {i+1} excerpt:\n{s['snippet']}"
+                for i, s in enumerate(transcript_snippets)
+            ])
+
+        # Determine if single or multi-video
+        is_multi_video = len(video_ids) > 1
+
+        # Create prompt
+        system_prompt = """You are an expert educational assistant. Generate helpful, specific question suggestions that will help the user learn from the video content.
+
+Categories:
+- summary: Overview/recap questions
+- concept: Deep dive into specific concepts
+- navigation: Finding specific information
+- study: Application and understanding
+- practice: Testing knowledge
+
+Return ONLY a valid JSON array of suggestions in this exact format:
+[
+  {
+    "text": "Question text here",
+    "category": "category_name",
+    "priority": 1,
+    "confidence": 0.95
+  }
+]
+
+Make questions:
+1. Specific to the content (use actual topics from transcripts)
+2. Actionable and clear
+3. Varied in type and difficulty
+4. Natural and conversational"""
+
+        user_prompt = f"""Generate {max_suggestions} question suggestions.
+
+Context:
+{"Multiple videos" if is_multi_video else "Single video"} 
+Total videos: {len(video_ids)}
+
+Content preview:
+{context_text if context_text else "No transcript available - suggest general questions"}
+
+{"Recent conversation:" if has_history else ""}
+{history_text if has_history else ""}
+
+Generate {max_suggestions} diverse, helpful questions."""
+
+        # Call OpenAI (using new API v1.0+)
+        from openai import OpenAI
+        client = OpenAI(api_key=OPENAI_API_KEY)
+        
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            temperature=0.8,  # Higher for creativity
+            max_tokens=500,
+            timeout=8
+        )
+
+        suggestions_text = response.choices[0].message.content.strip()
+
+        # Parse JSON response
+        try:
+            # Remove markdown code blocks if present
+            if suggestions_text.startswith("```"):
+                suggestions_text = suggestions_text.split("```")[1]
+                if suggestions_text.startswith("json"):
+                    suggestions_text = suggestions_text[4:]
+            
+            suggestions_data = json.loads(suggestions_text)
+            
+            # Validate and convert
+            suggestions = []
+            for i, item in enumerate(suggestions_data[:max_suggestions]):
+                suggestions.append(SuggestionResponse(
+                    text=item.get('text', ''),
+                    category=item.get('category', 'study'),
+                    priority=item.get('priority', i + 1),
+                    confidence=float(item.get('confidence', 0.85))
+                ))
+
+            return SuggestionsResult(
+                suggestions=suggestions,
+                confidence=0.9 if transcript_snippets else 0.7,
+                generated_at=datetime.now().isoformat()
+            )
+
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse GPT response as JSON: {e}")
+            logger.error(f"Response was: {suggestions_text}")
+            # Return fallback suggestions
+            return get_fallback_suggestions(is_multi_video, max_suggestions)
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating suggestions: {e}", exc_info=True)
+        # Return fallback on error
+        return get_fallback_suggestions(len(video_ids) > 1, request.max_suggestions)
+
+def get_fallback_suggestions(is_multi_video: bool, max_suggestions: int) -> SuggestionsResult:
+    """Fallback suggestions when AI generation fails"""
+    
+    single_video = [
+        SuggestionResponse(
+            text="Summarize this video",
+            category="summary",
+            priority=1,
+            confidence=0.8
+        ),
+        SuggestionResponse(
+            text="What are the main concepts?",
+            category="concept",
+            priority=2,
+            confidence=0.8
+        ),
+        SuggestionResponse(
+            text="Can you explain this in simple terms?",
+            category="study",
+            priority=3,
+            confidence=0.75
+        ),
+        SuggestionResponse(
+            text="Give me practice questions",
+            category="practice",
+            priority=4,
+            confidence=0.75
+        ),
+    ]
+
+    multi_video = [
+        SuggestionResponse(
+            text="Compare the concepts across these videos",
+            category="concept",
+            priority=1,
+            confidence=0.8
+        ),
+        SuggestionResponse(
+            text="Summarize all videos together",
+            category="summary",
+            priority=2,
+            confidence=0.8
+        ),
+        SuggestionResponse(
+            text="What order should I watch these?",
+            category="navigation",
+            priority=3,
+            confidence=0.75
+        ),
+        SuggestionResponse(
+            text="Create a study plan from all videos",
+            category="study",
+            priority=4,
+            confidence=0.75
+        ),
+    ]
+
+    suggestions = multi_video if is_multi_video else single_video
+
+    return SuggestionsResult(
+        suggestions=suggestions[:max_suggestions],
+        confidence=0.7,
+        generated_at=datetime.now().isoformat()
+    )
+
+# ==================== FEATURE 4: CONVERSATION MEMORY ====================
+
+from services.conversation_service import conversation_service
+
+class SaveConversationRequest(BaseModel):
+    user_id: str
+    playlist_id: str
+    messages: List[Dict[str, Any]]
+    title: Optional[str] = None
+    conversation_id: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+class ConversationSummary(BaseModel):
+    conversationId: str
+    title: str
+    playlistId: str
+    messageCount: int
+    topics: List[str]
+    starred: bool
+    archived: bool
+    createdAt: str
+    updatedAt: str
+    preview: str
+
+class ListConversationsResponse(BaseModel):
+    conversations: List[ConversationSummary]
+    nextCursor: Optional[Dict] = None
+
+@app.post("/conversations/save")
+async def save_conversation(request: SaveConversationRequest):
+    """Save or update a conversation"""
+    try:
+        result = conversation_service.save_conversation(
+            user_id=request.user_id,
+            playlist_id=request.playlist_id,
+            messages=request.messages,
+            title=request.title,
+            conversation_id=request.conversation_id,
+            metadata=request.metadata
+        )
+        
+        return {
+            "success": True,
+            "conversation": result
+        }
+        
+    except Exception as e:
+        logger.error(f"Error saving conversation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/conversations/{user_id}")
+async def list_conversations(
+    user_id: str,
+    playlist_id: Optional[str] = None,
+    limit: int = 20,
+    archived: bool = False
+):
+    """List conversations for a user"""
+    try:
+        result = conversation_service.list_conversations(
+            user_id=user_id,
+            playlist_id=playlist_id,
+            limit=limit,
+            archived=archived
+        )
+        
+        return result
+        
+    except Exception as e:
+        logger.error(f"Error listing conversations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/conversations/{user_id}/{conversation_id}")
+async def get_conversation(user_id: str, conversation_id: str):
+    """Get a specific conversation"""
+    try:
+        conversation = conversation_service.get_conversation(user_id, conversation_id)
+        
+        if not conversation:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+        
+        return conversation
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting conversation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.delete("/conversations/{user_id}/{conversation_id}")
+async def delete_conversation(user_id: str, conversation_id: str):
+    """Delete a conversation"""
+    try:
+        success = conversation_service.delete_conversation(user_id, conversation_id)
+        
+        if not success:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+        
+        return {"success": True, "message": "Conversation deleted"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting conversation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.patch("/conversations/{user_id}/{conversation_id}")
+async def update_conversation_metadata(
+    user_id: str,
+    conversation_id: str,
+    title: Optional[str] = None,
+    starred: Optional[bool] = None,
+    archived: Optional[bool] = None
+):
+    """Update conversation metadata"""
+    try:
+        success = conversation_service.update_metadata(
+            user_id=user_id,
+            conversation_id=conversation_id,
+            title=title,
+            starred=starred,
+            archived=archived
+        )
+        
+        if not success:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+        
+        return {"success": True, "message": "Metadata updated"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating metadata: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/conversations/{user_id}/search")
+async def search_conversations(
+    user_id: str,
+    query: str,
+    limit: int = 10
+):
+    """Search conversations by content"""
+    try:
+        results = conversation_service.search_conversations(
+            user_id=user_id,
+            query=query,
+            limit=limit
+        )
+        
+        return {"results": results, "total": len(results)}
+        
+    except Exception as e:
+        logger.error(f"Error searching conversations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/conversations/{user_id}/{conversation_id}/export")
+async def export_conversation(
+    user_id: str,
+    conversation_id: str,
+    format: str = "markdown"
+):
+    """Export conversation in various formats"""
+    try:
+        content = conversation_service.export_conversation(
+            user_id=user_id,
+            conversation_id=conversation_id,
+            format=format
+        )
+        
+        if not content:
+            raise HTTPException(status_code=404, detail="Conversation not found")
+        
+        # Return appropriate content type
+        if format == "json":
+            from fastapi.responses import JSONResponse
+            return JSONResponse(content=json.loads(content))
+        elif format == "html":
+            from fastapi.responses import HTMLResponse
+            return HTMLResponse(content=content)
+        else:  # markdown
+            from fastapi.responses import PlainTextResponse
+            return PlainTextResponse(content=content)
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error exporting conversation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== LEARNING PROFILE ENDPOINTS (Feature 6) ====================
+
+from services.learning_profile_service import learning_profile_service
+from services.adaptive_explainer_service import adaptive_explainer_service
+
+class UpdateProficiencyRequest(BaseModel):
+    topic: str
+    question_quality: float  # 0-1
+    comprehension_score: float  # 0-1
+
+class AdaptAnswerRequest(BaseModel):
+    answer: str
+    topic: str
+    context: Optional[str] = ""
+
+class FollowupQuestionsRequest(BaseModel):
+    topic: str
+    conversation_history: List[Dict[str, str]]
+    max_questions: int = 3
+
+@app.get("/learning-profile/{user_id}")
+async def get_learning_profile(user_id: str):
+    """Get or create user's learning profile"""
+    try:
+        profile = await learning_profile_service.get_or_create_profile(user_id)
+        return {"profile": profile}
+    except Exception as e:
+        logger.error(f"Error getting profile: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.patch("/learning-profile/{user_id}")
+async def update_learning_profile(user_id: str, updates: Dict[str, Any]):
+    """Update user's learning profile"""
+    try:
+        updated_profile = await learning_profile_service.update_profile(user_id, updates)
+        return {"profile": updated_profile, "message": "Profile updated successfully"}
+    except Exception as e:
+        logger.error(f"Error updating profile: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/learning-profile/{user_id}/topic-proficiency")
+async def update_topic_proficiency(user_id: str, request: UpdateProficiencyRequest):
+    """Update proficiency for a specific topic after interaction"""
+    try:
+        result = await learning_profile_service.update_topic_proficiency(
+            user_id=user_id,
+            topic=request.topic,
+            question_quality=request.question_quality,
+            comprehension_score=request.comprehension_score
+        )
+        return result
+    except Exception as e:
+        logger.error(f"Error updating topic proficiency: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/learning-profile/{user_id}/weak-areas")
+async def get_weak_areas(user_id: str):
+    """Get topics that need more attention"""
+    try:
+        weak_areas = await learning_profile_service.get_weak_areas(user_id)
+        return {"weak_areas": weak_areas, "total": len(weak_areas)}
+    except Exception as e:
+        logger.error(f"Error getting weak areas: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/learning-profile/{user_id}/progress")
+async def get_progress_summary(user_id: str):
+    """Get comprehensive progress summary"""
+    try:
+        summary = await learning_profile_service.get_progress_summary(user_id)
+        return summary
+    except Exception as e:
+        logger.error(f"Error getting progress summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/learning-profile/{user_id}/adapt-answer")
+async def adapt_answer(user_id: str, request: AdaptAnswerRequest):
+    """Adapt an answer to match user's learning profile"""
+    try:
+        # Get user profile
+        profile = await learning_profile_service.get_or_create_profile(user_id)
+        
+        # Adapt answer
+        adapted_answer = await adaptive_explainer_service.adapt_explanation(
+            answer=request.answer,
+            topic=request.topic,
+            user_profile=profile,
+            context=request.context
+        )
+        
+        return {
+            "adapted_answer": adapted_answer,
+            "original_answer": request.answer,
+            "education_level": profile.get('educationLevel'),
+            "topic_proficiency": profile.get('currentLevel', {}).get(request.topic, 50)
+        }
+    except Exception as e:
+        logger.error(f"Error adapting answer: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/learning-profile/{user_id}/followup-questions")
+async def generate_followup_questions(user_id: str, request: FollowupQuestionsRequest):
+    """Generate personalized follow-up questions"""
+    try:
+        # Get user profile
+        profile = await learning_profile_service.get_or_create_profile(user_id)
+        
+        # Generate questions
+        questions = await adaptive_explainer_service.generate_followup_questions(
+            topic=request.topic,
+            user_profile=profile,
+            conversation_history=request.conversation_history,
+            max_questions=request.max_questions
+        )
+        
+        return {"questions": questions, "total": len(questions)}
+    except Exception as e:
+        logger.error(f"Error generating follow-up questions: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/learning-profile/{user_id}/recommendations")
+async def get_personalized_recommendations(user_id: str, video_ids: Optional[str] = None):
+    """Get personalized learning recommendations"""
+    try:
+        # Get user profile and weak areas
+        profile = await learning_profile_service.get_or_create_profile(user_id)
+        weak_areas = await learning_profile_service.get_weak_areas(user_id)
+        
+        # Parse video IDs
+        video_id_list = video_ids.split(',') if video_ids else []
+        
+        # Generate recommendations
+        recommendations = await adaptive_explainer_service.generate_personalized_recommendations(
+            user_profile=profile,
+            weak_areas=weak_areas,
+            video_ids=video_id_list
+        )
+        
+        return {"recommendations": recommendations, "total": len(recommendations)}
+    except Exception as e:
+        logger.error(f"Error getting recommendations: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ==================== AUTO-SUMMARY ENDPOINTS (Feature 8) ====================
+
+from services.auto_summary_service import auto_summary_service
+
+class GenerateSummaryRequest(BaseModel):
+    video_id: str
+    transcript: str
+    title: Optional[str] = ""
+    levels: int = 3
+
+class KeyMomentsRequest(BaseModel):
+    video_id: str
+    transcript: str
+    title: Optional[str] = ""
+    max_moments: int = 5
+
+class ProactiveInsightsRequest(BaseModel):
+    video_id: str
+    transcript: str
+    title: str
+    user_id: Optional[str] = None
+
+@app.post("/auto-summary/generate")
+async def generate_video_summary(request: GenerateSummaryRequest):
+    """Generate multi-level video summary automatically"""
+    try:
+        summary = await auto_summary_service.generate_video_summary(
+            video_id=request.video_id,
+            transcript=request.transcript,
+            title=request.title,
+            generate_levels=request.levels
+        )
+        return summary
+    except Exception as e:
+        logger.error(f"Error generating auto-summary: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/auto-summary/key-moments")
+async def identify_key_moments(request: KeyMomentsRequest):
+    """Identify important timestamps in video"""
+    try:
+        moments = await auto_summary_service.identify_key_moments(
+            video_id=request.video_id,
+            transcript=request.transcript,
+            title=request.title,
+            max_moments=request.max_moments
+        )
+        return {"key_moments": moments, "total": len(moments)}
+    except Exception as e:
+        logger.error(f"Error identifying key moments: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/auto-summary/proactive-insights")
+async def generate_proactive_insights(request: ProactiveInsightsRequest):
+    """Generate all proactive insights for video load"""
+    try:
+        # Get user profile if user_id provided
+        user_profile = None
+        if request.user_id:
+            user_profile = await learning_profile_service.get_or_create_profile(request.user_id)
+        
+        insights = await auto_summary_service.generate_proactive_insights(
+            video_id=request.video_id,
+            transcript=request.transcript,
+            title=request.title,
+            user_profile=user_profile
+        )
+        return insights
+    except Exception as e:
+        logger.error(f"Error generating proactive insights: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error exporting conversation: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================================
+# Feature 7: Multi-Modal Understanding API Endpoints
+# ========================================
+
+from services.multi_modal_service import multi_modal_service
+from fastapi import File, UploadFile, Form
+
+
+class ScreenshotAnalysisRequest(BaseModel):
+    """Request for screenshot analysis"""
+    context: Optional[str] = ""
+    analysis_type: str = "general"  # general, diagram, code, text, math
+
+
+@app.post("/multi-modal/analyze-screenshot")
+async def analyze_screenshot_endpoint(
+    file: UploadFile = File(...),
+    context: str = Form(""),
+    analysis_type: str = Form("general")
+):
+    """
+    Analyze a screenshot or image using GPT-4 Vision
+    
+    Args:
+        file: Image file (JPEG, PNG)
+        context: Optional context about the image
+        analysis_type: Type of analysis (general/diagram/code/text/math)
+    
+    Returns:
+        Analysis results with detected content
+    """
+    try:
+        if not multi_modal_service:
+            raise HTTPException(status_code=503, detail="Multi-modal service not available")
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read image data
+        image_data = await file.read()
+        
+        # Validate size (max 10MB)
+        max_size = 10 * 1024 * 1024  # 10MB
+        if len(image_data) > max_size:
+            raise HTTPException(status_code=400, detail=f"Image too large. Max size is 10MB")
+        
+        logger.info(f"Analyzing screenshot with type '{analysis_type}', size: {len(image_data)} bytes")
+        
+        # Analyze
+        result = await multi_modal_service.analyze_screenshot(
+            image_data=image_data,
+            context=context,
+            analysis_type=analysis_type
+        )
+        
+        if not result.get('success', True):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Analysis failed'))
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error analyzing screenshot: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/multi-modal/extract-code")
+async def extract_code_endpoint(
+    file: UploadFile = File(...),
+    expected_language: str = Form(None)
+):
+    """
+    Extract code from a screenshot with syntax validation
+    
+    Args:
+        file: Image file containing code
+        expected_language: Optional hint about programming language
+    
+    Returns:
+        Extracted code with metadata
+    """
+    try:
+        if not multi_modal_service:
+            raise HTTPException(status_code=503, detail="Multi-modal service not available")
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read image data
+        image_data = await file.read()
+        
+        # Validate size
+        max_size = 10 * 1024 * 1024
+        if len(image_data) > max_size:
+            raise HTTPException(status_code=400, detail=f"Image too large. Max size is 10MB")
+        
+        logger.info(f"Extracting code from screenshot, expected language: {expected_language}")
+        
+        # Extract
+        result = await multi_modal_service.extract_code_from_image(
+            image_data=image_data,
+            expected_language=expected_language if expected_language else None
+        )
+        
+        if not result.get('success', False):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Code extraction failed'))
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error extracting code: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/multi-modal/extract-text")
+async def extract_text_endpoint(
+    file: UploadFile = File(...),
+    preserve_formatting: bool = Form(True)
+):
+    """
+    Extract text from an image (OCR alternative)
+    
+    Args:
+        file: Image file containing text
+        preserve_formatting: Whether to maintain original formatting
+    
+    Returns:
+        Extracted text with metadata
+    """
+    try:
+        if not multi_modal_service:
+            raise HTTPException(status_code=503, detail="Multi-modal service not available")
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read image data
+        image_data = await file.read()
+        
+        # Validate size
+        max_size = 10 * 1024 * 1024
+        if len(image_data) > max_size:
+            raise HTTPException(status_code=400, detail=f"Image too large. Max size is 10MB")
+        
+        logger.info(f"Extracting text from screenshot, preserve_formatting: {preserve_formatting}")
+        
+        # Extract
+        result = await multi_modal_service.extract_text_from_image(
+            image_data=image_data,
+            preserve_formatting=preserve_formatting
+        )
+        
+        if not result.get('success', False):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Text extraction failed'))
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error extracting text: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/multi-modal/analyze-diagram")
+async def analyze_diagram_endpoint(
+    file: UploadFile = File(...),
+    diagram_hint: str = Form(None)
+):
+    """
+    Analyze a diagram or visual representation
+    
+    Args:
+        file: Image file containing diagram
+        diagram_hint: Optional hint about diagram type
+    
+    Returns:
+        Diagram analysis with components and relationships
+    """
+    try:
+        if not multi_modal_service:
+            raise HTTPException(status_code=503, detail="Multi-modal service not available")
+        
+        # Validate file type
+        if not file.content_type.startswith('image/'):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Read image data
+        image_data = await file.read()
+        
+        # Validate size
+        max_size = 10 * 1024 * 1024
+        if len(image_data) > max_size:
+            raise HTTPException(status_code=400, detail=f"Image too large. Max size is 10MB")
+        
+        logger.info(f"Analyzing diagram, hint: {diagram_hint}")
+        
+        # Analyze
+        result = await multi_modal_service.analyze_diagram(
+            image_data=image_data,
+            diagram_hint=diagram_hint if diagram_hint else None
+        )
+        
+        if not result.get('success', False):
+            raise HTTPException(status_code=500, detail=result.get('error', 'Diagram analysis failed'))
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error analyzing diagram: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ========================================
+# Feature 10: Advanced Search & Retrieval API Endpoints
+# ========================================
+
+from services.advanced_search_service import advanced_search_service
+
+
+class SemanticSearchRequest(BaseModel):
+    """Request for semantic search"""
+    query: str
+    user_id: Optional[str] = None
+    limit: int = 20
+    filters: Optional[Dict[str, Any]] = None
+
+
+class AdvancedSearchRequest(BaseModel):
+    """Request for advanced search"""
+    query: str
+    user_id: Optional[str] = None
+    filters: Optional[Dict[str, Any]] = None
+    sort_by: str = "relevance"  # relevance, recency, popularity, duration
+    limit: int = 20
+
+
+class SaveSearchRequest(BaseModel):
+    """Request to save a search"""
+    user_id: str
+    name: str
+    query: str
+    filters: Optional[Dict[str, Any]] = None
+
+
+@app.post("/search/semantic")
+async def semantic_search_endpoint(request: SemanticSearchRequest):
+    """
+    Perform semantic search across videos
+    
+    Args:
+        query: Search query
+        user_id: Optional user ID for personalization
+        limit: Maximum results
+        filters: Optional filters (topics, difficulty, date range)
+    
+    Returns:
+        Search results with relevance scores
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        logger.info(f"Semantic search: '{request.query}' (user: {request.user_id})")
+        
+        results = await advanced_search_service.semantic_search(
+            query=request.query,
+            user_id=request.user_id,
+            limit=request.limit,
+            filters=request.filters
+        )
+        
+        if 'error' in results:
+            raise HTTPException(status_code=500, detail=results['error'])
+        
+        return results
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in semantic search: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/search/advanced")
+async def advanced_search_endpoint(request: AdvancedSearchRequest):
+    """
+    Advanced search with filters and custom ranking
+    
+    Args:
+        query: Search query
+        user_id: Optional user ID
+        filters: Dict with optional keys:
+            - topics: List[str]
+            - difficulty: str
+            - date_range: Dict[str, str]
+            - min_duration: int
+            - max_duration: int
+        sort_by: Sort criteria (relevance/recency/popularity/duration)
+        limit: Maximum results
+    
+    Returns:
+        Ranked search results
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        logger.info(f"Advanced search: '{request.query}' (sort: {request.sort_by})")
+        
+        results = await advanced_search_service.advanced_search(
+            query=request.query,
+            user_id=request.user_id,
+            filters=request.filters,
+            sort_by=request.sort_by,
+            limit=request.limit
+        )
+        
+        if 'error' in results:
+            raise HTTPException(status_code=500, detail=results['error'])
+        
+        return results
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error in advanced search: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/search/history/{user_id}")
+async def get_search_history_endpoint(user_id: str, limit: int = 20):
+    """
+    Get user's search history
+    
+    Args:
+        user_id: User ID
+        limit: Maximum history items
+    
+    Returns:
+        List of recent searches
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        history = await advanced_search_service.get_search_history(
+            user_id=user_id,
+            limit=limit
+        )
+        
+        return {
+            'user_id': user_id,
+            'history': history,
+            'count': len(history)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting search history: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/search/save")
+async def save_search_endpoint(request: SaveSearchRequest):
+    """
+    Save a search for quick recall
+    
+    Args:
+        user_id: User ID
+        name: Display name for saved search
+        query: Search query
+        filters: Optional filters
+    
+    Returns:
+        Saved search info
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        result = await advanced_search_service.save_search(
+            user_id=request.user_id,
+            name=request.name,
+            query=request.query,
+            filters=request.filters
+        )
+        
+        if 'error' in result:
+            raise HTTPException(status_code=500, detail=result['error'])
+        
+        return result
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error saving search: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/search/saved/{user_id}")
+async def get_saved_searches_endpoint(user_id: str):
+    """
+    Get user's saved searches
+    
+    Args:
+        user_id: User ID
+    
+    Returns:
+        List of saved searches
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        searches = await advanced_search_service.get_saved_searches(user_id=user_id)
+        
+        return {
+            'user_id': user_id,
+            'saved_searches': searches,
+            'count': len(searches)
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting saved searches: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/search/saved/{user_id}/{search_id}")
+async def delete_saved_search_endpoint(user_id: str, search_id: str):
+    """
+    Delete a saved search
+    
+    Args:
+        user_id: User ID
+        search_id: Search ID to delete
+    
+    Returns:
+        Success status
+    """
+    try:
+        if not advanced_search_service:
+            raise HTTPException(status_code=503, detail="Search service not available")
+        
+        success = await advanced_search_service.delete_saved_search(
+            user_id=user_id,
+            search_id=search_id
+        )
+        
+        if not success:
+            raise HTTPException(status_code=404, detail="Saved search not found")
+        
+        return {
+            'success': True,
+            'message': 'Saved search deleted'
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting saved search: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

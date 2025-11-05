@@ -7,14 +7,15 @@ const cognitoConfig = {
     Cognito: {
       userPoolId: process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID || '',
       userPoolClientId: process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || '',
+      region: process.env.NEXT_PUBLIC_AWS_REGION || 'ap-south-2',
       signUpVerificationMethod: 'code' as const,
       loginWith: {
         oauth: {
           domain: process.env.NEXT_PUBLIC_COGNITO_DOMAIN || '',
           scopes: ['email', 'openid', 'profile'],
           redirectSignIn: [
-            'http://localhost:3000/dashboard',
-            'https://streamsmart.vercel.app/dashboard'
+            'http://localhost:3000/ai-feed',
+            'https://streamsmart.vercel.app/ai-feed'
           ],
           redirectSignOut: [
             'http://localhost:3000',

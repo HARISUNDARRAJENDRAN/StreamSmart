@@ -16,6 +16,7 @@ import {
 import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
 import { useToast } from "@/hooks/use-toast";
+import type { Playlist, Video } from '@/types';
 
 interface RecentPlaylistProgress {
   id: string;
@@ -26,49 +27,9 @@ interface RecentPlaylistProgress {
   completedVideoCount: number;
 }
 
-// Unused functions - commented out
-/*
-function parseDurationToSeconds(durationStr?: string): number {
-  if (!durationStr || durationStr === 'N/A' || typeof durationStr !== 'string') return 0;
-  const parts = durationStr.split(':').map(Number);
-  let seconds = 0;
-  if (parts.some(isNaN)) return 0;
-
-  if (parts.length === 3) { // HH:MM:SS
-    seconds += parts[0] * 3600;
-    seconds += parts[1] * 60;
-    seconds += parts[2];
-  } else if (parts.length === 2) { // MM:SS
-    seconds += parts[0] * 60;
-    seconds += parts[1];
-  } else if (parts.length === 1) { // SS
-    seconds += parts[0];
-  }
-  return seconds;
-}
-
-function formatSecondsToHoursMinutes(totalSeconds: number): string {
-  if (totalSeconds === 0) return "0 minutes";
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  
-  let timeString = "";
-  if (hours > 0) {
-    timeString += `${hours} hour${hours !== 1 ? 's' : ''}`;
-  }
-  if (minutes > 0) {
-    if (timeString.length > 0) timeString += " ";
-    timeString += `${minutes} minute${minutes !== 1 ? 's' : ''}`;
-  }
-  if (timeString.length === 0 && totalSeconds > 0) {
-      return "< 1 minute";
-  }
-  return timeString || "0 minutes";
-}
-*/
 
 // Generate learning trends data based on recent activities
-function generateLearningTrends(activities: Array<{timestamp: Date; type: string; [key: string]: unknown}>): Array<{name: string; videos: number}> {
+function generateLearningTrends(activities: Array<{timestamp: Date; type: string; [key: string]: unknown}>): Array<{day: string; videosWatched: number}> {
   const last7Days = [];
   const today = new Date();
   
@@ -102,7 +63,7 @@ const chartConfig = {
 export default function ProgressPage() {
   const { user, userStats, isLoading: userLoading, updateUserStats } = useUser();
   const [recentPlaylistsProgress, setRecentPlaylistsProgress] = useState<RecentPlaylistProgress[]>([]);
-  const [learningTrendsData, setLearningTrendsData] = useState<Array<{name: string; videos: number}>>([]);
+  const [learningTrendsData, setLearningTrendsData] = useState<Array<{day: string; videosWatched: number}>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [lastFetchTime, setLastFetchTime] = useState<number>(0);
   const { toast } = useToast();
@@ -148,7 +109,7 @@ export default function ProgressPage() {
         const playlistProgress = playlist.videos.length > 0 ? playlistTotalCompletion / playlist.videos.length : 0;
         
         processedPlaylistsActivity.push({
-          id: playlist._id || playlist.id,
+          id: playlist.id,
           title: playlist.title,
           progress: parseFloat(playlistProgress.toFixed(0)),
           lastActivity: new Date(playlist.lastModified || playlist.createdAt).toLocaleDateString(),

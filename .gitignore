@@ -30,6 +30,12 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+python_backend/.env
+python_backend/.env.local
 
 # Credentials and API keys
 python_backend/credentials/
@@ -99,6 +105,12 @@ build/
 htmlcov/
 .tox/
 .cache
+*.pyc
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
 
 # Cursor IDE
 .cursor/
@@ -122,6 +134,9 @@ logs/
 python_backend/cache/
 python_backend/logs/
 python_backend/temp/
+python_backend/__pycache__/
+python_backend/**/__pycache__/
+python_backend/**/*.pyc
 
 # Test and migration files
 test_*.json
@@ -143,3 +158,19 @@ Thumbs.db
 # Windows
 *.stackdump
 *.lnk
+
+# AWS Configuration
+.aws/
+aws-config.json
+aws-credentials
+
+# Database dumps and data
+*.sql
+*.sqlite
+*.db
+
+# Backup files
+*.bak
+*.backup
+*_backup.*
+page_new.tsx

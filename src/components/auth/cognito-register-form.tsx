@@ -52,7 +52,7 @@ export function CognitoRegisterForm() {
         setVerificationEmail(email);
       } else {
         // User is signed up and signed in
-        router.push('/dashboard');
+        router.push('/ai-feed');
       }
     } catch (err: any) {
       console.error('Registration error:', err);

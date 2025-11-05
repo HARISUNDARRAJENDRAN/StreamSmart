@@ -21,7 +21,7 @@ export function LoginForm() {
 
   // Redirect if already authenticated
   if (isAuthenticated) {
-    router.push('/dashboard');
+    router.push('/ai-feed');
     return null;
   }
 
@@ -46,7 +46,7 @@ export function LoginForm() {
           title: "Welcome back!",
           description: "Successfully signed in to StreamSmart.",
         });
-        router.push('/dashboard');
+        router.push('/ai-feed');
       } else {
         toast({
           title: "Login Failed",
@@ -88,7 +88,7 @@ export function LoginForm() {
           title: "Welcome!",
           description: "Successfully signed in with Google.",
         });
-        router.push('/dashboard');
+        router.push('/ai-feed');
       } else {
         toast({
           title: "Google Sign-In Failed",
@@ -118,7 +118,7 @@ export function LoginForm() {
           title: "Demo Mode",
           description: "Welcome to StreamSmart! You're using demo mode.",
         });
-        router.push('/dashboard');
+        router.push('/ai-feed');
       } else {
         toast({
           title: "Demo Login Failed",

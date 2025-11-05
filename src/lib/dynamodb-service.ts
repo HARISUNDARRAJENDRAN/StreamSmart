@@ -1,4 +1,6 @@
-import { connectToDatabase } from './dynamodb';
+// This is the server-side version - imports from dynamodb-server
+// For client-side code, use API routes instead
+import { connectToDatabase } from './dynamodb-server';
 import { GetCommand, QueryCommand, ScanCommand, UpdateCommand, DeleteCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 
 
@@ -186,6 +188,7 @@ export interface DynamoDBPlaylist {
   category: string;
   tags: string[];
   isPublic: boolean;
+  isDefault?: boolean;  // NEW: Mark default "My Saved Videos" playlist
   videos: Array<{
     id: string;
     youtubeId: string;
@@ -199,10 +202,20 @@ export interface DynamoDBPlaylist {
     completionStatus: number;
     addedAt: string;
     addedBy: string;
+    // NEW: Transcript-related fields
+    transcriptS3Key?: string;        // Link to S3 transcript file
+    hasTranscript?: boolean;         // Quick check for AI features
+    transcriptLanguage?: string;     // Language code (en, es, etc.)
+    transcriptUploadedAt?: string;   // ISO timestamp
+    transcriptSegmentCount?: number; // Number of transcript segments
   }>;
   overallProgress: number;
   createdAt: number;
   updatedAt: number;
+  // NEW: Playlist-level transcript tracking
+  hasAnyTranscripts?: boolean;      // If any video has transcript
+  aiEnabled?: boolean;              // If AI features are available
+  lastTranscriptSync?: string;      // Last time transcripts were checked
 }
 
 export async function createPlaylist(playlistData: Partial<DynamoDBPlaylist>): Promise<DynamoDBPlaylist> {
@@ -323,8 +336,15 @@ export interface DynamoDBActivity {
   userId: string;
   action: string;
   item: string;
-  type: 'completed' | 'started' | 'created' | 'quiz';
+  type: 'completed' | 'started' | 'created' | 'quiz' | 'watched';
   timestamp: number;
+  // Enhanced fields for video tracking and personalized recommendations
+  videoId?: string;
+  genre?: string;
+  videoTitle?: string;
+  channelName?: string;
+  watchDuration?: number; // in seconds
+  playlistId?: string;
 }
 
 export async function createActivity(activityData: Partial<DynamoDBActivity>): Promise<DynamoDBActivity> {
@@ -338,6 +358,13 @@ export async function createActivity(activityData: Partial<DynamoDBActivity>): P
     item: activityData.item || '',
     type: activityData.type || 'started',
     timestamp: now,
+    // Include enhanced fields if provided
+    videoId: activityData.videoId,
+    genre: activityData.genre,
+    videoTitle: activityData.videoTitle,
+    channelName: activityData.channelName,
+    watchDuration: activityData.watchDuration,
+    playlistId: activityData.playlistId,
   };
 
   await client.send(new PutCommand({

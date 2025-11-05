@@ -148,6 +148,12 @@ export const playlistService = {
     action: string;
     item: string;
     type: 'completed' | 'started' | 'created' | 'quiz';
+    videoId?: string;
+    genre?: string;
+    videoTitle?: string;
+    channelName?: string;
+    watchDuration?: number;
+    playlistId?: string;
   }) {
     try {
       const response = await fetch(`${API_BASE_URL}/activities`, {
@@ -188,6 +194,83 @@ export const playlistService = {
       console.error('Error fetching activities:', error);
       // Return empty array instead of throwing to prevent app crashes
       return [];
+    }
+  },
+
+  // Sync playlists for personalized recommendations
+  async syncPlaylistsForRecommendations(userId: string, forceResync: boolean = false) {
+    try {
+      console.log('Starting playlist sync for user:', userId, forceResync ? '(FORCE RESYNC)' : '');
+      
+      // Step 1: Fetch all user playlists
+      const playlists = await this.getPlaylists(userId);
+      
+      if (!playlists || playlists.length === 0) {
+        console.log('No playlists found for user');
+        return {
+          success: true,
+          syncedCount: 0,
+          skippedCount: 0,
+          failedCount: 0,
+          genresExtracted: [],
+          message: 'No playlists to sync'
+        };
+      }
+      
+      console.log(`Found ${playlists.length} playlists to sync`);
+      
+      // Step 2: Transform playlists to backend format
+      const syncPayload = {
+        user_id: userId,
+        playlists: playlists.map((playlist: any) => ({
+          playlistId: playlist._id || playlist.id,
+          category: playlist.category || 'General',
+          videos: (playlist.videos || []).map((video: any) => ({
+            id: video.youtubeId || video.id,
+            title: video.title || 'Untitled',
+            channelTitle: video.channelTitle || video.channel || null
+          }))
+        })),
+        force_resync: forceResync
+      };
+      
+      // Step 3: Call Python backend sync endpoint
+      const PYTHON_API_BASE = process.env.NEXT_PUBLIC_PYTHON_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${PYTHON_API_BASE}/api/recommendations/sync-playlist-videos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(syncPayload),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        console.error('Playlist sync API error:', data);
+        throw new Error(data.detail || data.error || 'Failed to sync playlists');
+      }
+      
+      console.log('Playlist sync successful:', data);
+      
+      return {
+        success: true,
+        syncedCount: data.syncedCount || data.synced_count || 0,
+        skippedCount: data.skippedCount || data.skipped_count || 0,
+        failedCount: data.failedCount || data.failed_count || 0,
+        genresExtracted: data.genresExtracted || data.genres_extracted || [],
+        message: data.message || 'Playlists synced successfully'
+      };
+    } catch (error) {
+      console.error('Error syncing playlists:', error);
+      return {
+        success: false,
+        syncedCount: 0,
+        skippedCount: 0,
+        failedCount: 0,
+        genresExtracted: [],
+        message: error instanceof Error ? error.message : 'Failed to sync playlists'
+      };
     }
   },
 }; 

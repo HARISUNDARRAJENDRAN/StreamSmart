@@ -426,3 +426,110 @@ async def get_transcript_stats():
             status_code=500,
             detail=f"Error getting transcript statistics: {str(e)}"
         )
+
+class TranscriptDeleteRequest(BaseModel):
+    videoId: str
+    s3Key: Optional[str] = None
+
+@router.post("/delete")
+async def delete_transcript(request: TranscriptDeleteRequest):
+    """
+    Delete transcript from S3 bucket
+    """
+    try:
+        logger.info(f"[Delete] Deleting S3 transcript for video: {request.videoId}")
+        
+        # Determine S3 key
+        s3_key = request.s3Key or f"{request.videoId}.json"
+        
+        # Delete from S3
+        s3_client = boto3.client('s3', region_name=S3_REGION)
+        
+        try:
+            s3_client.delete_object(
+                Bucket=S3_BUCKET,
+                Key=s3_key
+            )
+            logger.info(f"[Delete] ✅ Deleted S3 object: {s3_key}")
+            
+            return {
+                "success": True,
+                "message": f"Transcript deleted from S3",
+                "s3Key": s3_key
+            }
+        except ClientError as e:
+            # If object doesn't exist, still return success
+            if e.response['Error']['Code'] == 'NoSuchKey':
+                logger.info(f"[Delete] S3 object not found (already deleted): {s3_key}")
+                return {
+                    "success": True,
+                    "message": f"Transcript not found (already deleted)",
+                    "s3Key": s3_key
+                }
+            else:
+                raise
+                
+    except Exception as e:
+        logger.error(f"[Delete] Error deleting S3 transcript: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete transcript: {str(e)}"
+        )
+
+class TranscriptMetadataDeleteRequest(BaseModel):
+    videoId: str
+
+@router.post("/delete-metadata")
+async def delete_transcript_metadata(request: TranscriptMetadataDeleteRequest):
+    """
+    Delete transcript metadata from DynamoDB
+    """
+    try:
+        logger.info(f"[Delete] Deleting DynamoDB metadata for video: {request.videoId}")
+        
+        # Validate video ID
+        if not request.videoId or len(request.videoId) != 11:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid YouTube video ID format"
+            )
+        
+        # Delete from DynamoDB
+        table = get_dynamodb_table()
+        
+        try:
+            response = table.delete_item(
+                Key={'videoId': request.videoId},
+                ReturnValues='ALL_OLD'
+            )
+            
+            if 'Attributes' in response:
+                logger.info(f"[Delete] ✅ Deleted DynamoDB metadata: {request.videoId}")
+                return {
+                    "success": True,
+                    "message": "Transcript metadata deleted",
+                    "videoId": request.videoId
+                }
+            else:
+                logger.info(f"[Delete] DynamoDB entry not found (already deleted): {request.videoId}")
+                return {
+                    "success": True,
+                    "message": "Metadata not found (already deleted)",
+                    "videoId": request.videoId
+                }
+                
+        except ClientError as e:
+            logger.error(f"[Delete] DynamoDB error: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"DynamoDB error: {str(e)}"
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[Delete] Error deleting metadata: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to delete metadata: {str(e)}"
+        )

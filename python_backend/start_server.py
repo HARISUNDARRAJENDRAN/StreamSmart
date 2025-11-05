@@ -12,6 +12,17 @@ from pathlib import Path
 current_dir = Path(__file__).parent
 sys.path.insert(0, str(current_dir))
 
+# Load environment variables from project root BEFORE importing main
+try:
+    from dotenv import load_dotenv
+    env_path = current_dir.parent / '.env'
+    load_dotenv(env_path)
+    print(f"[OK] Loaded environment variables from {env_path}")
+except ImportError:
+    print("[WARNING] python-dotenv not installed")
+except Exception as e:
+    print(f"[WARNING] Could not load .env file: {e}")
+
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,
@@ -19,46 +30,26 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-def apply_compatibility_patches():
-    """Apply compatibility patches for dependencies"""
-    # Avoid importing deprecated symbols; alias only if missing
-    try:
-        import huggingface_hub  # type: ignore
-        if getattr(huggingface_hub, 'cached_download', None) is None:
-            hf_hub_download = getattr(huggingface_hub, 'hf_hub_download', None)
-            if hf_hub_download is not None:
-                huggingface_hub.cached_download = hf_hub_download
-                # Ensure the alias is visible to existing imports
-                sys.modules['huggingface_hub'] = huggingface_hub
-                logger.info("✅ Applied huggingface_hub compatibility patch")
-            else:
-                logger.warning("huggingface_hub.hf_hub_download not available; skipping patch")
-        else:
-            logger.debug("cached_download already available")
-    except Exception as e:
-        logger.warning(f"Could not apply huggingface_hub patch: {e}")
-
-# Apply patches early
-apply_compatibility_patches()
+# Note: Hugging Face compatibility patch removed - not used in this project
 
 def check_dependencies():
     """Check if all required dependencies are installed"""
     # Map package names to their import names
     required_packages = {
-        'transformers': 'transformers', 
-        'sentence_transformers': 'sentence_transformers',
         'fastapi': 'fastapi',
         'uvicorn': 'uvicorn',
-        'pillow': 'PIL',
-        'numpy': 'numpy'
+        'pandas': 'pandas',
+        'numpy': 'numpy',
+        'boto3': 'boto3'
     }
     
     # Optional packages (not required for basic functionality)
     optional_packages = {
-        'torch': 'torch',
+        'pillow': 'PIL',
         'yt_dlp': 'yt_dlp',
         'opencv-python': 'cv2',
-        # 'pymongo': removed - using DynamoDB
+        'scikit-learn': 'sklearn',
+        # ML packages removed - using CSV-based recommendations
     }
     
     missing_packages = []

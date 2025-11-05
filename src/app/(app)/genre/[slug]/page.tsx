@@ -1,1005 +1,413 @@
+/**
+ * Genre Exploration Page
+ * Streamlined implementation using CSV-based recommendations
+ */
+
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  ArrowLeft, 
-  Search, 
- 
-  Grid3X3, 
-  List, 
- 
-  Eye, 
-  ThumbsUp,
-
-  ExternalLink,
+import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Search,
+  TrendingUp,
+  Clock,
+  BookOpen,
+  Sparkles,
   RefreshCw,
-  Plus,
-  PlayCircle,
-  BookmarkPlus,
-  X
+  LayoutGrid,
+  List,
+  Star,
+  AlertCircle,
+  ArrowUpDown,
+  Loader2
 } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { useToast } from '@/hooks/use-toast';
 import { useUser } from '@/contexts/UserContext';
-import { bertRecommendationService, type VideoRecommendation as BertVideoRec } from '@/services/bertRecommendationService';
+import { recommendationService, type VideoRecommendation } from '@/services/recommendationService';
+import { CSVRecommendationCard } from '@/components/recommendations/CSVRecommendationCard';
 
-interface Video {
-  _id: string;
-  youtubeId: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  duration: string;
-  category: string;
-  channelTitle: string;
-  publishedAt: string;
-  viewCount: number;
-  likeCount: number;
-  youtubeURL: string;
-  tags: string[];
-  difficulty: string;
-  createdAt: string;
-}
-
-interface Playlist {
-  id: string;
-  title: string;
-  description: string;
-  videoCount: number;
-}
-
-// Map URL slugs to category names
-const categoryMap: { [key: string]: string } = {
-  'coding-programming': 'Coding and Programming',
-  'data-science-ai': 'Data Science and AI/ML',
-  'design': 'Design(UI/UX , graphic, product)',
-  'digital-marketing': 'Digital Marketing',
-  'productivity': 'Productivity & Time Management',
-  'financial-literacy': 'Financial Literacy & Investing',
-  'soft-skills': 'Soft Skills (Communication, Leadership)',
-  'entrepreneurship': 'Entrepreneurship & Startups',
-  'writing-content': 'Writing & Content Creation',
-  'public-speaking': 'Public Speaking',
-  'mathematics': 'Mathematics',
-  'physics': 'Physics',
-  'chemistry': 'Chemistry',
-  'biology': 'Biology',
-  'history': 'History',
-  'geography': 'Geography',
-  'language-learning': 'Language Learning',
-  'resume-job-hunting': 'Resume Building & Job Hunting',
-  'interview-prep': 'Interview Preparation',
-  'workplace-skills': 'Workplace Skills',
-  'tech-news': 'Tech News & Product Launches',
-  'cybersecurity': 'Cybersecurity',
-  'cloud-computing': 'Cloud Computing',
-  'artificial-intelligence': 'Artificial Intelligence',
-  'trivia-facts': 'Did You Know / Trivia',
-  'philosophy': 'Philosophy & Critical Thinking',
-  'psychology': 'Psychology & Human Behavior',
-  'robotics-iot': 'Robotics & IoT',
-  'electronics-circuits': 'Electronics & Circuits',
-  'crafts-artistic': 'Crafts & Artistic Skills',
-  'health-fitness': 'Health & Fitness',
-  'cooking-nutrition': 'Cooking & Nutrition',
-  'mental-wellness': 'Personal Development & Mental Health'
+const GENRE_MAP: Record<string, any> = {
+  'ai-innovation': {
+    slug: 'ai-innovation',
+    name: 'AI & Innovation',
+    description: 'Artificial intelligence, machine learning, and future tech',
+    icon: <Sparkles className="w-5 h-5" />,
+    gradient: 'from-pink-500 to-rose-600'
+  },
+  'coding-programming': {
+    slug: 'coding-programming',
+    name: 'Coding & Programming',
+    description: 'Programming tutorials, languages, and development practices',
+    icon: <BookOpen className="w-5 h-5" />,
+    gradient: 'from-indigo-500 to-purple-600'
+  },
+  'data-science-ai': {
+    slug: 'data-science-ai',
+    name: 'Data Science & AI',
+    description: 'Data analysis, ML models, and AI applications',
+    icon: <TrendingUp className="w-5 h-5" />,
+    gradient: 'from-yellow-500 to-orange-600'
+  },
+  'mathematics': {
+    slug: 'mathematics',
+    name: 'Mathematics',
+    description: 'Algebra, calculus, geometry, and mathematical concepts',
+    icon: <TrendingUp className="w-5 h-5" />,
+    gradient: 'from-purple-500 to-pink-600'
+  },
+  'physics': {
+    slug: 'physics',
+    name: 'Physics',
+    description: 'Classical mechanics, quantum physics, and physical phenomena',
+    icon: <Sparkles className="w-5 h-5" />,
+    gradient: 'from-blue-500 to-cyan-600'
+  },
+  'chemistry': {
+    slug: 'chemistry',
+    name: 'Chemistry',
+    description: 'Organic, inorganic chemistry, and chemical reactions',
+    icon: <Sparkles className="w-5 h-5" />,
+    gradient: 'from-green-500 to-emerald-600'
+  },
+  'biology': {
+    slug: 'biology',
+    name: 'Biology',
+    description: 'Life sciences, anatomy, genetics, and ecosystems',
+    icon: <BookOpen className="w-5 h-5" />,
+    gradient: 'from-green-600 to-teal-600'
+  },
+  'entrepreneurship': {
+    slug: 'entrepreneurship',
+    name: 'Entrepreneurship',
+    description: 'Business, startups, and entrepreneurial skills',
+    icon: <TrendingUp className="w-5 h-5" />,
+    gradient: 'from-orange-500 to-red-600'
+  },
+  'financial-literacy': {
+    slug: 'financial-literacy',
+    name: 'Financial Literacy',
+    description: 'Personal finance, investing, and money management',
+    icon: <TrendingUp className="w-5 h-5" />,
+    gradient: 'from-emerald-500 to-green-600'
+  },
+  'design': {
+    slug: 'design',
+    name: 'Design',
+    description: 'Graphic design, UI/UX, and creative design principles',
+    icon: <Sparkles className="w-5 h-5" />,
+    gradient: 'from-purple-500 to-pink-500'
+  },
+  'digital-marketing': {
+    slug: 'digital-marketing',
+    name: 'Digital Marketing',
+    description: 'SEO, social media, and online marketing strategies',
+    icon: <TrendingUp className="w-5 h-5" />,
+    gradient: 'from-cyan-500 to-blue-600'
+  },
+  'productivity': {
+    slug: 'productivity',
+    name: 'Productivity',
+    description: 'Time management, efficiency, and productivity hacks',
+    icon: <Clock className="w-5 h-5" />,
+    gradient: 'from-amber-500 to-orange-600'
+  },
+  'language-learning': {
+    slug: 'language-learning',
+    name: 'Language Learning',
+    description: 'Foreign languages, linguistics, and communication skills',
+    icon: <BookOpen className="w-5 h-5" />,
+    gradient: 'from-rose-500 to-pink-600'
+  },
+  'public-speaking': {
+    slug: 'public-speaking',
+    name: 'Public Speaking',
+    description: 'Communication, presentation, and speaking skills',
+    icon: <BookOpen className="w-5 h-5" />,
+    gradient: 'from-violet-500 to-purple-600'
+  },
+  'cybersecurity': {
+    slug: 'cybersecurity',
+    name: 'Cybersecurity',
+    description: 'Information security, ethical hacking, and cyber defense',
+    icon: <Sparkles className="w-5 h-5" />,
+    gradient: 'from-red-600 to-rose-700'
+  }
 };
 
 export default function GenrePage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params.slug as string;
+  const { toast } = useToast();
   const { user } = useUser();
   
-  const [videos, setVideos] = useState<Video[]>([]);
-  const [filteredVideos, setFilteredVideos] = useState<Video[]>([]);
+  const slug = params.slug as string;
+  const genreInfo = GENRE_MAP[slug] || GENRE_MAP['coding-programming'];
+  
+  const [videos, setVideos] = useState<VideoRecommendation[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('newest');
-  const [difficultyFilter, setDifficultyFilter] = useState('all');
+  const [sortBy, setSortBy] = useState<'popularity' | 'quality' | 'views'>('popularity');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [aiRefreshLoading, setAiRefreshLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'all' | 'trending' | 'highquality'>('all');
   
-  // Preview and Playlist states
-  const [previewVideo, setPreviewVideo] = useState<Video | null>(null);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [showCreatePlaylist, setShowCreatePlaylist] = useState(false);
-  const [newPlaylistTitle, setNewPlaylistTitle] = useState('');
-  const [newPlaylistDescription, setNewPlaylistDescription] = useState('');
-  const [selectedVideoForPlaylist, setSelectedVideoForPlaylist] = useState<Video | null>(null);
-
-  const categoryName = categoryMap[slug];
-
-  // Fetch videos from Python backend (BERT-based recommendations only)
-  useEffect(() => {
-    const fetchVideos = async () => {
-      if (!slug) {
-        setError('Category not found');
-        setLoading(false);
-        return;
-      }
-
-      try {
-        // Ensure BERT system is initialized
-        const stats = await bertRecommendationService.getSystemStats();
-        if (!stats.success) {
-          const init = await bertRecommendationService.initializeSystem();
-          if (!init.success) {
-            throw new Error(init.message || 'Failed to initialize BERT system');
-          }
-        }
-
-        // Call BERT genre-based endpoint via service
-        const bertResp = await bertRecommendationService.getGenreBasedRecommendations({
-          genre: slug,
-          top_n: 200,
-          user_id: 'guest'
-        });
-
-        if (!bertResp.success) {
-          throw new Error(bertResp.message || 'Failed to load BERT recommendations');
-        }
-
-        // Helper to extract YouTube ID from thumbnail or fallback
-        const extractVideoId = (thumbnailUrl?: string): string => {
-          if (!thumbnailUrl || typeof thumbnailUrl !== 'string') return '';
-          let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
-          if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
-          if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);
-          return match ? match[1] : '';
-        };
-
-        // Transform BERT response to local Video shape
-        const transformedVideos: Video[] = (bertResp.recommendations as BertVideoRec[]).map((rec) => {
-          const youtubeId = extractVideoId(rec.thumbnail_url);
-          return {
-            _id: `${youtubeId || rec.title}-${Math.random()}`,
-            youtubeId: youtubeId,
-            title: rec.title,
-            description: '',
-            thumbnail: rec.thumbnail_url || 'https://placehold.co/480x360.png?text=Video',
-            duration: 'N/A',
-            category: categoryName || slug,
-            channelTitle: (rec as Video & {channel_name?: string}).channel_name || (rec as Video).channelTitle || '',
-            viewCount: 0,
-            likeCount: rec.likes ?? 0,
-            youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
-            publishedAt: '',
-            difficulty: 'intermediate',
-            tags: [],
-            createdAt: ''
-          };
-        });
-
-        // Deduplicate by youtubeId (keep first occurrence)
-        const seenIds = new Set<string>();
-        const uniqueVideos = transformedVideos.filter(video => {
-          if (!video.youtubeId || seenIds.has(video.youtubeId)) {
-            return false;
-          }
-          seenIds.add(video.youtubeId);
-          return true;
-        });
-
-        setVideos(uniqueVideos);
-        setFilteredVideos(uniqueVideos);
-      } catch (err) {
-        console.error('Error fetching videos:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load videos');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVideos();
-  }, [slug, categoryName]);
-
-  const abortControllerRef = useRef<AbortController | null>(null);
-  
-  // Helper function to fetch playlists (manual only)
-  const fetchPlaylists = async (force = false) => {
-    if (!force) {
-      console.log('Playlist fetch disabled - use manual refresh button');
-      return;
-    }
-
-    // Cancel any previous ongoing request
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+  const fetchVideos = useCallback(async (showLoader = true) => {
+    if (showLoader) setLoading(true);
     
-    abortControllerRef.current = new AbortController();
-
     try {
-      // Use the actual user ID if logged in, otherwise use 'guest'
-      const userId = user?.id || 'guest';
-      console.log('=== PLAYLIST FETCH DEBUG ===');
-      console.log('User object:', user);
-      console.log('Fetching playlists for userId:', userId);
-      console.log('user?.id:', user?.id);
-      
-      const response = await fetch(`/api/playlists?userId=${userId}`, {
-        signal: abortControllerRef.current.signal
-      });
-      console.log('Playlists response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Playlists data received:', data);
-        setPlaylists(data.playlists || []);
-      } else {
-        console.error('Failed to fetch playlists:', response.status);
-        const errorData = await response.text();
-        console.error('Error response:', errorData);
-      }
-    } catch (err) {
-      console.error('Error fetching playlists:', err);
-    }
-  };
-
-  // Fetch user playlists on component mount and when user changes
-  useEffect(() => {
-    if (user?.id) {
-      fetchPlaylists();
-    }
-    
-    // Cleanup: abort any ongoing requests when component unmounts
-    return () => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
-      }
-    };
-  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Filter and sort videos
-  useEffect(() => {
-    const filtered = videos.filter(video => {
-      const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           video.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           video.channelTitle.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesDifficulty = difficultyFilter === 'all' || video.difficulty === difficultyFilter;
-      
-      return matchesSearch && matchesDifficulty;
-    });
-
-    // Sort videos
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case 'newest':
-          return new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
-        case 'oldest':
-          return new Date(a.publishedAt).getTime() - new Date(b.publishedAt).getTime();
-        case 'views':
-          return (b.viewCount || 0) - (a.viewCount || 0);
-        case 'duration':
-          return parseDuration(b.duration) - parseDuration(a.duration);
-        case 'alphabetical':
-          return a.title.localeCompare(b.title);
-        default:
-          return 0;
-      }
-    });
-
-    setFilteredVideos(filtered);
-  }, [videos, searchQuery, sortBy, difficultyFilter]);
-
-  // AI Refresh functionality (re-fetch via BERT)
-  const handleAiRefresh = async () => {
-    setAiRefreshLoading(true);
-    try {
-      const resp = await bertRecommendationService.getGenreBasedRecommendations({
+      // Pass userId for personalized recommendations based on watch history
+      const response = await recommendationService.getSuggestions({
         genre: slug,
-        top_n: 51,
-        user_id: 'guest'
+        topN: 50,
+        excludeIds: [],
+        userId: user?.id // Include user ID for personalized recommendations
       });
-
-      if (!resp.success) throw new Error(resp.message || 'Failed to refresh BERT recommendations');
-
-      const extractVideoId = (thumbnailUrl?: string): string => {
-        if (!thumbnailUrl || typeof thumbnailUrl !== 'string') return '';
-        let match = thumbnailUrl.match(/\/vi\/([^\/]+)\//);
-        if (!match) match = thumbnailUrl.match(/watch\?v=([^&]+)/);
-        if (!match) match = thumbnailUrl.match(/youtu\.be\/([^?]+)/);
-        return match ? match[1] : '';
-      };
-
-      const transformedVideos: Video[] = (resp.recommendations as BertVideoRec[]).map((rec) => {
-        const youtubeId = extractVideoId(rec.thumbnail_url);
-        return {
-          _id: `${youtubeId || rec.title}-${Math.random()}`,
-          youtubeId: youtubeId,
-          title: rec.title,
-          description: '',
-          thumbnail: rec.thumbnail_url || `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`,
-          duration: 'N/A',
-          category: categoryName || slug,
-          channelTitle: (rec as Video & {channel_name?: string}).channel_name || (rec as Video).channelTitle || '',
-          viewCount: 0,
-          likeCount: rec.likes ?? 0,
-          youtubeURL: youtubeId ? `https://youtube.com/watch?v=${youtubeId}` : '',
-          publishedAt: '',
-          difficulty: 'intermediate',
-          tags: [],
-          createdAt: ''
-        };
+      
+      if (response.success) {
+        setVideos(response.recommendations);
+      } else {
+        throw new Error(response.message || 'Failed to load videos');
+      }
+    } catch (error) {
+      console.error('Error fetching videos:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to load videos for this genre',
+        variant: 'destructive'
       });
-
-      // Deduplicate by youtubeId (keep first occurrence)
-      const seenIds = new Set<string>();
-      const uniqueVideos = transformedVideos.filter(video => {
-        if (!video.youtubeId || seenIds.has(video.youtubeId)) {
-          return false;
-        }
-        seenIds.add(video.youtubeId);
-        return true;
-      });
-
-      setAlgorithmUsed('bert');
-      setTotalAvailable(uniqueVideos.length);
-      setVideos(uniqueVideos);
-    } catch (err) {
-      console.error('Error refreshing recommendations:', err);
     } finally {
-      setAiRefreshLoading(false);
+      setLoading(false);
+      setRefreshing(false);
     }
-  };
-
-  const parseDuration = (duration: string): number => {
-    if (!duration || duration === 'N/A') return 0;
-    const parts = duration.split(':').map(Number);
-    if (parts.length === 2) return parts[0] * 60 + parts[1];
-    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
-    return 0;
-  };
-
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) return `${(num / 1000000).toFixed(1)}M`;
-    if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  const getDifficultyColor = (difficulty: string): string => {
-    switch (difficulty.toLowerCase()) {
-      case 'beginner': return 'bg-green-100 text-green-800 border-green-200';
-      case 'intermediate': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'advanced': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+  }, [slug, toast, user?.id]);
+  
+  useEffect(() => {
+    fetchVideos();
+  }, [fetchVideos]);
+  
+  const filteredAndSortedVideos = useMemo(() => {
+    let filtered = [...videos];
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(video =>
+        video.title.toLowerCase().includes(query) ||
+        video.channelName.toLowerCase().includes(query)
+      );
     }
-  };
-
-  const handlePreviewVideo = (video: Video) => {
-    setPreviewVideo(video);
-  };
-
-  const handleAddToPlaylist = async (video: Video, playlistId: string) => {
-    try {
-      // Close any open modals first
-      setPreviewVideo(null);
-      setShowCreatePlaylist(false);
-      
-      const response = await fetch(`/api/playlists/${playlistId}/videos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          youtubeId: video.youtubeId,
-          title: video.title,
-          thumbnail: video.thumbnail,
-          duration: video.duration,
-          channelTitle: video.channelTitle,
-          youtubeURL: video.youtubeURL,
-          description: video.description
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          alert('Video added to playlist successfully!');
-          // Refresh playlists to update video counts
-          await fetchPlaylists(true);
-        } else {
-          alert(data.error || 'Failed to add video to playlist');
-        }
-      } else {
-        const errorData = await response.text();
-        console.error('Add to playlist error:', errorData);
-        alert('Failed to add video to playlist');
-      }
-    } catch (err) {
-      console.error('Error adding video to playlist:', err);
-      alert('Error adding video to playlist');
+    
+    switch (activeTab) {
+      case 'trending':
+        filtered = filtered.filter(v => v.viewCount > 100000);
+        break;
+      case 'highquality':
+        filtered = filtered.filter(v => v.qualityScore >= 0.85);
+        break;
     }
-  };
-
-  const handlePlaylistAction = (video: Video) => {
-    console.log('=== PLAYLIST ACTION DEBUG ===');
-    console.log('Video:', video.title);
-    console.log('Current modal states:', { 
-      showCreatePlaylist, 
-      previewVideo: !!previewVideo, 
-      selectedVideoForPlaylist: !!selectedVideoForPlaylist 
+    
+    switch (sortBy) {
+      case 'views':
+        filtered.sort((a, b) => b.viewCount - a.viewCount);
+        break;
+      case 'quality':
+        filtered.sort((a, b) => b.qualityScore - a.qualityScore);
+        break;
+    }
+    
+    return filtered;
+  }, [videos, searchQuery, sortBy, activeTab]);
+  
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchVideos(false);
+    toast({
+      title: 'Refreshed',
+      description: 'Videos have been updated',
     });
-    
-    // Ensure no other modals are open
-    setPreviewVideo(null);
-    
-    // Set state for new playlist creation
-    setSelectedVideoForPlaylist(video);
-    setShowCreatePlaylist(true);
-    
-    console.log('Modal states after action:', { 
-      showCreatePlaylist: true, 
-      previewVideo: false, 
-      selectedVideoForPlaylist: true 
-    });
-  };
-
-  const handleCreatePlaylist = async () => {
-    if (!newPlaylistTitle.trim() || !selectedVideoForPlaylist) return;
-
-    try {
-      console.log('Sending playlist creation request...');
-      
-      // Disable button to prevent double-clicks
-      const requestData = {
-        userId: user?.id || 'guest',
-        title: newPlaylistTitle,
-        description: newPlaylistDescription,
-        firstVideo: {
-          youtubeId: selectedVideoForPlaylist.youtubeId,
-          title: selectedVideoForPlaylist.title,
-          thumbnail: selectedVideoForPlaylist.thumbnail,
-          duration: selectedVideoForPlaylist.duration,
-          channelTitle: selectedVideoForPlaylist.channelTitle,
-          youtubeURL: selectedVideoForPlaylist.youtubeURL,
-          description: selectedVideoForPlaylist.description
-        }
-      };
-      
-      console.log('Request data:', requestData);
-      
-      const response = await fetch('/api/playlists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      console.log('Response status:', response.status);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Response data:', data);
-        
-        if (data.success) {
-          console.log('Playlist created successfully');
-          
-          // Reset form state and close modal
-          setNewPlaylistTitle('');
-          setNewPlaylistDescription('');
-          setSelectedVideoForPlaylist(null);
-          setShowCreatePlaylist(false);
-          
-          // Use replace instead of push to avoid back button issues
-          router.replace('/playlists');
-        } else {
-          alert(data.error || 'Failed to create playlist');
-        }
-      } else {
-        const errorData = await response.text();
-        console.error('Create playlist error:', errorData);
-        
-        // Try to parse error message
-        let errorMessage = 'Failed to create playlist';
-        try {
-          const errorJson = JSON.parse(errorData);
-          errorMessage = errorJson.error || errorMessage;
-        } catch {
-          // Use default message if parsing fails
-        }
-        
-        alert(errorMessage);
-      }
-    } catch (err) {
-      console.error('Error creating playlist:', err);
-      alert('Network error: Could not create playlist. Please check your connection.');
-    }
-  };
-
-  // Enhanced close handler for create playlist modal
-  const handleCloseCreatePlaylist = () => {
-    console.log('=== CLOSING CREATE PLAYLIST MODAL ===');
-    setShowCreatePlaylist(false);
-    setSelectedVideoForPlaylist(null);
-    setNewPlaylistTitle('');
-    setNewPlaylistDescription('');
-    console.log('Modal closed, all states reset');
-  };
-
+  }, [fetchVideos, toast]);
+  
+  const handleVideoClick = useCallback((video: VideoRecommendation) => {
+    router.push(`/video/${video.video_id}?source=genre&genre=${slug}`);
+  }, [router, slug]);
+  
   if (loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading videos...</p>
+      <div className="container mx-auto p-6">
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center space-y-4">
+            <Loader2 className="w-12 h-12 animate-spin mx-auto text-primary" />
+            <p className="text-muted-foreground">Loading {genreInfo.name} videos...</p>
+          </div>
         </div>
       </div>
     );
   }
-
-  if (error || !categoryName) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
-          <p className="text-muted-foreground mb-6">{error || 'The requested category does not exist.'}</p>
-          <Button onClick={() => router.push('/dashboard')}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Dashboard
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
+  
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Button 
-                variant="ghost" 
-                size="sm"
-                onClick={() => router.push('/dashboard')}
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold">{categoryName}</h1>
-                <p className="text-muted-foreground">
-                  {filteredVideos.length} video{filteredVideos.length !== 1 ? 's' : ''} available
-                </p>
+    <div className="container mx-auto p-6 max-w-7xl">
+      <div className="mb-8">
+        <div className={`bg-gradient-to-r ${genreInfo.gradient} rounded-2xl p-8 text-white`}>
+          <div className="flex items-start justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-3">
+                {genreInfo.icon}
+                <h1 className="text-4xl font-bold">{genreInfo.name}</h1>
               </div>
+              <p className="text-lg opacity-90">{genreInfo.description}</p>
             </div>
             
-            {/* View Mode Toggle */}
-            <div className="flex items-center gap-2">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('grid')}
-              >
-                <Grid3X3 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'ghost'}
-                size="sm"
-                onClick={() => setViewMode('list')}
-              >
-                <List className="h-4 w-4" />
-              </Button>
-            </div>
+            <Button
+              variant="secondary"
+              size="lg"
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30"
+            >
+              {refreshing ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <RefreshCw className="w-4 h-4 mr-2" />
+              )}
+              Refresh
+            </Button>
           </div>
         </div>
       </div>
-
-      {/* Filters */}
-      <div className="border-b bg-card/30">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search videos..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            {/* Filters */}
-            <div className="flex gap-2 flex-wrap">
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-40">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="oldest">Oldest First</SelectItem>
-                  <SelectItem value="views">Most Views</SelectItem>
-                  <SelectItem value="duration">Longest First</SelectItem>
-                  <SelectItem value="alphabetical">A-Z</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
-                <SelectTrigger className="w-32">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Levels</SelectItem>
-                  <SelectItem value="beginner">Beginner</SelectItem>
-                  <SelectItem value="intermediate">Intermediate</SelectItem>
-                  <SelectItem value="advanced">Advanced</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {/* AI Refresh Button */}
-              <Button
-                onClick={handleAiRefresh}
-                disabled={aiRefreshLoading}
-                variant="outline"
-                size="sm"
-                className="border-blue-200 hover:bg-blue-50 hover:border-blue-300"
-                title="Refresh recommendations"
-              >
-                <RefreshCw className={`h-4 w-4 ${aiRefreshLoading ? 'animate-spin' : ''}`} />
-              </Button>
-              
-              {/* Playlist Refresh Button for debugging */}
-              <Button
-                onClick={() => fetchPlaylists(true)}
-                variant="outline"
-                size="sm"
-                className="border-green-200 hover:bg-green-50 hover:border-green-300"
-                title={`Refresh playlists (${playlists.length} found)`}
-              >
-                <RefreshCw className="h-4 w-4" />
-                <span className="ml-1 text-xs">P:{playlists.length}</span>
-              </Button>
-              
-              {/* Debug button to check all playlists */}
-              <Button
-                onClick={async () => {
-                  try {
-                    const response = await fetch('/api/playlists?userId=all-debug');
-                    const data = await response.json();
-                    console.log('=== ALL PLAYLISTS DEBUG ===');
-                    console.log('All playlists in database:', data);
-                  } catch (err) {
-                    console.error('Debug fetch error:', err);
-                  }
-                }}
-                variant="outline"
-                size="sm"
-                className="border-red-200 hover:bg-red-50 hover:border-red-300"
-                title="Debug: Check all playlists"
-              >
-                Debug
-              </Button>
-            </div>
+      
+      <div className="mb-6 space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              placeholder={`Search ${genreInfo.name.toLowerCase()} videos...`}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          
+          <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+            <SelectTrigger className="w-[180px]">
+              <ArrowUpDown className="w-4 h-4 mr-2" />
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="popularity">Popularity</SelectItem>
+              <SelectItem value="views">View Count</SelectItem>
+              <SelectItem value="quality">Quality Score</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <div className="flex gap-1 border rounded-lg p-1">
+            <Button
+              variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('grid')}
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </Button>
+            <Button
+              variant={viewMode === 'list' ? 'secondary' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+            >
+              <List className="w-4 h-4" />
+            </Button>
           </div>
         </div>
+        
+        <Tabs value={activeTab} onValueChange={(v: any) => setActiveTab(v)}>
+          <TabsList className="grid w-full grid-cols-3 max-w-[400px]">
+            <TabsTrigger value="all">
+              All Videos
+              <Badge variant="secondary" className="ml-2">
+                {videos.length}
+              </Badge>
+            </TabsTrigger>
+            <TabsTrigger value="trending">
+              <TrendingUp className="w-4 h-4 mr-1" />
+              Trending
+            </TabsTrigger>
+            <TabsTrigger value="highquality">
+              <Star className="w-4 h-4 mr-1" />
+              High Quality
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
-
-      {/* Content */}
-      <div className="container mx-auto px-4 py-6">
-        {filteredVideos.length === 0 ? (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold mb-2">No videos found</h3>
-            <p className="text-muted-foreground mb-4">
-              {searchQuery ? 'Try adjusting your search terms.' : 'No videos available in this category yet.'}
-            </p>
-            {!searchQuery && (
-              <Button onClick={() => router.push('/dashboard')}>
-                Explore Other Categories
+      
+      {searchQuery && (
+        <Alert className="mb-4">
+          <Search className="h-4 w-4" />
+          <AlertDescription>
+            Found {filteredAndSortedVideos.length} results for "{searchQuery}"
+            {filteredAndSortedVideos.length === 0 && (
+              <Button
+                variant="link"
+                className="ml-2 p-0 h-auto"
+                onClick={() => setSearchQuery('')}
+              >
+                Clear search
               </Button>
             )}
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      {filteredAndSortedVideos.length > 0 ? (
+        viewMode === 'grid' ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredAndSortedVideos.map((video, index) => (
+              <CSVRecommendationCard
+                key={video.video_id}
+                video={video}
+                onVideoClick={handleVideoClick}
+                priority={index < 8}
+              />
+            ))}
           </div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className={
-              viewMode === 'grid'
-                ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'
-                : 'space-y-4'
-            }
-          >
-            {filteredVideos.map((video, index) => {
-              // Use index + youtubeId to handle duplicate video IDs from BERT recommendations
-              const uniqueKey = `${index}-${video.youtubeId || video._id || 'video'}`;
-              
-              return (
-                <motion.div
-                  key={uniqueKey}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/30">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={video.thumbnail || `https://img.youtube.com/vi/${video.youtubeId}/maxresdefault.jpg`}
-                          alt={video.title}
-                          loading="lazy"
-                          className="w-full h-48 object-cover rounded-t-lg"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            if (target.src.includes('maxresdefault')) {
-                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
-                            } else if (target.src.includes('hqdefault')) {
-                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`;
-                            } else {
-                              target.src = `https://img.youtube.com/vi/${video.youtubeId}/default.jpg`;
-                            }
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors rounded-t-lg flex items-center justify-center">
-                          <Button
-                            size="sm"
-                            className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-black hover:bg-white"
-                            onClick={() => handlePreviewVideo(video)}
-                          >
-                            <PlayCircle className="h-4 w-4 mr-2" />
-                            Preview
-                          </Button>
-                        </div>
-                        <Badge className="absolute top-2 right-2 bg-black/80 text-white">
-                          {video.duration}
-                        </Badge>
-                        <Badge className={`absolute top-2 left-2 ${getDifficultyColor(video.difficulty)}`}>
-                          {video.difficulty}
-                        </Badge>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-sm line-clamp-2 mb-2">
-                          {video.title}
-                        </h3>
-                        <p className="text-xs text-muted-foreground mb-3">
-                          {video.channelTitle}
-                        </p>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                          <div className="flex items-center gap-1">
-                            <Eye className="h-3 w-3" />
-                            {formatNumber(video.viewCount || 0)}
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <ThumbsUp className="h-3 w-3" />
-                            {formatNumber(video.likeCount || 0)}
-                          </div>
-                        </div>
-                        
-                        {/* Action Buttons */}
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex-1"
-                            onClick={() => handlePreviewVideo(video)}
-                          >
-                            <PlayCircle className="h-4 w-4 mr-1" />
-                            Preview
-                          </Button>
-                          
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button size="sm" className="bg-[#D90429] hover:bg-[#C80021]">
-                                <BookmarkPlus className="h-4 w-4 mr-1" />
-                                Add to Playlist
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Choose Action</DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                onClick={() => handlePlaylistAction(video)}
-                              >
-                                <Plus className="h-4 w-4 mr-2" />
-                                Create New Playlist
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              <DropdownMenuLabel>Add to Existing Playlist</DropdownMenuLabel>
-                              {playlists.length > 0 ? (
-                                playlists.map((playlist) => (
-                                  <DropdownMenuItem
-                                    key={playlist.id}
-                                    onClick={() => handleAddToPlaylist(video, playlist.id)}
-                                  >
-                                    {playlist.title} ({playlist.videoCount} videos)
-                                  </DropdownMenuItem>
-                                ))
-                              ) : (
-                                <DropdownMenuItem disabled>
-                                  No playlists available
-                                </DropdownMenuItem>
-                              )}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        )}
-      </div>
-
-      {/* Video Preview Modal */}
-      <Dialog open={!!previewVideo} onOpenChange={() => setPreviewVideo(null)}>
-        <DialogContent className="max-w-4xl w-full h-[80vh] z-50">
-          <DialogHeader>
-            <div className="flex items-center justify-between">
-              <DialogTitle className="text-lg line-clamp-1">
-                {previewVideo?.title}
-              </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setPreviewVideo(null)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-          </DialogHeader>
-          
-          {previewVideo && (
-            <div className="space-y-4">
-              {/* YouTube Embed */}
-              <div className="aspect-video w-full">
-                <iframe
-                  src={`https://www.youtube.com/embed/${previewVideo.youtubeId}?autoplay=1`}
-                  title={previewVideo.title}
-                  className="w-full h-full rounded-lg"
-                  allowFullScreen
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                />
-              </div>
-              
-              {/* Video Info */}
-              <div className="space-y-2">
-                <h3 className="font-semibold">{previewVideo.title}</h3>
-                <p className="text-sm text-muted-foreground">{previewVideo.channelTitle}</p>
-                <p className="text-sm">{previewVideo.description}</p>
-                
-                <div className="flex gap-4 text-sm text-muted-foreground">
-                  <span>{formatNumber(previewVideo.viewCount || 0)} views</span>
-                  <span>{formatNumber(previewVideo.likeCount || 0)} likes</span>
-                  <span>{previewVideo.duration}</span>
-                </div>
-              </div>
-              
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-4">
-                <Button
-                  onClick={() => window.open(previewVideo.youtubeURL, '_blank')}
-                  variant="outline"
-                >
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Watch on YouTube
-                </Button>
-                
-                                 <DropdownMenu>
-                   <DropdownMenuTrigger asChild>
-                     <Button className="bg-[#D90429] hover:bg-[#C80021]">
-                       <BookmarkPlus className="h-4 w-4 mr-2" />
-                       Add to Playlist
-                     </Button>
-                   </DropdownMenuTrigger>
-                   <DropdownMenuContent>
-                     <DropdownMenuLabel>Choose Action</DropdownMenuLabel>
-                     <DropdownMenuSeparator />
-                     <DropdownMenuItem
-                       onClick={() => {
-                         handlePlaylistAction(previewVideo);
-                         setPreviewVideo(null);
-                       }}
-                     >
-                       <Plus className="h-4 w-4 mr-2" />
-                       Create New Playlist
-                     </DropdownMenuItem>
-                     <DropdownMenuSeparator />
-                     <DropdownMenuLabel>Add to Existing Playlist</DropdownMenuLabel>
-                     {playlists.length > 0 ? (
-                       playlists.map((playlist) => (
-                         <DropdownMenuItem
-                           key={playlist.id}
-                           onClick={() => {
-                             handleAddToPlaylist(previewVideo, playlist.id);
-                             setPreviewVideo(null);
-                           }}
-                         >
-                           {playlist.title} ({playlist.videoCount} videos)
-                         </DropdownMenuItem>
-                       ))
-                     ) : (
-                       <DropdownMenuItem disabled>
-                         No playlists available
-                       </DropdownMenuItem>
-                     )}
-                   </DropdownMenuContent>
-                 </DropdownMenu>
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
-
-      {/* Create Playlist Modal */}
-      <Dialog open={showCreatePlaylist} onOpenChange={handleCloseCreatePlaylist}>
-        <DialogContent className="z-50">
-          <DialogHeader>
-            <DialogTitle>Create New Playlist</DialogTitle>
-          </DialogHeader>
-          
-          {selectedVideoForPlaylist && (
-            <div className="mb-4 p-3 bg-gray-100 rounded-lg">
-              <p className="text-sm font-medium">Adding video:</p>
-              <p className="text-sm text-gray-600 line-clamp-1">{selectedVideoForPlaylist.title}</p>
-            </div>
-          )}
-          
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Playlist Title</label>
-              <Input
-                value={newPlaylistTitle}
-                onChange={(e) => setNewPlaylistTitle(e.target.value)}
-                placeholder="Enter playlist title..."
+          <div className="space-y-2">
+            {filteredAndSortedVideos.map((video) => (
+              <CSVRecommendationCard
+                key={video.video_id}
+                video={video}
+                variant="compact"
+                onVideoClick={handleVideoClick}
               />
-            </div>
-            
-            <div>
-              <label className="text-sm font-medium">Description (Optional)</label>
-              <Input
-                value={newPlaylistDescription}
-                onChange={(e) => setNewPlaylistDescription(e.target.value)}
-                placeholder="Enter playlist description..."
-              />
-            </div>
-            
-            <div className="flex gap-2 pt-4">
-              <Button
-                variant="outline"
-                onClick={handleCloseCreatePlaylist}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleCreatePlaylist}
-                disabled={!newPlaylistTitle.trim()}
-                className="bg-[#D90429] hover:bg-[#C80021]"
-              >
-                Create Playlist
-              </Button>
-            </div>
+            ))}
           </div>
-        </DialogContent>
-      </Dialog>
+        )
+      ) : (
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <AlertCircle className="w-12 h-12 text-muted-foreground mb-4" />
+            <p className="text-lg font-medium mb-2">No videos found</p>
+            <p className="text-muted-foreground text-center mb-4">
+              {searchQuery 
+                ? 'Try adjusting your search or filters'
+                : `No ${genreInfo.name.toLowerCase()} videos available`}
+            </p>
+            <Button onClick={() => {
+              setSearchQuery('');
+              setActiveTab('all');
+              handleRefresh();
+            }}>
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Reset & Refresh
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
-} 
+}

@@ -16,7 +16,6 @@ import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, T
 import { cn } from '@/lib/utils';
 
 const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
   { href: '/productivity', label: 'Productivity', icon: Timer },
   { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
@@ -29,7 +28,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r" style={{ borderColor: 'hsl(var(--sidebar-border))', background: 'linear-gradient(180deg, rgba(10,10,11,0.95) 0%, rgba(17,17,19,0.95) 100%)' }}>
       <SidebarHeader className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid hsl(var(--sidebar-border))' }}>
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href="/ai-feed" className="flex items-center gap-2">
           <h1 className="text-xl font-semibold group-data-[collapsible=icon]:hidden" style={{ color: 'hsl(var(--foreground))' }}>
             <span style={{ color: 'hsl(var(--primary))' }}>S</span>treamSmart
           </h1>
@@ -44,19 +43,19 @@ export function AppSidebar() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0]))}
+                isActive={pathname === item.href || pathname.startsWith(item.href.split('#')[0])}
                 tooltip={{ children: item.label, side: 'right', className:"bg-popover text-popover-foreground" }}
                 className={cn(
                   "text-gray-300 hover:text-white",
-                  (pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0]))) 
+                  (pathname === item.href || pathname.startsWith(item.href.split('#')[0])) 
                     ? 'text-white'
                     : ''
                 )}
                 style={{
-                  background: (pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0])))
+                  background: (pathname === item.href || pathname.startsWith(item.href.split('#')[0]))
                     ? 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)'
                     : 'transparent',
-                  border: (pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href.split('#')[0])))
+                  border: (pathname === item.href || pathname.startsWith(item.href.split('#')[0]))
                     ? 'none'
                     : '1px solid transparent'
                 }}

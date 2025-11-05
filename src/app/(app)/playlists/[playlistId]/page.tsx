@@ -3,13 +3,8 @@
 import { useState, useEffect, useId } from 'react';
 import { useParams } from 'next/navigation';
 import { VideoPlayer } from '@/components/playlists/video-player';
-import { PlaylistChatbot } from '@/components/playlists/playlist-chatbot';
 import { LexVoiceChat } from '@/components/playlists/lex-voice-chat';
-import { MindMapDisplay } from '@/components/playlists/mind-map-display';
 import { VideoProgressItem } from '@/components/playlists/video-progress-item';
-import { VideoFeedback } from '@/components/playlists/video-feedback';
-import { ManualTranscriptUpload } from '@/components/playlists/manual-transcript-upload';
-// PlaylistFeedback removed - to be reimplemented
 import { PlaylistRenameDialog } from '@/components/playlists/playlist-rename-dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,45 +13,14 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 // Avatar components removed - to be used later
-import { BrainIcon, MessageCircleIcon, ListIcon, InfoIcon, CircleCheck, CircleIcon, LightbulbIcon, ShareIcon, BookmarkIcon, ClockIcon, CalendarIcon, UserIcon, TrendingUpIcon, Star, Edit3 } from 'lucide-react'; 
+import { MessageCircleIcon, InfoIcon, ShareIcon, BookmarkIcon, Edit3, Sparkles, BookOpen, User as UserIcon, Calendar as CalendarIcon, Clock as ClockIcon, CheckCircle as CircleCheck, Circle as CircleIcon, Brain as BrainIcon, List as ListIcon } from 'lucide-react'; 
 import type { Playlist, Video } from '@/types';
 import { useToast } from "@/hooks/use-toast";
-import { PlaylistQuiz } from '@/components/playlists/playlist-quiz';
-import { MLEnhancedVideoSummary } from '@/components/playlists/ml-enhanced-video-summary';
 import { motion } from 'framer-motion';
 import { useUser } from '@/contexts/UserContext';
 import { playlistService } from '@/services/playlistService';
+import { QuizGenerator, StudyPlanViewer, RelatedVideos } from '@/components/ai';
 
-// Placeholder data fetching function for fallback
-// Placeholder data fetching function for fallback - not used
-/*
-async function getOriginalMockPlaylistDetails(playlistId: string): Promise<Playlist | null> {
-  await new Promise(resolve => setTimeout(resolve, 100)); 
-  
-  const mockVideos: Video[] = [
-    { id: 'Tn6-PIqc4UM', title: 'React in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Tn6-PIqc4UM', thumbnail: 'https://i.ytimg.com/vi/Tn6-PIqc4UM/hqdefault.jpg', duration: '2:18', addedBy: 'user1', completionStatus: 100, summary: 'A quick introduction to React by Fireship.' },
-    { id: 'Sklc_fQBmcs', title: 'Next.js in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=Sklc_fQBmcs', thumbnail: 'https://i.ytimg.com/vi/Sklc_fQBmcs/hqdefault.jpg', duration: '2:23', addedBy: 'user1', completionStatus: 60, summary: 'A quick overview of Next.js by Fireship.' },
-    { id: 'qz0aGYrrlhU', title: 'HTML Full Course by Mosh', youtubeURL: 'https://www.youtube.com/watch?v=qz0aGYrrlhU', thumbnail: 'https://i.ytimg.com/vi/qz0aGYrrlhU/hqdefault.jpg', duration: '1:00:00', addedBy: 'user1', completionStatus: 20, summary: 'Learn HTML in one hour.' },
-    { id: 'OEV8gMkCHXQ', title: 'CSS in 100 Seconds', youtubeURL: 'https://www.youtube.com/watch?v=OEV8gMkCHXQ', thumbnail: 'https://i.ytimg.com/vi/OEV8gMkCHXQ/hqdefault.jpg', duration: '2:15', addedBy: 'user1', completionStatus: 0, summary: 'A quick introduction to CSS by Fireship.' },
-  ];
-  
-  const baseDate = new Date('2023-01-01T00:00:00Z');
-  if (playlistId === "1" || playlistId === "2" || playlistId === "3") {
-     return {
-      id: playlistId,
-      title: playlistId === "1" ? 'Web Development Fundamentals (Mock)' : playlistId === "2" ? 'Python for Data Science (Mock)' : 'React Native Development (Mock)',
-      description: 'This is a detailed description of the MOCK playlist focusing on its core concepts and learning objectives. It covers various topics including X, Y, and Z.',
-      userId: 'user1',
-      createdAt: new Date(baseDate.setDate(baseDate.getDate() + parseInt(playlistId) * 10)),
-      lastModified: new Date(baseDate.setDate(baseDate.getDate() + parseInt(playlistId) * 10)),
-      videos: mockVideos,
-      aiRecommended: playlistId === "2",
-      tags: ['sample', 'learning', 'tech', 'mock'],
-    };
-  }
-  return null;
-}
-*/
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
@@ -72,28 +36,6 @@ export default function PlaylistDetailPage() {
   const { toast } = useToast();
   const { user, recordActivity, updateUserStats } = useUser();
   const videoPlayerKey = useId();
-
-  // State to handle enhanced summary data from ML processing
-  const [enhancedSummaryData, setEnhancedSummaryData] = useState<Record<string, unknown> | null>(null);
-
-  const handleEnhancedSummaryGenerated = (enhancedSummary: string, multiModalData: Record<string, unknown>) => {
-    console.log('[PlaylistDetailPage] Enhanced summary generated:', {
-      enhancedSummary: enhancedSummary?.substring(0, 100) + '...',
-      multiModalData,
-      hasMultiModalData: !!multiModalData,
-      keyConcepts: multiModalData?.key_concepts || multiModalData?.KEY_CONCEPTS || []
-    });
-    
-    const newEnhancedData = {
-      enhanced_summary: enhancedSummary,
-      multimodal_data: multiModalData,
-      // Extract key concepts for mind map
-      key_concepts: multiModalData?.key_concepts || multiModalData?.KEY_CONCEPTS || []
-    };
-    
-    console.log('💾 [handleEnhancedSummaryGenerated] Setting enhancedSummaryData to:', newEnhancedData);
-    setEnhancedSummaryData(newEnhancedData);
-  };
 
   const loadPlaylist = async () => {
     if (!playlistId || !user) {
@@ -112,8 +54,9 @@ export default function PlaylistDetailPage() {
           id: foundPlaylist._id, // MongoDB uses _id
           createdAt: new Date(foundPlaylist.createdAt),
           lastModified: new Date(foundPlaylist.updatedAt || foundPlaylist.createdAt),
-          videos: (foundPlaylist.videos || []).map((video: Video) => ({
+          videos: (foundPlaylist.videos || []).map((video: any) => ({
             id: video.id,
+            youtubeId: video.youtubeId || video.id, // Keep YouTube ID
             title: video.title || '',
             youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
             thumbnail: video.thumbnail || '',
@@ -122,6 +65,8 @@ export default function PlaylistDetailPage() {
             summary: video.summary || '',
             completionStatus: video.completionStatus || 0,
             channelTitle: video.channelTitle || '',
+            transcriptS3Key: video.transcriptS3Key,
+            hasTranscript: video.hasTranscript,
           })),
           tags: foundPlaylist.tags || [],
           userId: foundPlaylist.userId,
@@ -171,6 +116,98 @@ export default function PlaylistDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playlistId, user, toast]);
 
+  // Real-time sync: Poll for playlist updates (optimized)
+  useEffect(() => {
+    if (!playlistId || !user) return;
+
+    let lastChecked = Date.now();
+    let isPolling = true;
+    let intervalId: NodeJS.Timeout | null = null;
+
+    const checkForUpdates = async () => {
+      if (!isPolling) return;
+
+      // Skip polling if page is not visible (performance optimization)
+      if (document.hidden) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/playlists/check-updates?playlistId=${playlistId}&lastChecked=${lastChecked}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data.hasUpdates) {
+            console.log('[PlaylistDetailPage] Updates detected, reloading playlist');
+            
+            // Show toast notification
+            toast({
+              title: "Playlist Updated",
+              description: data.latestVideo 
+                ? `New video added: ${data.latestVideo.title}` 
+                : "Playlist has been updated",
+              duration: 5000,
+            });
+
+            // Reload the playlist
+            await loadPlaylist();
+          }
+
+          // Update lastChecked timestamp
+          lastChecked = Date.now();
+        }
+      } catch (error) {
+        console.error('[PlaylistDetailPage] Error checking for updates:', error);
+      }
+    };
+
+    // Start polling after a delay to avoid immediate check
+    const startPolling = () => {
+      // Poll every 30 seconds (reduced from 10s to minimize server load)
+      intervalId = setInterval(checkForUpdates, 30000);
+    };
+
+    // Start polling after 30 seconds (no immediate check)
+    const startTimeout = setTimeout(startPolling, 30000);
+
+    // Handle visibility change - pause polling when tab is hidden
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Page hidden - clear interval to save resources
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+      } else {
+        // Page visible again - restart polling if not already running
+        if (!intervalId && isPolling) {
+          startPolling();
+        }
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      isPolling = false;
+      clearTimeout(startTimeout);
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [playlistId, user, toast]);
+
   const handleSelectVideo = (video: Video) => {
     setCurrentVideo(video);
   };
@@ -179,12 +216,6 @@ export default function PlaylistDetailPage() {
     // Reload playlist data after successful rename
     loadPlaylist();
   };
-  
-  const compiledPlaylistContentForRAG = playlist ? 
-    `Playlist: ${playlist.title}\nDescription: ${playlist.description}\n\nVideos:\n` +
-    playlist.videos.map((video, index) => 
-      `${index + 1}. ${video.title}\n   URL: ${video.youtubeURL}\n   Summary: ${video.summary || 'No summary available'}\n`
-    ).join('\n') : '';
 
   const handleToggleCompletion = async (videoId: string) => {
     if (!playlist || !playlist.videos) return;
@@ -224,7 +255,8 @@ export default function PlaylistDetailPage() {
           channelTitle: v.channelTitle || '',
           thumbnail: v.thumbnail || '',
           duration: v.duration || '',
-          url: v.youtubeURL || '',
+          youtubeURL: v.youtubeURL || '',
+          addedBy: v.addedBy || user?.id || '',
           completionStatus: v.completionStatus || 0,
         })),
       });
@@ -279,7 +311,8 @@ export default function PlaylistDetailPage() {
           channelTitle: v.channelTitle || '',
           thumbnail: v.thumbnail || '',
           duration: v.duration || '',
-          url: v.youtubeURL || '',
+          youtubeURL: v.youtubeURL || '',
+          addedBy: v.addedBy || user?.id || '',
           completionStatus: v.completionStatus || 0,
         })),
       });
@@ -292,6 +325,24 @@ export default function PlaylistDetailPage() {
         title: "Video Deleted",
         description: `"${targetVideo.title}" has been removed from the playlist.`,
       });
+      
+      // Real-time sync: Trigger immediate playlist sync after deletion
+      console.log('🔄 Triggering real-time sync after video deletion...');
+      localStorage.removeItem(`lastPlaylistSync_${user?.id}`);
+      
+      playlistService.syncPlaylistsForRecommendations(user?.id || '', true)
+        .then((syncResult) => {
+          if (syncResult.success) {
+            console.log(`✅ Real-time sync after deletion: ${syncResult.syncedCount} videos`);
+            
+            // Dispatch event to notify feed page
+            const event = new CustomEvent('playlistSynced', {
+              detail: { userId: user?.id, syncedCount: syncResult.syncedCount }
+            });
+            window.dispatchEvent(event);
+          }
+        })
+        .catch(err => console.error('❌ Sync after deletion failed:', err));
       
       // Update user stats after saving (delayed to prevent excessive calls)
       setTimeout(() => {
@@ -486,30 +537,22 @@ export default function PlaylistDetailPage() {
           {/* Interactive Tabs */}
           <motion.div variants={fadeInUp}>
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 lg:grid-cols-6 p-1 rounded-xl" style={{ background: 'rgba(139,92,246,0.08)' }}>
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 p-1 rounded-xl" style={{ background: 'rgba(139,92,246,0.08)' }}>
                 <TabsTrigger value="info" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <InfoIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">Info</span>
                 </TabsTrigger>
-                <TabsTrigger value="feedback" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                  <Star className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Feedback</span>
+                <TabsTrigger value="ai-quiz" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">AI Quiz</span>
+                </TabsTrigger>
+                <TabsTrigger value="study-plan" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">Study Plan</span>
                 </TabsTrigger>
                 <TabsTrigger value="chatbot" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
                   <MessageCircleIcon className="w-4 h-4 mr-2" />
                   <span className="hidden sm:inline">AI Chat</span>
-                </TabsTrigger>
-                <TabsTrigger value="mindmap" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                  <BrainIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">AI Mind Map</span>
-                </TabsTrigger>
-                <TabsTrigger value="quiz" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                  <LightbulbIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Quiz</span>
-                </TabsTrigger>
-                <TabsTrigger value="progress" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
-                  <TrendingUpIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Analytics</span>
                 </TabsTrigger>
               </TabsList>
               
@@ -563,96 +606,42 @@ export default function PlaylistDetailPage() {
                   </Card>
                 </TabsContent>
                 
-                <TabsContent value="feedback">
-                  {currentVideo && (
-                    <VideoFeedback 
-                      video={currentVideo}
-                      playlistId={playlist.id}
-                    />
-                  )}
-                </TabsContent>
-                
                 <TabsContent value="chatbot">
                   <div className="space-y-4">
-                    {/* Manual Transcript Upload Section */}
-                    {currentVideo && (
-                      <ManualTranscriptUpload
-                        videoId={currentVideo.youtubeId || currentVideo.id}
-                        videoTitle={currentVideo.title}
-                        youtubeUrl={currentVideo.youtubeURL}
-                        onUploadComplete={() => {
-                          toast({
-                            title: "Transcript Uploaded",
-                            description: "AI chat is now enabled for this video!",
-                          });
-                        }}
-                      />
-                    )}
-                    
-                    {/* Amazon Lex Voice Chat */}
+                    {/* Text-based RAG Chatbot with Voice Option */}
                     <LexVoiceChat
                       userId={user?.id || 'anonymous'}
                       playlistId={playlist.id}
-                      videoIds={playlist.videos?.map(v => v.id)}
+                      videoIds={playlist.videos?.map(v => v.youtubeId || v.id).filter(id => id && id.length === 11)}
                     />
                   </div>
                 </TabsContent>
-                
-                <TabsContent value="mindmap">
-                  <div className="space-y-6">
-                    {/* Enhanced Mind Map with ML Analysis */}
-                    {currentVideo && (
-                      <MLEnhancedVideoSummary 
-                        video={currentVideo}
-                        onEnhancedSummaryGenerated={handleEnhancedSummaryGenerated}
-                      />
-                    )}
-                    
-                    {/* Traditional Mind Map for Current Video */}
-                    <MindMapDisplay 
-                      playlistTitle={playlist.title} 
-                      currentVideo={currentVideo} 
-                      enhancedSummaryData={enhancedSummaryData}
+
+                {/* AI Quiz Tab - Phase 1 Implementation */}
+                <TabsContent value="ai-quiz">
+                  {currentVideo ? (
+                    <QuizGenerator
+                      videoId={currentVideo.youtubeId || currentVideo.id}
+                      numQuestions={5}
                     />
-                  </div>
+                  ) : (
+                    <Card className="p-8 text-center">
+                      <Sparkles className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                      <h3 className="text-lg font-semibold mb-2">Select a Video</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Choose a video from the playlist to generate an AI-powered quiz
+                      </p>
+                    </Card>
+                  )}
                 </TabsContent>
-                
-                <TabsContent value="quiz">
-                  <PlaylistQuiz 
-                    playlistId={playlist.id} 
-                    playlistTitle={playlist.title} 
-                    playlistContent={compiledPlaylistContentForRAG} 
+
+                {/* Study Plan Tab - Phase 1 Implementation */}
+                <TabsContent value="study-plan">
+                  <StudyPlanViewer
+                    playlistId={playlist.id}
+                    videoTitles={playlist.videos.map(v => v.title)}
+                    playlistTitle={playlist.title}
                   />
-                </TabsContent>
-                
-                <TabsContent value="progress">
-                  <Card className="p-6 bg-card border border-border">
-                    <div className="space-y-6">
-                      <div className="text-center">
-                        <h3 className="text-2xl font-bold mb-2">{Math.round(overallProgress)}%</h3>
-                        <p className="text-muted-foreground">Overall Progress</p>
-                        <Progress value={overallProgress} className="h-4 mt-4" />
-                      </div>
-                      
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(34,197,94,0.08)' }}>
-                          <CircleCheck className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-green-600">{completedVideos}</div>
-                          <div className="text-sm text-muted-foreground">Completed</div>
-                        </div>
-                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(59,130,246,0.08)' }}>
-                          <CircleIcon className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-blue-600">{playlist.videos.length - completedVideos}</div>
-                          <div className="text-sm text-muted-foreground">Remaining</div>
-                        </div>
-                        <div className="text-center p-4 rounded-lg" style={{ background: 'rgba(139,92,246,0.08)' }}>
-                          <ClockIcon className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                          <div className="text-2xl font-bold text-purple-600">{formatDuration(totalDuration)}</div>
-                          <div className="text-sm text-muted-foreground">Total Time</div>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
                 </TabsContent>
               </div>
             </Tabs>
