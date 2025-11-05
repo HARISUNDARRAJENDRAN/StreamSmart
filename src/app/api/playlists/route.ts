@@ -84,18 +84,26 @@ export async function GET(request: NextRequest) {
     try {
       let playlists;
       
-      // Debug mode: return all playlists with their userIds
+      // Debug mode: return all playlists with their userIds (development only)
       if (userId === 'all-debug') {
+        // Only allow in development environment for security
+        if (process.env.NODE_ENV !== 'development') {
+          return NextResponse.json(
+            { error: 'Debug endpoints are only available in development mode' },
+            { status: 403 }
+          );
+        }
+
         const result = await getAllPlaylists(20);
         playlists = result.items;
-        const response = { 
+        const response = {
           success: true,
           debug: true,
           playlists: playlists.map(p => ({
             id: p.id,
-            title: p.title,
-            description: p.description,
-            videoCount: p.videos.length,
+            title: p.title || 'Untitled',
+            description: p.description || '',
+            videoCount: (p.videos || []).length,
             userId: p.userId,
             createdAt: p.createdAt
           }))
