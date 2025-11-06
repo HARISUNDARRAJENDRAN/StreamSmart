@@ -8,8 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+
+const inputStyles =
+  'bg-white/80 border border-black/10 text-black placeholder:text-black/45 backdrop-blur-sm focus-visible:ring-black/20 focus-visible:border-black transition-colors';
 
 export function CognitoRegisterForm() {
   const [name, setName] = useState('');
@@ -113,10 +116,10 @@ export function CognitoRegisterForm() {
 
   if (needsVerification) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Verify Your Email</CardTitle>
-          <CardDescription>
+      <Card className="w-full max-w-md border border-black/10 bg-white/80 shadow-[0_35px_90px_-55px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+        <CardHeader className="space-y-2 text-left">
+          <CardTitle className="text-3xl font-semibold text-black">Verify your email</CardTitle>
+          <CardDescription className="text-sm text-black/60">
             We've sent a verification code to {verificationEmail}
           </CardDescription>
         </CardHeader>
@@ -130,7 +133,7 @@ export function CognitoRegisterForm() {
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="code">Verification Code</Label>
+              <Label htmlFor="code" className="text-sm font-medium text-black/70">Verification code</Label>
               <Input
                 id="code"
                 type="text"
@@ -139,13 +142,14 @@ export function CognitoRegisterForm() {
                 onChange={(e) => setVerificationCode(e.target.value)}
                 required
                 maxLength={6}
+                className={inputStyles}
               />
             </div>
             
             <Button
               type="button"
               variant="link"
-              className="p-0 h-auto font-normal text-sm"
+              className="p-0 h-auto font-normal text-sm text-black hover:text-black/70"
               onClick={handleResendCode}
               disabled={isResending}
             >
@@ -155,7 +159,7 @@ export function CognitoRegisterForm() {
           <CardFooter>
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full bg-black text-white hover:bg-black/90"
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -168,10 +172,12 @@ export function CognitoRegisterForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Create an Account</CardTitle>
-        <CardDescription>Sign up for StreamSmart to start learning</CardDescription>
+    <Card className="w-full max-w-md border border-black/10 bg-white/80 shadow-[0_35px_90px_-55px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <CardHeader className="space-y-3 text-left">
+        <CardTitle className="text-3xl font-semibold text-black">Create an account</CardTitle>
+        <CardDescription className="text-sm text-black/65">
+          Sign up to launch AI-powered playlists, adaptive quizzes, and collaborative dashboards.
+        </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -183,7 +189,7 @@ export function CognitoRegisterForm() {
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
+            <Label htmlFor="name" className="text-sm font-medium text-black/70">Full name</Label>
             <Input
               id="name"
               type="text"
@@ -192,11 +198,12 @@ export function CognitoRegisterForm() {
               onChange={(e) => setName(e.target.value)}
               required
               autoComplete="name"
+              className={inputStyles}
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-black/70">Email</Label>
             <Input
               id="email"
               type="email"
@@ -205,11 +212,12 @@ export function CognitoRegisterForm() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
+              className={inputStyles}
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-sm font-medium text-black/70">Password</Label>
             <Input
               id="password"
               type="password"
@@ -219,6 +227,7 @@ export function CognitoRegisterForm() {
               required
               autoComplete="new-password"
               minLength={8}
+              className={inputStyles}
             />
             <p className="text-xs text-muted-foreground">
               Password must be at least 8 characters long
@@ -226,7 +235,7 @@ export function CognitoRegisterForm() {
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword" className="text-sm font-medium text-black/70">Confirm password</Label>
             <Input
               id="confirmPassword"
               type="password"
@@ -235,21 +244,22 @@ export function CognitoRegisterForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               autoComplete="new-password"
+              className={inputStyles}
             />
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-2">
+        <CardFooter className="flex flex-col space-y-4">
           <Button 
             type="submit" 
-            className="w-full"
+            className="w-full bg-black text-white hover:bg-black/90"
             disabled={isLoading}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Create Account
           </Button>
-          <p className="text-sm text-center text-muted-foreground">
+          <p className="text-sm text-center text-black/60">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href="/login" className="font-medium text-black hover:underline">
               Sign in
             </Link>
           </p>

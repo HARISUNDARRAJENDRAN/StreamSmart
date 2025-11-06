@@ -11,6 +11,9 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
+const inputStyles =
+  'bg-white/80 border border-black/10 text-black placeholder:text-black/45 backdrop-blur-sm focus-visible:ring-black/20 focus-visible:border-black transition-colors';
+
 export function CognitoLoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -79,10 +82,10 @@ export function CognitoLoginForm() {
 
   if (showResetPassword) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Reset Password</CardTitle>
-          <CardDescription>
+  <Card className="w-full max-w-md border border-black/10 bg-white/80 shadow-[0_35px_90px_-55px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+        <CardHeader className="space-y-2 text-left">
+          <CardTitle className="text-3xl font-semibold text-black">Reset password</CardTitle>
+          <CardDescription className="text-sm text-black/60">
             {resetStep === 'request' 
               ? 'Enter your email to receive a password reset code'
               : 'Enter the code sent to your email and your new password'}
@@ -99,7 +102,7 @@ export function CognitoLoginForm() {
             
             {resetStep === 'request' ? (
               <div className="space-y-2">
-                <Label htmlFor="reset-email">Email</Label>
+                <Label htmlFor="reset-email" className="text-sm font-medium text-black/70">Email</Label>
                 <Input
                   id="reset-email"
                   type="email"
@@ -107,12 +110,13 @@ export function CognitoLoginForm() {
                   value={resetEmail || email}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
+                  className={inputStyles}
                 />
               </div>
             ) : (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="reset-code">Verification Code</Label>
+                  <Label htmlFor="reset-code" className="text-sm font-medium text-black/70">Verification code</Label>
                   <Input
                     id="reset-code"
                     type="text"
@@ -120,10 +124,11 @@ export function CognitoLoginForm() {
                     value={resetCode}
                     onChange={(e) => setResetCode(e.target.value)}
                     required
+                    className={inputStyles}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
+                  <Label htmlFor="new-password" className="text-sm font-medium text-black/70">New password</Label>
                   <Input
                     id="new-password"
                     type="password"
@@ -131,6 +136,7 @@ export function CognitoLoginForm() {
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     required
+                    className={inputStyles}
                   />
                 </div>
               </>
@@ -139,7 +145,7 @@ export function CognitoLoginForm() {
           <CardFooter className="flex flex-col space-y-2">
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full bg-black text-white hover:bg-black/90"
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -148,7 +154,7 @@ export function CognitoLoginForm() {
             <Button 
               type="button"
               variant="ghost"
-              className="w-full"
+              className="w-full text-black hover:bg-black/5"
               onClick={() => {
                 setShowResetPassword(false);
                 setResetStep('request');
@@ -166,10 +172,12 @@ export function CognitoLoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>Sign In to StreamSmart</CardTitle>
-        <CardDescription>Enter your email and password to access your account</CardDescription>
+  <Card className="w-full max-w-md border border-black/10 bg-white/80 shadow-[0_35px_90px_-55px_rgba(0,0,0,0.6)] backdrop-blur-xl">
+      <CardHeader className="space-y-3 text-left">
+        <CardTitle className="text-3xl font-semibold text-black">Sign in</CardTitle>
+        <CardDescription className="text-sm text-black/65">
+          Enter your email and password to access your StreamSmart workspace.
+        </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -181,7 +189,7 @@ export function CognitoLoginForm() {
           )}
           
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="text-sm font-medium text-black/70">Email</Label>
             <Input
               id="email"
               type="email"
@@ -190,11 +198,12 @@ export function CognitoLoginForm() {
               onChange={(e) => setEmail(e.target.value)}
               required
               autoComplete="email"
+              className={inputStyles}
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-sm font-medium text-black/70">Password</Label>
             <Input
               id="password"
               type="password"
@@ -203,30 +212,31 @@ export function CognitoLoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
+              className={inputStyles}
             />
           </div>
           
           <Button
             type="button"
             variant="link"
-            className="p-0 h-auto font-normal text-sm"
+            className="p-0 h-auto font-normal text-sm text-black hover:text-black/70"
             onClick={() => setShowResetPassword(true)}
           >
             Forgot your password?
           </Button>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-2">
+        <CardFooter className="flex flex-col space-y-4">
           <Button 
             type="submit" 
-            className="w-full"
+            className="w-full bg-black text-white hover:bg-black/90"
             disabled={isLoading}
           >
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign In
           </Button>
-          <p className="text-sm text-center text-muted-foreground">
+          <p className="text-sm text-center text-black/60">
             Don't have an account?{' '}
-            <Link href="/register" className="text-primary hover:underline">
+            <Link href="/register" className="font-medium text-black hover:underline">
               Sign up
             </Link>
           </p>

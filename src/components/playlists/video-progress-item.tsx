@@ -93,23 +93,25 @@ export function VideoProgressItem({
     <>
       <div
         className={cn(
-          "flex items-center gap-2 p-3 rounded-lg transition-colors duration-150 group relative",
-          isActive ? "bg-primary/20 border border-primary" : "hover:bg-muted/50"
+          "flex items-center gap-2.5 p-2.5 rounded-[14px] transition-all duration-200 group relative",
+          isActive 
+            ? "bg-black text-white shadow-[0_2px_8px_rgba(0,0,0,0.15)] border border-black" 
+            : "hover:bg-gray-50 border border-transparent hover:border-gray-200"
         )}
       >
         <button
           onClick={() => onSelectVideo(video)}
-          className="flex items-center gap-3 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-lg min-w-0"
+          className="flex items-center gap-2.5 flex-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg min-w-0"
           aria-current={isActive ? "true" : "false"}
           aria-label={`Play video: ${video.title || 'Untitled Video'}`}
         >
-          <div className="relative shrink-0">
+          <div className="relative shrink-0 rounded-[10px] overflow-hidden">
             <Image
               src={imgSrc}
               alt={video.title || 'Video thumbnail'}
-              width={120}
-              height={68}
-              className="rounded-md aspect-video object-cover border"
+              width={100}
+              height={56}
+              className="rounded-[10px] aspect-video object-cover border border-gray-200"
               data-ai-hint="video thumbnail"
               onError={(e) => {
                 if (e.currentTarget.src !== errorFallbackSrc) {
@@ -118,39 +120,69 @@ export function VideoProgressItem({
               }}
             />
             {isActive && (
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center rounded-md">
-                <CirclePlay className="h-8 w-8 text-white" />
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center rounded-[10px]">
+                <CirclePlay className="h-6 w-6 text-white" />
               </div>
             )}
           </div>
           <div className="flex-grow overflow-hidden min-w-0">
-            <h4 className="text-sm font-medium truncate" title={video.title || 'Untitled Video'}>
+            <h4 className={cn(
+              "text-xs font-semibold truncate leading-tight",
+              isActive ? "text-white" : "text-black"
+            )}>
               {video.title || 'Untitled Video'}
             </h4>
-            <p className="text-xs text-muted-foreground mb-1">{video.duration || 'N/A'}</p>
-            <div className="flex items-center gap-2">
-              <Progress value={video.completionStatus || 0} className="h-1.5 flex-1" aria-label={`${video.title || 'Video'} progress ${video.completionStatus || 0}%`} />
-              <span className="text-xs text-muted-foreground w-8 text-right">
+            <p className={cn(
+              "text-xs mt-0.5",
+              isActive ? "text-white/70" : "text-black/60"
+            )}>
+              {video.duration || 'N/A'}
+            </p>
+            <div className="flex items-center gap-1.5 mt-1.5">
+              <div className={cn(
+                "h-1 flex-1 rounded-full overflow-hidden",
+                isActive ? "bg-white/20" : "bg-gray-200"
+              )}>
+                <div 
+                  className={cn(
+                    "h-full rounded-full transition-all",
+                    isActive ? "bg-white" : "bg-black"
+                  )}
+                  style={{ width: `${video.completionStatus || 0}%` }}
+                ></div>
+              </div>
+              <span className={cn(
+                "text-xs font-medium w-6 text-right shrink-0",
+                isActive ? "text-white/70" : "text-black/60"
+              )}>
                 {video.completionStatus || 0}%
               </span>
               {(video.completionStatus === 100) && (
-                <CircleCheck className="h-4 w-4 text-green-500 shrink-0" />
+                <CircleCheck className={cn(
+                  "h-3.5 w-3.5 shrink-0",
+                  isActive ? "text-white" : "text-black"
+                )} />
               )}
             </div>
           </div>
         </button>
 
-        {/* Delete Button - Always visible on hover with better positioning */}
+        {/* Delete Button */}
         {showDeleteButton && onDeleteVideo && (
           <div className="flex items-center">
             <Button
               size="sm"
               variant="ghost"
               onClick={handleDeleteClick}
-              className="opacity-20 group-hover:opacity-100 transition-all duration-200 h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-100 dark:hover:bg-red-950 dark:text-red-400 dark:hover:text-red-300 shrink-0 z-10 bg-white/80 dark:bg-gray-800/80 border border-red-200 dark:border-red-800 hover:border-red-400 dark:hover:border-red-600"
+              className={cn(
+                "opacity-0 group-hover:opacity-100 transition-all duration-200 h-7 w-7 p-0 shrink-0 rounded-md",
+                isActive 
+                  ? "text-white/60 hover:text-white hover:bg-white/10" 
+                  : "text-black/60 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200"
+              )}
               aria-label={`Delete video: ${video.title || 'Untitled Video'}`}
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-3.5 w-3.5" />
             </Button>
           </div>
         )}

@@ -29,11 +29,11 @@ const categoryIcons = {
 };
 
 const categoryColors = {
-  summary: 'bg-blue-500/10 text-blue-600 hover:bg-blue-500/20 border-blue-200',
-  concept: 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20 border-yellow-200',
-  navigation: 'bg-purple-500/10 text-purple-600 hover:bg-purple-500/20 border-purple-200',
-  study: 'bg-green-500/10 text-green-600 hover:bg-green-500/20 border-green-200',
-  practice: 'bg-orange-500/10 text-orange-600 hover:bg-orange-500/20 border-orange-200',
+  summary: 'bg-gray-100 text-black hover:bg-gray-200 border-gray-300',
+  concept: 'bg-gray-100 text-black hover:bg-gray-200 border-gray-300',
+  navigation: 'bg-gray-100 text-black hover:bg-gray-200 border-gray-300',
+  study: 'bg-gray-100 text-black hover:bg-gray-200 border-gray-300',
+  practice: 'bg-gray-100 text-black hover:bg-gray-200 border-gray-300',
 };
 
 export function SuggestedQuestions({
@@ -130,13 +130,13 @@ export function SuggestedQuestions({
   }
 
   return (
-    <div className={cn('space-y-2', className)}>
-      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+    <div className={cn('space-y-3', className)}>
+      <div className="flex items-center gap-2 text-xs text-black/50 font-semibold uppercase tracking-wider">
         <Lightbulb className="h-4 w-4" />
-        <span className="font-medium">Suggested questions:</span>
+        <span>Suggested questions</span>
       </div>
       
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-1 gap-2">
         {suggestions.slice(0, maxSuggestions).map((suggestion) => {
           const Icon = categoryIcons[suggestion.category];
           const colorClass = categoryColors[suggestion.category];
@@ -145,23 +145,22 @@ export function SuggestedQuestions({
             <Button
               key={suggestion.id}
               variant="outline"
-              size="sm"
               onClick={() => onQuestionClick(suggestion.text)}
               className={cn(
-                'transition-all duration-200 border',
-                colorClass,
-                'hover:scale-105 active:scale-95'
+                'h-auto py-3 px-4 justify-start text-left transition-all duration-200 border-2 rounded-[14px]',
+                'hover:shadow-md hover:scale-[1.01] active:scale-95',
+                colorClass
               )}
             >
-              <Icon className="h-3.5 w-3.5 mr-1.5" />
-              {suggestion.text}
+              <Icon className="h-4 w-4 mr-3 flex-shrink-0 text-black/60" />
+              <span className="text-sm font-medium text-black line-clamp-2">{suggestion.text}</span>
             </Button>
           );
         })}
       </div>
 
       {error && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-black/40">
           Showing default suggestions
         </p>
       )}

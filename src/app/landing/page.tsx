@@ -2,1317 +2,1167 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { ListVideoIcon, BarChart3Icon, Star, ArrowRight, PlayCircle, Sparkles, Users, Mail, Linkedin, ExternalLink, Target, Brain, Share2, Code, Layers, Globe, Cpu } from 'lucide-react';
-import { motion } from 'framer-motion';
-import useIntersectionObserver from '@/hooks/useIntersectionObserver';
+import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
+import { LayeredText } from '@/components/ui/layered-text';
+import { DottedSurface } from '@/components/ui/dotted-surface';
+import { cn } from '@/lib/utils';
+import type { LucideIcon } from 'lucide-react';
+import {
+  ChevronRight,
+  Check,
+  Mail,
+  Sparkles,
+  ChevronDown,
+  Twitter,
+  Linkedin,
+  Github,
+  Layers,
+  Brain,
+  GraduationCap,
+  Headphones,
+  BarChart3,
+  Link2,
+  Youtube,
+  Instagram,
+  MessageCircle
+} from 'lucide-react';
 
-// Dark theme color palette
-const colors = {
-  background: {
-    base: '#0A0A0B',
-    surface: '#111113',
-    elevated: '#1C1C1E',
-  },
-  text: {
-    primary: '#FFFFFF',
-    secondary: '#B3B3B3',
-    tertiary: '#8A8A8A',
-  },
-  purple: {
-    primary: '#8B5CF6',
-    secondary: '#A855F7',
-    subtle: '#C084FC',
-    glow: 'rgba(139, 92, 246, 0.2)',
-    dark: '#7C3AED',
-  },
-  gradients: {
-    hero: 'linear-gradient(135deg, #0A0A0B 0%, #1A1A2E 50%, #16213E 100%)',
-    card: 'linear-gradient(145deg, #111113 0%, #1C1C1E 100%)',
-    purple: 'linear-gradient(90deg, #8B5CF6 0%, #A855F7 100%)',
-    purpleRadial: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%)',
-  }
-};
+const LandingPage = () => {
+  const [animationKey, setAnimationKey] = useState(0);
 
-// Enhanced animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
+  useEffect(() => {
+    // Force animations to restart by incrementing key when component mounts
+    setAnimationKey(prev => prev + 1);
+  }, []);
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
-      ease: 'easeOut',
-    },
-  },
-};
-
-// Particle component for background effects
-const ParticleSystem = ({ count = 50, className = "" }) => {
   return (
-    <div className={`absolute inset-0 pointer-events-none ${className}`}>
-      {Array.from({ length: count }).map((_, i) => (
-        <div
-          key={i}
-          className="absolute w-1 h-1 rounded-full animate-float-gentle"
-          style={{
-            background: colors.purple.subtle,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${4 + Math.random() * 6}s`,
-            opacity: 0.3 + Math.random() * 0.4,
-            filter: 'blur(0.5px)',
-          }}
-        />
-      ))}
+    <div className="min-h-screen bg-[#F5F5F5]">
+      <Navbar />
+      <HeroSection />
+      <FounderNoteSection />
+      <BenefitsSection key={`benefits-${animationKey}`} />
+      <FeaturesSection key={`features-${animationKey}`} />
+      <ProcessSection key={`process-${animationKey}`} />
+      <ReviewsSection />
+      <PricingSection />
+      <FAQSection />
+      <Footer />
     </div>
   );
 };
 
-const features = [
-  {
-    icon: <Brain className="h-8 w-8" />,
-    title: 'AI-Powered Learning',
-    description: 'Transform any topic into structured learning paths with AI-generated playlists, mind maps, and personalized recommendations.',
-  },
-  {
-    icon: <Code className="h-8 w-8" />,
-    title: 'Smart Code Analysis',
-    description: 'Automatically analyze programming tutorials and create interactive coding exercises tailored to your skill level.',
-  },
-  {
-    icon: <Layers className="h-8 w-8" />,
-    title: 'Visual Mind Maps',
-    description: 'Convert complex topics into beautiful, interactive mind maps that make learning intuitive and memorable.',
-  },
-  {
-    icon: <BarChart3Icon className="h-8 w-8" />,
-    title: 'Progress Analytics',
-    description: 'Track your learning journey with detailed analytics, completion rates, and personalized insights.',
-  },
-  {
-    icon: <Globe className="h-8 w-8" />,
-    title: 'Global Community',
-    description: 'Connect with learners worldwide, share knowledge, and collaborate on learning projects.',
-  },
-  {
-    icon: <Cpu className="h-8 w-8" />,
-    title: 'Neural Processing',
-    description: 'Advanced AI models understand context and provide relevant, personalized learning recommendations.',
-  },
-];
+export default LandingPage;
 
-const testimonials = [
-  {
-    name: "Naveen Sekhar",
-    role: "CyberSecurity Student",
-    content: "Fantastic work! The way you've integrated AI to turn YouTube videos into interactive lessons with mind maps and quizzes is super impressive. The platform feels fresh and genuinely useful for learners.",
-    avatar: "NS",
-    rating: 5
-  },
-  {
-    name: "Anandavalli",
-    role: "MBBS UG Student", 
-    content: "I've increased my learning efficiency by 300%. The personalized quizzes ensure I actually retain what I watch.",
-    avatar: "AV",
-    rating: 5
-  },
-  {
-    name: "Dhanushya Sai",
-    role: "Data Science Student",
-    content: "Overall impressive work! The AI recommendations are spot-on and save me hours of searching for quality content.",
-    avatar: "DS",
-    rating: 5
-  }
-];
-
-const stats = [
-  { number: "50+", label: "Active Learners" },
-  { number: "1K+", label: "Videos Organized" },
-  { number: "98%", label: "User Satisfaction" },
-  { number: "5x", label: "Faster Learning" },
-];
-
-export default function LandingPage() {
-  const [pushTransitionComplete, setPushTransitionComplete] = useState(false);
-  const [canNavbarAppear, setCanNavbarAppear] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(false);
-  const [currentSection, setCurrentSection] = useState(0);
-
-  // Intersection observers for different sections
-  const aboutRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
-  const featuresRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
-  const testimonialsRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
-  const contactRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
-  const howItWorksRef = useIntersectionObserver<HTMLElement>({ threshold: 0.1 });
-
-  const aboutInView = aboutRef.inView;
-  const featuresInView = featuresRef.inView;
-  const testimonialsInView = testimonialsRef.inView;
-  const contactInView = contactRef.inView;
-  const howItWorksInView = howItWorksRef.inView;
-
-  // Initialize page
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPushTransitionComplete(true);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Navbar visibility logic
-  useEffect(() => {
-    if (pushTransitionComplete) {
-      const timer = setTimeout(() => {
-        setCanNavbarAppear(true);
-      }, 300);
-      return () => clearTimeout(timer);
-    } else {
-      setCanNavbarAppear(false);
-    }
-  }, [pushTransitionComplete]);
-
-  useEffect(() => {
-    const handleScrollBasedNavbar = () => {
-      if (!canNavbarAppear) {
-        setShowNavbar(false);
-        return;
-      }
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      setShowNavbar(scrollTop <= 50);
-    };
-
-    handleScrollBasedNavbar();
-    window.addEventListener('scroll', handleScrollBasedNavbar);
-    return () => window.removeEventListener('scroll', handleScrollBasedNavbar);
-  }, [canNavbarAppear]);
-
-  // Section navigation
-  useEffect(() => {
-    const handleSideNavScroll = () => {
-      const sections = document.querySelectorAll('section[data-section]');
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-
-      sections.forEach((section, index) => {
-        const sectionTop = (section as HTMLElement).offsetTop;
-        const sectionHeight = (section as HTMLElement).offsetHeight;
+const Navbar = () => (
+  <nav className="fixed top-0 left-0 right-0 z-50 bg-white/40 backdrop-blur-xl border-b border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
+    <div className="container mx-auto px-8 py-5">
+      <div className="flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="text-2xl font-bold text-black">StreamSmart</span>
+        </Link>
         
-        if (scrollTop >= sectionTop - windowHeight / 2 && 
-            scrollTop < sectionTop + sectionHeight - windowHeight / 2) {
-          setCurrentSection(index);
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleSideNavScroll);
-    return () => window.removeEventListener('scroll', handleSideNavScroll);
-  }, []);
-  
-  const sections = [
-    { id: 'hero', name: 'Hero' },
-    { id: 'features', name: 'Features' },
-    { id: 'about', name: 'About' },
-    { id: 'testimonials', name: 'Testimonials' },
-    { id: 'how-it-works', name: 'How It Works' },
-    { id: 'contact', name: 'Contact' }
-  ];
-
-  const navigateToSection = (sectionIndex: number) => {
-    const targetSection = document.querySelector(`section[data-section="${sectionIndex}"]`) as HTMLElement;
-    if (targetSection) {
-      window.scrollTo({
-        top: targetSection.offsetTop,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return (
-    <div 
-      className="relative min-h-screen"
-      style={{
-        background: colors.background.base,
-        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif",
-        scrollSnapType: 'y mandatory',
-        scrollBehavior: 'smooth'
-      }}
-    >
-      {/* Splash screen removed for a seamless entry experience */}
-
-      {/* Enhanced Navigation */}
-      <motion.nav 
-        className="fixed top-0 left-0 right-0 z-50 p-6"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ 
-          opacity: showNavbar ? 1 : 0,
-          y: showNavbar ? 0 : -20
-        }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{
-          background: showNavbar ? 'rgba(10, 10, 11, 0.9)' : 'transparent',
-          backdropFilter: showNavbar ? 'blur(20px)' : 'none',
-          borderBottom: showNavbar ? `1px solid ${colors.background.elevated}` : 'none'
-        }}
-      >
-        <div className="container mx-auto flex items-center justify-between">
-          <Link href="/" className="text-white font-bold text-2xl flex items-center gap-2">
-            <div 
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: colors.gradients.purple }}
-            >
-              <Brain className="h-5 w-5 text-white" />
-            </div>
-            <span style={{ color: colors.text.primary }}>StreamSmart</span>
+        <div className="hidden md:flex items-center gap-12">
+          <Link href="#benefits" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
+            Benefits
           </Link>
-          
-        <div className="flex items-center gap-6">
-            {['About', 'Features', 'Demo'].map((item) => (
-          <Link 
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="relative group transition-all duration-300 text-sm font-medium"
-                style={{ color: colors.text.secondary }}
-              >
-                {item}
-                <span 
-                  className="absolute left-0 bottom-[-2px] w-0 h-0.5 transition-all duration-300 group-hover:w-full"
-                  style={{ background: colors.purple.primary }}
-                />
+          <Link href="#features" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
+            Features
           </Link>
-            ))}
-            <Link href="/register">
-              <Button 
-                className="font-medium px-6 py-2 text-sm transition-all duration-300 rounded-lg relative overflow-hidden group"
-                style={{
-                  background: colors.gradients.purple,
-                  color: colors.text.primary,
-                  border: 'none'
-                }}
-              >
-                <span className="relative z-10">Get Started Free</span>
-                <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
-                  }}
-                />
-              </Button>
+          <Link href="#process" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
+            How it flows
           </Link>
+          <Link href="#pricing" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
+            Pricing
+          </Link>
+        </div>
+        
+        <div className="flex items-center gap-4">
           <Link href="/login">
-            <Button 
-                variant="outline"
-                className="font-medium px-6 py-2 text-sm transition-all duration-300 rounded-lg border"
-                style={{
-                  color: colors.text.primary,
-                  borderColor: colors.purple.primary,
-                  background: 'transparent'
-                }}
-            >
-                Login
+            <Button variant="ghost" className="text-base font-semibold text-black hover:bg-black/5">
+              Login
             </Button>
           </Link>
+          <Link href="/register">
+            <Button className="bg-black text-white hover:bg-black/90 text-base font-semibold">
+              Register
+            </Button>
+          </Link>
+        </div>
+      </div>
+    </div>
+  </nav>
+);
+
+const HeroSection = () => (
+  <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F5F5F5] pt-20">
+    <DottedSurface className="absolute inset-0" />
+    
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div
+        aria-hidden="true"
+        className={cn(
+          'absolute -top-10 left-1/2 size-full -translate-x-1/2 rounded-full',
+          'bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.05),transparent_50%)]',
+          'blur-[40px]',
+        )}
+      />
+    </div>
+    
+    <div className="container mx-auto px-6 md:px-[360px] py-[80px] pb-[100px] relative z-10">
+      <div className="max-w-[995px] mx-auto flex flex-col items-center gap-8 mt-3">
+        <div className="flex flex-col items-center gap-4 w-full">
+          <div className="flex items-center justify-center gap-4">
+            <h1 className="text-[100px] font-bold leading-[120px] tracking-[-6px] text-black whitespace-nowrap mt-3">Youtube. Smarter.</h1>
           </div>
         </div>
-      </motion.nav>
 
-      {/* Side Navigation Dots */}
-      <nav className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block">
-        <div className="flex flex-col space-y-4">
-          {sections.map((section, index) => (
-            <button
-              key={section.id}
-              onClick={() => navigateToSection(index)}
-              className={`group relative w-3 h-3 rounded-full transition-all duration-300 ${
-                currentSection === index 
-                  ? 'scale-125' 
-                  : 'hover:scale-110'
-              }`}
-              style={{
-                background: currentSection === index 
-                  ? colors.purple.primary 
-                  : colors.purple.glow,
-                boxShadow: currentSection === index 
-                  ? `0 0 15px ${colors.purple.glow}` 
-                  : 'none'
-              }}
-              aria-label={`Navigate to ${section.name}`}
+        <div className="max-w-[580px] w-full">
+          <p className="text-center text-black/80 text-[18px] leading-[28px] font-medium">Transform every YouTube session into a guided, AI-driven learning experience that adapts to your pace.</p>
+        </div>
+
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <Link href="/register">
+            <Button className="px-8 py-4 rounded-[12px] bg-black text-white shadow-[0_2.289px_4.119px_-2.5px_rgba(61,61,61,0.64),0_10px_18px_-3.75px_rgba(61,61,61,0.25),0_0.707px_0.707px_-0.583px_rgba(0,0,0,0.35),0_1.807px_1.807px_-1.167px_rgba(0,0,0,0.34),0_3.622px_3.622px_-1.75px_rgba(0,0,0,0.33),0_6.866px_6.866px_-2.333px_rgba(0,0,0,0.30),0_13.647px_13.647px_-2.917px_rgba(0,0,0,0.26),0_30px_30px_-3.5px_rgba(0,0,0,0.15)] hover:bg-black/90 transition-all hover:scale-105">
+              <span className="text-[15px] font-semibold">Start Learning Free</span>
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Button>
+          </Link>
+          <Button variant="outline" className="px-8 py-4 rounded-[12px] bg-white/60 backdrop-blur-sm border-black/10 text-black shadow-[0_0.707px_0.707px_-0.583px_rgba(158,158,158,0.69),0_1.807px_1.807px_-1.167px_rgba(158,158,158,0.68),0_3.622px_3.622px_-1.75px_rgba(158,158,158,0.65),0_6.866px_6.866px_-2.333px_rgba(158,158,158,0.61),0_13.647px_13.647px_-2.917px_rgba(158,158,158,0.52),0_30px_30px_-3.5px_rgba(158,158,158,0.30)] hover:bg-white/80 transition-all hover:scale-105">
+            <span className="text-[15px] font-semibold">Explore Features</span>
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const FounderNoteSection = () => (
+  <section className="py-24 bg-[#F5F5F5]">
+    <div className="mx-auto max-w-[980px] px-6 md:px-0">
+      <div className="flex flex-col items-center gap-9 text-center">
+        <p className="text-[28px] leading-[42px] font-medium text-black/65">
+          “We created <span className="font-semibold text-black">StreamSmart</span> after building learning sprints from scattered YouTube queues.
+          Today, our AI <span className="font-semibold text-black">curates the right playlist, coaches through every transcript</span>, and closes the loop with actionable analytics.
+          Your team focuses on mastery while we orchestrate the flow end to end.”
+        </p>
+
+        <div className="flex flex-col items-center gap-2.5">
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-black/5 blur-[18px]" aria-hidden />
+            <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-slate-900 via-slate-700 to-slate-500 text-white text-sm font-semibold tracking-wide shadow-[0_12px_26px_-16px_rgba(15,23,42,0.35)]">
+              HS
+            </div>
+          </div>
+          <span className="text-sm font-semibold text-black">Harisundar Rajendran</span>
+          <span className="text-xs text-black/60">Founder, StreamSmart</span>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+const BenefitsSection = () => {
+  const benefits = [
+    {
+      title: 'Smart Playlist Curation',
+      description: 'AI-powered video recommendations tailored to your learning goals and pace',
+      videoSrc: '/vid1.mp4'
+    },
+    {
+      title: 'AI Learning Assistant',
+      description: 'Get instant answers and insights from video transcripts while you watch',
+      videoSrc: '/vid2.mp4'
+    },
+    {
+      title: 'Track Your Progress',
+      description: 'Monitor learning streaks, achievements, and stay motivated with real-time analytics',
+      videoSrc: '/vid3.mp4'
+    }
+  ];
+
+  const tags = [
+    'AI-Powered Learning',
+    'Smart Playlists',
+    'Real-Time Insights',
+    'Progress Tracking',
+    'Interactive Transcripts',
+    'Personalized Learning',
+    'Achievement System',
+    'Learning Analytics'
+  ];
+
+  return (
+    <section id="benefits" className="py-[110px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-14 px-6 md:px-0">
+        <div className="flex flex-col items-center gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
+            <Sparkles className="h-4 w-4 text-black" />
+            <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Why StreamSmart</span>
+          </div>
+          <h2 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black">Benefits your learners feel on day one</h2>
+          <p className="max-w-[620px] text-base text-black/80">We designed every workflow to make learning feel cinematic—so teams stay motivated and leaders see measurable progress.</p>
+        </div>
+
+        <div className="mx-auto w-[1320px] h-[480px] flex gap-6">
+          {benefits.map((benefit, index) => (
+            <div
+              key={benefit.title}
+              className="group relative flex w-[428px] h-[480px] flex-col gap-5 rounded-[32px] border border-black/5 bg-white p-6 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-40px_rgba(0,0,0,0.3)] overflow-hidden"
+              style={{ animationDelay: `${index * 120}ms` }}
             >
-              <span 
-                className="absolute right-6 top-1/2 transform -translate-y-1/2 rounded-md px-2 py-1 text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none"
-                style={{
-                  background: colors.background.surface,
-                  color: colors.text.primary,
-                  border: `1px solid ${colors.background.elevated}`,
-                }}
-              >
-                {section.name}
-              </span>
-            </button>
+              <div className="relative overflow-hidden rounded-[24px] border border-black/5 h-[340px]">
+                <video
+                  src={benefit.videoSrc}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0)_0%,rgba(0,0,0,0.45)_100%)]" />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <h3 className="text-[24px] font-semibold leading-[30px] text-black">{benefit.title}</h3>
+                <p className="text-[15px] text-black/70 leading-[22px]">{benefit.description}</p>
+              </div>
+
+              <div className="pointer-events-none absolute inset-x-6 bottom-6 h-[1px] bg-gradient-to-r from-transparent via-black/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+            </div>
           ))}
         </div>
-      </nav>
 
-      {/* Main Content */}
-      <main className="relative">
-        {/* Hero Section - Completely Redesigned with Video Background */}
-        <section 
-          id="hero"
-          data-section="0"
-          className="relative h-screen flex items-center justify-center overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: colors.background.base,
-          }}
-        >
-          {/* Video Background */}
-          <div className="absolute inset-0 w-full h-full z-0">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="/StreamSmart.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            {/* Dark Overlay */}
-            <div 
-              className="absolute inset-0 w-full h-full"
-              style={{ background: 'rgba(0, 0, 0, 0.6)' }}
-            />
-          </div>
-            
-          {/* Hero Content - Centered */}
-          <div className="relative z-10 h-full w-full flex flex-col items-center justify-center text-center">
-            <div className="container mx-auto px-6 max-w-4xl">
-              <motion.div 
-                className="flex flex-col items-center justify-center space-y-8"
-                style={{ position: 'relative', top: '50px' }}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 50 }}
-                transition={{ duration: 0.8, delay: 1.0, ease: "easeOut" }}
+        <div className="relative w-full overflow-hidden mt-8">
+          <div className="flex animate-scroll-left">
+            {[...tags, ...tags].map((tag, index) => (
+              <div
+                key={`${tag}-${index}`}
+                className="inline-flex items-center justify-center w-[218px] h-[50px] rounded-full bg-white px-6 shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all duration-300 hover:shadow-[0_8px_20px_rgba(0,0,0,0.12)] hover:-translate-y-1 flex-shrink-0 mx-2"
               >
-                {/* Main Headline with Typewriter Effect */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: pushTransitionComplete ? 1 : 0 }}
-                  transition={{ delay: 1.4, duration: 0.8 }}
-                >
-                  <h1 
-                    className="font-extrabold leading-tight mb-4"
-                  style={{
-                      fontSize: '70px',
-                      color: colors.text.primary,
-                      letterSpacing: '-0.02em',
-                      textShadow: '0 4px 20px rgba(0,0,0,0.5)'
-                    }}
-                  >
-                    Turn Every Video into{' '}
-                    <span 
-                      style={{
-                        background: colors.gradients.purple,
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
-                      }}
-                    >
-                      Knowledge
-                    </span>
-                  </h1>
-                </motion.div>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 10 }}
-                  transition={{ delay: 2.0, duration: 0.8, ease: "easeOut" }}
-                  className="text-lg md:text-xl leading-relaxed max-w-2xl"
-                    style={{
-                    color: colors.text.secondary,
-                    fontSize: '18px',
-                    lineHeight: '1.7',
-                    position: 'relative',
-                    top: '-15px'
-                  }}
-                >
-                  StreamSmart transforms passive watching into active, goal-driven learning with AI-curated 
-                  learning paths, smart summaries, and personalized playlists.
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: pushTransitionComplete ? 1 : 0, y: pushTransitionComplete ? 0 : 20 }}
-                  transition={{ delay: 2.4, duration: 0.8, ease: "easeOut" }}
-                  className="flex flex-col sm:flex-row gap-4 justify-center"
-                >
-                  <Link href="/register">
-                    <Button
-                      className="group relative font-semibold px-8 py-4 text-base transition-all duration-300 rounded-xl overflow-hidden"
-                      style={{
-                        background: colors.gradients.purple,
-                        color: colors.text.primary,
-                        border: 'none',
-                        boxShadow: `0 8px 25px ${colors.purple.glow}`
-                      }}
-                    >
-                      <span className="relative z-10 flex items-center gap-2">
-                        <Sparkles className="w-5 h-5" />
-                        Start Learning Now
-                        <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </span>
-                      <motion.div 
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.1)',
-                        }}
-                      />
-                    </Button>
-                  </Link>
-                  
-                  <Button
-                    variant="outline"
-                    className="font-medium px-8 py-4 text-base transition-all duration-300 rounded-xl group"
-                        style={{
-                      color: colors.text.primary,
-                      borderColor: colors.purple.primary,
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  >
-                    <PlayCircle className="w-5 h-5 mr-2 transition-transform duration-300 group-hover:scale-110" />
-                    Watch Demo
-                  </Button>
-                </motion.div>
-              </motion.div>
-                    </div>
-                  </div>
-
-          {/* Scroll Indicator */}
-          <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 3, duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2"
-          >
-                  <span 
-              className="text-sm font-medium"
-              style={{ color: colors.text.tertiary }}
-            >
-              Scroll to explore
-                  </span>
-            <div 
-              className="w-6 h-10 border-2 rounded-full flex justify-center"
-              style={{ borderColor: colors.purple.primary }}
-            >
-              <motion.div
-                className="w-1 h-3 rounded-full mt-2"
-                style={{ background: colors.purple.primary }}
-                animate={{ y: [0, 12, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
+                <span className="text-sm font-medium text-black/80 whitespace-nowrap">{tag}</span>
               </div>
-            </motion.div>
-        </section>
-
-        {/* Features Section - Bento Grid Style */}
-        <motion.section 
-          id="features"
-          ref={featuresRef}
-          data-section="1"
-          className="min-h-screen py-20 relative overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: colors.background.base
-          }}
-          initial="hidden"
-          animate={featuresInView ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
-          {/* Background Grid */}
-          <div className="absolute inset-0">
-            <div 
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `
-                  linear-gradient(${colors.purple.primary} 1px, transparent 1px),
-                  linear-gradient(90deg, ${colors.purple.primary} 1px, transparent 1px)
-                `,
-                backgroundSize: '40px 40px'
-              }}
-            />
-            <ParticleSystem count={20} />
+            ))}
           </div>
+        </div>
+      </div>
 
-          <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            {/* Header */}
-            <motion.div
-              variants={itemVariants}
-              className="text-center mb-16"
-            >
-              <Badge 
-                className="mb-6 px-4 py-2 text-sm font-medium border"
-                style={{
-                  background: 'rgba(139, 92, 246, 0.1)',
-                  borderColor: colors.purple.primary,
-                  color: colors.purple.primary
-                }}
-              >
-                âœ¨ Features
-              </Badge>
-              <h2 
-                className="font-bold mb-6 leading-tight"
-                style={{
-                  fontSize: 'clamp(2rem, 5vw, 4rem)',
-                  fontWeight: 700,
-                  color: colors.text.primary
-                }}
-              >
-                Smart Learning{' '}
-                <span 
-                  style={{
-                    background: colors.gradients.purple,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Made Visual
-                </span>
-              </h2>
-              <p 
-                className="text-xl leading-relaxed max-w-2xl mx-auto"
-                style={{ color: colors.text.secondary }}
-              >
-                Experience the future of education through AI-powered features that adapt to your learning style
-              </p>
-            </motion.div>
-
-            {/* Bento Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              
-              {/* Large Feature Card - AI Mind Maps */}
-                  <motion.div
-                variants={itemVariants}
-                className="md:col-span-2 lg:col-span-2 group cursor-pointer"
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div 
-                  className="h-full p-8 rounded-3xl border backdrop-blur-xl relative overflow-hidden"
-                  style={{
-                    background: colors.gradients.card,
-                    borderColor: colors.background.elevated,
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                  }}
-                >
-                  {/* Hover glow effect */}
-                  <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
-                    style={{
-                      background: colors.purple.glow,
-                      filter: 'blur(20px)',
-                    }}
-                  />
-                  
-                  <div className="relative z-10">
-                    <div className="flex items-center mb-6">
-                      <div 
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center mr-4"
-                        style={{
-                          background: colors.purple.glow,
-                          border: `1px solid ${colors.purple.primary}`
-                        }}
-                      >
-                        <Brain className="h-7 w-7" style={{ color: colors.purple.primary }} />
-                      </div>
-                      <h3 
-                        className="text-3xl font-bold"
-                        style={{ color: colors.text.primary }}
-                      >
-                        AI Mind Maps
-                      </h3>
-                    </div>
-                    <p 
-                      className="text-lg leading-relaxed mb-6"
-                      style={{ color: colors.text.secondary }}
-                    >
-                      Transform any video into interactive visual knowledge maps. Our AI analyzes content 
-                      and creates structured learning paths that make complex topics intuitive.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {['Visual Learning', 'AI Powered', 'Interactive'].map((tag) => (
-                        <span 
-                          key={tag}
-                          className="px-3 py-1 rounded-full text-sm font-medium"
-                          style={{
-                            background: colors.purple.glow,
-                            color: colors.purple.primary
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      </div>
-                    </div>
-                  
-                  {/* Decorative visualization */}
-                  <div className="absolute top-4 right-4 opacity-20">
-                    <Share2 className="h-16 w-16" style={{ color: colors.purple.primary }} />
-                    </div>
-                  </div>
-                </motion.div>
-
-              {/* Smaller Feature Cards */}
-              {features.slice(0, 4).map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  variants={itemVariants}
-                  className={`group cursor-pointer ${index === 0 ? 'md:col-span-1' : ''}`}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="h-full p-6 rounded-2xl border backdrop-blur-xl relative overflow-hidden"
-                    style={{
-                      background: colors.gradients.card,
-                      borderColor: colors.background.elevated,
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    {/* Hover glow */}
-                    <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{
-                        background: colors.purple.glow,
-                        filter: 'blur(15px)',
-                      }}
-                    />
-                    
-                    <div className="relative z-10">
-                      <div 
-                        className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
-                        style={{
-                          background: colors.purple.glow,
-                          border: `1px solid ${colors.purple.primary}`
-                        }}
-                      >
-                        {React.cloneElement(feature.icon, { 
-                          style: { color: colors.purple.primary }
-                        })}
-                      </div>
-                      <h3 
-                        className="text-xl font-bold mb-3"
-                        style={{ color: colors.text.primary }}
-                      >
-                        {feature.title}
-                      </h3>
-                      <p 
-                        className="text-sm leading-relaxed"
-                        style={{ color: colors.text.secondary }}
-                      >
-                        {feature.description}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-              </div>
-          </div>
-        </motion.section>
-
-        {/* About Section */}
-        <motion.section 
-          id="about"
-          ref={aboutRef}
-          data-section="2"
-          className="min-h-screen py-20 relative overflow-hidden flex items-center"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: colors.background.base
-          }}
-          initial="hidden"
-          animate={aboutInView ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
-          {/* Background Effects */}
-          <div className="absolute inset-0">
-            {/* Animated constellation pattern */}
-            <div className="absolute inset-0">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute w-2 h-2 rounded-full"
-                  style={{
-                    background: colors.purple.primary,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    opacity: 0.3,
-                  }}
-                  animate={{
-                    scale: [1, 1.5, 1],
-                    opacity: [0.3, 0.8, 0.3],
-                  }}
-                  transition={{
-                    duration: 3 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 2,
-                  }}
-                />
-              ))}
-            </div>
-            <ParticleSystem count={15} />
-          </div>
-
-          <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-              
-              {/* Left Content */}
-              <motion.div variants={itemVariants} className="space-y-8">
-                <h2 
-                  className="font-bold leading-tight"
-                  style={{
-                    fontSize: 'clamp(2rem, 5vw, 4rem)',
-                    fontWeight: 700,
-                    color: colors.text.primary
-                  }}
-                >
-                  Why Choose{' '}
-                  <span 
-                    style={{
-                      background: colors.gradients.purple,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text'
-                    }}
-                  >
-                    StreamSmart?
-                </span>
-                </h2>
-                <p 
-                  className="text-xl leading-relaxed"
-                  style={{ color: colors.text.secondary }}
-                >
-                  We&apos;re not just another learning platform. We&apos;re revolutionizing how you discover, 
-                  organize, and master educational content with cutting-edge AI technology.
-                </p>
-                
-                {/* Animated Stats */}
-                <div className="grid grid-cols-3 gap-6 py-8">
-                  {stats.map((stat) => (
-                    <motion.div
-                      key={stat.label}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-center"
-                    >
-                      <div 
-                        className="text-3xl font-bold mb-1"
-                        style={{ color: colors.purple.primary }}
-                      >
-                        {stat.number}
-                  </div>
-                      <div 
-                        className="text-sm"
-                        style={{ color: colors.text.tertiary }}
-                      >
-                        {stat.label}
-                  </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-              
-              {/* Right Visual Cards */}
-              <motion.div variants={itemVariants} className="space-y-6">
-                {[
-                  { icon: Brain, title: "AI-Powered", desc: "Advanced machine learning", color: colors.purple.primary },
-                  { icon: Users, title: "Global Community", desc: "Learn with peers worldwide", color: colors.purple.secondary },
-                  { icon: Target, title: "Personalized", desc: "Tailored to your learning style", color: colors.purple.subtle }
-                ].map((card) => (
-                  <motion.div
-                    key={card.title}
-                    className="p-6 rounded-2xl border backdrop-blur-xl"
-                    style={{
-                      background: colors.gradients.card,
-                      borderColor: colors.background.elevated,
-                    }}
-                    whileHover={{ x: 10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div 
-                        className="w-12 h-12 rounded-xl flex items-center justify-center"
-                        style={{
-                          background: colors.purple.glow,
-                          border: `1px solid ${card.color}`
-                        }}
-                      >
-                        <card.icon className="h-6 w-6" style={{ color: card.color }} />
-                    </div>
-                    <div>
-                        <h3 
-                          className="text-lg font-bold mb-1"
-                          style={{ color: colors.text.primary }}
-                        >
-                          {card.title}
-                        </h3>
-                        <p 
-                          className="text-sm"
-                          style={{ color: colors.text.secondary }}
-                        >
-                          {card.desc}
-                        </p>
-                  </div>
-                  </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* Testimonials Section */}
-        <motion.section 
-          ref={testimonialsRef}
-          data-section="3"
-          className="min-h-screen py-20 flex items-center relative overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: colors.background.base
-          }}
-              initial="hidden"
-          animate={testimonialsInView ? "visible" : "hidden"}
-              variants={containerVariants}
-        >
-          <div className="absolute inset-0">
-            <ParticleSystem count={25} />
-          </div>
-
-          <div className="container mx-auto px-6 max-w-6xl relative z-10">
-            <motion.div variants={itemVariants} className="text-center mb-16">
-              <Badge 
-                className="mb-6 px-4 py-2 text-sm font-medium border"
-                style={{
-                  background: 'rgba(139, 92, 246, 0.1)',
-                  borderColor: colors.purple.primary,
-                  color: colors.purple.primary
-                }}
-              >
-                ðŸ’¬ Testimonials
-              </Badge>
-              <h2 
-                className="font-bold mb-6 leading-tight"
-                style={{
-                  fontSize: 'clamp(2rem, 5vw, 4rem)',
-                  fontWeight: 700,
-                  color: colors.text.primary
-                }}
-              >
-                Loved by learners{' '}
-                <span 
-                  style={{
-                    background: colors.gradients.purple,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  worldwide
-                </span>
-              </h2>
-            </motion.div>
-
-            <motion.div
-              variants={containerVariants}
-              className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            >
-              {testimonials.map((testimonial) => (
-                <motion.div
-                  key={testimonial.name}
-                  variants={itemVariants}
-                  className="group"
-                  whileHover={{ y: -5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div 
-                    className="p-6 h-full rounded-2xl border backdrop-blur-xl relative overflow-hidden"
-                    style={{
-                      background: colors.gradients.card,
-                      borderColor: colors.background.elevated,
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    {/* Hover glow */}
-                    <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{
-                        background: colors.purple.glow,
-                        filter: 'blur(20px)',
-                      }}
-                    />
-                    
-                    <div className="relative z-10 space-y-4">
-                      <div className="flex">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className="h-4 w-4 fill-current" 
-                            style={{ color: '#FFC107' }}
-                          />
-                        ))}
-                      </div>
-                      <p 
-                        className="italic leading-relaxed"
-                        style={{ color: colors.text.secondary }}
-                      >
-                        &quot;{testimonial.content}&quot;
-                      </p>
-                      <div className="flex items-center gap-3 pt-4">
-                        <div 
-                          className="w-10 h-10 rounded-full flex items-center justify-center font-semibold text-white text-sm"
-                          style={{
-                            background: colors.gradients.purple,
-                          }}
-                        >
-                          {testimonial.avatar}
-                        </div>
-                        <div>
-                          <div 
-                            className="font-semibold"
-                            style={{ color: colors.text.primary }}
-                          >
-                            {testimonial.name}
-                          </div>
-                          <div 
-                            className="text-sm"
-                            style={{ color: colors.text.tertiary }}
-                          >
-                            {testimonial.role}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.section>
-
-        {/* How It Works Section */}
-        <motion.section 
-          id="how-it-works"
-          ref={howItWorksRef}
-          data-section="4"
-          className="min-h-screen py-20 flex items-center relative overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: colors.background.base
-          }}
-          initial="hidden"
-          animate={howItWorksInView ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
-          <div className="absolute inset-0">
-            <ParticleSystem count={20} />
-          </div>
-
-          <div className="container mx-auto px-6 max-w-7xl relative z-10">
-            <motion.div variants={itemVariants} className="text-center mb-20">
-              <Badge 
-                className="mb-6 px-4 py-2 text-sm font-medium border"
-                style={{
-                  background: 'rgba(139, 92, 246, 0.1)',
-                  borderColor: colors.purple.primary,
-                  color: colors.purple.primary
-                }}
-              >
-                ðŸš€ How it works
-              </Badge>
-              <h2 
-                className="font-bold mb-8 leading-tight"
-                style={{
-                  fontSize: 'clamp(2rem, 5vw, 4rem)',
-                  fontWeight: 700,
-                  color: colors.text.primary
-                }}
-              >
-                Start learning in{' '}
-                <span 
-                  style={{
-                    background: colors.gradients.purple,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  3 simple steps
-                </span>
-              </h2>
-            </motion.div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              {[
-                {
-                  step: "01",
-                  icon: <ListVideoIcon className="h-10 w-10" />,
-                  title: "Create Your Playlist",
-                  description: "Add YouTube videos manually or let our AI suggest perfect content based on your learning goals."
-                },
-                {
-                  step: "02", 
-                  icon: <Brain className="h-10 w-10" />,
-                  title: "Learn Interactively",
-                  description: "Engage with AI-generated mind maps, take personalized quizzes, and chat with our AI tutor."
-                },
-                {
-                  step: "03",
-                  icon: <BarChart3Icon className="h-10 w-10" />,
-                  title: "Track & Master",
-                  description: "Monitor progress with detailed analytics, celebrate milestones, and watch your understanding grow."
-                }
-              ].map((step, index) => (
-                <motion.div
-                  key={step.title}
-                  variants={itemVariants}
-                  className="relative group"
-                  whileHover={{ y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Large step number */}
-                  <div 
-                    className="absolute -top-8 -left-4 text-8xl font-bold opacity-10"
-                    style={{ color: colors.purple.primary }}
-                  >
-                    {step.step}
-                  </div>
-                  
-                  <div 
-                    className="relative p-8 rounded-3xl border backdrop-blur-xl h-full"
-                    style={{
-                      background: colors.gradients.card,
-                      borderColor: colors.background.elevated,
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
-                    }}
-                  >
-                    {/* Hover glow */}
-                    <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
-                      style={{
-                        background: colors.purple.glow,
-                        filter: 'blur(20px)',
-                      }}
-                    />
-                    
-                    <div className="relative z-10">
-                    <div 
-                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8"
-                      style={{
-                          background: colors.purple.glow,
-                          border: `1px solid ${colors.purple.primary}`
-                          }}
-                        >
-                          {React.cloneElement(step.icon, {
-                          style: { color: colors.purple.primary }
-                          })}
-                    </div>
-                    
-                      <h3 
-                        className="text-2xl font-bold mb-6 text-center"
-                        style={{ color: colors.text.primary }}
-                      >
-                        {step.title}
-                      </h3>
-                      <p 
-                        className="leading-relaxed text-center"
-                        style={{ color: colors.text.secondary }}
-                      >
-                        {step.description}
-                      </p>
-                    </div>
-                    
-                    {/* Step number badge */}
-                    <div 
-                      className="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold"
-                      style={{
-                        background: colors.purple.primary,
-                        color: colors.text.primary
-                      }}
-                    >
-                      {index + 1}
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-          </div>
-          </div>
-        </motion.section>
-
-        {/* Contact & Footer Section */}
-        <motion.section 
-          id="contact"
-          ref={contactRef}
-          data-section="5"
-          className="min-h-screen py-20 flex items-center relative overflow-hidden"
-          style={{ 
-            scrollSnapAlign: 'start',
-            background: `linear-gradient(to bottom, ${colors.background.base}, #000000)`
-          }}
-          initial="hidden"
-          animate={contactInView ? "visible" : "hidden"}
-          variants={containerVariants}
-        >
-          <div className="absolute inset-0">
-            <ParticleSystem count={30} />
-          </div>
-
-          <div className="container mx-auto px-6 max-w-4xl text-center relative z-10">
-            <motion.div variants={itemVariants} className="mb-16">
-              <h2 
-                className="font-bold mb-8 leading-tight"
-                style={{
-                  fontSize: 'clamp(2rem, 5vw, 4rem)',
-                  fontWeight: 700,
-                  color: colors.text.primary
-                }}
-              >
-                Get in{' '}
-                <span 
-                  style={{
-                    background: colors.gradients.purple,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Touch
-                </span>
-              </h2>
-              <p 
-                className="text-xl leading-relaxed"
-                style={{ color: colors.text.secondary }}
-              >
-                Have questions or want to connect? Reach out and let&apos;s build the future of learning together!
-              </p>
-            </motion.div>
-            
-            {/* Contact Information */}
-            <motion.div 
-              variants={itemVariants} 
-              className="flex flex-col sm:flex-row items-center justify-center gap-8 mb-16"
-            >
-              {[
-                {
-                  icon: Mail,
-                  label: "Email",
-                  value: "hsundar080506@gmail.com",
-                  href: "mailto:hsundar080506@gmail.com"
-                },
-                {
-                  icon: Linkedin,
-                  label: "LinkedIn", 
-                  value: "LinkedIn Profile",
-                  href: "https://www.linkedin.com/in/hari-sundar-237570286/"
-                }
-              ].map((contact) => (
-                <a 
-                  key={contact.label}
-                  href={contact.href}
-                  target={contact.href.startsWith('http') ? '_blank' : undefined}
-                  rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="group flex items-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-105 border backdrop-blur-xl"
-                style={{
-                    background: colors.gradients.card,
-                    borderColor: colors.background.elevated,
-                }}
-              >
-                <div 
-                    className="w-14 h-14 rounded-xl flex items-center justify-center"
-                  style={{
-                      background: colors.purple.glow,
-                      border: `1px solid ${colors.purple.primary}`
-                    }}
-                  >
-                    <contact.icon 
-                      className="h-7 w-7"
-                      style={{ color: colors.purple.primary }}
-                  />
-                </div>
-                <div className="text-left">
-                  <div 
-                    className="text-sm font-medium mb-1"
-                      style={{ color: colors.text.tertiary }}
-                  >
-                      {contact.label}
-                  </div>
-                  <div 
-                      className="text-lg font-semibold group-hover:text-purple-400 transition-colors duration-300"
-                      style={{ color: colors.text.primary }}
-                  >
-                      {contact.value}
-                  </div>
-                </div>
-                <ExternalLink 
-                  className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ color: colors.purple.primary }}
-                />
-              </a>
-              ))}
-            </motion.div>
-            
-            {/* Copyright */}
-            <motion.div 
-              variants={itemVariants}
-              className="pt-12 border-t"
-              style={{ borderTopColor: colors.background.elevated }}
-            >
-              <p 
-                className="text-sm"
-                style={{ color: colors.text.tertiary }}
-              >
-                Â© 2025 StreamSmart. All rights reserved.
-              </p>
-            </motion.div>
-          </div>
-        </motion.section>
-      </main>
-
-      {/* Add custom CSS for animations */}
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-        
-        @keyframes float-gentle {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(180deg); }
+      <style jsx>{`
+        @keyframes scroll-left {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
         }
-        
-        .animate-float-gentle {
-          animation: float-gentle 6s ease-in-out infinite;
+        .animate-scroll-left {
+          animation: scroll-left 30s linear infinite;
         }
-        
-        html {
-          scroll-behavior: smooth;
-        }
-        
-        body {
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        .animate-scroll-left:hover {
+          animation-play-state: paused;
         }
       `}</style>
-    </div>
+    </section>
   );
-}
+};
+
+type FeatureItem = {
+  title: string;
+  description: string;
+  label: string;
+  points: string[];
+  icon: LucideIcon;
+};
+
+const FeaturesSection = () => {
+  const features: FeatureItem[] = [
+    {
+      title: "AI Playlist Generator",
+      description: "Tell StreamSmart what you want to learn and it lines up the right videos in seconds.",
+      label: "Plan",
+      points: [
+        "Picks the best videos instantly",
+        "Orders lessons from beginner to expert",
+        "Keeps updating as you improve"
+      ],
+      icon: Layers
+    },
+    {
+      title: "Mind Maps & Notes",
+      description: "See every video broken into a simple map with the moments that matter most.",
+      label: "Understand",
+      points: [
+        "Glanceable visual guides",
+        "Highlights the exact time to revisit",
+        "Share notes with friends or teammates"
+      ],
+  icon: Brain
+    },
+    {
+      title: "Adaptive Quiz Engine",
+      description: "Check your understanding with quick quizzes that match what you just watched.",
+      label: "Practice",
+      points: [
+        "Questions get smarter as you do",
+        "Instant feedback and tips",
+        "Download results for later"
+      ],
+      icon: GraduationCap
+    },
+    {
+      title: "RAG Tutor & Voice",
+      description: "Ask questions by voice or chat and get clear answers without pausing your flow.",
+      label: "Support",
+      points: [
+        "Chat or talk to a friendly tutor",
+        "Answers pulled from videos you watched",
+        "Helpful follow-up suggestions"
+      ],
+      icon: Headphones
+    },
+    {
+      title: "Progress Intelligence",
+      description: "Track your learning streaks, wins, and goals in one simple dashboard.",
+      label: "Track",
+      points: [
+        "See progress for you or your group",
+        "Earn badges and streak reminders",
+        "Weekly updates to your inbox"
+      ],
+      icon: BarChart3
+    },
+    {
+      title: "One-Tap Summaries",
+      description: "Turn any lesson into a quick recap so you remember the big ideas fast.",
+      label: "Recap",
+      points: [
+        "Instant bullet summaries for every video",
+        "Save highlights to revisit later",
+        "Share takeaways with your study group",
+        "Works right inside the StreamSmart extension"
+      ],
+      icon: Link2
+    }
+  ];
+
+  const featureStats = [
+    { value: "10k+", label: "Videos indexed" },
+    { value: "94%", label: "Quiz completion" },
+    { value: "<30s", label: "Answer latency" }
+  ];
+
+  return (
+    <section id="features" className="py-[110px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-14 px-6 md:px-0">
+        <div className="flex flex-col items-center gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
+            <Brain className="h-4 w-4 text-black" />
+            <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Features</span>
+          </div>
+          <h2 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black">A Full Learning Studio In One Workspace</h2>
+          <p className="max-w-[620px] text-base text-black/80">Every tool—curation, comprehension, coaching, and analytics—works together so learners stay in flow while leaders stay informed.</p>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-[420px_1fr]">
+          <div className="relative flex h-full flex-col gap-10 overflow-hidden rounded-[36px] bg-black p-10 text-white shadow-[0_45px_70px_-40px_rgba(0,0,0,0.65)]">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.95)_100%)]" aria-hidden />
+
+            <div className="relative z-20 flex flex-col gap-4">
+              <span className="w-fit rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/70">Unified stack</span>
+              <h3 className="text-[34px] font-semibold leading-[40px] tracking-[-0.04em]">StreamSmart connects the entire learning lifecycle.</h3>
+              <p className="text-sm text-white/80">Blend YouTube, LMS archives, and live coaching into one guided journey. StreamSmart orchestrates content, context, and coaching without breaking the learner experience.</p>
+            </div>
+
+            <div className="relative z-20 flex justify-center">
+              <div className="h-[360px] w-full max-w-[380px] overflow-hidden rounded-[30px] shadow-[0_40px_65px_-38px_rgba(0,0,0,0.65)]">
+                <video
+                  src="/vid4.mp4"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            </div>
+
+            <div className="relative z-20 grid w-full gap-4 sm:grid-cols-3">
+              {featureStats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="group flex flex-col items-center justify-center gap-2 overflow-hidden rounded-[18px] border border-white/10 bg-white/8 px-5 py-6 text-center animate-rise-fade"
+                  style={{ animationDelay: `${index * 140}ms` }}
+                >
+                  <span className="block text-[28px] font-semibold leading-8 text-white transition-transform duration-500 group-hover:scale-105">
+                    {stat.value}
+                  </span>
+                  <span className="text-xs uppercase tracking-[0.18em] text-white/60">{stat.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="pointer-events-none absolute -right-14 bottom-10 h-32 w-32 rounded-full bg-white/5 blur-xl" aria-hidden />
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className="group relative flex h-full flex-col gap-5 rounded-[28px] border border-black/5 bg-white p-8 shadow-[0_24px_40px_-28px_rgba(0,0,0,0.2)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_32px_60px_-30px_rgba(0,0,0,0.3)]"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-black via-black/85 to-black/40 text-white shadow-[0_25px_45px_-22px_rgba(0,0,0,0.45)]">
+                    <feature.icon className="h-6 w-6" />
+                  </div>
+                  <span className="rounded-full bg-[#F0F0F3] px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-black/60">{feature.label}</span>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-[20px] font-semibold leading-[26px] tracking-[-0.02em] text-black">{feature.title}</h3>
+                  <p className="text-sm text-black/70">{feature.description}</p>
+                </div>
+                <ul className="flex flex-col gap-2">
+                  {feature.points.map((point, pointIndex) => (
+                    <li key={pointIndex} className="flex items-start gap-2 text-sm text-black/70">
+                      <Check className="mt-[2px] h-4 w-4 text-black/70" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
+const ProcessSection = () => {
+  const steps = [
+    {
+      number: "01",
+      title: "Kick off with a quick vibe check",
+      description: "Drop your goals, time, and current level. StreamSmart turns that into a learning mood board instantly.",
+      highlights: ["Pick topics and target skills", "Set a weekly pace that sticks", "Upload CSVs or playlists you love"],
+      mediaLabel: "Mood board placeholder"
+    },
+    {
+      number: "02",
+      title: "Watch the learning canvas come alive",
+      description: "Playlists, mind maps, and mini-quizzes snap into place so you can binge with a purpose.",
+      highlights: ["Streamlined playlists ready to play", "Mind maps that reveal the storyline", "Quick checks to lock in what you learn"],
+      mediaLabel: "Canvas preview placeholder"
+    },
+    {
+      number: "03",
+      title: "Stay in flow, celebrate the streaks",
+      description: "Progress dashboards glow, the AI tutor answers anything, and streaks keep the momentum.",
+      highlights: ["Daily nudges and streak boosts", "Chat for timestamped answers", "Shareable wins for your crew"],
+      mediaLabel: "Progress pulse placeholder"
+    }
+  ];
+
+  return (
+    <section id="process" className="py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto max-w-[1200px] px-6 md:px-0">
+        <div className="relative overflow-hidden rounded-[48px] bg-gradient-to-br from-black via-black/95 to-black/70 px-8 py-16 text-white shadow-[0_50px_120px_-60px_rgba(0,0,0,0.7)] md:px-16">
+          <div className="pointer-events-none absolute -top-40 -right-32 h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]" aria-hidden />
+          <div className="pointer-events-none absolute bottom-0 left-10 h-[320px] w-[320px] rounded-full bg-white/5 blur-[160px]" aria-hidden />
+
+          <div className="relative z-10 flex flex-col items-center gap-4 text-center">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/20 to-white/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-white shadow-[0_2px_8px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-200 hover:scale-105 backdrop-blur-sm">
+              <Layers className="h-4 w-4" />
+              <span>How it flows</span>
+            </div>
+            <h2 className="text-[54px] font-semibold leading-[60px] tracking-[-0.04em]">A cinematic learning loop in three scenes</h2>
+            <p className="max-w-[640px] text-base text-white/70">We blend motion, goals, and feedback so each step feels like a creative sprint—not another study chore.</p>
+          </div>
+
+          <div className="relative z-10 mt-14 grid gap-8 md:grid-cols-3">
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className="group relative flex flex-col gap-6 rounded-[32px] border border-white/10 bg-white/10 p-6 backdrop-blur-lg transition-transform duration-500 hover:-translate-y-2 hover:bg-white/20"
+              >
+                <div className="relative flex h-[220px] items-center justify-center overflow-hidden rounded-[24px] border border-white/20 bg-white/5">
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(0,0,0,0.65)_100%)]" />
+                  <span className="absolute left-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-sm font-semibold uppercase tracking-[0.18em] text-white">
+                    {step.number}
+                  </span>
+                  <span className="relative z-10 rounded-full bg-white/10 px-5 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/80">
+                    {step.mediaLabel}
+                  </span>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-[22px] font-semibold leading-7 text-white">{step.title}</h3>
+                  <p className="text-sm text-white/70">{step.description}</p>
+                </div>
+
+                <ul className="flex flex-col gap-2 text-sm text-white/70">
+                  {step.highlights.map((highlight, highlightIndex) => (
+                    <li key={highlightIndex} className="flex items-start gap-2">
+                      <Check className="mt-[2px] h-4 w-4 text-white/70" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="pointer-events-none absolute inset-x-6 bottom-6 h-[2px] bg-gradient-to-r from-transparent via-white/40 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ReviewsSection = () => {
+  const testimonials = [
+    {
+      name: "Brendan H.",
+      designation: "Head of Learning · StratIQ",
+      quote: "Mind maps and quizzes keep our team accountable between coaching sessions. StreamSmart finally made YouTube binge-watching productive."
+    },
+    {
+      name: "Lena M.",
+      designation: "Curriculum Lead · NovaTech",
+      quote: "Playlist intelligence plus transcript search means we can launch a new micro-course in hours instead of weeks."
+    },
+    {
+      name: "Eli R.",
+      designation: "Product Manager · GridFrame",
+      quote: "The RAG chatbot is the study buddy we wanted. It surfaces the exact timestamp and answer from complex videos every time."
+    },
+    {
+      name: "Priya D.",
+      designation: "Enablement Lead · VertexAI",
+      quote: "We turned scattered watchlists into guided journeys. Learners stick around because the experience feels handcrafted for them."
+    }
+  ];
+
+  return (
+    <section id="reviews" className="py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto max-w-[1200px] px-6 md:px-0">
+        <div className="flex flex-col items-center gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
+            <Sparkles className="h-4 w-4 text-black" />
+            <span>Social Proof</span>
+          </div>
+          <h2 className="text-[52px] font-semibold leading-[58px] tracking-[-0.04em] text-black">Learners who stream with intent</h2>
+          <p className="max-w-[620px] text-base text-black/70">From enablement teams to solo creators, StreamSmart turns passive viewing into a creative learning loop that people actually finish.</p>
+        </div>
+
+        <div className="mt-12">
+          <AnimatedTestimonials
+            testimonials={testimonials}
+            variant="light"
+            autoplay
+            className="w-full"
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ComparisonSection = () => {
+  const streamSmartFeatures = [
+  "AI-generated learning playlists",
+  "Gemini-powered mind maps",
+  "Transcript-aware RAG chatbot",
+  "Progress and streak analytics",
+  "Achievement badges and goals",
+  "Adaptive quizzes and assessments",
+  "Voice chat for hands-free study",
+  "Real-time feedback and support"
+  ];
+  const othersFeatures = [
+    "Manual video sorting",
+    "No structured knowledge capture",
+    "Guesswork-based comprehension",
+    "Limited tracking of progress",
+    "No personalized feedback",
+    "Separate tools for transcripts",
+    "Difficult to stay accountable"
+  ];
+
+  return (
+    <section className="py-[100px] bg-[#F5F5F5]">
+      <div className="container mx-auto px-6 md:px-[360px]">
+        <div className="max-w-[1200px] mx-auto flex flex-col gap-11">
+          <div className="max-w-[700px] mx-auto flex flex-col items-center gap-[15px]">
+            <div className="inline-flex h-8 items-center gap-2 rounded-full bg-[#F5F5F5] px-3 shadow-[0_0.707px_0.707px_-0.542px_rgba(0,0,0,0.10),0_1.807px_1.807px_-1.083px_rgba(0,0,0,0.09),0_3.622px_3.622px_-1.625px_rgba(0,0,0,0.09),0_6.866px_6.866px_-2.167px_rgba(0,0,0,0.09),0_13.647px_13.647px_-2.708px_rgba(0,0,0,0.08),0_30px_30px_-3.25px_rgba(0,0,0,0.05),inset_0_3px_1px_0_#FFF]">
+              <span className="text-[12px] font-medium leading-[14.4px] text-black">COMPARISON</span>
+            </div>
+            <h2 className="text-[52px] font-medium leading-[67.2px] tracking-[-0.56px] text-center bg-gradient-to-b from-black to-white bg-clip-text text-transparent">StreamSmart vs Watching Alone</h2>
+            <p className="text-base text-black text-center max-w-[500px]">Understand the upgrade from casual viewing to a structured learning platform.</p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-[760px] mx-auto">
+            <div className="flex flex-col gap-6 p-6 rounded-[16px] bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+              <h3 className="text-4xl font-medium text-black text-center">StreamSmart</h3>
+              <div className="h-[2px] bg-black/40 opacity-40 rounded-lg" />
+              <ul className="flex flex-col gap-4">
+                {streamSmartFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-black opacity-80">
+                    <Check className="w-4 h-4 shrink-0 mt-1 opacity-50" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/register">
+                <Button className="w-full px-6 py-3 rounded-[10px] bg-black text-white shadow-[0_2.289px_4.119px_-2.5px_rgba(61,61,61,0.64),0_10px_18px_-3.75px_rgba(61,61,61,0.25),0_0.707px_0.707px_-0.583px_rgba(0,0,0,0.35),0_1.807px_1.807px_-1.167px_rgba(0,0,0,0.34),0_3.622px_3.622px_-1.75px_rgba(0,0,0,0.33),0_6.866px_6.866px_-2.333px_rgba(0,0,0,0.30),0_13.647px_13.647px_-2.917px_rgba(0,0,0,0.26),0_30px_30px_-3.5px_rgba(0,0,0,0.15)] hover:bg-black/90">
+                  <span className="text-sm font-medium">Start Learning</span>
+                </Button>
+              </Link>
+            </div>
+
+            <div className="flex flex-col gap-6 p-6 rounded-[16px] bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+              <h3 className="text-[33px] font-medium text-black text-center">Traditional Viewing</h3>
+              <div className="h-[2px] bg-black/40 opacity-40 rounded-lg" />
+              <ul className="flex flex-col gap-4">
+                {othersFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-start gap-2 text-sm text-black opacity-80">
+                    <Check className="w-4 h-4 shrink-0 mt-1 opacity-50" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const TeamSection = () => {
+  const team = [
+    { name: "Hari Sundar Rajendran", role: "Product & Platform" },
+    { name: "Aditi Rao", role: "Applied AI" },
+    { name: "Marco Chen", role: "Learning Experience" }
+  ];
+
+  return (
+    <section className="py-[100px] bg-[#F5F5F5]">
+      <div className="container mx-auto px-6 md:px-[360px]">
+        <div className="max-w-[1200px] mx-auto flex flex-col gap-11">
+          <div className="max-w-[700px] mx-auto flex flex-col items-center gap-[15px]">
+            <div className="inline-flex h-8 items-center gap-2 rounded-full bg-[#F5F5F5] px-3 shadow-[0_0.707px_0.707px_-0.542px_rgba(0,0,0,0.10),0_1.807px_1.807px_-1.083px_rgba(0,0,0,0.09),0_3.622px_3.622px_-1.625px_rgba(0,0,0,0.09),0_6.866px_6.866px_-2.167px_rgba(0,0,0,0.09),0_13.647px_13.647px_-2.708px_rgba(0,0,0,0.08),0_30px_30px_-3.25px_rgba(0,0,0,0.05),inset_0_3px_1px_0_#FFF]">
+              <span className="text-[11px] font-medium leading-[14.4px] text-black">TEAM</span>
+            </div>
+            <h2 className="text-[52px] font-medium leading-[67.2px] tracking-[-0.56px] text-center bg-gradient-to-b from-black to-white bg-clip-text text-transparent">Guides Behind StreamSmart</h2>
+            <p className="text-base text-black text-center max-w-[500px] opacity-80">We blend product, AI research, and instructional design to keep learners motivated.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {team.map((member, index) => (
+              <div key={index} className="flex flex-col gap-6 p-8 rounded-[16px] bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+                <div className="flex flex-col gap-6">
+                  <div className="flex flex-col items-center gap-[7px]">
+                    <h3 className="text-[19px] font-medium leading-6 tracking-[-0.2px] text-black">{member.name}</h3>
+                    <span className="text-sm text-black opacity-80">{member.role}</span>
+                  </div>
+                  <div className="flex gap-2.5">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="p-3 rounded-lg bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+                        <div className="w-4 h-4" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="h-[280px] rounded-lg bg-white/0 shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02)]" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const ProjectsSection = () => {
+  const stats = [
+    { value: "38%", label: "Time saved preparing playlists" },
+  { value: "96%", label: "Learners rating sessions >=4/5" }
+  ];
+
+  return (
+    <section className="py-[100px] bg-[#F5F5F5]">
+      <div className="container mx-auto px-6 md:px-[360px]">
+        <div className="max-w-[1200px] mx-auto flex flex-col gap-11">
+          <div className="max-w-[700px] mx-auto flex flex-col items-center gap-[15px]">
+            <div className="inline-flex h-8 items-center gap-2 rounded-full bg-[#F5F5F5] px-3 shadow-[0_0.707px_0.707px_-0.542px_rgba(0,0,0,0.10),0_1.807px_1.807px_-1.083px_rgba(0,0,0,0.09),0_3.622px_3.622px_-1.625px_rgba(0,0,0,0.09),0_6.866px_6.866px_-2.167px_rgba(0,0,0,0.09),0_13.647px_13.647px_-2.708px_rgba(0,0,0,0.08),0_30px_30px_-3.25px_rgba(0,0,0,0.05),inset_0_3px_1px_0_#FFF]">
+              <span className="text-[11px] font-medium leading-[14.4px] text-black">OUTCOMES</span>
+            </div>
+            <h2 className="text-[53px] font-medium leading-[67.2px] tracking-[-0.56px] text-center bg-gradient-to-b from-black to-white bg-clip-text text-transparent">Proven Learning Impact</h2>
+            <p className="text-base text-black text-center max-w-[500px] opacity-80">See how StreamSmart unlocks measurable results for cohorts, creators, and enterprises.</p>
+          </div>
+
+          <div className="flex flex-col gap-5 p-5 rounded-[20px] bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+            <div className="flex gap-4 flex-wrap">
+              {["Upskill Sprint", "NovaLearn Bootcamp", "Creator Studio"].map((project, index) => (
+                <div key={index} className={`flex-1 min-w-[200px] py-3 px-3 rounded-lg text-center ${index === 1 ? 'bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]' : 'bg-[#F5F5F5] opacity-50 shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]'}`}>
+                  <span className="text-[11px] font-medium leading-[14.4px] text-black">{project}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-[14px]">
+              <div className="flex-1 p-3 rounded-[16px] bg-white/0 shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02)]">
+                <div className="h-[448px] rounded-[16px] bg-gradient-to-br from-gray-200 to-gray-300" />
+              </div>
+
+              <div className="flex-1 flex flex-col gap-2.5 p-2.5">
+                <div className="flex flex-col gap-2.5">
+                  <span className="text-sm font-medium text-black">02</span>
+                  <h3 className="text-[19px] font-medium leading-6 tracking-[-0.2px] text-black">NovaLearn — AI-Curated Data Science Bootcamp</h3>
+                  <p className="text-base text-black opacity-80">Replaced manual curation with auto-generated playlists, quizzes, and mind maps for weekly cohorts.</p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6 mt-4">
+                  {stats.map((stat, index) => (
+                    <div key={index} className="flex flex-col items-center gap-2 p-5 rounded-xl bg-[#F5F5F5] shadow-[0_0.707px_0.707px_-0.667px_rgba(0,0,0,0.08),0_1.807px_1.807px_-1.333px_rgba(0,0,0,0.08),0_3.622px_3.622px_-2px_rgba(0,0,0,0.07),0_6.866px_6.866px_-2.667px_rgba(0,0,0,0.07),0_13.647px_13.647px_-3.333px_rgba(0,0,0,0.05),0_30px_30px_-4px_rgba(0,0,0,0.02),inset_0_3px_1px_0_#FFF]">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[28px] font-normal leading-7 text-black">{stat.value.split('%')[0]}</span>
+                        <span className="text-2xl font-medium leading-9 text-black">%</span>
+                      </div>
+                      <span className="text-base text-black text-center opacity-80">{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const PricingSection = () => {
+  type BillingCycle = 'monthly' | 'quarterly' | 'annually';
+  const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+
+  type Plan = {
+    name: string;
+    highlight: string;
+    pricing: Record<BillingCycle, string>;
+    description: string;
+    features: string[];
+    popular?: boolean;
+    isFree?: boolean;
+  };
+
+  const plans: Plan[] = [
+                        {
+                          name: "Free",
+                          highlight: "Perfect for sampling core workflows.",
+                          pricing: {
+                            monthly: "$0",
+                            quarterly: "$0",
+                            annually: "$0"
+                          },
+                          description: "Try StreamSmart without limits on time. Great for solo learners who want to explore the basics.",
+                          features: [
+                            "3 playlists total",
+                            "15 videos per playlist",
+                            "5 AI quizzes per month",
+                            "3 mind maps per month",
+                            "25 RAG queries per month"
+                          ],
+                          isFree: true
+                        },
+                        {
+                          name: "Learner",
+                          highlight: "Most popular for dedicated learners.",
+                          pricing: {
+                            monthly: "$4.99",
+                            quarterly: "$13.99",
+                            annually: "$49"
+                          },
+                          description: "Unlock unlimited curation plus boosted AI support to stay on track every sprint.",
+                          features: [
+                            "Unlimited playlists & videos",
+                            "50 AI quizzes per month",
+                            "15 mind maps per month",
+                            "150 RAG queries per month",
+                            "50 min voice chat per month"
+                          ],
+                          popular: true
+                        },
+                        {
+                          name: "Pro",
+                          highlight: "Best for teams and creators scaling impact.",
+                          pricing: {
+                            monthly: "$12.99",
+                            quarterly: "$36.99",
+                            annually: "$129"
+                          },
+                          description: "Everything in Learner with deeper AI limits, API hooks, and multi-video context for advanced use cases.",
+                          features: [
+                            "Everything in Learner",
+                            "Unlimited AI quizzes & mind maps",
+                            "500 RAG queries per month",
+                            "200 min voice chat per month",
+                            "API access",
+                            "Multi-video context"
+                          ]
+                        }
+                      ];
+
+                      const parsePrice = (value: string) => parseFloat(value.replace('$', '')) || 0;
+
+                      const getSavingsAmount = (plan: Plan, cycle: BillingCycle) => {
+                        if (plan.isFree) return 0;
+                        const monthly = parsePrice(plan.pricing.monthly);
+
+                        if (cycle === 'quarterly') {
+                          const quarterly = parsePrice(plan.pricing.quarterly);
+                          return Math.max(0, monthly * 3 - quarterly);
+                        }
+
+                        if (cycle === 'annually') {
+                          const annually = parsePrice(plan.pricing.annually);
+                          return Math.max(0, monthly * 12 - annually);
+                        }
+
+                        return 0;
+                      };
+
+                      const getSavingsLabel = (plan: Plan, cycle: BillingCycle) => {
+                        const savings = getSavingsAmount(plan, cycle);
+                        if (savings <= 0.01) return null;
+                        return `Save $${savings.toFixed(2)}`;
+                      };
+
+                      const savingsByCycle = {
+                        quarterly: plans.reduce((acc, plan) => Math.max(acc, getSavingsAmount(plan, 'quarterly')), 0),
+                        annually: plans.reduce((acc, plan) => Math.max(acc, getSavingsAmount(plan, 'annually')), 0)
+                      };
+
+                      const billingOptions: { value: BillingCycle; label: string; badge?: string; subtext: string }[] = [
+                        { value: 'monthly', label: 'Monthly', subtext: 'Cancel anytime. Billed each month.' },
+                        { value: 'quarterly', label: 'Quarterly', badge: savingsByCycle.quarterly > 0 ? `Save up to $${savingsByCycle.quarterly.toFixed(2)}` : undefined, subtext: 'Billed every 3 months for a lower effective rate.' },
+                        { value: 'annually', label: 'Annually', badge: savingsByCycle.annually > 0 ? `Save up to $${savingsByCycle.annually.toFixed(2)}` : undefined, subtext: 'Best value with one yearly payment.' }
+                      ];
+
+                      const getPeriodLabel = (cycle: BillingCycle) => {
+                        switch (cycle) {
+                          case 'monthly':
+                            return '/month';
+                          case 'quarterly':
+                            return '/quarter';
+                          case 'annually':
+                            return '/year';
+                        }
+                      };
+
+                      const getBillingNote = (plan: Plan, cycle: BillingCycle) => {
+                        if (plan.isFree) {
+                          return 'No card required · Keep learning for free';
+                        }
+
+                        if (cycle === 'monthly') {
+                          return 'Billed monthly · Cancel anytime';
+                        }
+
+                        if (cycle === 'quarterly') {
+                          const savings = getSavingsLabel(plan, 'quarterly');
+                          return savings ? `Billed ${plan.pricing.quarterly} every 3 months · ${savings}` : `Billed ${plan.pricing.quarterly} every 3 months`;
+                        }
+
+                        const savings = getSavingsLabel(plan, 'annually');
+                        return savings ? `Billed ${plan.pricing.annually} per year · ${savings}` : `Billed ${plan.pricing.annually} per year`;
+                      };
+
+  const activeBillingOption = billingOptions.find((option) => option.value === billingCycle);
+
+  return (
+    <section id="pricing" className="py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-12 px-6 md:px-0">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
+            <BarChart3 className="h-4 w-4 text-black" />
+            <span>Pricing</span>
+          </div>
+          <div className="flex flex-col items-center gap-2">
+            <h2 className="text-[54px] font-semibold leading-[64px] tracking-[-0.04em] text-black">Flexible Plans For Every Learner</h2>
+            <p className="max-w-[520px] text-base text-black/75">Start free, upgrade as you grow, and only pay when you are ready for unlimited AI momentum.</p>
+          </div>
+
+          <div className="relative inline-flex items-center gap-1 rounded-full bg-white/70 p-1 shadow-[0_22px_55px_-30px_rgba(0,0,0,0.35)] backdrop-blur">
+            {billingOptions.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => setBillingCycle(option.value)}
+                className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-sm transition-all ${
+                  billingCycle === option.value
+                    ? 'bg-black text-white shadow-[0_12px_24px_-16px_rgba(0,0,0,0.55)]'
+                    : 'text-black/60 hover:text-black'
+                }`}
+              >
+                <span>{option.label}</span>
+                {option.badge && billingCycle === option.value && (
+                  <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-white/80">
+                    {option.badge}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {activeBillingOption && (
+            <p className="text-sm text-black/60">{activeBillingOption.subtext}</p>
+          )}
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {plans.map((plan) => {
+            const savingsLabel = getSavingsLabel(plan, billingCycle);
+            const billingNote = getBillingNote(plan, billingCycle);
+
+            return (
+              <div
+                key={plan.name}
+                className={`relative flex h-full flex-col gap-6 rounded-[28px] border border-black/5 bg-white p-8 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.28)] transition-transform duration-300 hover:-translate-y-1.5 ${
+                  plan.popular ? 'ring-2 ring-black/15' : ''
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute inset-x-8 -top-1 h-[3px] rounded-full bg-gradient-to-r from-black via-black/70 to-black" aria-hidden />
+                )}
+
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold tracking-[0.14em] text-black/50 uppercase">{plan.name}</span>
+                    {plan.popular && (
+                      <span className="rounded-full bg-black px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white">Popular</span>
+                    )}
+                  </div>
+                  <p className="text-sm text-black/60">{plan.highlight}</p>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-[46px] font-semibold leading-[52px] tracking-[-0.04em] text-black">{plan.pricing[billingCycle]}</span>
+                    <span className="text-sm text-black/60">{getPeriodLabel(billingCycle)}</span>
+                  </div>
+                  {savingsLabel && (
+                    <span className="text-sm font-medium text-emerald-600">{savingsLabel}</span>
+                  )}
+                  <span className="text-xs uppercase tracking-[0.18em] text-black/50">{billingNote}</span>
+                </div>
+
+                <p className="text-sm text-black/70">{plan.description}</p>
+
+                <div className="h-[1px] rounded-full bg-gradient-to-r from-transparent via-black/10 to-transparent" />
+
+                <ul className="flex flex-col gap-3 text-sm text-black/70">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2">
+                      <Check className="mt-[2px] h-4 w-4 text-black/50" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/register" className="mt-auto">
+                  <Button
+                    className={`w-full rounded-[12px] px-6 py-3 text-sm font-medium ${
+                      plan.popular
+                        ? 'bg-black text-white shadow-[0_18px_32px_-20px_rgba(0,0,0,0.55)] hover:bg-black/90'
+                        : plan.isFree
+                          ? 'bg-[#F5F5F5] text-black shadow-[0_8px_24px_-18px_rgba(0,0,0,0.45)] hover:bg-[#F5F5F5]/90'
+                          : 'bg-white text-black shadow-[0_12px_30px_-18px_rgba(0,0,0,0.45)] hover:bg-white/90'
+                    }`}
+                  >
+                    {plan.isFree ? 'Get Started' : 'Start Learning'}
+                  </Button>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="flex items-center justify-center gap-2 rounded-full bg-white/70 px-4 py-2 text-sm text-black/70 shadow-[0_20px_40px_-28px_rgba(0,0,0,0.25)]">
+          <div className="h-2 w-2 rounded-full bg-emerald-500" />
+          <span>We reinvest 2% of every plan into new AI study resources.</span>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FAQSection = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: 'How does StreamSmart work?',
+      answer: 'StreamSmart uses AI to curate personalized video playlists based on your learning goals. Our AI assistant analyzes video transcripts to provide instant answers and insights while you watch.'
+    },
+    {
+      question: 'Can I use my own videos?',
+      answer: 'Yes! StreamSmart supports YouTube videos, private archives, and CSV uploads. You can blend multiple sources into a single cohesive learning experience.'
+    },
+    {
+      question: 'What makes StreamSmart different from other learning platforms?',
+      answer: 'StreamSmart combines AI-powered curation, real-time transcript analysis, and gamification to create an engaging learning experience. Our platform adapts to your pace and provides instant coaching support.'
+    },
+    {
+      question: 'Do I need a credit card for the free plan?',
+      answer: 'No credit card required! Our free plan lets you explore StreamSmart\'s core features and get a feel for AI-powered learning before upgrading.'
+    },
+    {
+      question: 'Can I cancel my subscription anytime?',
+      answer: 'Absolutely! You can cancel your subscription at any time from your account settings. You\'ll continue to have access until the end of your billing period.'
+    },
+    {
+      question: 'How accurate is the AI learning assistant?',
+      answer: 'Our AI assistant uses advanced language models and transcript analysis to provide highly accurate, citation-rich answers. All responses include timestamps for easy verification.'
+    }
+  ];
+
+  return (
+    <section id="faq" className="py-[110px] bg-[#F5F5F5]">
+      <div className="mx-auto max-w-[900px] px-6">
+        <div className="flex flex-col items-center gap-5 text-center mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
+            <MessageCircle className="h-4 w-4 text-black" />
+            <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">FAQ</span>
+          </div>
+          <h2 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black">Frequently Asked Questions</h2>
+          <p className="max-w-[620px] text-base text-black/80">Everything you need to know about StreamSmart and how it can transform your learning experience.</p>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="rounded-[24px] border border-black/5 bg-white p-6 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.15)] transition-all duration-300 hover:shadow-[0_12px_32px_-12px_rgba(0,0,0,0.2)]"
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="flex w-full items-center justify-between gap-4 text-left"
+              >
+                <h3 className="text-[20px] font-semibold text-black">{faq.question}</h3>
+                <ChevronDown
+                  className={`h-5 w-5 text-black/60 transition-transform duration-300 flex-shrink-0 ${
+                    openIndex === index ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              <div
+                className={`grid transition-all duration-300 ${
+                  openIndex === index ? 'grid-rows-[1fr] mt-4' : 'grid-rows-[0fr]'
+                }`}
+              >
+                <div className="overflow-hidden">
+                  <p className="text-[15px] text-black/70 leading-[24px]">{faq.answer}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Footer = () => {
+  const footerLines = [
+    { top: "\u00A0", bottom: "LEARN" },
+    { top: "LEARN", bottom: "INFINITE" },
+    { top: "INFINITE", bottom: "PROGRESS" },
+    { top: "PROGRESS", bottom: "TRANSFORM" },
+    { top: "TRANSFORM", bottom: "EXCEL" },
+    { top: "EXCEL", bottom: "INSPIRE" },
+    { top: "INSPIRE", bottom: "\u00A0" },
+  ];
+
+  return (
+    <footer className="bg-gradient-to-b from-black via-black/95 to-black/90 text-white">
+      <div className="mx-auto max-w-[1400px] px-6 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-20 items-start">
+          {/* Left side - Layered Text */}
+          <div className="flex items-start justify-center lg:justify-start">
+            <div className="text-white">
+              <LayeredText
+                lines={footerLines}
+                fontSize="56px"
+                fontSizeMd="28px"
+                lineHeight={50}
+                lineHeightMd={28}
+                className="py-0 !text-white"
+              />
+            </div>
+          </div>
+
+          {/* Right side - Links Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <div>
+              <h4 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">PRODUCT</h4>
+              <ul className="flex flex-col gap-2.5">
+                <li><Link href="#benefits" className="text-[14px] text-white/70 hover:text-white transition-colors">Benefits</Link></li>
+                <li><Link href="#features" className="text-[14px] text-white/70 hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="#pricing" className="text-[14px] text-white/70 hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/changelog" className="text-[14px] text-white/70 hover:text-white transition-colors">Changelog</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">COMPANY</h4>
+              <ul className="flex flex-col gap-2.5">
+                <li><Link href="/about" className="text-[14px] text-white/70 hover:text-white transition-colors">About</Link></li>
+                <li><Link href="/blog" className="text-[14px] text-white/70 hover:text-white transition-colors">Blog</Link></li>
+                <li><Link href="/careers" className="text-[14px] text-white/70 hover:text-white transition-colors">Careers</Link></li>
+                <li><Link href="/contact" className="text-[14px] text-white/70 hover:text-white transition-colors">Contact</Link></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">LEGAL</h4>
+              <ul className="flex flex-col gap-2.5">
+                <li><Link href="/privacy" className="text-[14px] text-white/70 hover:text-white transition-colors">Privacy</Link></li>
+                <li><Link href="/terms" className="text-[14px] text-white/70 hover:text-white transition-colors">Terms</Link></li>
+                <li><Link href="/security" className="text-[14px] text-white/70 hover:text-white transition-colors">Security</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-6 border-t border-white/10">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-[12px] text-white/40">
+              © 2025 StreamSmart. All rights reserved.
+            </p>
+            
+            <div className="flex items-center gap-4">
+              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <Twitter className="h-[16px] w-[16px]" />
+              </Link>
+              <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <Linkedin className="h-[16px] w-[16px]" />
+              </Link>
+              <Link href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <Youtube className="h-[16px] w-[16px]" />
+              </Link>
+              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <Instagram className="h-[16px] w-[16px]" />
+              </Link>
+              <Link href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors">
+                <Github className="h-[16px] w-[16px]" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};

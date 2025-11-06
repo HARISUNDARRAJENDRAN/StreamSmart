@@ -33,8 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body 
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
+        suppressHydrationWarning
+      >
         <QueryProvider>
           <CognitoAuthProvider>
             <UserProvider>

@@ -42,7 +42,7 @@ export default function PlaylistsPage() {
       console.log('Raw playlists received:', userPlaylists);
       console.log('First playlist raw data:', userPlaylists[0]);
       
-      const processedPlaylists = userPlaylists.map((p: Playlist, index: number) => {
+      const processedPlaylists = userPlaylists.map((p: any, index: number) => {
         console.log(`Processing playlist ${index}:`, {
           _id: p._id,
           id: p.id,
@@ -63,7 +63,7 @@ export default function PlaylistsPage() {
           videoCount: p.videoCount, // Pass through the correct video count from API
           createdAt: new Date(p.createdAt),
           lastModified: new Date(p.updatedAt || p.createdAt),
-          videos: (p.videos || []).map((video: Video) => ({
+          videos: (p.videos || []).map((video: any) => ({
             id: video.id,
             title: video.title || '',
             youtubeURL: video.url || video.youtubeURL || '', // Map 'url' to 'youtubeURL'
@@ -151,51 +151,60 @@ export default function PlaylistsPage() {
 
   if (isLoading) {
     return (
-       <div className="flex items-center justify-center h-full">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        <p className="ml-4 text-lg">Loading playlists...</p>
+       <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black mx-auto mb-4"></div>
+          <p className="text-lg text-black/80">Loading playlists...</p>
+        </div>
       </div>
     );
   }
 
   if (!user) {
     return (
-      <Card className="col-span-full text-center p-10 border-dashed">
-        <CardTitle className="text-xl mb-2">Please Log In</CardTitle>
-        <CardDescription className="mb-6">
-          You need to be logged in to view your playlists.
-        </CardDescription>
-        <Link href="/login">
-          <Button variant="default" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-            Log In
-          </Button>
-        </Link>
-      </Card>
+      <div className="min-h-screen bg-[#F5F5F5] flex items-center justify-center p-6">
+        <div className="bg-white rounded-[32px] border border-black/5 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] p-10 text-center max-w-md">
+          <h2 className="text-2xl font-semibold text-black mb-3">Please Log In</h2>
+          <p className="text-black/60 mb-8">
+            You need to be logged in to view your playlists.
+          </p>
+          <Link href="/login">
+            <Button className="px-8 py-3 rounded-[12px] bg-black text-white hover:bg-black/90 transition-all hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+              <span className="text-sm font-semibold">Log In</span>
+            </Button>
+          </Link>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">My Learning Playlists</h1>
-          <p className="text-gray-400">Organize your YouTube learning journey.</p>
+    <div className="min-h-screen bg-[#F5F5F5] py-12">
+      <div className="container mx-auto px-6 max-w-[1400px]">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
+          <div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] mb-4">
+              <ListVideoIcon className="h-4 w-4 text-black" />
+              <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Learning</span>
+            </div>
+            <h1 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black mb-3">My Playlists</h1>
+            <p className="text-base text-black/80">Organize your YouTube learning journey</p>
+          </div>
+          <Link href="/playlists/create">
+            <Button className="px-6 py-3 rounded-[12px] bg-black text-white hover:bg-black/90 transition-all hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+              <PlusCircleIcon className="mr-2 h-5 w-5" />
+              <span className="text-sm font-semibold">Create New Playlist</span>
+            </Button>
+          </Link>
         </div>
-        <Link href="/playlists/create">
-          <Button className="text-white font-semibold" style={{ background: 'hsl(var(--primary))' }}>
-            <PlusCircleIcon className="mr-2 h-5 w-5" />
-            Create New Playlist
-          </Button>
-        </Link>
-      </div>
 
-      {playlists.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {playlists.map((playlist) => (
-            <Card key={playlist.id} className="flex flex-col overflow-hidden transition-all duration-300 ease-in-out transform hover:-translate-y-1 bg-card border border-border hover:shadow-[0_20px_25px_-5px_rgba(139,92,246,0.15),_0_10px_10px_-5px_rgba(139,92,246,0.08)] hover:border-primary/40">
-              <Link href={`/playlists/${playlist.id}`} className="block group">
-                <CardHeader className="relative p-0">
-                  <Image
+        {playlists.length > 0 ? (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {playlists.map((playlist) => (
+              <div key={playlist.id} className="group bg-white rounded-[24px] border border-black/5 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all hover:-translate-y-1">
+                <Link href={`/playlists/${playlist.id}`} className="block">
+                  <div className="relative">
+                    <Image
                     src={
                       // Try to get thumbnail from first video
                       playlist.videos && 
@@ -274,87 +283,91 @@ export default function PlaylistsPage() {
                       }
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <CirclePlay className="h-16 w-16 text-white/80" />
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 flex-grow">
-                  <CardTitle className="text-lg font-semibold mb-1 line-clamp-2 group-hover:text-primary" style={{ color: 'hsl(var(--foreground))' }}>{playlist.title}</CardTitle>
-                  <CardDescription className="text-sm text-gray-300 mb-2 line-clamp-3">{playlist.description}</CardDescription>
-                  <div className="flex flex-wrap gap-1 mb-2">
-                    {playlist.tags && playlist.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full">{tag}</span>
-                    ))}
-                  </div>
-                  <p className="text-xs text-gray-500">{playlist.videoCount || 0} videos</p>
-                  {playlist.overallProgress > 0 && (
-                    <div className="mt-2">
-                      <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full transition-all duration-300 bg-primary"
-                          style={{ width: `${playlist.overallProgress}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-gray-400 mt-1">{playlist.overallProgress}% complete</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                      <CirclePlay className="h-16 w-16 text-white/80" />
                     </div>
-                  )}
-                </CardContent>
-              </Link>
-              <CardFooter className="p-4 flex justify-end gap-2 border-t" style={{ borderColor: 'hsl(var(--border))' }}>
-                <PlaylistRenameDialog
-                  playlist={{
-                    id: playlist.id,
-                    title: playlist.title,
-                    description: playlist.description
-                  }}
-                  onSuccess={handlePlaylistRenamed}
-                  trigger={
-                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                      <Edit3Icon className="mr-1 h-4 w-4" /> Rename
-                    </Button>
-                  }
-                />
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10">
-                      <Trash2Icon className="mr-1 h-4 w-4" /> Delete
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the playlist &ldquo;{playlist.title}&rdquo;.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDeletePlaylist(playlist.id)} className="bg-destructive hover:bg-destructive/90">
-                        Delete
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <Card className="col-span-full text-center p-10 border-dashed">
-           <ListVideoIcon className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
-          <CardTitle className="text-xl mb-2">No Playlists Found</CardTitle>
-          <CardDescription className="mb-6">
-            It looks like you haven&apos;t created any playlists yet.
-            <br />
-            Get started by creating one to organize your learning videos.
-          </CardDescription>
-          <Link href="/playlists/create">
-            <Button variant="default" size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-              <PlusCircleIcon className="mr-2 h-5 w-5" /> Create Your First Playlist
-            </Button>
-          </Link>
-        </Card>
-      )}
+                  </div>
+
+                  <div className="p-5 space-y-3">
+                    <h3 className="text-[18px] font-semibold text-black line-clamp-2 group-hover:text-black/70 transition-colors">{playlist.title}</h3>
+                    <p className="text-sm text-black/60 line-clamp-2">{playlist.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {playlist.tags && playlist.tags.slice(0, 3).map(tag => (
+                        <span key={tag} className="text-xs px-3 py-1 rounded-full bg-black/5 text-black/70 font-medium">{tag}</span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-black/50">{((playlist as any).videoCount || playlist.videos?.length || 0)} videos</p>
+                    {(playlist as any).overallProgress > 0 && (
+                      <div className="mt-2">
+                        <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+                          <div 
+                            className="h-full transition-all duration-300 bg-black"
+                            style={{ width: `${(playlist as any).overallProgress}%` }}
+                          />
+                        </div>
+                        <p className="text-xs text-black/50 mt-1">{(playlist as any).overallProgress}% complete</p>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+
+                <div className="p-4 flex justify-end gap-2 border-t border-black/5">
+                  <PlaylistRenameDialog
+                    playlist={{
+                      id: playlist.id,
+                      title: playlist.title,
+                      description: playlist.description
+                    }}
+                    onSuccess={handlePlaylistRenamed}
+                    trigger={
+                      <Button variant="ghost" size="sm" className="text-black/60 hover:text-black hover:bg-black/5">
+                        <Edit3Icon className="mr-1 h-4 w-4" /> Rename
+                      </Button>
+                    }
+                  />
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-red-600 hover:bg-red-50">
+                        <Trash2Icon className="mr-1 h-4 w-4" /> Delete
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="text-black">Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-black/60">
+                          This action cannot be undone. This will permanently delete the playlist &ldquo;{playlist.title}&rdquo;.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-white border-black/10 text-black hover:bg-black/5">Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleDeletePlaylist(playlist.id)} className="bg-red-600 hover:bg-red-700 text-white">
+                          Delete
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-white rounded-[32px] border border-black/5 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] p-10 text-center">
+            <ListVideoIcon className="mx-auto h-16 w-16 text-black/40 mb-6" />
+            <h2 className="text-2xl font-semibold text-black mb-3">No Playlists Found</h2>
+            <p className="text-black/60 mb-8 max-w-md mx-auto">
+              It looks like you haven&apos;t created any playlists yet.
+              <br />
+              Get started by creating one to organize your learning videos.
+            </p>
+            <Link href="/playlists/create">
+              <Button className="px-8 py-3 rounded-[12px] bg-black text-white hover:bg-black/90 transition-all hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+                <PlusCircleIcon className="mr-2 h-5 w-5" />
+                <span className="text-sm font-semibold">Create Your First Playlist</span>
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

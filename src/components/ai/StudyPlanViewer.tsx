@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, BookOpen, Download, Sparkles, RefreshCw, Target } from 'lucide-react';
+import { Loader2, BookOpen, Download, Lightbulb, RefreshCw, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
@@ -121,17 +121,19 @@ export function StudyPlanViewer({
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BookOpen className="h-5 w-5 text-primary" />
-          Your Personalized Study Plan
+    <Card className="w-full bg-white rounded-[24px] border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
+      <CardHeader className="border-b border-black/5 bg-gradient-to-r from-emerald-50 to-teal-50/50 rounded-t-[24px]">
+        <CardTitle className="flex items-center gap-3 text-black">
+          <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center">
+            <BookOpen className="h-5 w-5 text-emerald-600" />
+          </div>
+          <span className="text-2xl">Your Personalized Study Plan</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-black/60 text-base">
           AI-generated learning path optimized for this playlist
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-6">
         <AnimatePresence mode="wait">
           {!studyPlan && !loading && !error && (
             <motion.div
@@ -139,44 +141,56 @@ export function StudyPlanViewer({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-4"
+              className="space-y-6"
             >
-              <div className="bg-muted/50 p-4 rounded-lg space-y-3">
-                <h4 className="font-medium flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" />
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 rounded-[20px] border border-emerald-100/50">
+                <h4 className="font-semibold text-black flex items-center gap-2 mb-4">
+                  <Lightbulb className="h-5 w-5 text-emerald-600" />
                   What you'll get:
                 </h4>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    <span>Optimal video watching sequence</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    <span>Prerequisites and learning objectives</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    <span>Study tips and practice suggestions</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-primary">•</span>
-                    <span>Realistic timeline estimates</span>
-                  </li>
-                </ul>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-emerald-600 font-bold">1</span>
+                    </div>
+                    <span className="text-sm text-black/80 font-medium">Optimal video watching sequence</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-emerald-600 font-bold">2</span>
+                    </div>
+                    <span className="text-sm text-black/80 font-medium">Prerequisites and learning objectives</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-emerald-600 font-bold">3</span>
+                    </div>
+                    <span className="text-sm text-black/80 font-medium">Study tips and practice suggestions</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <span className="text-emerald-600 font-bold">4</span>
+                    </div>
+                    <span className="text-sm text-black/80 font-medium">Realistic timeline estimates</span>
+                  </div>
+                </div>
               </div>
 
               {!showGoalInput ? (
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button onClick={generateStudyPlan} size="lg" className="gap-2 flex-1">
-                    <BookOpen className="h-4 w-4" />
+                  <Button 
+                    onClick={generateStudyPlan} 
+                    size="lg" 
+                    className="gap-2 flex-1 bg-black hover:bg-black/90 text-white rounded-full py-6 text-base font-medium shadow-[0_4px_12px_rgba(0,0,0,0.15)]"
+                  >
+                    <BookOpen className="h-5 w-5" />
                     Generate Study Plan
                   </Button>
                   <Button
                     onClick={() => setShowGoalInput(true)}
                     variant="outline"
                     size="lg"
-                    className="gap-2"
+                    className="gap-2 rounded-full border-black/20 hover:bg-black/5 font-medium"
                   >
                     <Target className="h-4 w-4" />
                     Add Your Goal

@@ -12,13 +12,13 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { HomeIcon, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Timer } from 'lucide-react';
+import { Sparkles, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
+  { href: '/ai-feed', label: 'AI Feed', icon: Sparkles },
   { href: '/playlists', label: 'Playlists', icon: ListVideoIcon },
   { href: '/productivity', label: 'Productivity', icon: Timer },
-  { href: '/progress', label: 'My Progress', icon: BarChart3Icon },
   { href: '/achievements', label: 'Achievements', icon: Trophy },
 ];
 
@@ -26,65 +26,62 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r" style={{ borderColor: 'hsl(var(--sidebar-border))', background: 'linear-gradient(180deg, rgba(10,10,11,0.95) 0%, rgba(17,17,19,0.95) 100%)' }}>
-      <SidebarHeader className="flex items-center justify-between p-4" style={{ borderBottom: '1px solid hsl(var(--sidebar-border))' }}>
-        <Link href="/ai-feed" className="flex items-center gap-2">
-          <h1 className="text-xl font-semibold group-data-[collapsible=icon]:hidden" style={{ color: 'hsl(var(--foreground))' }}>
-            <span style={{ color: 'hsl(var(--primary))' }}>S</span>treamSmart
-          </h1>
+    <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r border-black/5 bg-white">
+      <SidebarHeader className="flex items-center justify-between px-4 py-3 border-b border-black/5">
+        <Link href="/ai-feed" className="flex items-center gap-2.5 flex-1 min-w-0">
+          <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+            <span className="text-white font-bold text-base">S</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-[15px] font-semibold text-black group-data-[collapsible=icon]:hidden truncate leading-tight">
+              StreamSmart
+            </h1>
+          </div>
         </Link>
-        <div className="group-data-[collapsible=icon]:hidden">
-          <SidebarTrigger />
-        </div>
+        <button className="p-1.5 rounded-[10px] hover:bg-black/5 transition-colors text-black/60 hover:text-black flex-shrink-0">
+          <SidebarTrigger className="w-5 h-5" />
+        </button>
       </SidebarHeader>
-      <SidebarContent className="flex-1 p-2">
-        <SidebarMenu>
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={pathname === item.href || pathname.startsWith(item.href.split('#')[0])}
-                tooltip={{ children: item.label, side: 'right', className:"bg-popover text-popover-foreground" }}
-                className={cn(
-                  "text-gray-300 hover:text-white",
-                  (pathname === item.href || pathname.startsWith(item.href.split('#')[0])) 
-                    ? 'text-white'
-                    : ''
-                )}
-                style={{
-                  background: (pathname === item.href || pathname.startsWith(item.href.split('#')[0]))
-                    ? 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)'
-                    : 'transparent',
-                  border: (pathname === item.href || pathname.startsWith(item.href.split('#')[0]))
-                    ? 'none'
-                    : '1px solid transparent'
-                }}
-              >
-                <Link href={item.href}>
-                  <item.icon className="h-5 w-5" />
-                  <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+      <SidebarContent className="flex-1 p-3">
+        <SidebarMenu className="space-y-1">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href.split('#')[0]);
+            return (
+              <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive}
+                  tooltip={{ children: item.label, side: 'right', className:"bg-white text-black border border-black/10 shadow-sm" }}
+                  className={cn(
+                    "transition-all duration-200 hover:translate-x-1 rounded-[12px]",
+                    isActive
+                      ? "bg-black text-white hover:bg-black/90 shadow-sm"
+                      : "text-black/70 hover:bg-black/5 hover:text-black"
+                  )}
+                >
+                  <Link href={item.href}>
+                    <item.icon className="h-5 w-5" />
+                    <span className="truncate group-data-[collapsible=icon]:hidden">{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-2">
-         <SidebarMenu>
+      <SidebarFooter className="p-3 border-t border-black/5">
+         <SidebarMenu className="space-y-1">
             <SidebarMenuItem>
               <SidebarMenuButton 
                 asChild 
-                tooltip={{ children: 'Settings', side: 'right', className:"bg-popover text-popover-foreground" }}
+                tooltip={{ children: 'Settings', side: 'right', className:"bg-white text-black border border-black/10 shadow-sm" }}
                 isActive={pathname === '/settings'}
                 className={cn(
-                  "text-gray-300 hover:text-white",
-                  pathname === '/settings' && 'text-white'
+                  "transition-all duration-200 hover:translate-x-1 rounded-[12px]",
+                  pathname === '/settings'
+                    ? "bg-black text-white hover:bg-black/90 shadow-sm"
+                    : "text-black/70 hover:bg-black/5 hover:text-black"
                 )}
-                style={{
-                  background: pathname === '/settings'
-                    ? 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)'
-                    : 'transparent'
-                }}
                 >
                 <Link href="/settings">
                   <SettingsIcon className="h-5 w-5" />
@@ -95,17 +92,14 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton 
                 asChild 
-                tooltip={{ children: 'Help', side: 'right', className:"bg-popover text-popover-foreground" }}
+                tooltip={{ children: 'Help', side: 'right', className:"bg-white text-black border border-black/10 shadow-sm" }}
                 isActive={pathname === '/help'}
-                 className={cn(
-                  "text-gray-300 hover:text-white",
-                  pathname === '/help' && 'text-white'
+                className={cn(
+                  "transition-all duration-200 hover:translate-x-1 rounded-[12px]",
+                  pathname === '/help'
+                    ? "bg-black text-white hover:bg-black/90 shadow-sm"
+                    : "text-black/70 hover:bg-black/5 hover:text-black"
                 )}
-                style={{
-                  background: pathname === '/help'
-                    ? 'linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%)'
-                    : 'transparent'
-                }}
                 >
                 <Link href="/help">
                   <HelpCircleIcon className="h-5 w-5" />

@@ -428,23 +428,24 @@ export default function PlaylistDetailPage() {
       className="space-y-6"
     >
       {/* Playlist Header */}
-      <motion.div variants={fadeInUp} className="rounded-2xl p-8 border" style={{ background: 'linear-gradient(90deg, hsla(var(--primary), 0.08) 0%, hsla(var(--secondary), 0.08) 100%)', borderColor: 'hsl(var(--border))' }}>
+      <motion.div variants={fadeInUp} className="rounded-[24px] p-6 bg-white border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
         <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1 space-y-4">
-            <div className="flex items-start justify-between">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-3xl font-bold text-foreground">{playlist.title}</h1>
+            {/* Title and Actions */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="space-y-2 flex-1">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h1 className="text-3xl font-bold text-black leading-tight">{playlist.title}</h1>
                   {playlist.aiRecommended && (
-                    <Badge variant="secondary" className="bg-primary/10 text-primary">
-                      <BrainIcon className="w-3 h-3 mr-1" />
+                    <Badge className="bg-black text-white border-0 rounded-full font-medium">
+                      <BrainIcon className="w-3.5 h-3.5 mr-1.5" />
                       AI Curated
                     </Badge>
                   )}
                 </div>
-                <p className="text-muted-foreground max-w-2xl">{playlist.description}</p>
+                <p className="text-black/60 max-w-2xl text-sm leading-relaxed">{playlist.description}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <PlaylistRenameDialog
                   playlist={{
                     id: playlist.id,
@@ -453,66 +454,79 @@ export default function PlaylistDetailPage() {
                   }}
                   onSuccess={handlePlaylistRenamed}
                   trigger={
-                    <Button variant="outline" size="sm">
-                      <Edit3 className="w-4 h-4 mr-2" />
-                      Rename
+                    <Button size="sm" className="rounded-full bg-black hover:bg-black/90 text-white border-0 font-medium text-xs gap-1.5 px-3 py-1.5 h-8">
+                      <Edit3 className="w-3.5 h-3.5" />
+                      <span className="hidden sm:inline">Rename</span>
                     </Button>
                   }
                 />
-                <Button variant="outline" size="sm">
-                  <ShareIcon className="w-4 h-4 mr-2" />
-                  Share
+                <Button size="sm" className="rounded-full border-2 border-black/10 hover:border-black/20 bg-white hover:bg-gray-50 text-black font-medium text-xs gap-1.5 px-3 py-1.5 h-8">
+                  <ShareIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Share</span>
                 </Button>
-                <Button variant="outline" size="sm">
-                  <BookmarkIcon className="w-4 h-4 mr-2" />
-                  Save
+                <Button size="sm" className="rounded-full border-2 border-black/10 hover:border-black/20 bg-white hover:bg-gray-50 text-black font-medium text-xs gap-1.5 px-3 py-1.5 h-8">
+                  <BookmarkIcon className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Save</span>
                 </Button>
               </div>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              <div className="text-center p-3 bg-background/60 rounded-lg">
-                <div className="text-2xl font-bold text-primary">{playlist.videos.length}</div>
-                <div className="text-sm text-muted-foreground">Videos</div>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-3 bg-gray-50 rounded-[16px] border border-gray-200 text-center">
+                <div className="text-2xl font-bold text-black">{playlist.videos.length}</div>
+                <div className="text-xs text-black/60 font-medium mt-0.5">Videos</div>
               </div>
-              <div className="text-center p-3 bg-background/60 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{completedVideos}</div>
-                <div className="text-sm text-muted-foreground">Completed</div>
+              <div className="p-3 bg-gray-50 rounded-[16px] border border-gray-200 text-center">
+                <div className="text-2xl font-bold text-black">{completedVideos}</div>
+                <div className="text-xs text-black/60 font-medium mt-0.5">Completed</div>
               </div>
-              <div className="text-center p-3 bg-background/60 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600">{Math.round(overallProgress)}%</div>
-                <div className="text-sm text-muted-foreground">Progress</div>
+              <div className="p-3 bg-gray-50 rounded-[16px] border border-gray-200 text-center">
+                <div className="text-2xl font-bold text-black">{Math.round(overallProgress)}%</div>
+                <div className="text-xs text-black/60 font-medium mt-0.5">Progress</div>
               </div>
             </div>
             
+            {/* Progress Bar */}
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Overall Progress</span>
-                <span className="font-medium">{Math.round(overallProgress)}%</span>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-black">Overall Progress</span>
+                <span className="text-sm font-bold text-black">{Math.round(overallProgress)}%</span>
               </div>
-              <Progress value={overallProgress} className="h-3" />
+              <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-black rounded-full transition-all duration-300"
+                  style={{ width: `${overallProgress}%` }}
+                ></div>
+              </div>
             </div>
             
-            <div className="flex flex-wrap gap-2">
-              {playlist.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="text-xs">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+            {/* Tags */}
+            {playlist.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {playlist.tags.map((tag, index) => (
+                  <Badge key={index} className="rounded-full bg-black/5 border border-black/10 text-black/70 text-xs font-medium px-3 py-1">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            )}
             
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <UserIcon className="w-4 h-4" />
+            {/* Metadata */}
+            <div className="flex items-center gap-3 text-xs text-black/60 font-medium pt-1">
+              <div className="flex items-center gap-1.5">
+                <UserIcon className="w-3.5 h-3.5 text-black/50" />
                 <span>Created by you</span>
               </div>
-              <div className="flex items-center gap-1">
-                <CalendarIcon className="w-4 h-4" />
-                <span>Created {playlist.createdAt.toLocaleDateString()}</span>
+              <div className="w-1 h-1 rounded-full bg-black/30"></div>
+              <div className="flex items-center gap-1.5">
+                <CalendarIcon className="w-3.5 h-3.5 text-black/50" />
+                <span>{playlist.createdAt.toLocaleDateString()}</span>
               </div>
-              <div className="flex items-center gap-1">
-                <ClockIcon className="w-4 h-4" />
-                <span>Updated {playlist.lastModified.toLocaleDateString()}</span>
+              <div className="w-1 h-1 rounded-full bg-black/30"></div>
+              <div className="flex items-center gap-1.5">
+                <ClockIcon className="w-3.5 h-3.5 text-black/50" />
+                <span>{playlist.lastModified.toLocaleDateString()}</span>
               </div>
             </div>
           </div>
@@ -537,73 +551,115 @@ export default function PlaylistDetailPage() {
           {/* Interactive Tabs */}
           <motion.div variants={fadeInUp}>
             <Tabs defaultValue="info" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 p-1 rounded-xl" style={{ background: 'rgba(139,92,246,0.08)' }}>
-                <TabsTrigger value="info" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 gap-2 p-1.5 bg-white rounded-[20px] border border-black/5 shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                <TabsTrigger 
+                  value="info" 
+                  className="rounded-full data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all duration-200"
+                >
                   <InfoIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Info</span>
+                  <span className="hidden sm:inline font-medium">Info</span>
                 </TabsTrigger>
-                <TabsTrigger value="ai-quiz" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                <TabsTrigger 
+                  value="ai-quiz" 
+                  className="rounded-full data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all duration-200"
+                >
                   <Sparkles className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">AI Quiz</span>
+                  <span className="hidden sm:inline font-medium">AI Quiz</span>
                 </TabsTrigger>
-                <TabsTrigger value="study-plan" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                <TabsTrigger 
+                  value="study-plan" 
+                  className="rounded-full data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all duration-200"
+                >
                   <BookOpen className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">Study Plan</span>
+                  <span className="hidden sm:inline font-medium">Study Plan</span>
                 </TabsTrigger>
-                <TabsTrigger value="chatbot" className="rounded-lg data-[state=active]:bg-background data-[state=active]:shadow-sm">
+                <TabsTrigger 
+                  value="chatbot" 
+                  className="rounded-full data-[state=active]:bg-black data-[state=active]:text-white data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-all duration-200"
+                >
                   <MessageCircleIcon className="w-4 h-4 mr-2" />
-                  <span className="hidden sm:inline">AI Chat</span>
+                  <span className="hidden sm:inline font-medium">AI Chat</span>
                 </TabsTrigger>
               </TabsList>
               
               <div className="mt-6">
                 <TabsContent value="info" className="space-y-6">
-                  <Card className="p-6 bg-card border border-border">
-                    {currentVideo && (
-                      <div className="space-y-6">
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-2">
-                            <h2 className="text-2xl font-semibold text-primary">{currentVideo.title}</h2>
-                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                              <span className="flex items-center gap-1">
-                                <ClockIcon className="w-4 h-4" />
-                                {currentVideo.duration}
-                              </span>
-                              <Badge variant={currentVideo.completionStatus === 100 ? "default" : "outline"}>
-                                {currentVideo.completionStatus === 100 ? "Completed" : "In Progress"}
-                              </Badge>
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Card className="bg-white rounded-[24px] border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden">
+                      {currentVideo && (
+                        <div className="p-8 space-y-6">
+                          {/* Header with Title and Action */}
+                          <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                            <div className="space-y-3 flex-1">
+                              <h2 className="text-3xl font-bold text-black leading-tight">{currentVideo.title}</h2>
+                              <div className="flex flex-wrap items-center gap-3">
+                                <div className="flex items-center gap-2 px-3 py-1.5 bg-black/5 rounded-full">
+                                  <ClockIcon className="w-4 h-4 text-black/60" />
+                                  <span className="text-sm font-medium text-black/80">{currentVideo.duration}</span>
+                                </div>
+                                <Badge 
+                                  variant={currentVideo.completionStatus === 100 ? "default" : "outline"}
+                                  className={currentVideo.completionStatus === 100 
+                                    ? "bg-green-500 hover:bg-green-600 text-white border-0" 
+                                    : "border-black/20 text-black/70"}
+                                >
+                                  {currentVideo.completionStatus === 100 ? "✓ Completed" : "In Progress"}
+                                </Badge>
+                              </div>
                             </div>
-                          </div>
-                          <Button 
-                            onClick={() => handleToggleCompletion(currentVideo.id)}
-                            variant={currentVideo.completionStatus === 100 ? "secondary" : "default"}
-                            className="transition-all duration-300 hover:scale-105"
-                          >
-                            {currentVideo.completionStatus === 100 ? 
-                              <><CircleCheck className="mr-2 h-4 w-4" /> Mark as Incomplete</> : 
-                              <><CircleIcon className="mr-2 h-4 w-4" /> Mark as Completed</>}
-                          </Button>
-                        </div>
-                        
-                        {currentVideo.summary && (
-                          <div className="p-4 rounded-lg" style={{ background: 'rgba(139,92,246,0.08)' }}>
-                            <h3 className="font-medium mb-2">Video Summary</h3>
-                            <p className="text-muted-foreground leading-relaxed">{currentVideo.summary}</p>
-                          </div>
-                        )}
-                        
-                        {currentVideo.youtubeURL && (
-                          <div className="flex items-center gap-2">
-                            <Button variant="outline" asChild>
-                              <a href={currentVideo.youtubeURL} target="_blank" rel="noopener noreferrer">
-                                Watch on YouTube
-                              </a>
+                            <Button 
+                              onClick={() => handleToggleCompletion(currentVideo.id)}
+                              variant={currentVideo.completionStatus === 100 ? "outline" : "default"}
+                              className={`shrink-0 rounded-full px-6 font-medium transition-all duration-300 hover:scale-105 ${
+                                currentVideo.completionStatus === 100 
+                                  ? "border-black/20 hover:bg-black/5" 
+                                  : "bg-black hover:bg-black/90 text-white"
+                              }`}
+                            >
+                              {currentVideo.completionStatus === 100 ? 
+                                <><CircleCheck className="mr-2 h-4 w-4" /> Mark Incomplete</> : 
+                                <><CircleIcon className="mr-2 h-4 w-4" /> Mark Complete</>}
                             </Button>
                           </div>
-                        )}
-                      </div>
-                    )}
-                  </Card>
+                          
+                          {/* Summary Section */}
+                          {currentVideo.summary && (
+                            <div className="bg-gray-100 rounded-[20px] p-6 border border-gray-200">
+                              <div className="flex items-center gap-2 mb-3">
+                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                                  <InfoIcon className="w-4 h-4 text-black/60" />
+                                </div>
+                                <h3 className="font-semibold text-black">Video Summary</h3>
+                              </div>
+                              <p className="text-black/70 leading-relaxed">{currentVideo.summary}</p>
+                            </div>
+                          )}
+                          
+                          {/* Action Buttons */}
+                          {currentVideo.youtubeURL && (
+                            <div className="flex flex-wrap gap-3 pt-2">
+                              <Button 
+                                variant="outline" 
+                                asChild
+                                className="rounded-full border-black/10 hover:bg-black/5 hover:border-black/20"
+                              >
+                                <a href={currentVideo.youtubeURL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                  </svg>
+                                  Watch on YouTube
+                                </a>
+                              </Button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </Card>
+                  </motion.div>
                 </TabsContent>
                 
                 <TabsContent value="chatbot">
@@ -650,19 +706,19 @@ export default function PlaylistDetailPage() {
 
         {/* Playlist Videos Sidebar */}
         <motion.div variants={fadeInUp} className="xl:col-span-1 space-y-6">
-          <Card className="shadow-lg h-fit max-h-[calc(100vh-28rem)] flex flex-col bg-card border border-border">
-            <CardHeader className="border-b" style={{ background: 'rgba(139,92,246,0.08)', borderColor: 'hsl(var(--border))' }}>
-              <CardTitle className="flex items-center">
-                <ListIcon className="h-5 w-5 mr-2 text-primary" />
+          <Card className="h-fit max-h-[calc(100vh-28rem)] flex flex-col bg-white border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] rounded-[24px] overflow-hidden">
+            <CardHeader className="border-b border-black/5 bg-white p-4">
+              <CardTitle className="flex items-center gap-2 text-lg font-bold text-black">
+                <ListIcon className="h-5 w-5 text-black" />
                 Playlist Videos
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-xs text-black/60 font-medium mt-1">
                 {playlist.videos.length} videos • {Math.round(overallProgress)}% complete
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0 flex-1 min-h-0">
               <ScrollArea className="h-full"> 
-                <div className="p-2 space-y-1">
+                <div className="p-3 space-y-1.5">
                   {playlist.videos.map((video) => (
                     <VideoProgressItem
                       key={video.id}
@@ -673,9 +729,9 @@ export default function PlaylistDetailPage() {
                     />
                   ))}
                   {playlist.videos.length === 0 && (
-                    <div className="p-8 text-center text-muted-foreground">
-                      <ListIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                      <p>No videos in this playlist yet.</p>
+                    <div className="p-8 text-center">
+                      <ListIcon className="w-10 h-10 mx-auto mb-3 text-black/20" />
+                      <p className="text-sm text-black/50 font-medium">No videos yet</p>
                     </div>
                   )}
                 </div>

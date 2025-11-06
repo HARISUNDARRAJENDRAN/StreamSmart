@@ -5,11 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { BotIcon, MicIcon, MicOffIcon, SendIcon, Loader2Icon, UserIcon } from 'lucide-react';
+import { BotIcon, MicIcon, MicOffIcon, SendIcon, Loader2Icon, UserIcon, MessageSquare, Volume2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { SuggestedQuestions } from './suggested-questions';
 import { MessageContent } from './message-content';
+import { AIVoiceInput } from '@/components/ui/ai-voice-input';
 
 interface SourceReference {
   videoId: string;
@@ -53,7 +54,7 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
     const welcomeMsg: Message = {
       id: 'welcome',
       role: 'assistant',
-      content: '👋 Hi! I\'m your AI assistant. Ask me anything about your playlist videos! You can type your question or use the microphone 🎤',
+      content: 'Hello! I\'m your AI assistant. I can answer any questions about the videos in this playlist. Feel free to ask anything, and you can even use your voice!',
       timestamp: new Date()
     };
     setMessages([welcomeMsg]);
@@ -329,52 +330,57 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
   };
 
   return (
-    <Card className="flex flex-col h-[600px] shadow-lg">
+    <Card className="flex flex-col h-[750px] bg-white rounded-[24px] border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)] overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b flex items-center gap-3 bg-gradient-to-r from-primary/10 to-primary/5">
-        <div className="relative">
-          <BotIcon className="h-8 w-8 text-primary" />
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold">RAG AI Assistant</h3>
-          <p className="text-sm text-muted-foreground">
-            Powered by OpenAI GPT-4o-mini • RAG-Enhanced
-          </p>
+      <div className="p-4 border-b border-black/5 bg-white">
+        <div className="flex items-start gap-3">
+          <div className="relative flex-shrink-0">
+            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-black to-gray-700 flex items-center justify-center shadow-lg">
+              <MessageSquare className="h-5 w-5 text-white" />
+            </div>
+            <div className="absolute bottom-0 right-0 w-3 h-3 bg-gray-600 rounded-full border-2 border-white animate-pulse"></div>
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base font-bold text-black leading-tight">AI Assistant</h3>
+            <p className="text-xs text-black/60 mt-0.5 leading-tight">
+              Ask questions • Voice support
+            </p>
+          </div>
         </div>
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-        <div className="space-y-4">
+      <ScrollArea className="flex-1 bg-white" ref={scrollAreaRef}>
+        <div className="p-4 space-y-3">
           {messages.map((message) => (
             <div
               key={message.id}
               className={cn(
-                'flex gap-3 items-start',
+                'flex gap-2 items-end animate-in fade-in slide-in-from-bottom-2 duration-300',
                 message.role === 'user' ? 'justify-end' : 'justify-start'
               )}
             >
               {message.role === 'assistant' && (
-                <Avatar className="h-8 w-8 border-2 border-primary/20 flex-shrink-0">
-                  <AvatarFallback className="bg-primary/10">
-                    <BotIcon className="h-4 w-4 text-primary" />
+                <Avatar className="h-8 w-8 flex-shrink-0 border-2 border-gray-200 shadow-sm">
+                  <AvatarFallback className="bg-gradient-to-br from-black to-gray-700">
+                    <BotIcon className="h-4 w-4 text-white" />
                   </AvatarFallback>
                 </Avatar>
               )}
               
               <div
                 className={cn(
-                  'rounded-lg px-4 py-2 max-w-[80%]',
+                  'rounded-[16px] px-4 py-2 max-w-[75%] shadow-sm text-sm',
                   message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
+                    ? 'bg-black text-white rounded-br-[4px]'
+                    : 'bg-gray-100 border border-gray-200 text-black rounded-bl-[4px]'
                 )}
               >
                 {message.role === 'user' ? (
                   <>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <span className="text-xs opacity-70 mt-1 block">
-                      {message.timestamp.toLocaleTimeString()}
+                    <p className="text-sm whitespace-pre-wrap leading-relaxed font-medium">{message.content}</p>
+                    <span className="text-xs opacity-60 mt-1 block">
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </>
                 ) : (
@@ -385,20 +391,26 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
                       confidence={message.confidence}
                       onTimestampClick={(videoId, timestamp) => {
                         console.log('Jump to:', videoId, timestamp);
-                        // TODO: Implement video player jump
                       }}
                     />
-                    <span className="text-xs opacity-70 mt-2 block">
-                      {message.timestamp.toLocaleTimeString()}
-                    </span>
+                    <div className="flex items-center justify-between mt-1 gap-2 flex-wrap">
+                      <span className="text-xs opacity-60">
+                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                      {message.confidence && (
+                        <span className="text-xs bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full font-medium">
+                          {Math.round(message.confidence * 100)}% confident
+                        </span>
+                      )}
+                    </div>
                   </>
                 )}
               </div>
 
               {message.role === 'user' && (
-                <Avatar className="h-8 w-8 border-2 border-primary/20 flex-shrink-0">
-                  <AvatarFallback className="bg-primary/10">
-                    <UserIcon className="h-4 w-4 text-primary" />
+                <Avatar className="h-8 w-8 flex-shrink-0 border-2 border-black/10 shadow-sm">
+                  <AvatarFallback className="bg-gradient-to-br from-black to-black/80">
+                    <UserIcon className="h-4 w-4 text-white" />
                   </AvatarFallback>
                 </Avatar>
               )}
@@ -406,16 +418,20 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
           ))}
           
           {isProcessing && (
-            <div className="flex gap-3 items-start">
-              <Avatar className="h-8 w-8 border-2 border-primary/20">
-                <AvatarFallback className="bg-primary/10">
-                  <BotIcon className="h-4 w-4 text-primary" />
+            <div className="flex gap-2 items-end animate-in fade-in">
+              <Avatar className="h-8 w-8 flex-shrink-0 border-2 border-gray-200 shadow-sm">
+                <AvatarFallback className="bg-gradient-to-br from-black to-gray-700">
+                  <BotIcon className="h-4 w-4 text-white" />
                 </AvatarFallback>
               </Avatar>
-              <div className="rounded-lg px-4 py-2 bg-muted">
-                <div className="flex items-center gap-2">
-                  <Loader2Icon className="h-4 w-4 animate-spin" />
-                  <span className="text-sm">Thinking...</span>
+              <div className="rounded-[16px] px-4 py-2 bg-gray-100 border border-gray-200 rounded-bl-[4px]">
+                <div className="flex items-center gap-1.5">
+                  <div className="flex gap-0.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-600 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-600 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-1.5 h-1.5 rounded-full bg-gray-600 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                  </div>
+                  <span className="text-xs font-medium text-gray-700">Thinking...</span>
                 </div>
               </div>
             </div>
@@ -424,72 +440,74 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="p-4 border-t bg-muted/30 space-y-3">
+      <div className="p-5 border-t border-black/5 bg-white space-y-3">
         {/* Smart Suggestions */}
         {messages.length <= 1 && videoIds && videoIds.length > 0 && (
-          <SuggestedQuestions
-            videoIds={videoIds}
-            onQuestionClick={(question) => {
-              setInputText(question);
-              handleSendMessage(question);
-            }}
-            maxSuggestions={4}
-          />
+          <div className="mb-2">
+            <SuggestedQuestions
+              videoIds={videoIds}
+              onQuestionClick={(question) => {
+                setInputText(question);
+                handleSendMessage(question);
+              }}
+              maxSuggestions={4}
+            />
+          </div>
         )}
 
-        <div className="flex gap-2">
-          {/* Voice Button */}
-          <Button
-            onClick={isListening ? stopVoiceInput : startVoiceInput}
-            disabled={isProcessing}
-            size="icon"
-            variant="outline"
-            className={cn(
-              'transition-all',
-              isListening && 'bg-red-500 hover:bg-red-600 text-white animate-pulse'
-            )}
-            title="Use voice input (Lex)"
-          >
-            {isListening ? (
-              <MicOffIcon className="h-5 w-5" />
-            ) : (
-              <MicIcon className="h-5 w-5" />
-            )}
-          </Button>
+        {/* Voice + Text + Send Controls */}
+        <div className="flex gap-2 items-center justify-center">
+          {/* Enhanced Voice Input with Visualizer - Compact */}
+          <div className="flex-shrink-0 w-auto">
+            <AIVoiceInput
+              onStart={() => {
+                setIsListening(true);
+              }}
+              onStop={(duration) => {
+                setIsListening(false);
+                console.log(`Voice recording duration: ${duration}s`);
+              }}
+              visualizerBars={24}
+              className="py-1"
+            />
+          </div>
 
           {/* Text Input */}
-          <Input
-            ref={inputRef}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSendMessage(inputText);
-              }
-            }}
-            placeholder={isListening ? "Listening..." : "Type your question or use voice..."}
-            disabled={isProcessing || isListening}
-            className="flex-1"
-          />
+          <div className="flex-1 min-w-0">
+            <Input
+              ref={inputRef}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSendMessage(inputText);
+                }
+              }}
+              placeholder={isListening ? "Listening..." : "Ask about your videos..."}
+              disabled={isProcessing || isListening}
+              className="w-full rounded-full border-2 border-gray-300 focus:border-black focus:ring-black placeholder:text-black/40 text-black bg-white py-2.5 px-4 h-10 transition-all text-sm"
+            />
+          </div>
 
           {/* Send Button */}
           <Button
             onClick={() => handleSendMessage(inputText)}
             disabled={!inputText.trim() || isProcessing || isListening}
             size="icon"
+            className="rounded-full h-10 w-10 flex-shrink-0 bg-black hover:bg-black/90 text-white shadow-md hover:shadow-lg disabled:opacity-50 transition-all"
           >
-            <SendIcon className="h-5 w-5" />
+            <SendIcon className="h-4 w-4" />
           </Button>
         </div>
 
         {/* Hint Text */}
-        <div className="mt-2 text-xs text-center text-muted-foreground">
+        <div className="px-3 text-xs text-center text-black/50 font-medium leading-tight">
           {isListening ? (
-            <span className="text-red-500 font-semibold">🔴 Listening... Click mic to stop</span>
+            <span className="text-black font-semibold">🔴 Listening... Click mic to stop</span>
           ) : (
             <>
-              💡 <strong>Tip:</strong> Ask about the videos in this playlist! Press Enter to send, or use the 🎤 microphone button for voice
+              Press Enter to send • Use 🎤 for voice • Questions auto-saved
             </>
           )}
         </div>
