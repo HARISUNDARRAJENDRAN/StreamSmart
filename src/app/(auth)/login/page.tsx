@@ -71,18 +71,19 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen bg-white grid lg:grid-cols-2 lg:overflow-hidden">
-      {/* Left Side - Immersive Visual */}
-      <div className="hidden lg:block relative h-full w-full">
+    <>
+      {/* Left Side - Image Panel */}
+      <div className="hidden lg:block lg:w-1/2 relative h-full">
         <img 
           src="/login.jpeg" 
           alt="Login" 
-          className="absolute inset-0 h-full w-full object-cover"
+          className="h-full w-full object-cover"
         />
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-24">
+      <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-24 lg:w-1/2">
+        <div className="w-full max-w-md">
         <Link 
           href="/landing" 
           className="inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black mb-12 transition-colors"
@@ -246,7 +247,8 @@ export default function LoginPage() {
             </form>
           )}
         </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

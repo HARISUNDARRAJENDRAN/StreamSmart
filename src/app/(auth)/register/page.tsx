@@ -101,32 +101,35 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen lg:h-screen bg-white grid lg:grid-cols-2 lg:overflow-hidden">
-      {/* Left Side - Immersive Visual */}
-      <div className="hidden lg:block relative h-full w-full">
+    <div className="w-full min-h-screen lg:h-screen flex flex-col lg:flex-row bg-white">
+      {/* Left Side - Image */}
+      <div className="hidden lg:block lg:w-1/2 relative h-full">
         <img 
-          src="/register.png" 
+          src="/register.jpeg" 
           alt="Register" 
-          className="absolute inset-0 h-full w-full object-cover"
+          className="w-full h-full object-cover"
         />
+        {/* Optional Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/10"></div>
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex h-full flex-col justify-center px-6 py-12 lg:px-24">
-        <Link 
-          href="/landing" 
-          className="inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black mb-12 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+      {/* Right Side - Form Container */}
+      <div className="flex w-full lg:w-1/2 items-center justify-center px-6 lg:px-16 py-8 lg:py-12">
+        <div className="w-full max-w-md">
+          <Link 
+            href="/landing" 
+            className="inline-flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black mb-6 transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to home
+          </Link>
 
-        <div className="space-y-8 w-full">
-          <div>
-            <h1 className="text-4xl font-bold text-black mb-3">
+        <div className="space-y-6 w-full">
+          <div className="space-y-2">
+            <h1 className="text-3xl lg:text-4xl font-bold text-black tracking-tight">
               {needsVerification ? 'Verify Your Email' : 'Create Account'}
             </h1>
-            <p className="text-lg text-black/60">
+            <p className="text-base text-black/70">
               {needsVerification 
                 ? `We sent a code to ${email}`
                 : 'Start your learning journey with StreamSmart'}
@@ -141,8 +144,8 @@ export default function RegisterPage() {
           )}
 
           {needsVerification ? (
-            <form onSubmit={handleVerification} className="space-y-5">
-              <div className="space-y-2">
+            <form onSubmit={handleVerification} className="space-y-4">
+              <div className="space-y-1.5">
                 <label htmlFor="code" className="text-sm font-semibold text-black">
                   Verification Code
                 </label>
@@ -154,13 +157,13 @@ export default function RegisterPage() {
                   onChange={(e) => setVerificationCode(e.target.value)}
                   required
                   maxLength={6}
-                  className="h-12 rounded-xl border-black/10 focus-visible:ring-black text-center text-lg tracking-widest"
+                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black text-center text-lg tracking-widest bg-white shadow-sm"
                 />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full h-12 rounded-xl bg-black text-white hover:bg-black/90 font-semibold"
+                className="w-full h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold transition-all shadow-md hover:shadow-lg mt-6"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -177,8 +180,8 @@ export default function RegisterPage() {
               </button>
             </form>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
                 <label htmlFor="name" className="text-sm font-semibold text-black">
                   Full Name
                 </label>
@@ -190,11 +193,11 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoComplete="name"
-                  className="h-12 rounded-xl border-black/10 focus-visible:ring-black"
+                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label htmlFor="email" className="text-sm font-semibold text-black">
                   Email
                 </label>
@@ -206,11 +209,11 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="h-12 rounded-xl border-black/10 focus-visible:ring-black"
+                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
                 />
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label htmlFor="password" className="text-sm font-semibold text-black">
                   Password
                 </label>
@@ -222,7 +225,7 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="new-password"
-                  className="h-12 rounded-xl border-black/10 focus-visible:ring-black"
+                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
                 />
                 {password && (
                   <div className="mt-3 space-y-2">
@@ -240,7 +243,7 @@ export default function RegisterPage() {
                 )}
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <label htmlFor="confirmPassword" className="text-sm font-semibold text-black">
                   Confirm Password
                 </label>
@@ -252,13 +255,13 @@ export default function RegisterPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   autoComplete="new-password"
-                  className="h-12 rounded-xl border-black/10 focus-visible:ring-black"
+                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
                 />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full h-12 rounded-xl bg-black text-white hover:bg-black/90 font-semibold"
+                className="w-full h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold transition-all shadow-md hover:shadow-lg mt-6"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -274,6 +277,7 @@ export default function RegisterPage() {
             </form>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -38,9 +38,7 @@ export function AppSidebar() {
             </h1>
           </div>
         </Link>
-        <button className="p-1.5 rounded-[10px] hover:bg-black/5 transition-colors text-black/60 hover:text-black flex-shrink-0">
-          <SidebarTrigger className="w-5 h-5" />
-        </button>
+        <SidebarTrigger className="w-5 h-5 p-1.5 rounded-[10px] hover:bg-black/5 transition-colors text-black/60 hover:text-black flex-shrink-0" />
       </SidebarHeader>
       <SidebarContent className="flex-1 p-3">
         <SidebarMenu className="space-y-1">

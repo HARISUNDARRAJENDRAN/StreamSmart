@@ -8,8 +8,8 @@ body {
   width: 360px;
   min-height: 400px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #1a202c;
+  background: #ffffff;
+  color: #000000;
 }
 
 .container {
@@ -20,11 +20,12 @@ body {
 /* Header */
 .header {
   padding: 20px;
-  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+  background: #000000;
   color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .logo {
@@ -35,7 +36,8 @@ body {
 
 .logo h1 {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .status {
@@ -43,13 +45,16 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
 }
 
 .status .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #fbbf24;
+  background: #9ca3af;
   animation: pulse 2s infinite;
 }
 
@@ -78,10 +83,12 @@ body {
 }
 
 .section h2 {
-  font-size: 14px;
-  font-weight: 600;
-  color: #4b5563;
+  font-size: 13px;
+  font-weight: 700;
+  color: #000000;
   margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Video Card */
@@ -97,8 +104,8 @@ body {
 
 .video-title {
   font-size: 14px;
-  font-weight: 500;
-  color: #1a202c;
+  font-weight: 600;
+  color: #000000;
   line-height: 1.4;
   margin-bottom: 4px;
 }
@@ -106,6 +113,7 @@ body {
 .video-channel {
   font-size: 12px;
   color: #6b7280;
+  font-weight: 500;
 }
 
 /* Buttons */
@@ -118,21 +126,21 @@ body {
   border: none;
   border-radius: 8px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   width: 100%;
 }
 
 .btn-primary {
-  background: #8B5CF6;
+  background: #000000;
   color: white;
 }
 
 .btn-primary:hover {
-  background: #7C3AED;
+  background: #1a1a1a;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:active {
@@ -143,15 +151,16 @@ body {
   background: #9ca3af;
   cursor: not-allowed;
   transform: none;
+  opacity: 0.5;
 }
 
 .btn-success {
-  background: #10b981;
+  background: #000000;
   color: white;
 }
 
 .btn-success:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
 }
 
 /* Empty State */
@@ -163,12 +172,14 @@ body {
 
 .empty-state svg {
   margin: 0 auto 12px;
-  opacity: 0.5;
+  opacity: 0.3;
+  stroke: #000000;
 }
 
 .empty-state p {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
+  font-weight: 500;
 }
 
 /* Recent List */
@@ -188,55 +199,62 @@ body {
 }
 
 .recent-item {
-  padding: 10px 12px;
-  background: #f9fafb;
-  border-radius: 6px;
+  padding: 12px 14px;
+  background: #ffffff;
+  border-radius: 8px;
   border: 1px solid #e5e7eb;
   transition: all 0.2s;
+  cursor: pointer;
 }
 
 .recent-item:hover {
-  background: #f3f4f6;
-  border-color: #d1d5db;
+  background: #f9fafb;
+  border-color: #000000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .recent-item-title {
   font-size: 13px;
-  color: #1a202c;
+  color: #000000;
   margin-bottom: 4px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  font-weight: 600;
 }
 
 .recent-item-time {
   font-size: 11px;
-  color: #9ca3af;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 /* Footer */
 .footer {
-  padding: 12px 20px;
+  padding: 14px 20px;
   background: #f9fafb;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .link {
-  color: #8B5CF6;
+  color: #000000;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .link:hover {
-  text-decoration: underline;
+  opacity: 0.7;
 }
 
 .version {
-  color: #9ca3af;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 /* Scrollbar */
@@ -245,7 +263,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -254,5 +272,5 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: #000000;
 }
