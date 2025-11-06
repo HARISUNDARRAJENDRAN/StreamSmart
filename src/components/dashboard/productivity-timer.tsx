@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
 import { Play, Pause, RotateCcw, Coffee, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -123,12 +122,6 @@ export default function ProductivityTimer() {
     ? (pomodoroTime / (5 * 60)) * 100
     : (pomodoroTime / (15 * 60)) * 100;
 
-  const getTimerColor = () => {
-    if (pomodoroMode === 'work') return 'from-black to-black/80';
-    if (pomodoroMode === 'short-break') return 'from-blue-600 to-blue-500';
-    return 'from-purple-600 to-purple-500';
-  };
-
   const getTimerIcon = () => {
     if (pomodoroMode === 'work') return <Zap className="w-5 h-5" />;
     return <Coffee className="w-5 h-5" />;
@@ -190,8 +183,8 @@ export default function ProductivityTimer() {
                 />
                 <defs>
                   <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor={pomodoroMode === 'work' ? '#000' : pomodoroMode === 'short-break' ? '#2563eb' : '#9333ea'} />
-                    <stop offset="100%" stopColor={pomodoroMode === 'work' ? '#404040' : pomodoroMode === 'short-break' ? '#3b82f6' : '#a855f7'} />
+                    <stop offset="0%" stopColor={pomodoroMode === 'work' ? '#000' : pomodoroMode === 'short-break' ? '#1f1f1f' : '#050505'} />
+                    <stop offset="100%" stopColor={pomodoroMode === 'work' ? '#404040' : pomodoroMode === 'short-break' ? '#3a3a3a' : '#161616'} />
                   </linearGradient>
                 </defs>
               </svg>
@@ -262,8 +255,8 @@ export default function ProductivityTimer() {
               pomodoroMode === 'work' 
                 ? 'bg-black hover:bg-black/90' 
                 : pomodoroMode === 'short-break'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600'
-                : 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
+                ? 'bg-gradient-to-r from-gray-900 to-gray-700 hover:from-black hover:to-gray-800'
+                : 'bg-gradient-to-r from-black to-gray-800 hover:from-black/90 hover:to-gray-700'
             }`}
           >
             {isPomodoroRunning ? (

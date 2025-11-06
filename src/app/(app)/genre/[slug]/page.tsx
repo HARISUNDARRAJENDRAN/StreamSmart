@@ -48,7 +48,7 @@ const GENRE_MAP: Record<string, any> = {
     name: 'Coding & Programming',
     description: 'Programming tutorials, languages, and development practices',
     icon: <BookOpen className="w-5 h-5" />,
-    gradient: 'from-indigo-500 to-purple-600'
+    gradient: 'from-gray-900 to-gray-700'
   },
   'data-science-ai': {
     slug: 'data-science-ai',
@@ -62,7 +62,7 @@ const GENRE_MAP: Record<string, any> = {
     name: 'Mathematics',
     description: 'Algebra, calculus, geometry, and mathematical concepts',
     icon: <TrendingUp className="w-5 h-5" />,
-    gradient: 'from-purple-500 to-pink-600'
+    gradient: 'from-gray-900 to-gray-600'
   },
   'physics': {
     slug: 'physics',
@@ -104,7 +104,7 @@ const GENRE_MAP: Record<string, any> = {
     name: 'Design',
     description: 'Graphic design, UI/UX, and creative design principles',
     icon: <Sparkles className="w-5 h-5" />,
-    gradient: 'from-purple-500 to-pink-500'
+    gradient: 'from-gray-800 to-gray-600'
   },
   'digital-marketing': {
     slug: 'digital-marketing',
@@ -132,7 +132,7 @@ const GENRE_MAP: Record<string, any> = {
     name: 'Public Speaking',
     description: 'Communication, presentation, and speaking skills',
     icon: <BookOpen className="w-5 h-5" />,
-    gradient: 'from-violet-500 to-purple-600'
+    gradient: 'from-gray-900 to-gray-700'
   },
   'cybersecurity': {
     slug: 'cybersecurity',

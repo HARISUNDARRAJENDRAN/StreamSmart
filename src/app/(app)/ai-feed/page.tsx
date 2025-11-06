@@ -379,7 +379,7 @@ export default function AIFeedPage() {
                       </h3>
 
                       <div className="text-xs md:text-sm text-black/60 flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-600 to-purple-400 flex items-center justify-center text-xs font-bold text-white">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-black to-gray-800 flex items-center justify-center text-xs font-bold text-white">
                           {video.channelName.charAt(0).toUpperCase()}
                         </div>
                         <span className="truncate">{video.channelName}</span>

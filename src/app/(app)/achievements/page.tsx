@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Trophy, Filter, Star, Flame, BookOpenCheck, Target, Zap, Brain, Crown } from 'lucide-react';
 import { AchievementsSystem } from '@/components/achievements/achievements-system';
 import { UserAchievementSummary } from '@/components/achievements/user-achievement-summary';
@@ -188,13 +187,13 @@ export default function AchievementsPage() {
                   <p className="text-xs text-yellow-800/80">Advanced accomplishments</p>
                 </div>
                 
-                <div className="text-center p-5 bg-purple-50/80 rounded-[16px] border border-purple-200">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <Crown className="h-6 w-6 text-purple-600" />
+                <div className="text-center p-5 bg-gray-100 rounded-[16px] border border-black/10">
+                  <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <Crown className="h-6 w-6 text-black" />
                   </div>
-                  <h4 className="font-semibold text-purple-900 mb-1">Platinum</h4>
-                  <p className="text-xs text-purple-700 font-medium mb-2">500-1000 points</p>
-                  <p className="text-xs text-purple-800/80">Rare and special achievements</p>
+                  <h4 className="font-semibold text-black mb-1">Platinum</h4>
+                  <p className="text-xs text-black/70 font-medium mb-2">500-1000 points</p>
+                  <p className="text-xs text-black/80">Rare and special achievements</p>
                 </div>
                 
                 <div className="text-center p-5 bg-cyan-50/80 rounded-[16px] border border-cyan-200">

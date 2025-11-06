@@ -270,7 +270,7 @@ export default function ExtensionSettingsPage() {
       </Card>
 
       {/* Advanced: Authentication Token Card (Collapsed by default) */}
-      <Card className="border-purple-200 bg-purple-50/30">
+      <Card className="border-black/10 bg-black/[0.04]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             � Authentication Details (Advanced)

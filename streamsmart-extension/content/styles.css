@@ -7,7 +7,7 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background-color: #8B5CF6;
+  background-color: #111111;
   color: white;
   border: none;
   border-radius: 18px;
@@ -21,9 +21,9 @@
 }
 
 .streamsmart-extract-button:hover {
-  background-color: #7C3AED;
+  background-color: #000000;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .streamsmart-extract-button:active {

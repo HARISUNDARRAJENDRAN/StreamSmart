@@ -12,7 +12,7 @@
 
 @layer base {
   :root {
-    /* Dark + Purple theme to match /landing */
+    /* Dark monochrome theme aligned with landing */
     --background: 240 10% 3.5%; /* near-black */
     --foreground: 0 0% 98%;
 
@@ -22,45 +22,45 @@
     --popover: 240 6% 8%;
     --popover-foreground: 0 0% 98%;
 
-    /* Primary purple (#8B5CF6) */
-    --primary: 256 86% 66%;
+    /* Primary black */
+    --primary: 0 0% 9%;
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary deeper purple (#7C3AED) */
-    --secondary: 262 83% 58%;
+    /* Secondary dark gray */
+    --secondary: 0 0% 18%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 240 4% 18%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 256 86% 66%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 96%;
 
     --destructive: 0 62.8% 50.6%;
     --destructive-foreground: 0 0% 98%;
 
     --border: 240 4% 14%;
     --input: 240 4% 12%;
-    --ring: 256 86% 66%;
+    --ring: 0 0% 35%;
 
     --radius: 0.5rem;
 
-    /* Chart colors - purple palette */
-    --chart-1: 256 86% 66%;
-    --chart-2: 270 91% 65%;
-    --chart-3: 292 84% 61%;
-    --chart-4: 262 83% 58%;
-    --chart-5: 316 73% 57%;
+    /* Chart colors - grayscale palette */
+    --chart-1: 0 0% 20%;
+    --chart-2: 0 0% 35%;
+    --chart-3: 0 0% 50%;
+    --chart-4: 0 0% 65%;
+    --chart-5: 0 0% 80%;
 
     /* Sidebar colors aligned to landing */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 20%;
-    --sidebar-primary: 280 85% 63%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 95%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 0 0% 90%;
     --sidebar-accent-foreground: 0 0% 10%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 280 85% 63%;
+    --sidebar-border: 0 0% 85%;
+    --sidebar-ring: 0 0% 20%;
   }
 }
 
@@ -71,7 +71,7 @@
   body {
     @apply bg-background text-foreground;
     /* Landing-like hero gradient */
-    background: linear-gradient(135deg, #0A0A0B 0%, #1A1A2E 50%, #16213E 100%);
+    background: linear-gradient(135deg, #090909 0%, #121212 50%, #171717 100%);
     min-height: 100vh;
     font-family: 'Satoshi';
   }
@@ -228,7 +228,7 @@
 }
 
 .wave-bg {
-  background: linear-gradient(45deg, #8B5CF6, #A855F7);
+  background: linear-gradient(45deg, #0f0f0f, #1f1f1f);
   background-size: 200% 200%;
   animation: wave 15s linear infinite;
 }
@@ -298,7 +298,7 @@
     
     /* Improved tap targets for buttons */
     button, [role="button"], a {
-      -webkit-tap-highlight-color: rgba(139, 92, 246, 0.1);
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0.08);
     }
     
     /* Better scrolling performance */

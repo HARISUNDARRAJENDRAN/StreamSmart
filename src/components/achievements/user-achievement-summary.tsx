@@ -125,16 +125,16 @@ export function UserAchievementSummary() {
           {/* Total Points */}
           <motion.div
             whileHover={{ scale: 1.02, y: -2 }}
-            className="bg-gradient-to-br from-purple-50 to-purple-100/50 rounded-[20px] p-6 border border-purple-200/50 shadow-sm"
+            className="bg-gradient-to-br from-gray-50 to-gray-200/40 rounded-[20px] p-6 border border-black/10 shadow-sm"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <Star className="h-5 w-5 text-purple-600" />
+              <div className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center">
+                <Star className="h-5 w-5 text-black" />
               </div>
-              <div className="text-[28px] font-bold text-purple-900">{stats.totalPoints}</div>
+              <div className="text-[28px] font-bold text-black">{stats.totalPoints}</div>
             </div>
-            <p className="text-sm font-medium text-purple-800">Total Points</p>
-            <p className="text-xs text-purple-600 mt-1">Keep earning more!</p>
+            <p className="text-sm font-medium text-black">Total Points</p>
+            <p className="text-xs text-black/60 mt-1">Keep earning more!</p>
           </motion.div>
 
           {/* Current Streak */}
@@ -242,8 +242,8 @@ export function UserAchievementSummary() {
           </div>
 
           <div className="text-center p-4 bg-white rounded-[16px] border border-black/5">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-2">
-              <TrendingUp className="h-4 w-4 text-indigo-600" />
+            <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mx-auto mb-2">
+              <TrendingUp className="h-4 w-4 text-gray-700" />
             </div>
             <div className="text-xl font-bold text-black">
               {userStats?.totalPlaylists || 0}

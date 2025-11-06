@@ -46,7 +46,7 @@ export function AppHeader() {
       {/* Logo for mobile */}
       {isMobile && (
         <Link href="/ai-feed" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-black to-gray-900 flex items-center justify-center">
             <span className="text-white font-bold text-sm">S</span>
           </div>
         </Link>
@@ -81,7 +81,7 @@ export function AppHeader() {
                   src={user?.avatarUrl || "https://placehold.co/100x100.png"} 
                   alt={user?.name || "User Avatar"} 
                 />
-                <AvatarFallback className="bg-gradient-to-br from-purple-600 to-purple-400 text-white text-xs font-semibold">
+                <AvatarFallback className="bg-black text-white text-xs font-semibold">
                   {user?.name?.split(' ').map((n: string) => n[0]).join('') || 'U'}
                 </AvatarFallback>
               </Avatar>

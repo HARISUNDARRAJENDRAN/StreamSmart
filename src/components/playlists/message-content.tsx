@@ -5,9 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { ExternalLink, Copy, Check, Video, Clock } from 'lucide-react';
+import { ExternalLink, Copy, Check, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
@@ -64,7 +63,7 @@ export const MessageContent = memo(({
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
-            code({ node, inline, className, children, ...props }) {
+            code({ inline, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || '');
               const language = match ? match[1] : '';
 
@@ -99,7 +98,7 @@ export const MessageContent = memo(({
                 </code>
               );
             },
-            a({ node, children, href, ...props }) {
+            a({ children, href, ...props }) {
               // Handle timestamp links
               if (href === '#timestamp' && sources && sources.length > 0) {
                 const timestampText = String(children).match(/(\d{1,2}):(\d{2})(?::(\d{2}))?/);
@@ -130,7 +129,7 @@ export const MessageContent = memo(({
               );
             },
             // Add callout boxes for blockquotes with emojis
-            blockquote({ node, children, ...props }) {
+            blockquote({ children, ...props }) {
               const text = String(children);
               let variant = 'default';
               let icon = '💡';
@@ -154,7 +153,7 @@ export const MessageContent = memo(({
                 tip: 'border-l-blue-500 bg-blue-50 dark:bg-blue-950/20',
                 warning: 'border-l-yellow-500 bg-yellow-50 dark:bg-yellow-950/20',
                 success: 'border-l-green-500 bg-green-50 dark:bg-green-950/20',
-                info: 'border-l-purple-500 bg-purple-50 dark:bg-purple-950/20',
+                info: 'border-l-gray-600 bg-gray-50 dark:bg-gray-900/40',
               };
 
               return (

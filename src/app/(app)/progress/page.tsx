@@ -407,7 +407,7 @@ export default function ProgressPage() {
                     <div className={`w-2 h-2 rounded-full ${
                       activity.type === 'completed' ? 'bg-green-500' :
                       activity.type === 'started' ? 'bg-blue-500' :
-                      activity.type === 'created' ? 'bg-purple-500' :
+                      activity.type === 'created' ? 'bg-gray-700' :
                       'bg-orange-500'
                     }`} />
                     <div>

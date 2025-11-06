@@ -107,10 +107,10 @@ export function ProfileSettingsForm() {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Card className="shadow-lg">
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Avatar className="h-24 w-24 border-2 border-primary">
+      <Card className="rounded-[28px] border border-black/10 shadow-[0_24px_60px_-40px_rgba(0,0,0,0.35)] bg-white">
+        <CardHeader className="rounded-t-[28px] border-b border-black/5 bg-gradient-to-r from-black/[0.04] to-transparent">
+          <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
+            <Avatar className="h-24 w-24 border-2 border-black">
               <AvatarImage src={user.avatarUrl || "https://placehold.co/120x120.png"} alt="User Avatar" data-ai-hint="user avatar" />
               <AvatarFallback>
                 <UserCircle2Icon className="h-12 w-12" />
@@ -127,74 +127,78 @@ export function ProfileSettingsForm() {
           </div>
         </CardHeader>
         
-        <CardContent className="space-y-6">
-          <div>
-            <Label htmlFor="fullName">Full Name</Label>
-            <div className="relative mt-1">
-              <UserCircle2Icon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                id="fullName"
-                {...form.register('fullName')}
-                placeholder="Your full name"
-                className="pl-10"
-                disabled={isSaving}
-              />
+        <CardContent className="space-y-8 p-6">
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Full Name</Label>
+              <div className="relative">
+                <UserCircle2Icon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="fullName"
+                  {...form.register('fullName')}
+                  placeholder="Your full name"
+                  className="pl-10"
+                  disabled={isSaving}
+                />
+              </div>
+              {form.formState.errors.fullName && (
+                <p className="mt-1 text-sm text-destructive">{form.formState.errors.fullName.message}</p>
+              )}
             </div>
-            {form.formState.errors.fullName && (
-              <p className="text-sm text-destructive mt-1">{form.formState.errors.fullName.message}</p>
-            )}
+
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative">
+                <MailIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={user.email}
+                  disabled
+                  className="pl-10 bg-muted/50 cursor-not-allowed"
+                />
+              </div>
+            </div>
           </div>
 
-          <div>
-            <Label htmlFor="email">Email</Label>
-             <div className="relative mt-1">
-              <MailIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                value={user.email}
-                disabled
-                className="pl-10 bg-muted/50 cursor-not-allowed"
-              />
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
+              <div className="relative">
+                <PhoneIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  id="phoneNumber"
+                  {...form.register('phoneNumber')}
+                  placeholder="Your phone number"
+                  className="pl-10"
+                  disabled={isSaving}
+                />
+              </div>
+              {form.formState.errors.phoneNumber && (
+                <p className="mt-1 text-sm text-destructive">{form.formState.errors.phoneNumber.message}</p>
+              )}
             </div>
-          </div>
 
-          <div>
-            <Label htmlFor="phoneNumber">Phone Number (Optional)</Label>
-            <div className="relative mt-1">
-              <PhoneIcon className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                id="phoneNumber"
-                {...form.register('phoneNumber')}
-                placeholder="Your phone number"
-                className="pl-10"
-                disabled={isSaving}
-              />
+            <div className="space-y-2 md:col-span-2">
+              <Label htmlFor="bio">Bio (Optional)</Label>
+              <div className="relative">
+                <InfoIcon className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                <Textarea
+                  id="bio"
+                  {...form.register('bio')}
+                  placeholder="Tell us a little about yourself..."
+                  rows={4}
+                  className="pl-10 pt-2"
+                  disabled={isSaving}
+                />
+              </div>
+              {form.formState.errors.bio && (
+                <p className="mt-1 text-sm text-destructive">{form.formState.errors.bio.message}</p>
+              )}
             </div>
-             {form.formState.errors.phoneNumber && (
-              <p className="text-sm text-destructive mt-1">{form.formState.errors.phoneNumber.message}</p>
-            )}
-          </div>
-
-          <div>
-            <Label htmlFor="bio">Bio (Optional)</Label>
-             <div className="relative mt-1">
-              <InfoIcon className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-              <Textarea
-                id="bio"
-                {...form.register('bio')}
-                placeholder="Tell us a little about yourself..."
-                rows={3}
-                className="pl-10 pt-2"
-                disabled={isSaving}
-              />
-            </div>
-             {form.formState.errors.bio && (
-              <p className="text-sm text-destructive mt-1">{form.formState.errors.bio.message}</p>
-            )}
           </div>
         </CardContent>
-        <CardFooter className="border-t pt-6">
+        <CardFooter className="border-t border-black/5 bg-black/[0.02] rounded-b-[28px] px-6 py-6">
           <Button 
             type="submit" 
             className="ml-auto bg-primary hover:bg-primary/90 text-primary-foreground"

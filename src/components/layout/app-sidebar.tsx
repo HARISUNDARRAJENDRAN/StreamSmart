@@ -12,7 +12,7 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { Sparkles, ListVideoIcon, BarChart3Icon, SettingsIcon, HelpCircleIcon, Trophy, Timer } from 'lucide-react';
+import { Sparkles, ListVideoIcon, SettingsIcon, HelpCircleIcon, Trophy, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -29,7 +29,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon" variant="sidebar" side="left" className="border-r border-black/5 bg-white">
       <SidebarHeader className="flex items-center justify-between px-4 py-3 border-b border-black/5">
         <Link href="/ai-feed" className="flex items-center gap-2.5 flex-1 min-w-0">
-          <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-purple-600 to-purple-500 flex items-center justify-center flex-shrink-0 shadow-sm">
+          <div className="w-9 h-9 rounded-[10px] bg-gradient-to-br from-black to-gray-900 flex items-center justify-center flex-shrink-0 shadow-sm">
             <span className="text-white font-bold text-base">S</span>
           </div>
           <div className="flex-1 min-w-0">

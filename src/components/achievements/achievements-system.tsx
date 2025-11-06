@@ -100,7 +100,7 @@ const achievementDefinitions = [
     tier: 'silver' as const,
     requirement: 25,
     points: 100,
-    color: 'text-purple-500',
+    color: 'text-gray-700',
     checkProgress: (userStats: UserStats) => userStats?.totalVideosCompleted || 0,
   },
   {
@@ -188,7 +188,7 @@ const achievementDefinitions = [
     tier: 'bronze' as const,
     requirement: 1,
     points: 20,
-    color: 'text-purple-500',
+    color: 'text-gray-600',
     checkProgress: (userStats: UserStats) => userStats?.totalPlaylists || 0,
   },
   {
@@ -200,7 +200,7 @@ const achievementDefinitions = [
     tier: 'silver' as const,
     requirement: 5,
     points: 100,
-    color: 'text-purple-600',
+    color: 'text-gray-700',
     checkProgress: (userStats: UserStats) => userStats?.totalPlaylists || 0,
   },
   {
@@ -316,7 +316,7 @@ const achievementDefinitions = [
     tier: 'gold' as const,
     requirement: 1,
     points: 150,
-    color: 'text-purple-400',
+    color: 'text-gray-500',
     checkProgress: (userStats: UserStats) => {
       // Check if user has any quiz-related activities
       return userStats?.recentActivity?.some((activity: Activity) => 
@@ -388,7 +388,7 @@ export function AchievementsSystem({ showAll = false, maxDisplay = 4 }: Achievem
       case 'bronze': return 'bg-amber-100 text-amber-800 border-amber-200';
       case 'silver': return 'bg-gray-100 text-gray-800 border-gray-200';
       case 'gold': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'platinum': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'platinum': return 'bg-gray-200 text-gray-900 border-gray-300';
       case 'diamond': return 'bg-cyan-100 text-cyan-800 border-cyan-200';
       default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
@@ -435,11 +435,11 @@ export function AchievementsSystem({ showAll = false, maxDisplay = 4 }: Achievem
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
+        <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border-black/10">
           <CardContent className="p-6 text-center">
-            <Star className="h-10 w-10 text-purple-600 mx-auto mb-3" />
-            <div className="text-3xl font-bold text-purple-800 mb-1">{totalPoints}</div>
-            <div className="text-sm text-purple-700">Total Points</div>
+            <Star className="h-10 w-10 text-black mx-auto mb-3" />
+            <div className="text-3xl font-bold text-black mb-1">{totalPoints}</div>
+            <div className="text-sm text-black/70">Total Points</div>
           </CardContent>
         </Card>
       </div>

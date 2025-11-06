@@ -128,10 +128,10 @@ export function QuizGenerator({ videoId, numQuestions = 5 }: QuizGeneratorProps)
 
   return (
     <Card className="w-full bg-white rounded-[24px] border border-black/5 shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
-      <CardHeader className="border-b border-black/5 bg-gradient-to-r from-purple-50 to-pink-50/50 rounded-t-[24px]">
+      <CardHeader className="border-b border-black/5 bg-gradient-to-r from-black/[0.04] to-transparent rounded-t-[24px]">
         <CardTitle className="flex items-center gap-3 text-black">
-          <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-            <Brain className="h-5 w-5 text-purple-600" />
+          <div className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center">
+            <Brain className="h-5 w-5 text-black" />
           </div>
           <span className="text-2xl">AI-Generated Quiz</span>
         </CardTitle>
@@ -149,8 +149,8 @@ export function QuizGenerator({ videoId, numQuestions = 5 }: QuizGeneratorProps)
               exit={{ opacity: 0, y: -20 }}
               className="flex flex-col items-center gap-6 py-12"
             >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center mb-2">
-                <Brain className="h-10 w-10 text-purple-600" />
+              <div className="w-20 h-20 rounded-full bg-black/10 flex items-center justify-center mb-2">
+                <Brain className="h-10 w-10 text-black" />
               </div>
               <div className="text-center space-y-2 max-w-md">
                 <h3 className="text-xl font-semibold text-black">Ready to Test Your Knowledge?</h3>
@@ -182,10 +182,10 @@ export function QuizGenerator({ videoId, numQuestions = 5 }: QuizGeneratorProps)
               className="flex flex-col items-center gap-6 py-16"
             >
               <div className="relative">
-                <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
+                <div className="w-16 h-16 rounded-full bg-black/10 flex items-center justify-center">
+                  <Loader2 className="h-8 w-8 animate-spin text-black" />
                 </div>
-                <div className="absolute inset-0 rounded-full bg-purple-500/20 animate-ping"></div>
+                <div className="absolute inset-0 rounded-full bg-black/10 animate-ping"></div>
               </div>
               <div className="text-center space-y-2">
                 <p className="text-base font-medium text-black">
@@ -315,7 +315,7 @@ export function QuizGenerator({ videoId, numQuestions = 5 }: QuizGeneratorProps)
                             <motion.div
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
-                              className="mt-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50/50 rounded-[16px] border border-blue-200/50"
+                              className="mt-4 p-4 bg-gradient-to-r from-black/[0.02] to-white rounded-[16px] border border-black/10"
                             >
                               <div className="flex items-start gap-2">
                                 <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0 mt-0.5">

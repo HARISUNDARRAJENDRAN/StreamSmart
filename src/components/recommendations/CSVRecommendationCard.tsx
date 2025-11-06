@@ -6,10 +6,7 @@
 'use client';
 
 import React, { memo, useCallback, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
@@ -72,7 +69,7 @@ const getGenreColor = (genre: string): string => {
   const colors: Record<string, string> = {
     technology: 'bg-blue-500',
     science: 'bg-green-500',
-    mathematics: 'bg-purple-500',
+    mathematics: 'bg-gray-600',
     programming: 'bg-indigo-500',
     'ai-innovation': 'bg-pink-500',
     business: 'bg-yellow-500',
@@ -93,7 +90,6 @@ const CSVRecommendationCard = memo<CSVRecommendationCardProps>(({
   showMetrics = true,
   priority = false
 }) => {
-  const router = useRouter();
   const [imageError, setImageError] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
