@@ -131,6 +131,15 @@ except ImportError as e:
     RECOMMENDATIONS_AVAILABLE = False
     recommendation_router = None
 
+# Import AI Recommendation V1 API (for frontend compatibility)
+try:
+    from ai_recommendation_api import router as ai_v1_router
+    AI_V1_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ AI Recommendation V1 API unavailable: {e}")
+    AI_V1_AVAILABLE = False
+    ai_v1_router = None
+
 # Import Transcript router
 try:
     from transcript_endpoints import router as transcript_router
@@ -165,6 +174,13 @@ if RECOMMENDATIONS_AVAILABLE and recommendation_router:
     print("[OK] CSV-based recommendation service enabled")
 else:
     print("[WARNING] Recommendation service disabled")
+
+# Include AI Recommendation V1 API (for frontend compatibility)
+if AI_V1_AVAILABLE and ai_v1_router:
+    app.include_router(ai_v1_router)
+    print("[OK] AI Recommendation V1 API enabled (/api/v1/recommend)")
+else:
+    print("[WARNING] AI Recommendation V1 API disabled")
 
 # Include Transcript router if available
 if TRANSCRIPT_AVAILABLE and transcript_router:
