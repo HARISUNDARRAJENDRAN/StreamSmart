@@ -19,11 +19,21 @@ if (typeof window !== 'undefined') {
 }
 
 // Server-side DynamoDB client with proper credentials
+const region = process.env.AWS_REGION || process.env.NEXT_PUBLIC_AWS_REGION || process.env.STREAMSMART_AWS_REGION || 'ap-south-2';
+const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.STREAMSMART_AWS_ACCESS_KEY_ID || '';
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY || '';
+
+console.log('[DYNAMODB-SERVER] Initializing client with:', {
+  region,
+  hasAccessKey: !!accessKeyId,
+  accessKeyPrefix: accessKeyId.substring(0, 8) + '...',
+});
+
 const client = new DynamoDBClient({
-  region: process.env.AWS_REGION || process.env.NEXT_PUBLIC_AWS_REGION || 'ap-south-2',
+  region,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || process.env.STREAMSMART_AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY || '',
+    accessKeyId,
+    secretAccessKey,
   },
 });
 
