@@ -155,7 +155,7 @@ export default function LoginPage() {
                       type="password"
                       placeholder="Enter new password"
                       value={newPassword}
-                      onChange=(e) => setNewPassword(e.target.value)}
+                      onChange={(e) => setNewPassword(e.target.value)}
                       required
                       className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                     />
