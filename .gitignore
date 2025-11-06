@@ -167,6 +167,16 @@ Thumbs.db
 aws-config.json
 aws-credentials
 
+# AWS Deployment
+aws-deployment/deployment-info-*.json
+aws-deployment/apprunner-config.json
+aws-deployment/.gcp-secrets-temp.json
+
+# GCP Configuration (if switching back later)
+.gcp/project-info.json
+.gcp/service-account-keys/
+.gcp/credentials/
+
 # Database dumps and data
 *.sql
 *.sqlite

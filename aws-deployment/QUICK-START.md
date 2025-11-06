@@ -60,9 +60,9 @@ cd aws-deployment
   ```
   AWS_REGION=ap-south-2
   USE_DYNAMODB=true
-  AWS_ACCOUNT_ID=560271561936
-  STREAMSMART_AWS_REGION=ap-south-2
-  S3_TRANSCRIPT_BUCKET=streamsmart-transcripts-560271561936
+  AWS_ACCOUNT_ID=<your-account-id>
+  STREAMSMART_AWS_REGION=<your-region>
+  S3_TRANSCRIPT_BUCKET=<your-bucket-name>
   (add others from .env.local)
   ```
 
@@ -174,7 +174,7 @@ aws sns create-topic --name streamsmart-alerts
 
 # Subscribe your email
 aws sns subscribe \
-  --topic-arn arn:aws:sns:ap-south-2:560271561936:streamsmart-alerts \
+  --topic-arn arn:aws:sns:<region>:<account-id>:streamsmart-alerts \
   --protocol email \
   --notification-endpoint your-email@example.com
 

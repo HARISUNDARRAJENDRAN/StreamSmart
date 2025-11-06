@@ -1,0 +1,79 @@
+# StreamSmart GCP Configuration
+# This file contains core GCP settings for deployment
+
+project:
+  id: "streamsmart-prod"  # Will be updated after project creation
+  region: "us-central1"
+  zone: "us-central1-a"
+
+# Service Configuration
+services:
+  backend:
+    name: "streamsmart-backend"
+    memory: "2Gi"
+    cpu: "2"
+    min_instances: 1
+    max_instances: 10
+    timeout: 300
+    
+  frontend:
+    name: "streamsmart-frontend"
+    memory: "1Gi"
+    cpu: "1"
+    min_instances: 1
+    max_instances: 10
+    timeout: 60
+
+# Network Configuration
+network:
+  vpc_name: "streamsmart-vpc"
+  subnet_us: "streamsmart-subnet-us"
+  subnet_asia: "streamsmart-subnet-asia"
+  vpc_connector: "streamsmart-connector"
+
+# Storage Configuration
+storage:
+  transcripts_bucket: "streamsmart-transcripts"
+  assets_bucket: "streamsmart-assets"
+  backups_bucket: "streamsmart-backups"
+
+# Database Configuration
+firestore:
+  location: "us-central1"
+  collections:
+    - users
+    - playlists
+    - videos
+    - activities
+    - transcripts
+
+# Cache Configuration
+redis:
+  instance_name: "streamsmart-cache"
+  size: 5
+  tier: "standard"
+  version: "redis_7_0"
+
+# Domain Configuration
+domains:
+  frontend: "streamsmart.app"
+  backend: "api.streamsmart.app"
+  cdn: "cdn.streamsmart.app"
+
+# Hybrid AWS/GCP Configuration
+hybrid_services:
+  # Keep these AWS services
+  aws_services:
+    - bedrock  # ML models
+    - sagemaker  # ML pipelines
+    - dynamodb  # During migration period
+    - s3  # During migration period
+  
+  # Migrate to GCP
+  gcp_services:
+    - cloud_run  # Hosting
+    - firestore  # Database (eventually)
+    - cloud_storage  # Storage (eventually)
+    - firebase_auth  # Authentication
+    - cloud_cdn  # Content delivery
+    - memorystore  # Caching

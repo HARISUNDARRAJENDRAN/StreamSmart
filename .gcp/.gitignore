@@ -1,0 +1,21 @@
+# GCP Configuration - Security
+project-info.json
+service-account-keys/
+*.json
+!config.yaml
+
+# Credentials
+credentials/
+secrets/
+.env.gcp
+*.pem
+*.key
+
+# Terraform state
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Local testing
+local-test/
+temp/

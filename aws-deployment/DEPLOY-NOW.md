@@ -1,7 +1,7 @@
 # 🚀 Deploy StreamSmart NOW - Step by Step
 
 ## ✅ Pre-Deployment Checklist
-- [x] AWS CLI configured (Account: 560271561936)
+- [x] AWS CLI configured
 - [x] Application builds successfully
 - [x] All dependencies installed
 - [ ] GitHub repository pushed (recommended)
@@ -51,12 +51,13 @@
 
 5. **Add Environment Variables**:
    ```
-   JWT_SECRET=streamsmart-production-secret-key-2024-secure
-   NEXT_PUBLIC_AWS_REGION=ap-south-2
-   NEXT_PUBLIC_COGNITO_USER_POOL_ID=ap-south-2_9aHWN8zdj
-   NEXT_PUBLIC_COGNITO_CLIENT_ID=29jgah23cbj8p19k04g406dsn7
-   NEXT_PUBLIC_YOUTUBE_API_KEY=AIzaSyAl1503gxeKriKeKLdPHiyxV4nIy9obaYg
-   (Copy ALL NEXT_PUBLIC_* variables from .env.local)
+   JWT_SECRET=<your-jwt-secret>
+   NEXT_PUBLIC_AWS_REGION=<your-region>
+   NEXT_PUBLIC_COGNITO_USER_POOL_ID=<your-pool-id>
+   NEXT_PUBLIC_COGNITO_CLIENT_ID=<your-client-id>
+   NEXT_PUBLIC_YOUTUBE_API_KEY=<your-youtube-key>
+   
+   IMPORTANT: Copy ALL values from your .env.local file
    ```
 
 6. **Click "Save and deploy"**
@@ -112,16 +113,16 @@
    - Memory: `4 GB`
    - Health check: `/health`
    
-5. **Add Environment Variables** (CRITICAL):
+5. **Add Environment Variables** (CRITICAL - Copy from .env.local):
    ```
-   AWS_REGION=ap-south-2
+   AWS_REGION=<your-region>
    USE_DYNAMODB=true
-   AWS_ACCOUNT_ID=560271561936
-   STREAMSMART_AWS_REGION=ap-south-2
-   S3_TRANSCRIPT_BUCKET=streamsmart-transcripts-560271561936
-   AWS_RAG_S3_BUCKET=streamsmart-rag-documents-560271561936
-   OPENSEARCH_ENDPOINT=https://search-streamsmart-search-h7nvtdclcuojbv243vua5cqlc4.ap-south-2.es.amazonaws.com
-   AWS_ELASTICACHE_HOST=streamsmart-redis.uyci3x.0001.aps2.cache.amazonaws.com
+   AWS_ACCOUNT_ID=<your-account-id>
+   STREAMSMART_AWS_REGION=<your-region>
+   S3_TRANSCRIPT_BUCKET=<your-bucket-name>
+   AWS_RAG_S3_BUCKET=<your-rag-bucket-name>
+   OPENSEARCH_ENDPOINT=<your-opensearch-endpoint>
+   AWS_ELASTICACHE_HOST=<your-redis-host>
    VIDEOS_TABLE=Videos
    ```
 
