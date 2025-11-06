@@ -86,14 +86,14 @@ async def lex_voice_chat(request: LexVoiceRequest):
                 logger.warning(f"⚠️ Lex error (continuing without): {lex_error}")
         
         # Step 2: Use TranscriptService to fetch transcripts from S3
-        logger.info("📥 Fetching transcripts using TranscriptService...")
+        logger.info(f"📥 Fetching transcripts using TranscriptService for {len(request.videoIds)} videos...")
         
         import requests
         
-        if not request.videoIds:
-            logger.warning("No video IDs provided")
+        if not request.videoIds or len(request.videoIds) == 0:
+            logger.warning("No video IDs provided in request")
             return LexVoiceResponse(
-                answer="I don't have any video context. Please add videos to your playlist first and make sure transcripts are extracted.",
+                answer="I don't have any video context to answer from. Please make sure:\n1. You've added videos to this playlist\n2. Transcripts have been extracted from the videos\n3. Try refreshing the page",
                 sessionId=request.sessionId,
                 intent=intent_name
             )
@@ -112,12 +112,9 @@ async def lex_voice_chat(request: LexVoiceRequest):
                 logger.warning(f"Unknown ID format: {vid}")
         
         if not youtube_ids:
-            logger.warning("No valid YouTube IDs found")
-            return LexVoiceResponse(
-                answer="I couldn't find valid video IDs. Please make sure you've extracted transcripts from YouTube videos.",
-                sessionId=request.sessionId,
-                intent=intent_name
-            )
+            logger.warning(f"No valid YouTube IDs found from: {request.videoIds}")
+            # Just use the IDs as-is and let transcript service handle it
+            youtube_ids = request.videoIds
         
         logger.info(f"Using YouTube IDs: {youtube_ids}")
         
@@ -131,9 +128,9 @@ async def lex_voice_chat(request: LexVoiceRequest):
         )
         
         if not context_result.get('formatted_context'):
-            logger.warning("No context built from transcripts")
+            logger.error(f"No context built from transcripts. Context result: {context_result}")
             return LexVoiceResponse(
-                answer="I couldn't find relevant information in the transcripts. Please make sure transcripts are extracted.",
+                answer="I couldn't find any transcript data for these videos. This usually means:\n\n1. Transcripts haven't been extracted yet - Use the StreamSmart extension on YouTube to extract them\n2. Transcripts are still being processed - Try again in a moment\n3. The videos don't have captions available\n\nPlease extract transcripts using the Chrome extension and try again.",
                 sessionId=request.sessionId,
                 intent=intent_name
             )

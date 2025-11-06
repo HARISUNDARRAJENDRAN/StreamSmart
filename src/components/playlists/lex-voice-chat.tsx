@@ -325,7 +325,13 @@ export function LexVoiceChat({ userId, playlistId, videoIds }: LexVoiceChatProps
 
     } catch (error) {
       console.error('❌ Backend error:', error);
-      throw error;
+      
+      // Return user-friendly error message
+      return {
+        answer: "I'm having trouble connecting to the backend. Please check:\n\n1. Your internet connection\n2. The backend service is running\n3. Try refreshing the page\n\nIf the problem persists, please contact support.",
+        sources: [],
+        confidence: 0
+      };
     }
   };
 

@@ -176,8 +176,8 @@ export const MessageContent = memo(({
         </ReactMarkdown>
       </div>
 
-      {/* Source Attribution */}
-      {sources && sources.length > 0 && (
+      {/* Source Attribution - Removed per user request */}
+      {/* {sources && sources.length > 0 && (
         <div className="border-t pt-3 space-y-2">
           <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
             <Video className="h-3.5 w-3.5" />
@@ -231,7 +231,7 @@ export const MessageContent = memo(({
             ))}
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Confidence Score */}
       {confidence !== undefined && (
