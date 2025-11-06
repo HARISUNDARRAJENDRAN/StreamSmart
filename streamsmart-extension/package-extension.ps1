@@ -17,16 +17,11 @@ if ($serviceWorkerContent -match "localhost") {
     }
 }
 
-# Create icons directory if it doesn't exist
+# Check icons (optional)
 Write-Host "[1/3] Checking icons..." -ForegroundColor Yellow
 if (-not (Test-Path "icons")) {
-    Write-Host "  Creating icons directory..." -ForegroundColor Gray
-    New-Item -ItemType Directory -Path "icons" -Force | Out-Null
-    Write-Host "  ⚠️  Please add icon files:" -ForegroundColor Yellow
-    Write-Host "     - icons/icon16.png (16x16)" -ForegroundColor Gray
-    Write-Host "     - icons/icon48.png (48x48)" -ForegroundColor Gray
-    Write-Host "     - icons/icon128.png (128x128)" -ForegroundColor Gray
-    Write-Host ""
+    Write-Host "  ⓘ No icons directory - Chrome will use default icon" -ForegroundColor Gray
+    Write-Host "  (Icons can be added later)" -ForegroundColor Gray
 } else {
     Write-Host "✓ Icons directory exists" -ForegroundColor Green
 }
@@ -51,9 +46,13 @@ $filesToInclude = @(
     "background",
     "content",
     "popup",
-    "utils",
-    "icons"
+    "utils"
 )
+
+# Add icons if they exist
+if (Test-Path "icons") {
+    $filesToInclude += "icons"
+}
 
 # Create temporary directory
 $tempDir = "..\temp-extension-package"

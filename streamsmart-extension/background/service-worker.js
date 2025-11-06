@@ -6,8 +6,8 @@
 console.log('🔧 StreamSmart: Service worker initialized');
 
 const CONFIG = {
-  BACKEND_URL: 'http://localhost:8000',
-  FRONTEND_URL: 'http://localhost:3000',
+  BACKEND_URL: 'https://ppbmdfvxrc.ap-south-1.awsapprunner.com',
+  FRONTEND_URL: 'https://main.de7gjtsqdtkvr.amplifyapp.com',
   STORAGE_KEYS: {
     USER_TOKEN: 'userToken',
     USER_ID: 'userId',
@@ -181,7 +181,7 @@ async function checkTranscriptCached(videoId) {
     }
 
     // Check if video exists in any of user's playlists
-    const response = await fetch(`http://localhost:3000/api/playlists/check-video?userId=${userId}&videoId=${videoId}`);
+    const response = await fetch(`https://main.de7gjtsqdtkvr.amplifyapp.com/api/playlists/check-video?userId=${userId}&videoId=${videoId}`);
     
     if (response.ok) {
       const data = await response.json();
@@ -282,3 +282,4 @@ setInterval(() => {
     }
   });
 }, 5 * 60 * 1000);
+
