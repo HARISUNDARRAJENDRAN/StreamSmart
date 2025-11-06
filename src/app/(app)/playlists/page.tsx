@@ -179,29 +179,29 @@ export default function PlaylistsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] py-12">
-      <div className="container mx-auto px-6 max-w-[1400px]">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
+    <div className="min-h-screen bg-[#F5F5F5] py-6 md:py-12">
+      <div className="container mx-auto px-4 md:px-6 max-w-[1400px]">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 md:gap-6 mb-8 md:mb-12">
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] mb-4">
-              <ListVideoIcon className="h-4 w-4 text-black" />
-              <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Learning</span>
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-3 md:px-4 py-2 md:py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] mb-3 md:mb-4">
+              <ListVideoIcon className="h-3.5 md:h-4 w-3.5 md:w-4 text-black" />
+              <span className="text-[10px] md:text-xs font-semibold tracking-[0.18em] text-black uppercase">Learning</span>
             </div>
-            <h1 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black mb-3">My Playlists</h1>
-            <p className="text-base text-black/80">Organize your YouTube learning journey</p>
+            <h1 className="text-[32px] md:text-[58px] font-semibold leading-[36px] md:leading-[64px] tracking-[-0.04em] text-black mb-2 md:mb-3">My Playlists</h1>
+            <p className="text-sm md:text-base text-black/80">Organize your YouTube learning journey</p>
           </div>
           <Link href="/playlists/create">
-            <Button className="px-6 py-3 rounded-[12px] bg-black text-white hover:bg-black/90 transition-all hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
-              <PlusCircleIcon className="mr-2 h-5 w-5" />
-              <span className="text-sm font-semibold">Create New Playlist</span>
+            <Button className="px-4 md:px-6 py-2.5 md:py-3 rounded-[12px] bg-black text-white hover:bg-black/90 transition-all hover:scale-105 shadow-[0_4px_12px_rgba(0,0,0,0.15)] touch-target">
+              <PlusCircleIcon className="mr-2 h-4 md:h-5 w-4 md:w-5" />
+              <span className="text-xs md:text-sm font-semibold">Create New Playlist</span>
             </Button>
           </Link>
         </div>
 
         {playlists.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {playlists.map((playlist) => (
-              <div key={playlist.id} className="group bg-white rounded-[24px] border border-black/5 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all hover:-translate-y-1">
+              <div key={playlist.id} className="group bg-white rounded-[12px] md:rounded-[24px] border border-black/5 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)] md:shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] transition-all hover:-translate-y-0.5 md:hover:-translate-y-1">
                 <Link href={`/playlists/${playlist.id}`} className="block">
                   <div className="relative">
                     <Image
@@ -288,9 +288,9 @@ export default function PlaylistsPage() {
                     </div>
                   </div>
 
-                  <div className="p-5 space-y-3">
-                    <h3 className="text-[18px] font-semibold text-black line-clamp-2 group-hover:text-black/70 transition-colors">{playlist.title}</h3>
-                    <p className="text-sm text-black/60 line-clamp-2">{playlist.description}</p>
+                  <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+                    <h3 className="text-[14px] md:text-[18px] font-semibold text-black line-clamp-2 group-hover:text-black/70 transition-colors">{playlist.title}</h3>
+                    <p className="text-xs md:text-sm text-black/60 line-clamp-2">{playlist.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {playlist.tags && playlist.tags.slice(0, 3).map(tag => (
                         <span key={tag} className="text-xs px-3 py-1 rounded-full bg-black/5 text-black/70 font-medium">{tag}</span>

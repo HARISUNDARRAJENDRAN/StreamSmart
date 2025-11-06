@@ -114,7 +114,7 @@ export default function RegisterPage() {
       </div>
 
       {/* Right Side - Form Container */}
-      <div className="flex w-full lg:w-1/2 items-center justify-center px-6 lg:px-16 py-8 lg:py-12">
+      <div className="flex w-full lg:w-1/2 items-center justify-center px-4 sm:px-6 lg:px-16 py-8 lg:py-12">
         <div className="w-full max-w-md">
           <Link 
             href="/landing" 
@@ -124,12 +124,12 @@ export default function RegisterPage() {
             Back to home
           </Link>
 
-        <div className="space-y-6 w-full">
+        <div className="space-y-4 sm:space-y-6 w-full">
           <div className="space-y-2">
-            <h1 className="text-3xl lg:text-4xl font-bold text-black tracking-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black tracking-tight">
               {needsVerification ? 'Verify Your Email' : 'Create Account'}
             </h1>
-            <p className="text-base text-black/70">
+            <p className="text-sm sm:text-base text-black/70">
               {needsVerification 
                 ? `We sent a code to ${email}`
                 : 'Start your learning journey with StreamSmart'}
@@ -157,13 +157,13 @@ export default function RegisterPage() {
                   onChange={(e) => setVerificationCode(e.target.value)}
                   required
                   maxLength={6}
-                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black text-center text-lg tracking-widest bg-white shadow-sm"
+                  className="h-11 sm:h-12 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black text-center text-base sm:text-lg tracking-widest bg-white shadow-sm touch-target"
                 />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold transition-all shadow-md hover:shadow-lg mt-6"
+                className="w-full h-11 sm:h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg mt-4 sm:mt-6 touch-target"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -193,7 +193,7 @@ export default function RegisterPage() {
                   onChange={(e) => setName(e.target.value)}
                   required
                   autoComplete="name"
-                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
+                  className="h-11 sm:h-12 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-sm sm:text-base touch-target"
                 />
               </div>
               
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
+                  className="h-11 sm:h-12 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-sm sm:text-base touch-target"
                 />
               </div>
               
@@ -225,7 +225,7 @@ export default function RegisterPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="new-password"
-                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
+                  className="h-11 sm:h-12 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-sm sm:text-base touch-target"
                 />
                 {password && (
                   <div className="mt-3 space-y-2">
@@ -255,13 +255,13 @@ export default function RegisterPage() {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   autoComplete="new-password"
-                  className="h-11 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm"
+                  className="h-11 sm:h-12 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-sm sm:text-base touch-target"
                 />
               </div>
 
               <Button 
                 type="submit" 
-                className="w-full h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold transition-all shadow-md hover:shadow-lg mt-6"
+                className="w-full h-11 sm:h-12 rounded-lg bg-black text-white hover:bg-black/90 font-semibold text-sm sm:text-base transition-all shadow-md hover:shadow-lg mt-4 sm:mt-6 touch-target"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}

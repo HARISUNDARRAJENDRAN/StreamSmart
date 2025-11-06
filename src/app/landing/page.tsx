@@ -38,7 +38,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5]">
+    <div className="min-h-screen bg-[#F5F5F5] overflow-x-hidden w-full">
       <Navbar />
       <HeroSection />
       <FounderNoteSection />
@@ -55,48 +55,113 @@ const LandingPage = () => {
 
 export default LandingPage;
 
-const Navbar = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-white/40 backdrop-blur-xl border-b border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
-    <div className="container mx-auto px-8 py-5">
-      <div className="flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-black">StreamSmart</span>
-        </Link>
-        
-        <div className="hidden md:flex items-center gap-12">
-          <Link href="#benefits" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
-            Benefits
-          </Link>
-          <Link href="#features" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
-            Features
-          </Link>
-          <Link href="#process" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
-            How it flows
-          </Link>
-          <Link href="#pricing" className="text-base font-semibold text-black/80 hover:text-black transition-colors">
-            Pricing
-          </Link>
+const Navbar = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  return (
+    <>
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/40 backdrop-blur-xl border-b border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.08)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-5">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
+              <span className="text-xl md:text-2xl font-bold text-black">StreamSmart</span>
+            </Link>
+            
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center gap-8 lg:gap-12">
+              <Link href="#benefits" className="text-sm lg:text-base font-semibold text-black/80 hover:text-black transition-colors">
+                Benefits
+              </Link>
+              <Link href="#features" className="text-sm lg:text-base font-semibold text-black/80 hover:text-black transition-colors">
+                Features
+              </Link>
+              <Link href="#process" className="text-sm lg:text-base font-semibold text-black/80 hover:text-black transition-colors">
+                How it flows
+              </Link>
+              <Link href="#pricing" className="text-sm lg:text-base font-semibold text-black/80 hover:text-black transition-colors">
+                Pricing
+              </Link>
+            </div>
+            
+            {/* Desktop Auth Buttons */}
+            <div className="hidden md:flex items-center gap-4">
+              <Link href="/login">
+                <Button variant="ghost" className="text-sm lg:text-base font-semibold text-black hover:bg-black/5">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register">
+                <Button className="bg-black text-white hover:bg-black/90 text-sm lg:text-base font-semibold">
+                  Register
+                </Button>
+              </Link>
+            </div>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg hover:bg-black/5 transition-colors touch-target"
+            >
+              <span className={`bg-black block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`} />
+              <span className={`bg-black block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
+              <span className={`bg-black block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`} />
+            </button>
+          </div>
         </div>
-        
-        <div className="flex items-center gap-4">
-          <Link href="/login">
-            <Button variant="ghost" className="text-base font-semibold text-black hover:bg-black/5">
-              Login
-            </Button>
-          </Link>
-          <Link href="/register">
-            <Button className="bg-black text-white hover:bg-black/90 text-base font-semibold">
-              Register
-            </Button>
-          </Link>
+      </nav>
+      
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div className="fixed inset-0 bg-black/50" onClick={() => setIsMenuOpen(false)} />
+          <nav className="fixed right-0 top-0 bottom-0 w-[280px] bg-white shadow-2xl p-6 overflow-y-auto">
+            <div className="flex flex-col gap-6">
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  className="w-10 h-10 rounded-lg hover:bg-black/5 flex items-center justify-center"
+                >
+                  <span className="text-2xl">&times;</span>
+                </button>
+              </div>
+              
+              <div className="flex flex-col gap-4">
+                <Link href="#benefits" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-black/80 hover:text-black transition-colors py-2">
+                  Benefits
+                </Link>
+                <Link href="#features" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-black/80 hover:text-black transition-colors py-2">
+                  Features
+                </Link>
+                <Link href="#process" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-black/80 hover:text-black transition-colors py-2">
+                  How it flows
+                </Link>
+                <Link href="#pricing" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-black/80 hover:text-black transition-colors py-2">
+                  Pricing
+                </Link>
+              </div>
+              
+              <div className="flex flex-col gap-3 pt-4 border-t">
+                <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                  <Button variant="outline" className="w-full text-base font-semibold">
+                    Login
+                  </Button>
+                </Link>
+                <Link href="/register" onClick={() => setIsMenuOpen(false)}>
+                  <Button className="w-full bg-black text-white hover:bg-black/90 text-base font-semibold">
+                    Register
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </nav>
         </div>
-      </div>
-    </div>
-  </nav>
-);
+      )}
+    </>
+  );
+};
 
 const HeroSection = () => (
-  <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F5F5F5] pt-20">
+  <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F5F5F5] pt-20 md:pt-24">
     <DottedSurface className="absolute inset-0" />
     
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -110,27 +175,31 @@ const HeroSection = () => (
       />
     </div>
     
-    <div className="container mx-auto px-6 md:px-[360px] py-[80px] pb-[100px] relative z-10">
-      <div className="max-w-[995px] mx-auto flex flex-col items-center gap-8 mt-3">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-[360px] py-12 sm:py-16 md:py-[80px] pb-16 sm:pb-20 md:pb-[100px] relative z-10">
+      <div className="max-w-[995px] mx-auto flex flex-col items-center gap-6 md:gap-8 mt-3">
         <div className="flex flex-col items-center gap-4 w-full">
           <div className="flex items-center justify-center gap-4">
-            <h1 className="text-[100px] font-bold leading-[120px] tracking-[-6px] text-black whitespace-nowrap mt-3">Youtube. Smarter.</h1>
+            <h1 className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold leading-[48px] sm:leading-[72px] md:leading-[96px] lg:leading-[120px] tracking-[-2px] sm:tracking-[-4px] md:tracking-[-6px] text-black text-center md:whitespace-nowrap mt-3">
+              Youtube. Smarter.
+            </h1>
           </div>
         </div>
 
-        <div className="max-w-[580px] w-full">
-          <p className="text-center text-black/80 text-[18px] leading-[28px] font-medium">Transform every YouTube session into a guided, AI-driven learning experience that adapts to your pace.</p>
+        <div className="max-w-[580px] w-full px-4 sm:px-6 md:px-0">
+          <p className="text-center text-black/80 text-[14px] sm:text-[16px] md:text-[18px] leading-[20px] sm:leading-[24px] md:leading-[28px] font-medium">
+            Transform every YouTube session into a guided, AI-driven learning experience that adapts to your pace.
+          </p>
         </div>
 
-        <div className="flex items-center justify-center gap-4 flex-wrap">
-          <Link href="/register">
-            <Button className="px-8 py-4 rounded-[12px] bg-black text-white shadow-[0_2.289px_4.119px_-2.5px_rgba(61,61,61,0.64),0_10px_18px_-3.75px_rgba(61,61,61,0.25),0_0.707px_0.707px_-0.583px_rgba(0,0,0,0.35),0_1.807px_1.807px_-1.167px_rgba(0,0,0,0.34),0_3.622px_3.622px_-1.75px_rgba(0,0,0,0.33),0_6.866px_6.866px_-2.333px_rgba(0,0,0,0.30),0_13.647px_13.647px_-2.917px_rgba(0,0,0,0.26),0_30px_30px_-3.5px_rgba(0,0,0,0.15)] hover:bg-black/90 transition-all hover:scale-105">
-              <span className="text-[15px] font-semibold">Start Learning Free</span>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 flex-wrap w-full px-4 sm:px-0">
+          <Link href="/register" className="w-full sm:w-auto">
+            <Button className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-[12px] bg-black text-white shadow-[0_2px_4px_rgba(0,0,0,0.15)] sm:shadow-[0_2.289px_4.119px_-2.5px_rgba(61,61,61,0.64),0_10px_18px_-3.75px_rgba(61,61,61,0.25)] hover:bg-black/90 transition-all hover:scale-105 touch-target">
+              <span className="text-[14px] sm:text-[15px] font-semibold">Start Learning Free</span>
               <ChevronRight className="ml-1 h-4 w-4" />
             </Button>
           </Link>
-          <Button variant="outline" className="px-8 py-4 rounded-[12px] bg-white/60 backdrop-blur-sm border-black/10 text-black shadow-[0_0.707px_0.707px_-0.583px_rgba(158,158,158,0.69),0_1.807px_1.807px_-1.167px_rgba(158,158,158,0.68),0_3.622px_3.622px_-1.75px_rgba(158,158,158,0.65),0_6.866px_6.866px_-2.333px_rgba(158,158,158,0.61),0_13.647px_13.647px_-2.917px_rgba(158,158,158,0.52),0_30px_30px_-3.5px_rgba(158,158,158,0.30)] hover:bg-white/80 transition-all hover:scale-105">
-            <span className="text-[15px] font-semibold">Explore Features</span>
+          <Button variant="outline" className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-[12px] bg-white/60 backdrop-blur-sm border-black/10 text-black shadow-[0_2px_4px_rgba(0,0,0,0.08)] sm:shadow-[0_0.707px_0.707px_-0.583px_rgba(158,158,158,0.69)] hover:bg-white/80 transition-all hover:scale-105 touch-target">
+            <span className="text-[14px] sm:text-[15px] font-semibold">Explore Features</span>
           </Button>
         </div>
       </div>
@@ -139,10 +208,10 @@ const HeroSection = () => (
 );
 
 const FounderNoteSection = () => (
-  <section className="py-24 bg-[#F5F5F5]">
-    <div className="mx-auto max-w-[980px] px-6 md:px-0">
-      <div className="flex flex-col items-center gap-9 text-center">
-        <p className="text-[28px] leading-[42px] font-medium text-black/65">
+  <section className="py-12 sm:py-16 md:py-20 lg:py-24 bg-[#F5F5F5]">
+    <div className="mx-auto max-w-[980px] px-4 sm:px-6 lg:px-8 xl:px-0">
+      <div className="flex flex-col items-center gap-6 sm:gap-9 text-center">
+        <p className="text-[16px] sm:text-[20px] md:text-[24px] lg:text-[28px] leading-[24px] sm:leading-[30px] md:leading-[36px] lg:leading-[42px] font-medium text-black/65">
           “We created <span className="font-semibold text-black">StreamSmart</span> after building learning sprints from scattered YouTube queues.
           Today, our AI <span className="font-semibold text-black">curates the right playlist, coaches through every transcript</span>, and closes the loop with actionable analytics.
           Your team focuses on mastery while we orchestrate the flow end to end.”
@@ -194,25 +263,25 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section id="benefits" className="py-[110px] bg-[#F5F5F5]">
-      <div className="mx-auto flex max-w-[1400px] flex-col gap-14 px-6 md:px-0">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
-            <Sparkles className="h-4 w-4 text-black" />
-            <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Why StreamSmart</span>
+    <section id="benefits" className="py-12 sm:py-16 md:py-20 lg:py-[110px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1400px] flex-col gap-8 sm:gap-10 md:gap-14 px-4 sm:px-6 lg:px-8 xl:px-0">
+        <div className="flex flex-col items-center gap-4 sm:gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-3 sm:px-4 py-2 sm:py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105">
+            <Sparkles className="h-3 sm:h-4 w-3 sm:w-4 text-black" />
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.18em] text-black uppercase">Why StreamSmart</span>
           </div>
-          <h2 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black">Benefits your learners feel on day one</h2>
-          <p className="max-w-[620px] text-base text-black/80">We designed every workflow to make learning feel cinematic—so teams stay motivated and leaders see measurable progress.</p>
+          <h2 className="text-[28px] sm:text-[38px] md:text-[48px] lg:text-[58px] font-semibold leading-[32px] sm:leading-[42px] md:leading-[54px] lg:leading-[64px] tracking-[-0.04em] text-black px-4">Benefits your learners feel on day one</h2>
+          <p className="max-w-[620px] text-sm sm:text-base text-black/80 px-4">We designed every workflow to make learning feel cinematic—so teams stay motivated and leaders see measurable progress.</p>
         </div>
 
-        <div className="mx-auto w-[1320px] h-[480px] flex gap-6">
+        <div className="mx-auto w-full max-w-[1320px] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {benefits.map((benefit, index) => (
             <div
               key={benefit.title}
-              className="group relative flex w-[428px] h-[480px] flex-col gap-5 rounded-[32px] border border-black/5 bg-white p-6 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_40px_80px_-40px_rgba(0,0,0,0.3)] overflow-hidden"
+              className="group relative flex w-full flex-col gap-4 sm:gap-5 rounded-[20px] sm:rounded-[32px] border border-black/5 bg-white p-4 sm:p-6 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.15)] sm:shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] transition-all duration-300 hover:-translate-y-1 sm:hover:-translate-y-2 hover:shadow-[0_24px_60px_-30px_rgba(0,0,0,0.2)] sm:hover:shadow-[0_40px_80px_-40px_rgba(0,0,0,0.3)] overflow-hidden"
               style={{ animationDelay: `${index * 120}ms` }}
             >
-              <div className="relative overflow-hidden rounded-[24px] border border-black/5 h-[340px]">
+              <div className="relative overflow-hidden rounded-[16px] sm:rounded-[24px] border border-black/5 aspect-video sm:h-[340px]">
                 <video
                   src={benefit.videoSrc}
                   autoPlay
@@ -225,8 +294,8 @@ const BenefitsSection = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h3 className="text-[24px] font-semibold leading-[30px] text-black">{benefit.title}</h3>
-                <p className="text-[15px] text-black/70 leading-[22px]">{benefit.description}</p>
+                <h3 className="text-[18px] sm:text-[20px] md:text-[24px] font-semibold leading-[24px] sm:leading-[26px] md:leading-[30px] text-black">{benefit.title}</h3>
+                <p className="text-[13px] sm:text-[14px] md:text-[15px] text-black/70 leading-[20px] sm:leading-[21px] md:leading-[22px]">{benefit.description}</p>
               </div>
 
               <div className="pointer-events-none absolute inset-x-6 bottom-6 h-[1px] bg-gradient-to-r from-transparent via-black/15 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden />
@@ -354,29 +423,29 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-[110px] bg-[#F5F5F5]">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-14 px-6 md:px-0">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
-            <Brain className="h-4 w-4 text-black" />
-            <span className="text-xs font-semibold tracking-[0.18em] text-black uppercase">Features</span>
+    <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-[110px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-8 sm:gap-10 md:gap-14 px-4 sm:px-6 lg:px-8 xl:px-0">
+        <div className="flex flex-col items-center gap-4 sm:gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-3 sm:px-4 py-2 sm:py-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105">
+            <Brain className="h-3 sm:h-4 w-3 sm:w-4 text-black" />
+            <span className="text-[10px] sm:text-xs font-semibold tracking-[0.18em] text-black uppercase">Features</span>
           </div>
-          <h2 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black">A Full Learning Studio In One Workspace</h2>
-          <p className="max-w-[620px] text-base text-black/80">Every tool—curation, comprehension, coaching, and analytics—works together so learners stay in flow while leaders stay informed.</p>
+          <h2 className="text-[28px] sm:text-[38px] md:text-[48px] lg:text-[58px] font-semibold leading-[32px] sm:leading-[42px] md:leading-[54px] lg:leading-[64px] tracking-[-0.04em] text-black px-4">A Full Learning Studio In One Workspace</h2>
+          <p className="max-w-[620px] text-sm sm:text-base text-black/80 px-4">Every tool—curation, comprehension, coaching, and analytics—works together so learners stay in flow while leaders stay informed.</p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[420px_1fr]">
-          <div className="relative flex h-full flex-col gap-10 overflow-hidden rounded-[36px] bg-black p-10 text-white shadow-[0_45px_70px_-40px_rgba(0,0,0,0.65)]">
+        <div className="grid gap-6 sm:gap-8 lg:grid-cols-[1fr_1.5fr]">
+          <div className="relative flex h-full flex-col gap-6 sm:gap-8 md:gap-10 overflow-hidden rounded-[20px] sm:rounded-[28px] md:rounded-[36px] bg-black p-6 sm:p-8 md:p-10 text-white shadow-[0_32px_50px_-30px_rgba(0,0,0,0.5)] sm:shadow-[0_45px_70px_-40px_rgba(0,0,0,0.65)]">
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.65)_0%,rgba(0,0,0,0.95)_100%)]" aria-hidden />
 
-            <div className="relative z-20 flex flex-col gap-4">
-              <span className="w-fit rounded-full bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.24em] text-white/70">Unified stack</span>
-              <h3 className="text-[34px] font-semibold leading-[40px] tracking-[-0.04em]">StreamSmart connects the entire learning lifecycle.</h3>
-              <p className="text-sm text-white/80">Blend YouTube, LMS archives, and live coaching into one guided journey. StreamSmart orchestrates content, context, and coaching without breaking the learner experience.</p>
+            <div className="relative z-20 flex flex-col gap-3 sm:gap-4">
+              <span className="w-fit rounded-full bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.24em] text-white/70">Unified stack</span>
+              <h3 className="text-[22px] sm:text-[26px] md:text-[30px] lg:text-[34px] font-semibold leading-[28px] sm:leading-[32px] md:leading-[36px] lg:leading-[40px] tracking-[-0.04em]">StreamSmart connects the entire learning lifecycle.</h3>
+              <p className="text-xs sm:text-sm text-white/80">Blend YouTube, LMS archives, and live coaching into one guided journey. StreamSmart orchestrates content, context, and coaching without breaking the learner experience.</p>
             </div>
 
             <div className="relative z-20 flex justify-center">
-              <div className="h-[360px] w-full max-w-[380px] overflow-hidden rounded-[30px] shadow-[0_40px_65px_-38px_rgba(0,0,0,0.65)]">
+              <div className="w-full aspect-[4/5] sm:h-[300px] md:h-[360px] sm:max-w-[380px] overflow-hidden rounded-[20px] sm:rounded-[30px] shadow-[0_40px_65px_-38px_rgba(0,0,0,0.65)]">
                 <video
                   src="/vid4.mp4"
                   autoPlay
@@ -466,40 +535,40 @@ const ProcessSection = () => {
   ];
 
   return (
-    <section id="process" className="py-[120px] bg-[#F5F5F5]">
-      <div className="mx-auto max-w-[1200px] px-6 md:px-0">
-        <div className="relative overflow-hidden rounded-[48px] bg-gradient-to-br from-black via-black/95 to-black/70 px-8 py-16 text-white shadow-[0_50px_120px_-60px_rgba(0,0,0,0.7)] md:px-16">
+    <section id="process" className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 xl:px-0">
+        <div className="relative overflow-hidden rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] bg-gradient-to-br from-black via-black/95 to-black/70 px-4 sm:px-6 md:px-8 lg:px-16 py-10 sm:py-12 md:py-14 lg:py-16 text-white shadow-[0_32px_80px_-40px_rgba(0,0,0,0.5)] sm:shadow-[0_50px_120px_-60px_rgba(0,0,0,0.7)]">
           <div className="pointer-events-none absolute -top-40 -right-32 h-[420px] w-[420px] rounded-full bg-white/5 blur-[140px]" aria-hidden />
           <div className="pointer-events-none absolute bottom-0 left-10 h-[320px] w-[320px] rounded-full bg-white/5 blur-[160px]" aria-hidden />
 
-          <div className="relative z-10 flex flex-col items-center gap-4 text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/20 to-white/10 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-white shadow-[0_2px_8px_rgba(255,255,255,0.08),inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.1)] hover:shadow-[0_4px_12px_rgba(255,255,255,0.12),inset_0_1px_0_rgba(255,255,255,0.2)] transition-all duration-200 hover:scale-105 backdrop-blur-sm">
-              <Layers className="h-4 w-4" />
+          <div className="relative z-10 flex flex-col items-center gap-3 sm:gap-4 text-center">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white/20 to-white/10 px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.24em] text-white shadow-[0_2px_8px_rgba(255,255,255,0.08)] hover:shadow-[0_4px_12px_rgba(255,255,255,0.12)] transition-all duration-200 hover:scale-105 backdrop-blur-sm">
+              <Layers className="h-3 sm:h-4 w-3 sm:w-4" />
               <span>How it flows</span>
             </div>
-            <h2 className="text-[54px] font-semibold leading-[60px] tracking-[-0.04em]">A cinematic learning loop in three scenes</h2>
-            <p className="max-w-[640px] text-base text-white/70">We blend motion, goals, and feedback so each step feels like a creative sprint—not another study chore.</p>
+            <h2 className="text-[28px] sm:text-[36px] md:text-[44px] lg:text-[54px] font-semibold leading-[32px] sm:leading-[40px] md:leading-[50px] lg:leading-[60px] tracking-[-0.04em] px-4">A cinematic learning loop in three scenes</h2>
+            <p className="max-w-[640px] text-sm sm:text-base text-white/70 px-4">We blend motion, goals, and feedback so each step feels like a creative sprint—not another study chore.</p>
           </div>
 
-          <div className="relative z-10 mt-14 grid gap-8 md:grid-cols-3">
+          <div className="relative z-10 mt-8 sm:mt-10 md:mt-12 lg:mt-14 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
             {steps.map((step, index) => (
               <div
                 key={index}
-                className="group relative flex flex-col gap-6 rounded-[32px] border border-white/10 bg-white/10 p-6 backdrop-blur-lg transition-transform duration-500 hover:-translate-y-2 hover:bg-white/20"
+                className="group relative flex flex-col gap-4 sm:gap-6 rounded-[20px] sm:rounded-[24px] md:rounded-[32px] border border-white/10 bg-white/10 p-4 sm:p-5 md:p-6 backdrop-blur-lg transition-transform duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 hover:bg-white/20"
               >
-                <div className="relative flex h-[220px] items-center justify-center overflow-hidden rounded-[24px] border border-white/20 bg-white/5">
+                <div className="relative flex h-[180px] sm:h-[200px] md:h-[220px] items-center justify-center overflow-hidden rounded-[16px] sm:rounded-[20px] md:rounded-[24px] border border-white/20 bg-white/5">
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.05)_0%,rgba(0,0,0,0.65)_100%)]" />
-                  <span className="absolute left-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/15 text-sm font-semibold uppercase tracking-[0.18em] text-white">
+                  <span className="absolute left-3 sm:left-4 md:left-5 top-3 sm:top-4 md:top-5 inline-flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 items-center justify-center rounded-full bg-white/15 text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] text-white">
                     {step.number}
                   </span>
-                  <span className="relative z-10 rounded-full bg-white/10 px-5 py-2 text-xs font-medium uppercase tracking-[0.18em] text-white/80">
+                  <span className="relative z-10 rounded-full bg-white/10 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-[10px] sm:text-xs font-medium uppercase tracking-[0.18em] text-white/80">
                     {step.mediaLabel}
                   </span>
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  <h3 className="text-[22px] font-semibold leading-7 text-white">{step.title}</h3>
-                  <p className="text-sm text-white/70">{step.description}</p>
+                <div className="flex flex-col gap-2 sm:gap-3">
+                  <h3 className="text-[18px] sm:text-[20px] md:text-[22px] font-semibold leading-6 sm:leading-7 text-white">{step.title}</h3>
+                  <p className="text-xs sm:text-sm text-white/70">{step.description}</p>
                 </div>
 
                 <ul className="flex flex-col gap-2 text-sm text-white/70">
@@ -546,15 +615,15 @@ const ReviewsSection = () => {
   ];
 
   return (
-    <section id="reviews" className="py-[120px] bg-[#F5F5F5]">
-      <div className="mx-auto max-w-[1200px] px-6 md:px-0">
-        <div className="flex flex-col items-center gap-5 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
-            <Sparkles className="h-4 w-4 text-black" />
+    <section id="reviews" className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8 xl:px-0">
+        <div className="flex flex-col items-center gap-4 sm:gap-5 text-center">
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105">
+            <Sparkles className="h-3 sm:h-4 w-3 sm:w-4 text-black" />
             <span>Social Proof</span>
           </div>
-          <h2 className="text-[52px] font-semibold leading-[58px] tracking-[-0.04em] text-black">Learners who stream with intent</h2>
-          <p className="max-w-[620px] text-base text-black/70">From enablement teams to solo creators, StreamSmart turns passive viewing into a creative learning loop that people actually finish.</p>
+          <h2 className="text-[28px] sm:text-[36px] md:text-[44px] lg:text-[52px] font-semibold leading-[32px] sm:leading-[40px] md:leading-[50px] lg:leading-[58px] tracking-[-0.04em] text-black px-4">Learners who stream with intent</h2>
+          <p className="max-w-[620px] text-sm sm:text-base text-black/70 px-4">From enablement teams to solo creators, StreamSmart turns passive viewing into a creative learning loop that people actually finish.</p>
         </div>
 
         <div className="mt-12">
@@ -884,24 +953,24 @@ const PricingSection = () => {
   const activeBillingOption = billingOptions.find((option) => option.value === billingCycle);
 
   return (
-    <section id="pricing" className="py-[120px] bg-[#F5F5F5]">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-12 px-6 md:px-0">
+    <section id="pricing" className="py-16 sm:py-20 md:py-[120px] bg-[#F5F5F5]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-8 md:gap-12 px-4 sm:px-6 lg:px-8 xl:px-0">
         <div className="flex flex-col items-center gap-4 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-4 py-2.5 text-xs font-semibold uppercase tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06),inset_0_1px_0_rgba(255,255,255,0.8),inset_0_-1px_0_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12),0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-200 hover:scale-105">
-            <BarChart3 className="h-4 w-4 text-black" />
+          <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-white to-white/95 px-3 sm:px-4 py-2 sm:py-2.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.18em] sm:tracking-[0.24em] text-black shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)] transition-all duration-200 hover:scale-105">
+            <BarChart3 className="h-3 sm:h-4 w-3 sm:w-4 text-black" />
             <span>Pricing</span>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            <h2 className="text-[54px] font-semibold leading-[64px] tracking-[-0.04em] text-black">Flexible Plans For Every Learner</h2>
-            <p className="max-w-[520px] text-base text-black/75">Start free, upgrade as you grow, and only pay when you are ready for unlimited AI momentum.</p>
+          <div className="flex flex-col items-center gap-2 px-4 sm:px-0">
+            <h2 className="text-[28px] sm:text-[38px] md:text-[54px] font-semibold leading-[32px] sm:leading-[44px] md:leading-[64px] tracking-[-0.04em] text-black">Flexible Plans For Every Learner</h2>
+            <p className="max-w-[520px] text-sm sm:text-base text-black/75">Start free, upgrade as you grow, and only pay when you are ready for unlimited AI momentum.</p>
           </div>
 
-          <div className="relative inline-flex items-center gap-1 rounded-full bg-white/70 p-1 shadow-[0_22px_55px_-30px_rgba(0,0,0,0.35)] backdrop-blur">
+          <div className="relative inline-flex flex-col sm:flex-row items-center gap-1 rounded-full bg-white/70 p-1 shadow-[0_22px_55px_-30px_rgba(0,0,0,0.35)] backdrop-blur">
             {billingOptions.map((option) => (
               <button
                 key={option.value}
                 onClick={() => setBillingCycle(option.value)}
-                className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-sm transition-all ${
+                className={`relative flex items-center gap-2 rounded-full px-3 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm transition-all ${
                   billingCycle === option.value
                     ? 'bg-black text-white shadow-[0_12px_24px_-16px_rgba(0,0,0,0.55)]'
                     : 'text-black/60 hover:text-black'
@@ -909,7 +978,7 @@ const PricingSection = () => {
               >
                 <span>{option.label}</span>
                 {option.badge && billingCycle === option.value && (
-                  <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-white/80">
+                  <span className="hidden sm:inline-block rounded-full bg-white/10 px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-[11px] font-medium uppercase tracking-[0.16em] text-white/80">
                     {option.badge}
                   </span>
                 )}
@@ -918,11 +987,11 @@ const PricingSection = () => {
           </div>
 
           {activeBillingOption && (
-            <p className="text-sm text-black/60">{activeBillingOption.subtext}</p>
+            <p className="text-xs sm:text-sm text-black/60 px-4 sm:px-0">{activeBillingOption.subtext}</p>
           )}
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-3">
           {plans.map((plan) => {
             const savingsLabel = getSavingsLabel(plan, billingCycle);
             const billingNote = getBillingNote(plan, billingCycle);

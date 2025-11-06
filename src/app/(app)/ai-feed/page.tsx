@@ -231,19 +231,19 @@ export default function AIFeedPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F5] py-12">
-      <div className="container mx-auto px-6 max-w-[1400px]">
+    <div className="min-h-screen bg-[#F5F5F5] py-6 md:py-12">
+      <div className="container mx-auto px-4 md:px-6 max-w-[1400px]">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-12"
+          className="mb-8 md:mb-12"
         >
-          <h1 className="text-[58px] font-semibold leading-[64px] tracking-[-0.04em] text-black mb-3">
+          <h1 className="text-[32px] md:text-[58px] font-semibold leading-[36px] md:leading-[64px] tracking-[-0.04em] text-black mb-2 md:mb-3">
             Your Personalized Feed
           </h1>
           
-          <p className="text-[18px] text-black/60 max-w-2xl">
+          <p className="text-[14px] md:text-[18px] text-black/60 max-w-2xl">
             {recommendationReason || 'Discover videos tailored to your learning interests'}
           </p>
           
@@ -254,27 +254,27 @@ export default function AIFeedPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-12"
+            className="mb-8 md:mb-12"
           >
-            <div className="bg-white rounded-[32px] border border-black/5 shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] p-8">
-              <div className="flex items-center gap-3 mb-6">
-                <Search className="h-6 w-6 text-black" />
-                <h2 className="text-2xl font-semibold text-black">Search for Specific Topics</h2>
+            <div className="bg-white rounded-[16px] md:rounded-[32px] border border-black/5 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.15)] md:shadow-[0_32px_60px_-38px_rgba(0,0,0,0.25)] p-4 md:p-8">
+              <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
+                <Search className="h-5 w-5 md:h-6 md:w-6 text-black" />
+                <h2 className="text-lg md:text-2xl font-semibold text-black">Search for Specific Topics</h2>
               </div>
-              <p className="text-black/60 mb-6">Manually search for any topic, skill, or interest</p>
+              <p className="text-sm md:text-base text-black/60 mb-4 md:mb-6">Manually search for any topic, skill, or interest</p>
               
-              <div className="flex gap-3 mb-6">
+              <div className="flex flex-col md:flex-row gap-3 mb-4 md:mb-6">
                 <Input
                   placeholder="e.g., Machine Learning with Python"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                  className="flex-1 h-12 rounded-xl border-black/10 focus-visible:ring-black"
+                  className="flex-1 h-11 md:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm md:text-base"
                 />
                 <Button
                   onClick={handleSearch}
                   disabled={loading || !searchQuery.trim() || healthStatus !== 'healthy'}
-                  className="px-6 h-12 rounded-xl bg-black text-white hover:bg-black/90"
+                  className="px-4 md:px-6 h-11 md:h-12 rounded-xl bg-black text-white hover:bg-black/90 text-sm md:text-base"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (
                     <>
@@ -336,12 +336,12 @@ export default function AIFeedPage() {
               <span className="text-sm text-black/60 font-medium">{recommendations.length} videos</span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {recommendations.map((video, index) => (
                 <motion.div key={video.video_id} variants={itemVariants}>
                   <div
                     onClick={() => handleVideoClick(video)}
-                    className="group bg-white rounded-[24px] border border-black/5 overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-1 cursor-pointer"
+                    className="group bg-white rounded-[12px] md:rounded-[24px] border border-black/5 overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.06)] md:shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.12)] md:hover:shadow-[0_12px_32px_rgba(0,0,0,0.15)] transition-all hover:-translate-y-0.5 md:hover:-translate-y-1 cursor-pointer"
                   >
                     <div className="relative aspect-video bg-black/5">
                       {video.thumbnailUrl ? (
@@ -373,12 +373,12 @@ export default function AIFeedPage() {
                       </div>
                     </div>
 
-                    <div className="p-5 space-y-3">
-                      <h3 className="font-semibold text-[16px] leading-[22px] text-black line-clamp-2 group-hover:text-black/70 transition-colors">
+                    <div className="p-3 md:p-5 space-y-2 md:space-y-3">
+                      <h3 className="font-semibold text-[14px] md:text-[16px] leading-[20px] md:leading-[22px] text-black line-clamp-2 group-hover:text-black/70 transition-colors">
                         {video.title}
                       </h3>
 
-                      <div className="text-sm text-black/60 flex items-center gap-2">
+                      <div className="text-xs md:text-sm text-black/60 flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-600 to-purple-400 flex items-center justify-center text-xs font-bold text-white">
                           {video.channelName.charAt(0).toUpperCase()}
                         </div>
