@@ -19,14 +19,21 @@ if (typeof window !== 'undefined') {
 }
 
 // Server-side DynamoDB client with proper credentials
-const region = process.env.AWS_REGION || process.env.NEXT_PUBLIC_AWS_REGION || process.env.STREAMSMART_AWS_REGION || 'ap-south-2';
-const accessKeyId = process.env.AWS_ACCESS_KEY_ID || process.env.STREAMSMART_AWS_ACCESS_KEY_ID || '';
-const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY || process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY || '';
+// Force region to ap-south-2 since that's where our tables are
+const region = process.env.STREAMSMART_AWS_REGION || 'ap-south-2';
+const accessKeyId = process.env.STREAMSMART_AWS_ACCESS_KEY_ID || '';
+const secretAccessKey = process.env.STREAMSMART_AWS_SECRET_ACCESS_KEY || '';
 
 console.log('[DYNAMODB-SERVER] Initializing client with:', {
   region,
   hasAccessKey: !!accessKeyId,
-  accessKeyPrefix: accessKeyId.substring(0, 8) + '...',
+  accessKeyPrefix: accessKeyId ? accessKeyId.substring(0, 8) + '...' : 'MISSING',
+  hasSecretKey: !!secretAccessKey,
+  envVars: {
+    hasSTREAMSMART_AWS_REGION: !!process.env.STREAMSMART_AWS_REGION,
+    hasAWS_REGION: !!process.env.AWS_REGION,
+    AWS_REGION_value: process.env.AWS_REGION,
+  },
 });
 
 const client = new DynamoDBClient({
