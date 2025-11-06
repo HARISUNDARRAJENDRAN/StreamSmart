@@ -4,7 +4,7 @@
  */
 
 const CONFIG = {
-  BACKEND_URL: 'http://localhost:8000'
+  BACKEND_URL: 'https://ppbmdfvxrc.ap-south-1.awsapprunner.com'
 };
 
 // Elements

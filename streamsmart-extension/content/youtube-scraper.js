@@ -7,7 +7,7 @@ console.log('🎬 StreamSmart: YouTube scraper loaded');
 
 // Configuration
 const CONFIG = {
-  BACKEND_URL: 'http://localhost:8000',
+  BACKEND_URL: 'https://ppbmdfvxrc.ap-south-1.awsapprunner.com',
   BUTTON_ID: 'streamsmart-extract-btn',
   STATUS_ID: 'streamsmart-status'
 };
@@ -147,7 +147,7 @@ async function getUserId() {
     
     if (shouldAuthenticate) {
       // Open authentication page (redirect to playlists)
-      window.open('http://localhost:3000/playlists', '_blank');
+      window.open('https://main.de7gjtsqdtkvr.amplifyapp.com/playlists', '_blank');
       
       // Wait for user to complete authentication
       showStatus('⏳ Waiting for authentication... Log in at the new tab.', 'info', false);
@@ -221,7 +221,7 @@ async function addToPlaylist(data) {
     
     console.log('📤 Adding to playlist:', payload);
     
-    const response = await fetch(`http://localhost:3000/api/playlists/add-from-extension`, {
+    const response = await fetch(`https://main.de7gjtsqdtkvr.amplifyapp.com/api/playlists/add-from-extension`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -359,7 +359,7 @@ async function checkTranscriptCached(videoId) {
     }
 
     // Check if video exists in any of user's playlists
-    const response = await fetch(`http://localhost:3000/api/playlists/check-video?userId=${userId}&videoId=${videoId}`);
+    const response = await fetch(`https://main.de7gjtsqdtkvr.amplifyapp.com/api/playlists/check-video?userId=${userId}&videoId=${videoId}`);
     if (response.ok) {
       const data = await response.json();
       return data.exists;
@@ -634,7 +634,7 @@ async function handleExtraction() {
           chrome.runtime.sendMessage({ action: 'openInStreamSmart', videoId }, (response) => {
             if (!response || !response.success) {
               // Fallback: open link directly
-              window.open(`http://localhost:3000/playlists/${playlistResult.playlistId}`, '_blank');
+              window.open(`https://main.de7gjtsqdtkvr.amplifyapp.com/playlists/${playlistResult.playlistId}`, '_blank');
             }
           });
         }, 2000);
