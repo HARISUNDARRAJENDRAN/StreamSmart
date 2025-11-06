@@ -72,7 +72,7 @@ export default function LoginPage() {
 
   return (
     <>
-      {/* Left Side - Image Panel */}
+      {/* Left Side - Image Panel (Desktop Only) */}
       <div className="hidden lg:block lg:w-1/2 relative h-full">
         <img 
           src="/login.jpeg" 
@@ -81,23 +81,23 @@ export default function LoginPage() {
         />
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex h-full flex-col justify-center px-4 sm:px-6 py-8 sm:py-12 lg:px-24 lg:w-1/2">
-        <div className="w-full max-w-md mx-auto lg:mx-0">
-        <Link 
-          href="/landing" 
-          className="inline-flex items-center gap-2 text-sm font-medium text-black/70 hover:text-black mb-8 sm:mb-12 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to home
-        </Link>
+      {/* Right Side - Form (Centered on Mobile) */}
+      <div className="flex w-full lg:w-1/2 min-h-screen lg:h-full items-center justify-center px-6 sm:px-8 py-12 sm:py-16 lg:px-16">
+        <div className="w-full max-w-md">
+          <Link 
+            href="/landing" 
+            className="inline-flex items-center gap-2 text-sm font-medium text-black/60 hover:text-black mb-8 transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+            Back to home
+          </Link>
 
-        <div className="space-y-6 sm:space-y-8 w-full">
-          <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black mb-2 sm:mb-3">
+          <div className="space-y-6 w-full">
+          <div className="text-center sm:text-left">
+            <h1 className="text-3xl sm:text-3xl lg:text-4xl font-bold text-black mb-2 tracking-tight">
               {showResetPassword ? 'Reset Password' : 'Welcome back'}
             </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-black/60">
+            <p className="text-base sm:text-base lg:text-lg text-black/60">
               {showResetPassword 
                 ? resetStep === 'request'
                   ? 'Enter your email to receive a reset code'
@@ -116,8 +116,8 @@ export default function LoginPage() {
           {showResetPassword ? (
             <form onSubmit={handleResetPassword} className="space-y-5">
               {resetStep === 'request' ? (
-                <div className="space-y-2">
-                  <label htmlFor="reset-email" className="text-sm font-semibold text-black">
+                <div className="space-y-1.5">
+                  <label htmlFor="reset-email" className="text-sm font-semibold text-black block">
                     Email
                   </label>
                   <Input
@@ -127,13 +127,13 @@ export default function LoginPage() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
-                    className="h-11 sm:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm sm:text-base touch-target"
+                    className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                   />
                 </div>
               ) : (
                 <>
-                  <div className="space-y-2">
-                    <label htmlFor="reset-code" className="text-sm font-semibold text-black">
+                  <div className="space-y-1.5">
+                    <label htmlFor="reset-code" className="text-sm font-semibold text-black block">
                       Verification Code
                     </label>
                     <Input
@@ -143,11 +143,11 @@ export default function LoginPage() {
                       value={resetCode}
                       onChange={(e) => setResetCode(e.target.value)}
                       required
-                      className="h-11 sm:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm sm:text-base touch-target"
+                      className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                     />
                   </div>
-                  <div className="space-y-2">
-                    <label htmlFor="new-password" className="text-sm font-semibold text-black">
+                  <div className="space-y-1.5">
+                    <label htmlFor="new-password" className="text-sm font-semibold text-black block">
                       New Password
                     </label>
                     <Input
@@ -155,9 +155,9 @@ export default function LoginPage() {
                       type="password"
                       placeholder="Enter new password"
                       value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
+                      onChange=(e) => setNewPassword(e.target.value)}
                       required
-                      className="h-11 sm:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm sm:text-base touch-target"
+                      className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                     />
                   </div>
                 </>
@@ -165,7 +165,7 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full h-11 sm:h-12 rounded-xl bg-black text-white hover:bg-black/90 font-semibold text-sm sm:text-base touch-target"
+                className="w-full h-12 sm:h-13 rounded-lg bg-black text-white hover:bg-black/90 font-semibold text-base shadow-md hover:shadow-lg transition-all mt-6"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
@@ -175,7 +175,7 @@ export default function LoginPage() {
               <Button 
                 type="button"
                 variant="ghost"
-                className="w-full font-medium"
+                className="w-full font-medium text-sm text-black/60 hover:text-black"
                 onClick={() => {
                   setShowResetPassword(false);
                   setResetStep('request');
@@ -187,8 +187,8 @@ export default function LoginPage() {
             </form>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
-                <label htmlFor="email" className="text-sm font-semibold text-black">
+              <div className="space-y-1.5">
+                <label htmlFor="email" className="text-sm font-semibold text-black block">
                   Email
                 </label>
                 <Input
@@ -199,12 +199,12 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="h-11 sm:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm sm:text-base touch-target"
+                  className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                 />
               </div>
               
-              <div className="space-y-2">
-                <label htmlFor="password" className="text-sm font-semibold text-black">
+              <div className="space-y-1.5">
+                <label htmlFor="password" className="text-sm font-semibold text-black block">
                   Password
                 </label>
                 <Input
@@ -215,11 +215,11 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="h-11 sm:h-12 rounded-xl border-black/10 focus-visible:ring-black text-sm sm:text-base touch-target"
+                  className="h-12 sm:h-13 rounded-lg border-black/20 focus-visible:ring-2 focus-visible:ring-black bg-white shadow-sm text-base"
                 />
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-center sm:justify-end">
                 <button
                   type="button"
                   onClick={() => setShowResetPassword(true)}
@@ -231,14 +231,14 @@ export default function LoginPage() {
 
               <Button 
                 type="submit" 
-                className="w-full h-11 sm:h-12 rounded-xl bg-black text-white hover:bg-black/90 font-semibold text-sm sm:text-base touch-target"
+                className="w-full h-12 sm:h-13 rounded-lg bg-black text-white hover:bg-black/90 font-semibold text-base shadow-md hover:shadow-lg transition-all"
                 disabled={isLoading}
               >
                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Sign In
               </Button>
 
-              <p className="text-sm text-center text-black/60">
+              <p className="text-sm text-center text-black/60 pt-2">
                 Don't have an account?{' '}
                 <Link href="/register" className="font-semibold text-black hover:underline">
                   Sign up
