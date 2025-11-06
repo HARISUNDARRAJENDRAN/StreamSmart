@@ -30,15 +30,21 @@ yarn-error.log*
 # parcel cache
 .cache
 
-# local env files
-.env*.local
+# local env files - NEVER COMMIT THESE
 .env
 .env.local
+.env.development
 .env.development.local
+.env.test
 .env.test.local
+.env.production
 .env.production.local
+.env*.local
+*.env
 python_backend/.env
+python_backend/.env.*
 python_backend/.env.local
+**/.**env**
 
 # Credentials and API keys
 python_backend/credentials/
@@ -162,15 +168,25 @@ Thumbs.db
 *.stackdump
 *.lnk
 
-# AWS Configuration
+# AWS Configuration - SECURITY CRITICAL
 .aws/
 aws-config.json
 aws-credentials
+**/credentials
+**/config.json
+**/*credentials*
+**/*secret*
+**/*password*
+**/*apikey*
+**/*api-key*
+**/*token*
 
 # AWS Deployment
 aws-deployment/deployment-info-*.json
 aws-deployment/apprunner-config.json
 aws-deployment/.gcp-secrets-temp.json
+aws-deployment/*credentials*
+aws-deployment/*secret*
 
 # GCP Configuration (if switching back later)
 .gcp/project-info.json
