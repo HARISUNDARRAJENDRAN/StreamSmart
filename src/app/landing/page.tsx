@@ -1,10 +1,9 @@
 ﻿'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
-import { AnimatedTestimonials } from '@/components/ui/animated-testimonials';
 import { LayeredText } from '@/components/ui/layered-text';
 import { DottedSurface } from '@/components/ui/dotted-surface';
 import { cn } from '@/lib/utils';
@@ -29,12 +28,43 @@ import {
   MessageCircle
 } from 'lucide-react';
 
-const LandingPage = () => {
-  const [animationKey, setAnimationKey] = useState(0);
+// Lazy load heavy components
+const AnimatedTestimonials = dynamic(() => import('@/components/ui/animated-testimonials').then(mod => ({ default: mod.AnimatedTestimonials })), {
+  loading: () => <div className="h-96 animate-pulse bg-black/5 rounded-3xl" />
+});
 
+const LandingPage = () => {
   useEffect(() => {
-    // Force animations to restart by incrementing key when component mounts
-    setAnimationKey(prev => prev + 1);
+    // Restart animations when returning to this page
+    const restartAnimations = () => {
+      // Force browser to reflow and restart CSS animations
+      const animatedElements = document.querySelectorAll('[class*="animate-"]');
+      animatedElements.forEach((el) => {
+        const element = el as HTMLElement;
+        element.style.animation = 'none';
+        // Trigger reflow
+        void element.offsetHeight;
+        element.style.animation = '';
+      });
+    };
+
+    // Restart on mount
+    restartAnimations();
+
+    // Also restart when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setTimeout(restartAnimations, 0);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pageshow', restartAnimations);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pageshow', restartAnimations);
+    };
   }, []);
 
   return (
@@ -42,9 +72,9 @@ const LandingPage = () => {
       <Navbar />
       <HeroSection />
       <FounderNoteSection />
-      <BenefitsSection key={`benefits-${animationKey}`} />
-      <FeaturesSection key={`features-${animationKey}`} />
-      <ProcessSection key={`process-${animationKey}`} />
+      <BenefitsSection />
+      <FeaturesSection />
+      <ProcessSection />
       <ReviewsSection />
       <PricingSection />
       <FAQSection />
@@ -177,6 +207,19 @@ const HeroSection = () => (
     
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-[360px] py-12 sm:py-16 md:py-[80px] pb-16 sm:pb-20 md:pb-[100px] relative z-10">
       <div className="max-w-[995px] mx-auto flex flex-col items-center gap-6 md:gap-8 mt-3">
+        {/* Extension CTA - Above Title */}
+        <Link href="/extension-setup" className="group">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 hover:bg-white border border-white/80 transition-all shadow-sm">
+            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span className="text-[13px] sm:text-[14px] font-semibold text-black">
+              Grab the Chrome Extension
+            </span>
+            <ChevronRight className="w-4 h-4 text-black" />
+          </div>
+        </Link>
+
         <div className="flex flex-col items-center gap-4 w-full">
           <div className="flex items-center justify-center gap-4">
             <h1 className="text-[40px] sm:text-[60px] md:text-[80px] lg:text-[100px] font-bold leading-[48px] sm:leading-[72px] md:leading-[96px] lg:leading-[120px] tracking-[-2px] sm:tracking-[-4px] md:tracking-[-6px] text-black text-center md:whitespace-nowrap mt-3">
@@ -232,8 +275,22 @@ const FounderNoteSection = () => (
   </section>
 );
 
-const BenefitsSection = () => {
-  const benefits = [
+const BenefitsSection = memo(() => {
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    // Restart animations when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setAnimationKey(prev => prev + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  const benefits = useMemo(() => [
     {
       title: 'Smart Playlist Curation',
       description: 'AI-powered video recommendations tailored to your learning goals and pace',
@@ -249,9 +306,9 @@ const BenefitsSection = () => {
       description: 'Monitor learning streaks, achievements, and stay motivated with real-time analytics',
       videoSrc: '/vid3.mp4'
     }
-  ];
+  ], []);
 
-  const tags = [
+  const tags = useMemo(() => [
     'AI-Powered Learning',
     'Smart Playlists',
     'Real-Time Insights',
@@ -260,7 +317,7 @@ const BenefitsSection = () => {
     'Personalized Learning',
     'Achievement System',
     'Learning Analytics'
-  ];
+  ], []);
 
   return (
     <section id="benefits" className="py-12 sm:py-16 md:py-20 lg:py-[110px] bg-[#F5F5F5]">
@@ -303,7 +360,7 @@ const BenefitsSection = () => {
           ))}
         </div>
 
-        <div className="relative w-full overflow-hidden mt-8">
+        <div key={`scroll-${animationKey}`} className="relative w-full overflow-hidden mt-8">
           <div className="flex animate-scroll-left">
             {[...tags, ...tags].map((tag, index) => (
               <div
@@ -335,7 +392,9 @@ const BenefitsSection = () => {
       `}</style>
     </section>
   );
-};
+});
+
+BenefitsSection.displayName = 'BenefitsSection';
 
 type FeatureItem = {
   title: string;
@@ -345,8 +404,22 @@ type FeatureItem = {
   icon: LucideIcon;
 };
 
-const FeaturesSection = () => {
-  const features: FeatureItem[] = [
+const FeaturesSection = memo(() => {
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    // Restart animations when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setAnimationKey(prev => prev + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  const features: FeatureItem[] = useMemo(() => [
     {
       title: "AI Playlist Generator",
       description: "Tell StreamSmart what you want to learn and it lines up the right videos in seconds.",
@@ -414,13 +487,13 @@ const FeaturesSection = () => {
       ],
       icon: Link2
     }
-  ];
+  ], []);
 
-  const featureStats = [
+  const featureStats = useMemo(() => [
     { value: "10k+", label: "Videos indexed" },
     { value: "94%", label: "Quiz completion" },
     { value: "<30s", label: "Answer latency" }
-  ];
+  ], []);
 
   return (
     <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-[110px] bg-[#F5F5F5]">
@@ -457,7 +530,7 @@ const FeaturesSection = () => {
               </div>
             </div>
 
-            <div className="relative z-20 grid w-full gap-4 sm:grid-cols-3">
+            <div key={`stats-${animationKey}`} className="relative z-20 grid w-full gap-4 sm:grid-cols-3">
               {featureStats.map((stat, index) => (
                 <div
                   key={index}
@@ -507,10 +580,26 @@ const FeaturesSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const ProcessSection = () => {
-  const steps = [
+FeaturesSection.displayName = 'FeaturesSection';
+
+const ProcessSection = memo(() => {
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    // Restart animations when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        setAnimationKey(prev => prev + 1);
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  const steps = useMemo(() => [
     {
       number: "01",
       title: "Kick off with a quick vibe check",
@@ -532,7 +621,7 @@ const ProcessSection = () => {
       highlights: ["Daily nudges and streak boosts", "Chat for timestamped answers", "Shareable wins for your crew"],
       mediaLabel: "Progress pulse placeholder"
     }
-  ];
+  ], []);
 
   return (
     <section id="process" className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-[#F5F5F5]">
@@ -550,7 +639,7 @@ const ProcessSection = () => {
             <p className="max-w-[640px] text-sm sm:text-base text-white/70 px-4">We blend motion, goals, and feedback so each step feels like a creative sprint—not another study chore.</p>
           </div>
 
-          <div className="relative z-10 mt-8 sm:mt-10 md:mt-12 lg:mt-14 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
+          <div key={`process-${animationKey}`} className="relative z-10 mt-8 sm:mt-10 md:mt-12 lg:mt-14 grid gap-4 sm:gap-6 md:gap-8 md:grid-cols-3">
             {steps.map((step, index) => (
               <div
                 key={index}
@@ -588,10 +677,12 @@ const ProcessSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const ReviewsSection = () => {
-  const testimonials = [
+ProcessSection.displayName = 'ProcessSection';
+
+const ReviewsSection = memo(() => {
+  const testimonials = useMemo(() => [
     {
       name: "Brendan H.",
       designation: "Head of Learning · StratIQ",
@@ -612,7 +703,7 @@ const ReviewsSection = () => {
       designation: "Enablement Lead · VertexAI",
       quote: "We turned scattered watchlists into guided journeys. Learners stick around because the experience feels handcrafted for them."
     }
-  ];
+  ], []);
 
   return (
     <section id="reviews" className="py-12 sm:py-16 md:py-20 lg:py-[120px] bg-[#F5F5F5]">
@@ -637,10 +728,12 @@ const ReviewsSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const ComparisonSection = () => {
-  const streamSmartFeatures = [
+ReviewsSection.displayName = 'ReviewsSection';
+
+const ComparisonSection = memo(() => {
+  const streamSmartFeatures = useMemo(() => [
   "AI-generated learning playlists",
   "Gemini-powered mind maps",
   "Transcript-aware RAG chatbot",
@@ -649,8 +742,9 @@ const ComparisonSection = () => {
   "Adaptive quizzes and assessments",
   "Voice chat for hands-free study",
   "Real-time feedback and support"
-  ];
-  const othersFeatures = [
+  ], []);
+  
+  const othersFeatures = useMemo(() => [
     "Manual video sorting",
     "No structured knowledge capture",
     "Guesswork-based comprehension",
@@ -658,7 +752,7 @@ const ComparisonSection = () => {
     "No personalized feedback",
     "Separate tools for transcripts",
     "Difficult to stay accountable"
-  ];
+  ], []);
 
   return (
     <section className="py-[100px] bg-[#F5F5F5]">
@@ -708,14 +802,16 @@ const ComparisonSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const TeamSection = () => {
-  const team = [
+ComparisonSection.displayName = 'ComparisonSection';
+
+const TeamSection = memo(() => {
+  const team = useMemo(() => [
     { name: "Hari Sundar Rajendran", role: "Product & Platform" },
     { name: "Aditi Rao", role: "Applied AI" },
     { name: "Marco Chen", role: "Learning Experience" }
-  ];
+  ], []);
 
   return (
     <section className="py-[100px] bg-[#F5F5F5]">
@@ -753,13 +849,15 @@ const TeamSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const ProjectsSection = () => {
-  const stats = [
+TeamSection.displayName = 'TeamSection';
+
+const ProjectsSection = memo(() => {
+  const stats = useMemo(() => [
     { value: "38%", label: "Time saved preparing playlists" },
   { value: "96%", label: "Learners rating sessions >=4/5" }
-  ];
+  ], []);
 
   return (
     <section className="py-[100px] bg-[#F5F5F5]">
@@ -812,9 +910,11 @@ const ProjectsSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const PricingSection = () => {
+ProjectsSection.displayName = 'ProjectsSection';
+
+const PricingSection = memo(() => {
   type BillingCycle = 'monthly' | 'quarterly' | 'annually';
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
 
@@ -828,7 +928,7 @@ const PricingSection = () => {
     isFree?: boolean;
   };
 
-  const plans: Plan[] = [
+  const plans: Plan[] = useMemo(() => [
                         {
                           name: "Free",
                           highlight: "Perfect for sampling core workflows.",
@@ -883,11 +983,11 @@ const PricingSection = () => {
                             "Multi-video context"
                           ]
                         }
-                      ];
+                      ], []);
 
-                      const parsePrice = (value: string) => parseFloat(value.replace('$', '')) || 0;
+                      const parsePrice = useCallback((value: string) => parseFloat(value.replace('$', '')) || 0, []);
 
-                      const getSavingsAmount = (plan: Plan, cycle: BillingCycle) => {
+                      const getSavingsAmount = useCallback((plan: Plan, cycle: BillingCycle) => {
                         if (plan.isFree) return 0;
                         const monthly = parsePrice(plan.pricing.monthly);
 
@@ -902,26 +1002,26 @@ const PricingSection = () => {
                         }
 
                         return 0;
-                      };
+                      }, [parsePrice]);
 
-                      const getSavingsLabel = (plan: Plan, cycle: BillingCycle) => {
+                      const getSavingsLabel = useCallback((plan: Plan, cycle: BillingCycle) => {
                         const savings = getSavingsAmount(plan, cycle);
                         if (savings <= 0.01) return null;
                         return `Save $${savings.toFixed(2)}`;
-                      };
+                      }, [getSavingsAmount]);
 
-                      const savingsByCycle = {
+                      const savingsByCycle = useMemo(() => ({
                         quarterly: plans.reduce((acc, plan) => Math.max(acc, getSavingsAmount(plan, 'quarterly')), 0),
                         annually: plans.reduce((acc, plan) => Math.max(acc, getSavingsAmount(plan, 'annually')), 0)
-                      };
+                      }), [plans, getSavingsAmount]);
 
-                      const billingOptions: { value: BillingCycle; label: string; badge?: string; subtext: string }[] = [
+                      const billingOptions: { value: BillingCycle; label: string; badge?: string; subtext: string }[] = useMemo(() => [
                         { value: 'monthly', label: 'Monthly', subtext: 'Cancel anytime. Billed each month.' },
                         { value: 'quarterly', label: 'Quarterly', badge: savingsByCycle.quarterly > 0 ? `Save up to $${savingsByCycle.quarterly.toFixed(2)}` : undefined, subtext: 'Billed every 3 months for a lower effective rate.' },
                         { value: 'annually', label: 'Annually', badge: savingsByCycle.annually > 0 ? `Save up to $${savingsByCycle.annually.toFixed(2)}` : undefined, subtext: 'Best value with one yearly payment.' }
-                      ];
+                      ], [savingsByCycle]);
 
-                      const getPeriodLabel = (cycle: BillingCycle) => {
+                      const getPeriodLabel = useCallback((cycle: BillingCycle) => {
                         switch (cycle) {
                           case 'monthly':
                             return '/month';
@@ -930,9 +1030,9 @@ const PricingSection = () => {
                           case 'annually':
                             return '/year';
                         }
-                      };
+                      }, []);
 
-                      const getBillingNote = (plan: Plan, cycle: BillingCycle) => {
+                      const getBillingNote = useCallback((plan: Plan, cycle: BillingCycle) => {
                         if (plan.isFree) {
                           return 'No card required · Keep learning for free';
                         }
@@ -948,9 +1048,9 @@ const PricingSection = () => {
 
                         const savings = getSavingsLabel(plan, 'annually');
                         return savings ? `Billed ${plan.pricing.annually} per year · ${savings}` : `Billed ${plan.pricing.annually} per year`;
-                      };
+                      }, [getSavingsLabel]);
 
-  const activeBillingOption = billingOptions.find((option) => option.value === billingCycle);
+  const activeBillingOption = useMemo(() => billingOptions.find((option) => option.value === billingCycle), [billingOptions, billingCycle]);
 
   return (
     <section id="pricing" className="py-16 sm:py-20 md:py-[120px] bg-[#F5F5F5]">
@@ -1066,12 +1166,14 @@ const PricingSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const FAQSection = () => {
+PricingSection.displayName = 'PricingSection';
+
+const FAQSection = memo(() => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
+  const faqs = useMemo(() => [
     {
       question: 'How does StreamSmart work?',
       answer: 'StreamSmart uses AI to curate personalized video playlists based on your learning goals. Our AI assistant analyzes video transcripts to provide instant answers and insights while you watch.'
@@ -1096,7 +1198,7 @@ const FAQSection = () => {
       question: 'How accurate is the AI learning assistant?',
       answer: 'Our AI assistant uses advanced language models and transcript analysis to provide highly accurate, citation-rich answers. All responses include timestamps for easy verification.'
     }
-  ];
+  ], []);
 
   return (
     <section id="faq" className="py-[110px] bg-[#F5F5F5]">
@@ -1142,10 +1244,12 @@ const FAQSection = () => {
       </div>
     </section>
   );
-};
+});
 
-const Footer = () => {
-  const footerLines = [
+FAQSection.displayName = 'FAQSection';
+
+const Footer = memo(() => {
+  const footerLines = useMemo(() => [
     { top: "\u00A0", bottom: "LEARN" },
     { top: "LEARN", bottom: "INFINITE" },
     { top: "INFINITE", bottom: "PROGRESS" },
@@ -1153,7 +1257,7 @@ const Footer = () => {
     { top: "TRANSFORM", bottom: "EXCEL" },
     { top: "EXCEL", bottom: "INSPIRE" },
     { top: "INSPIRE", bottom: "\u00A0" },
-  ];
+  ], []);
 
   return (
     <footer className="bg-gradient-to-b from-black via-black/95 to-black/90 text-white">
@@ -1234,4 +1338,6 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
