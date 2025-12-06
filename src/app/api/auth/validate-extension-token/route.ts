@@ -15,14 +15,30 @@ if (!process.env.JWT_SECRET) {
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://main.de7gjtsqdtkvr.amplifyapp.com',
+  'https://streamsmart.vercel.app',
+  'https://www.youtube.com',
+];
+
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+  const isExtension = origin.startsWith('chrome-extension://');
+  const isAllowed = isExtension || 
+    ALLOWED_ORIGINS.includes(origin) || 
+    process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 export async function OPTIONS(request: NextRequest) {
-  return NextResponse.json({}, { headers: corsHeaders });
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 interface ValidationResponse {
@@ -33,6 +49,8 @@ interface ValidationResponse {
 }
 
 export async function POST(request: NextRequest): Promise<NextResponse<ValidationResponse>> {
+  const corsHeaders = getCorsHeaders(request);
+  
   try {
     // Get token from Authorization header
     const authHeader = request.headers.get('Authorization');

@@ -2,50 +2,68 @@
  * Extension User Info Endpoint
  * Returns the current user's ID for the Chrome extension to use
  * 
- * The extension can call this with the user's email/identifier
- * to get their userId for API calls
+ * SECURITY: Requires authentication - looks up user from token, not from query params
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuthenticatedUser } from '@/lib/auth-utils';
+import { findUserByEmail } from '@/lib/dynamodb-service';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://main.de7gjtsqdtkvr.amplifyapp.com',
+  'https://streamsmart.vercel.app',
+  'https://www.youtube.com',
+];
+
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+  const isExtension = origin.startsWith('chrome-extension://');
+  const isAllowed = isExtension || 
+    ALLOWED_ORIGINS.includes(origin) || 
+    process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 export async function OPTIONS(request: NextRequest) {
-  return NextResponse.json({}, { headers: corsHeaders });
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 /**
- * GET /api/auth/extension-user?email=user@example.com
- * Returns the userId for the given email
+ * GET /api/auth/extension-user
+ * Returns the authenticated user's info
+ * SECURITY: No longer accepts email as parameter - uses authentication instead
  */
 export async function GET(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
+  
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const email = searchParams.get('email');
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
     
-    if (!email) {
+    if (!authResult.authenticated || !authResult.user) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Email parameter required',
+          error: 'Authentication required',
         },
-        { status: 400, headers: corsHeaders }
+        { status: 401, headers: corsHeaders }
       );
     }
     
-    // TODO: Look up user by email in DynamoDB
-    // For now, return demo-user-id
-    
+    // Return authenticated user info
     return NextResponse.json(
       {
         success: true,
-        userId: 'demo-user-id',
-        email: email,
-        message: 'User lookup not yet implemented. Using demo user.',
+        userId: authResult.user.userId,
+        email: authResult.user.email,
+        source: authResult.user.source,
       },
       { headers: corsHeaders }
     );

@@ -2,20 +2,38 @@
  * Check for Playlist Updates Endpoint
  * Used for polling-based real-time sync
  * 
+ * SECURITY: Requires authentication to prevent unauthorized access
  * Returns whether playlist has been modified since last check
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getPlaylistById } from '@/lib/dynamodb-service';
+import { getAuthenticatedUser } from '@/lib/auth-utils';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://main.de7gjtsqdtkvr.amplifyapp.com',
+  'https://streamsmart.vercel.app',
+  'https://www.youtube.com',
+];
+
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+  const isExtension = origin.startsWith('chrome-extension://');
+  const isAllowed = isExtension || 
+    ALLOWED_ORIGINS.includes(origin) || 
+    process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 export async function OPTIONS(request: NextRequest) {
-  return NextResponse.json({}, { headers: corsHeaders });
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 interface CheckUpdatesResponse {
@@ -27,16 +45,28 @@ interface CheckUpdatesResponse {
     title: string;
     addedAt: string;
   };
+  error?: string;
 }
 
 export async function GET(request: NextRequest): Promise<NextResponse<CheckUpdatesResponse>> {
+  const corsHeaders = getCorsHeaders(request);
+  
   try {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
+      return NextResponse.json(
+        { hasUpdates: false, error: 'Authentication required' },
+        { status: 401, headers: corsHeaders }
+      );
+    }
+
     const playlistId = request.nextUrl.searchParams.get('playlistId');
     const lastChecked = request.nextUrl.searchParams.get('lastChecked');
     
     if (!playlistId) {
       return NextResponse.json(
-        { hasUpdates: false },
+        { hasUpdates: false, error: 'Playlist ID required' },
         { status: 400, headers: corsHeaders }
       );
     }
@@ -49,8 +79,16 @@ export async function GET(request: NextRequest): Promise<NextResponse<CheckUpdat
     if (!playlist) {
       console.log(`[Check Updates] Playlist not found: ${playlistId}`);
       return NextResponse.json(
-        { hasUpdates: false },
+        { hasUpdates: false, error: 'Playlist not found' },
         { status: 404, headers: corsHeaders }
+      );
+    }
+
+    // IDOR Protection: Verify user owns the playlist
+    if (playlist.userId !== authResult.user.userId) {
+      return NextResponse.json(
+        { hasUpdates: false, error: 'Access denied' },
+        { status: 403, headers: corsHeaders }
       );
     }
     
@@ -103,7 +141,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<CheckUpdat
   } catch (error) {
     console.error('[Check Updates] Error:', error);
     return NextResponse.json(
-      { hasUpdates: false },
+      { hasUpdates: false, error: 'Internal server error' },
       { status: 500, headers: corsHeaders }
     );
   }

@@ -1,15 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findUserById, updateUser } from '@/lib/dynamodb-service';
 import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
+import { getAuthenticatedUser } from '@/lib/auth-utils';
 
 export async function PUT(request: NextRequest) {
   try {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
     const { userId, name, phoneNumber, bio, preferences } = await request.json();
 
     if (!userId) {
       return NextResponse.json(
         { error: 'User ID is required' },
         { status: 400 }
+      );
+    }
+
+    // IDOR Protection: Verify user can only update their own profile
+    if (userId !== authResult.user.userId) {
+      return NextResponse.json(
+        { error: 'Access denied. You can only modify your own profile.' },
+        { status: 403 }
       );
     }
 
@@ -73,13 +91,26 @@ export async function PUT(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const userId = searchParams.get('userId');
-
-    if (!userId) {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
       return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const requestedUserId = searchParams.get('userId');
+
+    // If no userId specified, return authenticated user's profile
+    const userId = requestedUserId || authResult.user.userId;
+
+    // IDOR Protection: Verify user can only access their own profile
+    if (userId !== authResult.user.userId) {
+      return NextResponse.json(
+        { error: 'Access denied. You can only view your own profile.' },
+        { status: 403 }
       );
     }
 

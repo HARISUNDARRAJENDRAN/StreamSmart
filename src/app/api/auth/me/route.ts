@@ -7,18 +7,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': 'https://www.youtube.com',
-  'Access-Control-Allow-Methods': 'GET, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-  'Access-Control-Allow-Credentials': 'true',
-};
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://main.de7gjtsqdtkvr.amplifyapp.com',
+  'https://streamsmart.vercel.app',
+  'https://www.youtube.com',
+];
+
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+  const isExtension = origin.startsWith('chrome-extension://');
+  const isAllowed = isExtension || 
+    ALLOWED_ORIGINS.includes(origin) || 
+    process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 export async function OPTIONS(request: NextRequest) {
-  return NextResponse.json({}, { headers: corsHeaders });
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 export async function GET(request: NextRequest) {
+  const corsHeaders = getCorsHeaders(request);
+  
   try {
     // Get cookies to check for user session
     const cookieStore = await cookies();

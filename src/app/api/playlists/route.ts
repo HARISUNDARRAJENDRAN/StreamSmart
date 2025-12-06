@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { getPlaylistsByUserId, createPlaylist, updatePlaylist, deletePlaylist, getAllPlaylists, getPlaylistById, type DynamoDBPlaylist } from '@/lib/dynamodb-service';
 import { cache, generateCacheKey, CacheTTL } from '@/lib/cache';
+import { getAuthenticatedUser, isAuthorizedForResource } from '@/lib/auth-utils';
 
 // Utility function to extract YouTube ID from URL
 function extractYouTubeId(url: string): string | null {
@@ -67,10 +68,35 @@ function transformVideo(sourceVideo: VideoSource, addedBy: string = 'user'): Pla
 // GET - Fetch user's playlists
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.nextUrl.searchParams.get('userId');
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
     
-    // For demo purposes, allow fetching all playlists if no userId provided
-    const queryUserId = userId || 'guest';
+    // Get requested userId from query params
+    const requestedUserId = request.nextUrl.searchParams.get('userId');
+    
+    // Determine which userId to query
+    let queryUserId: string;
+    
+    if (authResult.authenticated && authResult.user) {
+      // Authenticated user - verify they're accessing their own data or use their ID
+      if (requestedUserId && requestedUserId !== authResult.user.userId) {
+        // User is trying to access another user's playlists - IDOR protection
+        return NextResponse.json(
+          { error: 'Access denied. You can only access your own playlists.' },
+          { status: 403 }
+        );
+      }
+      queryUserId = requestedUserId || authResult.user.userId;
+    } else {
+      // Not authenticated - only allow guest access
+      if (requestedUserId && requestedUserId !== 'guest') {
+        return NextResponse.json(
+          { error: 'Authentication required to access playlists' },
+          { status: 401 }
+        );
+      }
+      queryUserId = 'guest';
+    }
 
     // Generate cache key
     const cacheKey = generateCacheKey('playlists', { userId: queryUserId });
@@ -85,7 +111,7 @@ export async function GET(request: NextRequest) {
       let playlists;
       
       // Debug mode: return all playlists with their userIds (development only)
-      if (userId === 'all-debug') {
+      if (requestedUserId === 'all-debug') {
         // Only allow in development environment for security
         if (process.env.NODE_ENV !== 'development') {
           return NextResponse.json(
@@ -168,14 +194,27 @@ export async function GET(request: NextRequest) {
 // POST - Create a new playlist
 export async function POST(request: NextRequest) {
   try {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { userId, title, description, category, tags, isPublic, videos, firstVideo } = body;
 
-    console.log('Creating playlist with data:', { userId, title, description, category, hasFirstVideo: !!firstVideo });
-    console.log('Environment check:', { 
-      AWS_REGION: !!process.env.AWS_REGION,
-      NODE_ENV: process.env.NODE_ENV 
-    });
+    // Use authenticated user's ID instead of trusting client-provided userId
+    const authenticatedUserId = authResult.user.userId;
+    
+    // If userId is provided, verify it matches the authenticated user
+    if (userId && userId !== authenticatedUserId && userId !== 'guest') {
+      return NextResponse.json(
+        { error: 'Cannot create playlist for another user' },
+        { status: 403 }
+      );
+    }
+
+    console.log('Creating playlist with data:', { userId: authenticatedUserId, title, description, category, hasFirstVideo: !!firstVideo });
 
     // For new simple playlist creation (from genre page), we don't require all fields
     if (!title) {
@@ -194,7 +233,7 @@ export async function POST(request: NextRequest) {
         playlistVideos.push(video);
 
         const playlist = await createPlaylist({
-          userId: userId || 'guest',
+          userId: authenticatedUserId,
           title,
           description: description || '',
           category: category || 'General',
@@ -219,16 +258,16 @@ export async function POST(request: NextRequest) {
       }
 
       // Handle full playlist creation (from playlist create page)
-      if (!userId || !category) {
-        console.error('Missing required fields for full playlist creation:', { userId: !!userId, title: !!title, category: !!category });
-        return NextResponse.json({ error: 'Missing required fields for full playlist creation' }, { status: 400 });
+      if (!category) {
+        console.error('Missing required fields for full playlist creation:', { title: !!title, category: !!category });
+        return NextResponse.json({ error: 'Category is required for full playlist creation' }, { status: 400 });
       }
 
       // Transform videos to include all required fields
   const transformedVideos: PlaylistVideo[] = (videos || []).map((video: VideoSource) => transformVideo(video));
 
       const playlist = await createPlaylist({
-        userId,
+        userId: authenticatedUserId,
         title,
         description: description || '',
         category,
@@ -267,11 +306,30 @@ export async function POST(request: NextRequest) {
 // PUT - Update a playlist
 export async function PUT(request: NextRequest) {
   try {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { playlistId, ...updateData } = body;
 
     if (!playlistId) {
       return NextResponse.json({ error: 'Playlist ID is required' }, { status: 400 });
+    }
+
+    // Verify user owns the playlist (IDOR protection)
+    const existingPlaylist = await getPlaylistById(playlistId);
+    if (!existingPlaylist) {
+      return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
+    }
+    
+    if (existingPlaylist.userId !== authResult.user.userId) {
+      return NextResponse.json(
+        { error: 'Access denied. You can only modify your own playlists.' },
+        { status: 403 }
+      );
     }
 
     try {
@@ -305,6 +363,12 @@ export async function PUT(request: NextRequest) {
 // DELETE - Delete a playlist with cascade deletion of all associated resources
 export async function DELETE(request: NextRequest) {
   try {
+    // Get authenticated user
+    const authResult = await getAuthenticatedUser(request);
+    if (!authResult.authenticated || !authResult.user) {
+      return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+    }
+
     const playlistId = request.nextUrl.searchParams.get('playlistId');
 
     if (!playlistId) {
@@ -317,6 +381,14 @@ export async function DELETE(request: NextRequest) {
       
       if (!playlist) {
         return NextResponse.json({ error: 'Playlist not found' }, { status: 404 });
+      }
+
+      // Verify user owns the playlist (IDOR protection)
+      if (playlist.userId !== authResult.user.userId) {
+        return NextResponse.json(
+          { error: 'Access denied. You can only delete your own playlists.' },
+          { status: 403 }
+        );
       }
 
       // Cascade delete: Remove associated S3 transcripts and DynamoDB entries

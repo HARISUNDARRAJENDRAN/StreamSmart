@@ -3,7 +3,7 @@
  * Receives videos and transcripts from Chrome extension and adds to user's playlist
  * 
  * Production-ready features:
- * - Authentication validation
+ * - SECURE JWT authentication validation
  * - Duplicate detection
  * - Automatic default playlist creation
  * - Comprehensive error handling
@@ -13,13 +13,18 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
+import { jwtVerify } from 'jose';
 import { 
   getPlaylistsByUserId, 
   createPlaylist, 
   updatePlaylist,
   getPlaylistById,
+  findUserById,
   type DynamoDBPlaylist 
 } from '@/lib/dynamodb-service';
+
+// JWT Secret for extension tokens
+const JWT_SECRET = process.env.JWT_SECRET ? new TextEncoder().encode(process.env.JWT_SECRET) : null;
 
 // ============================================================================
 // Type Definitions
@@ -72,19 +77,44 @@ const RETRY_DELAY_MS = 1000;
 // ============================================================================
 
 /**
- * Validate JWT token (for future auth implementation)
+ * Validate JWT token - SECURE implementation
  */
-async function validateAuthToken(token: string): Promise<{ valid: boolean; userId?: string }> {
+async function validateAuthToken(token: string): Promise<{ valid: boolean; userId?: string; error?: string }> {
   try {
-    // TODO: Implement proper JWT validation with secret key
-    // For now, accept any token that looks like a JWT
-    if (token && token.includes('.') && token.split('.').length === 3) {
-      return { valid: true, userId: 'user_temp' };
+    if (!JWT_SECRET) {
+      console.error('[Extension API] JWT_SECRET not configured');
+      return { valid: false, error: 'Server configuration error' };
     }
-    return { valid: false };
+
+    // Properly verify the JWT token
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    
+    // Verify this is an extension token
+    if (payload.scope !== 'extension') {
+      return { valid: false, error: 'Invalid token scope' };
+    }
+
+    // Verify token has a subject (userId)
+    if (!payload.sub) {
+      return { valid: false, error: 'Token missing user ID' };
+    }
+
+    // Optional: Verify user exists in database
+    try {
+      const user = await findUserById(payload.sub);
+      if (!user) {
+        // User might be Cognito-only, still allow
+        console.log('[Extension API] User not in DynamoDB, but token valid:', payload.sub);
+      }
+    } catch (dbError) {
+      // Database check failed, but token is cryptographically valid
+      console.warn('[Extension API] Database check failed:', dbError);
+    }
+
+    return { valid: true, userId: payload.sub };
   } catch (error) {
     console.error('[Extension API] Token validation error:', error);
-    return { valid: false };
+    return { valid: false, error: 'Invalid or expired token' };
   }
 }
 
@@ -215,20 +245,38 @@ async function retryOperation<T>(
 }
 
 // ============================================================================
-// CORS Configuration
+// CORS Configuration - Restricted for Security
 // ============================================================================
 
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-};
+// Allowed origins for CORS
+const ALLOWED_ORIGINS = [
+  'https://main.de7gjtsqdtkvr.amplifyapp.com',
+  'https://streamsmart.vercel.app',
+  'https://www.youtube.com', // For extension running on YouTube
+];
+
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin') || '';
+  
+  // Allow Chrome extensions (they have chrome-extension:// origin)
+  const isExtension = origin.startsWith('chrome-extension://');
+  const isAllowed = isExtension || 
+    ALLOWED_ORIGINS.includes(origin) || 
+    process.env.NODE_ENV === 'development';
+  
+  return {
+    'Access-Control-Allow-Origin': isAllowed ? origin : ALLOWED_ORIGINS[0],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+}
 
 /**
  * Handle OPTIONS request for CORS preflight
  */
 export async function OPTIONS(request: NextRequest) {
-  return NextResponse.json({}, { headers: corsHeaders });
+  return NextResponse.json({}, { headers: getCorsHeaders(request) });
 }
 
 // ============================================================================
@@ -237,6 +285,7 @@ export async function OPTIONS(request: NextRequest) {
 
 export async function POST(request: NextRequest): Promise<NextResponse<AddFromExtensionResponse>> {
   const startTime = Date.now();
+  const corsHeaders = getCorsHeaders(request);
   
   try {
     // Parse request body
@@ -247,22 +296,55 @@ export async function POST(request: NextRequest): Promise<NextResponse<AddFromEx
       videoId: body.videoData?.youtubeId,
       videoTitle: body.videoData?.title,
       hasTranscript: !!body.transcriptData?.s3Key,
+      hasAuthToken: !!body.authToken,
     });
-    
+
     // ========================================================================
-    // Step 1: Validate Request
+    // Step 1: REQUIRE Authentication (SECURITY FIX)
     // ========================================================================
     
-    if (!body.userId) {
+    if (!body.authToken) {
       return NextResponse.json(
         {
           success: false,
-          message: 'User ID is required',
-          error: 'MISSING_USER_ID',
+          message: 'Authentication token is required',
+          error: 'MISSING_AUTH_TOKEN',
         },
-        { status: 400, headers: corsHeaders }
+        { status: 401, headers: corsHeaders }
       );
     }
+
+    const authResult = await validateAuthToken(body.authToken);
+    if (!authResult.valid || !authResult.userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: authResult.error || 'Invalid or expired authentication token',
+          error: 'AUTH_FAILED',
+        },
+        { status: 401, headers: corsHeaders }
+      );
+    }
+
+    // Use the authenticated userId from the token, NOT from request body
+    const authenticatedUserId = authResult.userId;
+    
+    // If body.userId is provided, verify it matches the token
+    if (body.userId && body.userId !== authenticatedUserId) {
+      console.warn('[Extension API] User ID mismatch:', { body: body.userId, token: authenticatedUserId });
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'User ID does not match authenticated user',
+          error: 'USER_ID_MISMATCH',
+        },
+        { status: 403, headers: corsHeaders }
+      );
+    }
+    
+    // ========================================================================
+    // Step 2: Validate Request Data
+    // ========================================================================
     
     if (!body.videoData || !body.videoData.youtubeId) {
       return NextResponse.json(
@@ -299,30 +381,12 @@ export async function POST(request: NextRequest): Promise<NextResponse<AddFromEx
     }
     
     // ========================================================================
-    // Step 2: Optional Auth Validation (Future Enhancement)
-    // ========================================================================
-    
-    if (body.authToken) {
-      const authResult = await validateAuthToken(body.authToken);
-      if (!authResult.valid) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: 'Invalid or expired authentication token',
-            error: 'AUTH_FAILED',
-          },
-          { status: 401, headers: corsHeaders }
-        );
-      }
-    }
-    
-    // ========================================================================
-    // Step 3: Get or Create Playlist for Video
+    // Step 3: Get or Create Playlist for Video (using authenticated userId)
     // ========================================================================
     
     const videoTitle = body.videoData?.title || 'Untitled Video';
     const playlistResult = await retryOperation(() => 
-      getOrCreatePlaylistForVideo(body.userId, videoTitle)
+      getOrCreatePlaylistForVideo(authenticatedUserId, videoTitle)
     );
     
     if (!playlistResult.success || !playlistResult.playlistId) {
@@ -374,13 +438,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<AddFromEx
     }
     
     // ========================================================================
-    // Step 6: Transform and Add Video
+    // Step 6: Transform and Add Video (using authenticated userId)
     // ========================================================================
     
     const newVideo = transformVideoData(
       body.videoData,
       body.transcriptData,
-      body.userId
+      authenticatedUserId
     );
     
     console.log('[Extension API] Adding video to playlist:', {
@@ -481,7 +545,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   return NextResponse.json({
     status: 'healthy',
     endpoint: 'add-from-extension',
-    version: '1.0.0',
+    version: '2.0.0', // Version bumped to indicate security improvements
     timestamp: new Date().toISOString(),
-  }, { headers: corsHeaders });
+    authRequired: true, // Indicates auth is now required
+  }, { headers: getCorsHeaders(request) });
 }

@@ -156,13 +156,24 @@ logger = logging.getLogger(__name__)
 # Initialize FastAPI app
 app = FastAPI(title="StreamSmart Backend", version="1.0.0")
 
-# CORS middleware
+# CORS middleware - Restricted for security
+ALLOWED_ORIGINS = [
+    "https://main.de7gjtsqdtkvr.amplifyapp.com",
+    "https://streamsmart.vercel.app",
+    "http://localhost:3000",  # Development only
+    "http://127.0.0.1:3000",  # Development only
+]
+
+# In production, remove localhost origins
+if os.getenv("ENVIRONMENT") == "production":
+    ALLOWED_ORIGINS = [o for o in ALLOWED_ORIGINS if "localhost" not in o and "127.0.0.1" not in o]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for now to fix CORS issue
-    allow_credentials=False,  # Set to False when using wildcard
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
 )
 
 # Register routers for modular endpoints
