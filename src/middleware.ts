@@ -155,7 +155,7 @@ async function getAuthPayload(request: NextRequest): Promise<JWTPayload | null> 
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-
+  
   // Skip static files
   if (
     pathname.startsWith('/_next/') ||
@@ -164,16 +164,16 @@ export async function middleware(request: NextRequest) {
   ) {
     return NextResponse.next();
   }
-
+  
   // Check if path is public
   const isPublicPath = publicPaths.some(path => 
     pathname === path || pathname.startsWith(`${path}/`)
   );
-
+  
   if (isPublicPath) {
     return NextResponse.next();
   }
-
+  
   // Check if it's an API route
   if (pathname.startsWith('/api/')) {
     // Check if it's a public API route
@@ -214,7 +214,7 @@ export async function middleware(request: NextRequest) {
   const isProtectedPath = protectedPrefixes.some(prefix => 
     pathname.startsWith(prefix)
   );
-
+  
   if (isProtectedPath) {
     const authPayload = await getAuthPayload(request);
     
@@ -230,7 +230,7 @@ export async function middleware(request: NextRequest) {
     response.headers.set('x-user-id', authPayload.sub as string || '');
     return response;
   }
-
+  
   return NextResponse.next();
 }
 
