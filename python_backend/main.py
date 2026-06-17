@@ -164,6 +164,12 @@ ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",  # Development only
 ]
 
+# Comma-separated additional origins for deployments (for example Vercel preview/prod URLs)
+extra_origins = [o.strip() for o in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+for origin in extra_origins:
+    if origin not in ALLOWED_ORIGINS:
+        ALLOWED_ORIGINS.append(origin)
+
 # In production, remove localhost origins
 if os.getenv("ENVIRONMENT") == "production":
     ALLOWED_ORIGINS = [o for o in ALLOWED_ORIGINS if "localhost" not in o and "127.0.0.1" not in o]

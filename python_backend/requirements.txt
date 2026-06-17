@@ -13,31 +13,23 @@ requests-aws4auth==1.2.3
 requests==2.31.0
 python-dotenv==1.0.0
 
-# OpenAI for embeddings and chat (NEW - Feature 5)
+# OpenAI for embeddings and chat
 openai>=1.0.0
 
-# Data processing - NumPy MUST be < 2.0 for TensorFlow 2.15 compatibility
+# Data processing
 numpy>=1.24.0,<2.0.0
-pandas==2.1.4
-scikit-learn==1.3.2
+pandas>=2.1.4,<3.0.0
+scikit-learn>=1.3.2
 
-# ML dependencies removed - using CSV-based recommendations
-# Kept pandas and scikit-learn for data processing only
+# YouTube transcript and video processing
+youtube-transcript-api>=1.0.0
+yt-dlp>=2024.1.0
 
-# TensorFlow with compatibility constraints (optional - large download)
-# tensorflow>=2.16,<2.20
-# ml-dtypes<0.5
+# Google AI services
+google-generativeai>=0.3.0
 
-# Google AI services (optional - install when API keys are available)
-# google-generativeai==0.3.1
-
-# Additional utilities (optional)
-# nltk==3.8.1
-# redis==5.0.1
-# apscheduler==3.10.4
+# Natural language processing
+nltk>=3.8.0
 
 # Image processing
 pillow
-
-# Video processing (optional - install when needed)
-# opencv-python

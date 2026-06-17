@@ -120,47 +120,33 @@ async def get_ai_recommendations(
     This endpoint matches the frontend's expectation for /api/v1/recommend
     """
     try:
-        logger.info(f"AI Recommendation request - Title: '{request.title}', TopN: {request.topN}")
-        
-        # Search for videos by keywords in title and description
-        search_keywords = request.title.lower().split()
-        
-        # Use the search functionality from CSV agent
+        top_n = max(1, min(int(request.topN or 10), 50))
+        logger.info(f"AI Recommendation request - Title: '{request.title}', TopN: {top_n}")
+
+        # Build compact keyword set from title + optional description.
+        search_keywords = [word.strip().lower() for word in request.title.split() if word.strip()]
+        if request.description:
+            search_keywords.extend(
+                [word.strip().lower() for word in request.description.split()[:8] if word.strip()]
+            )
+
         loop = asyncio.get_event_loop()
         recommendations = await loop.run_in_executor(
             executor,
-            agent.search_by_keywords,
-            search_keywords,
-            request.topN,
-            None,  # genre filter
-            None,  # min_duration
-            None,  # max_duration
-            None,  # uploaded_after
-            "relevance"  # sort_by
+            lambda: agent.search_by_keywords(
+                keywords=search_keywords,
+                top_n=top_n,
+                search_fields=['title', 'description', 'channel'],
+                sort_by='relevance'
+            )
         )
-        
-        # If no results from keyword search, try genre-based recommendations
+
+        # If no semantic/keyword match, return trending content for graceful onboarding.
         if not recommendations:
-            logger.info("No keyword matches found, trying genre-based recommendations")
-            # Try to detect genre from title
-            detected_genres = agent.detect_genres_from_text(request.title, limit=1)
-            if detected_genres:
-                recommendations = await loop.run_in_executor(
-                    executor,
-                    agent.recommend_by_genre,
-                    detected_genres[0],
-                    request.topN,
-                    []
-                )
-        
-        # If still no results, get trending videos
-        if not recommendations:
-            logger.info("Falling back to trending videos")
+            logger.info("No keyword matches found, falling back to trending videos")
             recommendations = await loop.run_in_executor(
                 executor,
-                agent.get_trending_videos,
-                request.topN,
-                []
+                lambda: agent.get_trending_videos(top_n=top_n)
             )
         
         # Transform recommendations to match frontend expected format
@@ -191,7 +177,7 @@ async def get_ai_recommendations(
             message="Recommendations generated successfully",
             metadata={
                 "model": "csv-based",
-                "search_method": "keyword_search",
+                "search_method": "keyword_search_with_trending_fallback",
                 "index": "youtube_education_videos"
             }
         )
